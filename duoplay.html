@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Spielrunde</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('10von10.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+  margin-top: 40px;
+  animation: fadeIn 1s ease;
+}
+
+h1, h2 {
+  text-align: center;
+  text-shadow: 2px 2px 6px #000;
+  font-size: 2rem;
+}
+
+select, input, button {
+  width: 100%;
+  padding: 16px;
+  margin: 14px 0;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.2rem;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #ff4081;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #e91e63;
+}
+
+.card {
+  background: #fff;
+  color: #000;
+  border-radius: 20px;
+  padding: 24px;
+  margin: 24px 0;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  animation: slideUp 0.8s ease;
+  font-size: 1.2rem;
+}
+
+.options button {
+  margin: 10px 5px;
+  background-color: #673ab7;
+  font-size: 1.1rem;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.menu-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 28px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.menu-button:hover {
+  background-color: #45a049;
+}
+
+/* 📱 Mobile Optimierung */
+@media (max-width: 600px) {
+  .container {
+    margin: 12px;
+    padding: 24px;
+  }
+
+  h1, h2 {
+    font-size: 2.4rem;
+  }
+
+  select, input, button, .menu-button {
+    padding: 22px;
+    font-size: 1.6rem;
+  }
+
+  .card {
+    padding: 28px;
+    font-size: 1.5rem;
+  }
+
+  .options button {
+    font-size: 1.5rem;
+    padding: 20px;
+  }
+}
+  </style>
+</head>
+<body>
+  <!-- Startscreen mit eigener ID -->
+  <div class="container" id="startScreen">
+    <h1>Spiel starten</h1>
+
+    <label for="playerCount">Anzahl der Spieler (3–10):</label>
+    <select id="playerCount">
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+
+    <div id="nameInputs"></div>
+
+    <button onclick="generateInputs()">Namen eingeben</button>
+    <button onclick="startGame()">Spiel starten</button>
+    <a href="startseite.html"><button class="menu-button">Zurück zum Hauptmenü</button></a>
+  </div>
+
+  <!-- Spielbereich -->
+  <div class="container hidden" id="gameArea">
+    <!-- Kartencontainer -->
+    <div id="cardContainer" class="card hidden">
+      <button onclick="revealCard()" id="revealBtn">Karte aufdecken</button>
+      <div id="scenarioText" class="hidden"></div>
+    </div>
+
+    <!-- Optionen -->
+    <div class="options">
+      <button onclick="nextRound()">Nächste Runde</button>
+      <button onclick="endGame()">Spiel beenden</button>
+    </div>
+  </div>
+<script>
+  let playerNames = [];
+  let usedScenarios = [];
+
+  const scenarios = [
+    "Ein tauber Passagier diskutiert mit dem Piloten.",
+    "Zwei Detektive finden eine Banane im Tresor.",
+    "Ein Roboter und ein Clown streiten über Kunst.",
+    "Ein Astronaut fragt einen Bäcker nach Sauerstoff.",
+    "Zwei Piraten tauschen ihre Augenklappen.",
+    "Ein Lehrer und ein Alien planen eine Klassenfahrt.",
+    "Ein Vampir bestellt Knoblauchbrot beim Kellner.",
+    "Zwei Geister spielen Schach im Fahrstuhl.",
+    "Ein DJ und ein Mönch reden über Stille.",
+    "Ein Hacker und ein Cowboy tauschen Hüte."
+  ];
+
+  function generateInputs() {
+    const count = parseInt(document.getElementById("playerCount").value);
+    const container = document.getElementById("nameInputs");
+    container.innerHTML = "";
+    for (let i = 0; i < count; i++) {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = `Spieler ${i + 1} Name`;
+      input.id = `player${i}`;
+      container.appendChild(input);
+    }
+  }
+
+  function startGame() {
+    playerNames = [];
+    const count = parseInt(document.getElementById("playerCount").value);
+    for (let i = 0; i < count; i++) {
+      const name = document.getElementById(`player${i}`).value.trim();
+      if (name === "") {
+        alert("Bitte alle Spielernamen eingeben.");
+        return;
+      }
+      playerNames.push(name);
+    }
+
+    // Startscreen ausblenden
+    document.getElementById("startScreen").classList.add("hidden");
+
+    // Spielbereich anzeigen
+    document.getElementById("gameArea").classList.remove("hidden");
+    document.getElementById("cardContainer").classList.remove("hidden");
+
+    nextRound();
+  }
+
+  function nextRound() {
+    // Verstecke vorherige Inhalte
+    document.getElementById("scenarioText").classList.add("hidden");
+    document.getElementById("revealBtn").classList.remove("hidden");
+
+    if (usedScenarios.length === scenarios.length) {
+      alert("Alle Szenarien wurden verwendet!");
+      return;
+    }
+
+    let p1, p2;
+    do {
+      p1 = playerNames[Math.floor(Math.random() * playerNames.length)];
+      p2 = playerNames[Math.floor(Math.random() * playerNames.length)];
+    } while (p1 === p2);
+
+    let scenario;
+    do {
+      scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+    } while (usedScenarios.includes(scenario));
+
+    usedScenarios.push(scenario);
+
+    // Text vorbereiten, aber noch nicht anzeigen
+    document.getElementById("scenarioText").innerHTML = `
+      <h2>${p1} & ${p2}</h2>
+      <p>${scenario}</p>
+    `;
+  }
+
+  function revealCard() {
+    document.getElementById("scenarioText").classList.remove("hidden");
+    document.getElementById("revealBtn").classList.add("hidden");
+  }
+
+  function endGame() {
+    location.reload();
+  }
+</script>
+
+
+</body>
+</html>

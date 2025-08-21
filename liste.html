@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>10 von 10 – Sortierspiel</title>
+
+  <!-- Design eingebettet -->
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('liste.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      margin-top: 40px;
+      animation: fadeIn 1s ease;
+    }
+
+    h1, h2 {
+      text-align: center;
+      text-shadow: 2px 2px 6px #000;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .menu-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .menu-button:hover {
+      background-color: #45a049;
+    }
+
+    .card {
+      background: #fff;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: slideUp 0.8s ease;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Startseite -->
+  <div class="container" id="start-screen">
+    <h1>10 von 10</h1>
+    <label for="player-count">Anzahl Spieler:</label>
+    <select id="player-count">
+      <option value="2">2 Spieler</option>
+      <option value="3">3 Spieler</option>
+      <option value="4">4 Spieler</option>
+      <option value="5">5 Spieler</option>
+    </select>
+
+    <div id="player-names">
+      <!-- Dynamische Namensfelder -->
+    </div>
+
+    <button id="start-game" class="menu-button">Spiel starten</button>
+    <button id="back-home" class="menu-button">Zurück zur Startseite</button>
+  </div>
+
+  <!-- Spielfeld -->
+  <div class="container hidden" id="game-screen">
+    <h2 id="game-title"></h2>
+    <p id="current-player"></p>
+    <div id="item-card" class="card"></div>
+    <div id="position-options" class="options"></div>
+    <div id="sorted-list" class="card"></div>
+    <button id="end-game" class="menu-button">Spiel beenden</button>
+  </div>
+
+  <!-- Endbildschirm -->
+  <div class="container hidden" id="end-screen">
+    <h2>Spiel beendet!</h2>
+    <div id="final-list" class="card"></div>
+    <div id="scoreboard" class="card"></div>
+    <button id="restart-game" class="menu-button">Erneut spielen</button>
+    <button id="back-home-end" class="menu-button">Zurück zur Startseite</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

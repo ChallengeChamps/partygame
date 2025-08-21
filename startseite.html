@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spielauswahl</title>
+  <style>
+.player-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #ffffff;
+  color: #007BFF;
+  border: 2px solid #007BFF;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.player-count {
+  font-size: 1rem;
+  margin-top: 10px;
+  opacity: 0.9;
+}
+
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('dein-bild-url-hier.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffffff;
+      margin-top: 40px;
+      font-size: 3rem;
+      text-shadow: 2px 2px 6px #000;
+    }
+
+    .card-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      padding: 60px 20px;
+    }
+
+    .card {
+position: relative;
+      width: 90%;
+      max-width: 800px;
+      height: 300px;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.6);
+      z-index: 0;
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 1;
+      color: #fff;
+      font-size: 2rem;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      text-shadow: 2px 2px 6px #000;
+      padding: 0 10px;
+    }
+.instructions-button {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.instructions-button a {
+  display: inline-block;
+  background-color: #FFD700;
+  color: #000;
+  font-weight: bold;
+  padding: 12px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.instructions-button a:hover {
+  background-color: #FFC300;
+  transform: scale(1.05);
+}
+
+
+    /* Karten mit individuellen Bildern */
+    .fakeorfakt::before { background-image: url('index1.png'); }
+    .zehnvonzehn::before { background-image: url('10von10.png'); }
+    .wop::before { background-image: url('wop.png'); }
+    .imposter::before { background-image: url('imposter.png'); }
+    .wort::before { background-image: url('wort.png'); }
+    .topsort::before { background-image: url('liste.png'); }
+    .tipptopf::before { background-image: url('tipptopf.png'); }
+    .stillepost::before { background-image: url('stillepost.png'); }
+    .habnochnie::before { background-image: url('habnochnie.png'); }
+    .werbinich::before { background-image: url('werbinich.png'); }
+    .superquiz::before { background-image: url('wop.png'); }
+    .duoplay::before { background-image: url('liste.png'); }
+
+
+    /* 📱 Mobile Optimierung */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+        margin-top: 20px;
+      }
+
+      .card {
+        height: 200px;
+      }
+
+      .card-content {
+        font-size: 1.2rem;
+      }
+
+      .card-container {
+        gap: 20px;
+        padding: 30px 10px;
+      }
+.player-badge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+}
+
+
+    }
+  </style>
+</head>
+<body>
+  <h1>🎮 Wähle dein Spiel</h1>
+<div class="instructions-button">
+  <a href="spielanleitung.html">📘 Spielanleitung anzeigen</a>
+</div>
+  <div class="card-container">
+    <a href="index.html" class="card fakeorfakt">
+      <div class="card-content">Fake or Fakt 🎭
+    <div class="player-count">3–6 🧑</div>
+</div>
+    </a>
+    <a href="10von10.html" class="card zehnvonzehn">
+      <div class="card-content">Sie ist eine 10 von 10, aber... 💘
+    <div class="player-count">2–6 🧑</div>
+</div>
+    </a>
+    <a href="wop.html" class="card wop">
+      <div class="card-content">Wahrheit oder Pflicht 🔥
+    <div class="player-count">1–6 🧑</div>
+</div>
+    </a>
+    <a href="imposter.html" class="card imposter">
+      <div class="card-content">Finde den Imposter 🕵️‍♂️
+    <div class="player-count">3–6 🧑</div>
+</div>
+    </a>
+    <a href="wort.html" class="card wort">
+      <div class="card-content">Verbotene Wörter 🙊
+    <div class="player-count">min. 2 🧑</div>
+</div>
+    </a>
+    <a href="liste.html" class="card topsort">
+      <div class="card-content">TopSort 📜 
+    <div class="player-count">2–5 🧑</div>
+</div>
+    </a>
+    <a href="tipptopf.html" class="card tipptopf">
+      <div class="card-content">TippTopf 👆
+    <div class="player-count">2–8 🧑</div>
+</div>
+    <a href="stillepost.html" class="card stillepost">
+      <div class="card-content">PinselPost 🖌️
+    <div class="player-count">3–8 🧑</div>
+</div>
+    <a href="habnochnie.html" class="card habnochnie">
+      <div class="card-content">Ich hab noch nie... 🚫
+    <div class="player-count">1-12 🧑</div>
+</div>
+    <a href="werbinich.html" class="card habnochnie">
+      <div class="card-content">Wer  bin ich ⁉️
+    <div class="player-count">min. 2 🧑</div>
+</div>
+    <a href="superquiz.html" class="card superquiz">
+      <div class="card-content">Superquiz 🧠
+    <div class="player-count">1-8 🧑</div>
+</div>
+    <a href="duoplay.html" class="card duoplay">
+      <div class="card-content">Duo-Pantomime 🎬
+    <div class="player-count">3-10 🧑</div>
+</div>
+    </a>
+  </div>
+</body>
+</html>

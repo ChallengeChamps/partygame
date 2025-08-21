@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lucky Island Slot</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('10von10.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      margin-top: 40px;
+      animation: fadeIn 1s ease;
+    }
+
+    h1, h2 {
+      text-align: center;
+      text-shadow: 2px 2px 6px #000;
+    }
+
+    button, select {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border-radius: 12px;
+      border: none;
+      font-size: 1.1rem;
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .card {
+      background: #fff;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: slideUp 0.8s ease;
+    }
+
+    .slot-machine {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      font-size: 4rem;
+      margin: 20px 0;
+    }
+
+    .reel {
+      width: 100px;
+      height: 100px;
+      background: #222;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: #fff;
+      box-shadow: inset 0 0 10px #000;
+      transition: transform 0.3s ease;
+    }
+
+    .spin {
+      animation: spinReel 0.3s infinite;
+    }
+
+    @keyframes spinReel {
+      0% { transform: rotate(0deg); }
+      50% { transform: rotate(20deg); }
+      100% { transform: rotate(-20deg); }
+    }
+
+    .win-animate {
+      animation: winFlash 1s ease-in-out;
+      color: gold;
+      text-shadow: 0 0 20px #ffd700;
+    }
+
+    @keyframes winFlash {
+      0% { transform: scale(1); opacity: 1; }
+      25% { transform: scale(1.3); opacity: 0.8; }
+      50% { transform: scale(1); opacity: 1; }
+      75% { transform: scale(1.3); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    #dailyStatus {
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎰 Lucky Island Slot</h1>
+
+    <div class="card">
+      <h2>Coins: <span id="coins">500</span> 🪙</h2>
+      <select id="betSelect">
+        <option value="10">Einsatz: 10</option>
+        <option value="50">Einsatz: 50</option>
+        <option value="100">Einsatz: 100</option>
+        <option value="500">Einsatz: 500</option>
+        <option value="1000">Einsatz: 1000</option>
+      </select>
+      <button onclick="spinSlot()">🎲 Drehen</button>
+      <div class="slot-machine">
+        <div class="reel" id="reel1">❓</div>
+        <div class="reel" id="reel2">❓</div>
+        <div class="reel" id="reel3">❓</div>
+      </div>
+      <div id="message" style="text-align:center;"></div>
+    </div>
+
+    <div class="card">
+      <h2>🎁 Tägliche Belohnung</h2>
+      <button onclick="claimDaily()">Belohnung abholen (+50 Coins)</button>
+      <div id="dailyStatus"></div>
+    </div>
+
+    <div class="card">
+      <h2>💼 Geld investieren</h2>
+      <select id="investmentAmount">
+        <option value="10">Investiere: 10 Coins</option>
+        <option value="50">Investiere: 50 Coins</option>
+        <option value="100">Investiere: 100 Coins</option>
+        <option value="500">Investiere: 500 Coins</option>
+        <option value="1000">Investiere: 1000 Coins</option>
+        <option value="3000">Investiere: 3000 Coins</option>
+      </select>
+      <button onclick="openInvestment('stocks')">📈 Aktien</button>
+      <button onclick="openInvestment('realestate')">🏠 Immobilien</button>
+      <button onclick="openInvestment('luxury')">💎 Luxusgüter</button>
+      <button onclick="openInvestment('private')">👤 Privatbesitz</button>
+    </div>
+
+    <div class="card">
+      <h2>🏆 Highscore – Privatbesitz</h2>
+      <ul id="highscoreList">
+        <li>🥇 RichRico – 12.500 Coins</li>
+        <li>🥈 VillaVera – 9.000 Coins</li>
+        <li>🥉 YachtYannick – 7.500 Coins</li>
+      </ul>
+      <p><strong>🧍 Deine Ausgaben für Privatbesitz:</strong> <span id="playerPrivateTotal">0</span> Coins</p>
+    </div>
+
+    <div class="card hidden" id="investmentPanel">
+      <h2 id="investmentTitle"></h2>
+      <div id="investmentOptions"></div>
+      <button onclick="executeInvestment()">Jetzt investieren</button>
+      <div id="investmentResult" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <script>
+    let coins = parseInt(localStorage.getItem("coins")) || 500;
+    let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
+    let properties = JSON.parse(localStorage.getItem("properties")) || [];
+
+    const symbols = ["🍒", "🍋", "🍇", "💎", "🎁", "👑"];
+    const payouts = {
+      "🍒": 2,
+      "🍋": 3,
+      "🍇": 5,
+      "💎": 10,
+      "🎁": 15,
+      "👑": 30
+    };
+
+    function updateCoins() {
+      document.getElementById("coins").innerText = coins;
+    }
+
+    function saveCoins() {
+      localStorage.setItem("coins", coins);
+    }
+
+function spinSlot() {
+  const bet = parseInt(document.getElementById("betSelect").value);
+  if (coins < bet) {
+    document.getElementById("message").innerText = "Nicht genug Coins!";
+    return;
+  }
+
+  coins -= bet;
+  saveCoins();
+  updateCoins();
+  document.getElementById("message").innerText = "";
+
+  const reels = [document.getElementById("reel1"), document.getElementById("reel2"), document.getElementById("reel3")];
+  reels.forEach(reel => {
+    reel.classList.remove("win-animate");
+    reel.classList.add("spin");
+    reel.innerText = "🔄";
+  });
+
+  setTimeout(() => {
+    const r1 = symbols[Math.floor(Math.random() * symbols.length)];
+    reels[0].classList.remove("spin");
+    reels[0].innerText = r1;
+
+    setTimeout(() => {
+      const r2 = symbols[Math.floor(Math.random() * symbols.length)];
+      reels[1].classList.remove("spin");
+      reels[1].innerText = r2;
+
+      setTimeout(() => {
+        const r3 = symbols[Math.floor(Math.random() * symbols.length)];
+        reels[2].classList.remove("spin");
+        reels[2].innerText = r3;
+
+        if (r1 === r2 && r2 === r3) {
+          const win = bet * payouts[r1];
+          coins += win;
+          saveCoins();
+          updateCoins();
+          reels.forEach(reel => reel.classList.add("win-animate"));
+          document.getElementById("message").innerText = `🎉 ${r1} Jackpot! Du gewinnst ${win} Coins!`;
+        } else {
+          document.getElementById("message").innerText = "😢 Leider nichts gewonnen.";
+        }
+      }, 500);
+    }, 500);
+  }, 500);
+}
+
+
+      coins -= bet;
+      saveCoins();
+      updateCoins();
+      document.getElementById("message").innerText = "";
+
+      const reels = [document.getElementById("reel1"), document.getElementById("reel2"), document.getElementById("reel3")];
+      reels.forEach(reel => {
+        reel.classList.remove("win-animate");
+        reel.classList.add("spin");
+        reel.innerText = "🔄";
+      });
+
+      setTimeout(() => {
+        const r1 = symbols[Math.floor(Math.random() * symbols.length)];
+        reels[0].classList.remove("spin");
+        reels[0].innerText = r1;
+
+        setTimeout(() => {
+          const r2 = symbols[Math.floor(Math.random() * symbols.length)];
+          reels[1].classList.remove("spin");
+          reels[1].innerText = r2;
+
+          setTimeout(() => {
+            const r3 = symbols[Math.floor(Math.random() * symbols.length)];
+            reels[2].classList.remove("spin");
+            reels[2].innerText = r3;
+
+            if (r1 === r2 && r2 === r3) {
+              const win = bet * payouts[r1];
+              coins += win;
+              saveCoins();
+              updateCoins();
+              reels.forEach(reel => reel.classList.add("win-animate"));
+              document.getElementById("message").innerText = `🎉 ${r1} Jackpot! Du gewinnst ${win} Coins!`;
+            } else {
+              document.getElementById("message").innerText = "😢 Leider nichts gewonnen.";
+            }
+          }, 500);
+        }, 500);
+      }, 500);
+    }
+
+    function claimDaily() {
+      const today = new Date().toDateString();
+      const lastClaim = localStorage.getItem("lastClaim");
+
+      if (lastClaim === today) {
+        document.getElementById("dailyStatus").innerText =
+          "✅ Du hast deine Belohnung heute schon abgeholt!";
+        return;
+      }
+
+      coins += 50;
+      saveCoins();
+      localStorage.setItem("lastClaim", today);
+      document.getElementById("dailyStatus").innerText =
+        "🎉 +50 Coins für deinen täglichen Login!";
+      updateCoins();
+    }
+
+    updateCoins();
+    const today = new Date().toDateString();
+    if (localStorage.getItem("lastClaim") === today) {
+      document.getElementById("dailyStatus").innerText =
+        "✅ Du hast deine Belohnung heute schon abgeholt!";
+    } else {
+      document.getElementById("dailyStatus").innerText =
+        "🎁 Du kannst deine tägliche Belohnung abholen!";
+    }
+
+    let currentInvestmentType = "";
+    let properties = JSON.parse(localStorage.getItem("properties")) || [];
+    let inventory = JSON.parse(localStorage.getItem("inventory")) || [];
+
+    function openInvestment(type) {
+      currentInvestmentType = type;
+      document.getElementById("investmentPanel").classList.remove("hidden");
+      document.getElementById("investmentResult").innerText = "";
+
+      const titleMap = {
+        stocks: "📈 Aktien investieren",
+        realestate: "🏠 Immobilien kaufen",
+        luxury: "💎 Luxusgüter erwerben",
+        private: "👤 Privatbesitz erwerben"
+      };
+      document.getElementById("investmentTitle").innerText = titleMap[type];
+
+      const options = document.getElementById("investmentOptions");
+      options.innerHTML = "";
+
+      if (type === "stocks") {
+        options.innerHTML = `
+          <select id="riskLevel">
+            <option value="low">Niedriges Risiko</option>
+            <option value="medium">Mittleres Risiko</option>
+            <option value="high">Hohes Risiko</option>
+          </select>
+        `;
+      }
+
+      if (type === "realestate") {
+        options.innerHTML = `
+          <select id="houseType">
+            <option value="small">Kleines Haus (Reparatur: 50 Coins)</option>
+            <option value="medium">Mittleres Haus (Reparatur: 100 Coins)</option>
+            <option value="luxury">Luxushaus (Reparatur: 200 Coins)</option>
+          </select>
+        `;
+      }
+
+      if (type === "luxury") {
+        options.innerHTML = `
+          <select id="luxuryItem">
+            <option value="car">🚗 Sportwagen (1000 Coins)</option>
+            <option value="watch">⌚ Uhr (500 Coins)</option>
+            <option value="art">🖼️ Kunstwerk (2000 Coins)</option>
+          </select>
+        `;
+      }
+
+      if (type === "private") {
+        options.innerHTML = `
+          <select id="privateItem">
+            <option value="villa">🏡 Villa (3000 Coins)</option>
+            <option value="oldtimer">🚘 Oldtimer (1500 Coins)</option>
+            <option value="yacht">🛥️ Yacht (5000 Coins)</option>
+          </select>
+        `;
+      }
+    }
+
+    function executeInvestment() {
+      const amount = parseInt(document.getElementById("investmentAmount").value);
+      if (isNaN(amount) || amount <= 0) {
+        document.getElementById("investmentResult").innerText = "❗ Bitte gültigen Betrag auswählen.";
+        return;
+      }
+
+      if (coins < amount) {
+        document.getElementById("investmentResult").innerText = "❗ Nicht genug Coins!";
+        return;
+      }
+
+      coins -= amount;
+      saveCoins();
+      updateCoins();
+
+      let resultText = "";
+
+      if (currentInvestmentType === "stocks") {
+        const risk = document.getElementById("riskLevel").value;
+        let multiplier = 1;
+        let chance = Math.random();
+
+        if (risk === "low") {
+          multiplier = chance < 0.9 ? 1.1 : 0.9;
+        } else if (risk === "medium") {
+          multiplier = chance < 0.7 ? 1.5 : 0.7;
+        } else {
+          multiplier = chance < 0.5 ? 2.5 : 0.5;
+        }
+
+        const profit = Math.floor(amount * multiplier);
+        coins += profit;
+        saveCoins();
+        updateCoins();
+        resultText = `📈 Du hast ${profit} Coins zurückbekommen (${risk}-Risiko).`;
+
+      } else if (currentInvestmentType === "realestate") {
+        const type = document.getElementById("houseType").value;
+        let renovationCost = type === "small" ? 50 : type === "medium" ? 100 : 200;
+        let sellRange = type === "small"
+          ? [amount + renovationCost - 100, amount + renovationCost + 100]
+          : type === "medium"
+          ? [amount + renovationCost - 150, amount + renovationCost + 200]
+          : [amount + renovationCost - 300, amount + renovationCost + 400];
+
+        if (coins < renovationCost) {
+          resultText = "❗ Nicht genug Coins für Reparatur!";
+        } else {
+          coins -= renovationCost;
+          const salePrice = Math.floor(Math.random() * (sellRange[1] - sellRange[0]) + sellRange[0]);
+          coins += salePrice;
+          properties.push({ type, salePrice });
+          saveCoins();
+          localStorage.setItem("properties", JSON.stringify(properties));
+          updateCoins();
+          resultText = `🏠 Dein Haus wurde für ${salePrice} Coins verkauft.`;
+        }
+
+      } else if (currentInvestmentType === "luxury") {
+        const item = document.getElementById("luxuryItem").value;
+        const prices = { car: 1000, watch: 500, art: 2000 };
+        const price = prices[item];
+
+        if (coins < price) {
+          resultText = "❗ Nicht genug Coins!";
+        } else {
+          const resale = Math.floor(price * 0.5);
+          inventory.push({ item, value: price, type: "luxus" });
+          coins += resale;
+          saveCoins();
+          localStorage.setItem("inventory", JSON.stringify(inventory));
+          updateCoins();
+          resultText = `💎 Du hast ${item} gekauft und für ${resale} Coins verkauft (Verlust).`;
+        }
+
+      } else if (currentInvestmentType === "private") {
+        const item = document.getElementById("privateItem").value;
+        const prices = { villa: 3000, oldtimer: 1500, yacht: 5000 };
+        const price = prices[item];
+
+        if (coins < price) {
+          resultText = "❗ Nicht genug Coins!";
+        } else {
+          inventory.push({ item, value: price, type: "privat" });
+          saveCoins();
+          localStorage.setItem("inventory", JSON.stringify(inventory));
+          updateCoins();
+          resultText = `👤 Du besitzt jetzt: ${item} für ${price} Coins.`;
+        }
+      }
+
+      calculatePrivateTotal();
+      document.getElementById("investmentResult").innerText = resultText;
+    }
+
+    function calculatePrivateTotal() {
+      let total = 0;
+      inventory.forEach(item => {
+        if (item.type === "privat") {
+          total += item.value;
+        }
+      });
+      document.getElementById("playerPrivateTotal").innerText = total;
+      localStorage.setItem("privateTotal", total);
+    }
+
+    calculatePrivateTotal();
+  </script>
+</body>
+</html>

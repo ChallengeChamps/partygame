@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finde den Imposter</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('imposter.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      margin-top: 40px;
+      animation: fadeIn 1s ease;
+    }
+
+    h1, h2 {
+      text-align: center;
+      text-shadow: 2px 2px 6px #000;
+    }
+
+    select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .card {
+      background: #fff;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: slideUp 0.8s ease;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .menu-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .menu-button:hover {
+      background-color: #45a049;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="setup">
+    <h1>🎭 Finde den Imposter</h1>
+    <h2>Spiel-Einstellungen</h2>
+
+    <select id="playerCount">
+      <option value="">Spieleranzahl wählen</option>
+      <option value="3">3 Spieler</option>
+      <option value="4">4 Spieler</option>
+      <option value="5">5 Spieler</option>
+      <option value="6">6 Spieler</option>
+      <option value="7">7 Spieler</option>
+      <option value="8">8 Spieler</option>
+      <option value="9">9 Spieler</option>
+      <option value="10">10 Spieler</option>
+    </select>
+
+    <select id="imposterCount">
+      <option value="">Imposteranzahl wählen</option>
+    </select>
+
+
+    <button onclick="startGame()">Spiel starten</button>
+<button onclick="window.location.href='startseite.html'" class="menu-button">
+  Zurück zum Hauptmenü
+  </div>
+
+  <div class="container hidden" id="game">
+    <div id="playerCard">
+      <div class="card">
+        <h2>Spieler <span id="playerNumber"></span></h2>
+        <button onclick="revealCard()" id="revealBtn">Karte aufdecken</button>
+        <h3 id="cardContent" class="hidden"></h3>
+      </div>
+    </div>
+    <button onclick="nextPlayer()" id="nextBtn">Nächster Spieler</button>
+  </div>
+
+  <div class="container hidden" id="reveal">
+    <h2>Alle Rollen wurden gezeigt!</h2>
+    <p id="starterInfo"></p>
+    <button onclick="showImposters()">Imposter aufdecken</button>
+  </div>
+
+  <div class="container hidden" id="result">
+    <h2>🕵️‍♂️ Die Imposter sind:</h2>
+    <ul id="imposterList"></ul>
+    <button onclick="location.reload()">🔄 Neues Spiel</button>
+  </div>
+
+  <script>
+    const wordPool = [
+  // 🍎 Essen & Trinken
+  { word: "Banane", hint: "krumm" },
+  { word: "Pizza", hint: "Italien" },
+  { word: "Sushi", hint: "Essen" },
+  { word: "Käse", hint: "Löcher" },
+  { word: "Cola", hint: "Zucker" },
+  { word: "Mango", hint: "Frucht" },
+  { word: "Spaghetti", hint: "Nudelgericht" },
+
+  // Tiere
+  { word: "Känguru", hint: "springt" },
+  { word: "Tiger", hint: "Raubkatze" },
+  { word: "Pinguin", hint: "Südpol" },
+  { word: "Gepard", hint: "schnell" },
+  { word: "Koala", hint: "Australien" },
+  { word: "Zebra", hint: "Streifen" },
+  { word: "Löwe", hint: "König" },
+
+  // 🏛️ Orte & Bauwerke
+  { word: "Pyramide", hint: "Ägypten" },
+  { word: "Eiffelturm", hint: "Eisen" },
+  { word: "Colosseum", hint: "Römer" },
+  { word: "Schule", hint: "Kinder" },
+  { word: "Krankenhaus", hint: "Hilfe" },
+  { word: "Flughafen", hint: "Urlaub" },
+  { word: "Bibliothek", hint: "Universität" },
+
+  // 🎮 Spiele & Freizeit
+    { word: "Schach", hint: "Brettspiel" },
+    { word: "Monopoly", hint: "zeitintensiv" },
+    { word: "Skat", hint: "Kartenspiel" },
+    { word: "Fußball", hint: "Sport" },
+    { word: "Tennis", hint: "Ball" },
+    { word: "Klettern", hint: "Höhe" },
+    { word: "Yoga", hint: "Entspannung" },
+
+  // 🎶 Musik & Kunst
+  { word: "Gitarre", hint: "Saiten" },
+  { word: "Klavier", hint: "Flügel" },
+  { word: "Trommel", hint: "Schlag" },
+  { word: "Flöte", hint: "Luft" },
+  { word: "Maler", hint: "Farbe" },
+  { word: "Skulptur", hint: "Kunst" },
+  { word: "Tanz", hint: "Bewegung" },
+
+  // 🌦️ Wetter & Natur
+  { word: "Schnee", hint: "kalt" },
+  { word: "Regen", hint: "nass" },
+  { word: "Sturm", hint: "Wind" },
+  { word: "Wind", hint: "Luft" },
+  { word: "Sonne", hint: "Strahlen" },
+  { word: "Blume", hint: "Blatt" },
+  { word: "Baum", hint: "Holz" },
+
+  // 🚗 Technik & Objekte
+  { word: "Laptop", hint: "Tastatur" },
+  { word: "Handy", hint: "Apple" },
+  { word: "Fernseher", hint: "Sender" },
+  { word: "Tablet", hint: "Technik" },
+  { word: "Auto", hint: "Treibstoff" },
+  { word: "Bus", hint: "Transport" },
+  { word: "Motorrad", hint: "schnell" },
+  { word: "Taschenlampe", hint: "Licht" },
+  { word: "Brille", hint: "Hilfe" },
+  { word: "Uhr", hint: "Zahlen" },
+  { word: "Schlüssel", hint: "Tür" },
+
+  // 🧠 Berufe & Rollen
+  { word: "Arzt", hint: "krank" },
+  { word: "Lehrer", hint: "Schule" },
+  { word: "Polizist", hint: "waffe" },
+  { word: "Feuerwehrmann", hint: "Flamme" },
+  { word: "Pilot", hint: "Flugzeug" },
+  { word: "Koch", hint: "Essen" },
+  { word: "Ingenieur", hint: "kreativ" },
+
+  // 🌌 Weltall & Fantasie
+  { word: "Saturn", hint: "Ringe" },
+  { word: "Mars", hint: "Schokolade" },
+  { word: "Neptun", hint: "Meer" },
+  { word: "Alien", hint: "Weltall" },
+  { word: "Zauberer", hint: "Hut" },
+  { word: "Drache", hint: "Fantasie" },
+  { word: "Geist", hint: "Psyche" },
+
+  // ❤️ Gefühle & Abstraktes
+  { word: "Liebe", hint: "Herz" },
+  { word: "Angst", hint: "Horrorfilm" },
+  { word: "Freude", hint: "Spaß" },
+  { word: "Trauer", hint: "Schmerz" },
+  { word: "Mut", hint: "Tapferkeit" },
+  { word: "Geduld", hint: "Zeit" },
+  { word: "Stärke", hint: "Muskeln" },
+
+  // 🧳 Alltag & Haushalt
+  { word: "Kühlschrank", hint: "Lebensmittel" },
+  { word: "Besen", hint: "sauber" },
+  { word: "Teller", hint: "Essen" },
+  { word: "Bett", hint: "weich" },
+  { word: "Stuhl", hint: "Beine" },
+  { word: "Lampe", hint: "Nachttisch" },
+  { word: "Spiegel", hint: "Glas" }
+];
+
+
+    let players = [];
+    let currentPlayer = 0;
+    let imposters = [];
+    let selectedWord = "";
+    let selectedHint = "";
+
+    document.getElementById('playerCount').addEventListener('change', function () {
+      const count = parseInt(this.value);
+      const imposterSelect = document.getElementById('imposterCount');
+      imposterSelect.innerHTML = '<option value="">Imposteranzahl wählen</option>';
+      for (let i = 1; i <= count - 2; i++) {
+        imposterSelect.innerHTML += `<option value="${i}">${i} Imposter</option>`;
+      }
+    });
+
+    function startGame() {
+      const playerCount = parseInt(document.getElementById('playerCount').value);
+      const imposterCount = parseInt(document.getElementById('imposterCount').value);
+
+      if (!playerCount || !imposterCount) {
+        alert("Bitte Spieleranzahl und Imposteranzahl wählen.");
+        return;
+      }
+
+      const random = wordPool[Math.floor(Math.random() * wordPool.length)];
+      selectedWord = random.word;
+      selectedHint = random.hint;
+
+      players = Array(playerCount).fill(selectedWord);
+      imposters = [];
+
+      while (imposters.length < imposterCount) {
+        const index = Math.floor(Math.random() * playerCount);
+        if (!imposters.includes(index)) {
+          imposters.push(index);
+          players[index] = selectedHint;
+        }
+      }
+
+      document.getElementById('setup').classList.add('hidden');
+      document.getElementById('game').classList.remove('hidden');
+      showPlayer();
+    }
+
+    function showPlayer() {
+      document.getElementById('playerNumber').innerText = currentPlayer + 1;
+      document.getElementById('cardContent').classList.add('hidden');
+      document.getElementById('revealBtn').disabled = false;
+      document.getElementById('revealBtn').style.opacity = 1;
+    }
+
+function revealCard() {
+  const isImposter = players[currentPlayer] === selectedHint;
+  const cardContent = document.getElementById('cardContent');
+
+  if (isImposter) {
+    cardContent.innerHTML = `<strong>Du bist der Imposter! 🤫</strong><br>Tipp: ${selectedHint}`;
+  } else {
+    cardContent.innerHTML = `Geheimes Wort: ${selectedWord}`;
+  }
+
+  cardContent.classList.remove('hidden');
+  document.getElementById('revealBtn').disabled = true;
+  document.getElementById('revealBtn').style.opacity = 0.6;
+}
+
+
+    function nextPlayer() {
+      currentPlayer++;
+      if (currentPlayer < players.length) {
+        showPlayer();
+      } else {
+        document.getElementById('game').classList.add('hidden');
+        document.getElementById('reveal').classList.remove('hidden');
+
+        const starter = Math.floor(Math.random() * players.length) + 1;
+        document.getElementById('starterInfo').innerText = `Spieler ${starter} beginnt mit dem ersten Hinweis.`;
+      }
+    }
+
+    function showImposters() {
+      document.getElementById('reveal').classList.add('hidden');
+      document.getElementById('result').classList.remove('hidden');
+
+      const list = document.getElementById('imposterList');
+      list.innerHTML = '';
+      imposters.forEach(i => {
+        const li = document.createElement('li');
+        li.textContent = `Spieler ${i + 1}`;
+        list.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>

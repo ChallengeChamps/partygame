@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake or Fakt 🎭</title>
+  <meta http-equiv="refresh" content="0; URL='spiel.html'" />
+  <style>>
+  /* Grundlayout */
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-image: url('index1.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    color: #fff;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    margin-top: 40px;
+    animation: fadeIn 1s ease;
+  }
+
+  h1, h2 {
+    text-align: center;
+    text-shadow: 2px 2px 6px #000;
+  }
+
+  select, input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+  }
+
+  button {
+    background-color: #ff4081;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #e91e63;
+  }
+
+  .card {
+    background: #fff;
+    color: #000;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    animation: slideUp 0.8s ease;
+  }
+
+  .options button {
+    margin: 10px 5px;
+    background-color: #673ab7;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .menu-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+
+  .menu-button:hover {
+    background-color: #45a049;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 600px) {
+  body {
+    font-size: 0.6rem;
+  }
+
+  .container {
+    margin: 10px;
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  h1, h2 {
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    text-align: center;
+    text-shadow: 1px 1px 3px #000;
+  }
+
+  select, input, button {
+    width: 100%;
+    font-size: 0.6rem;
+    padding: 8px;
+    margin: 6px 0;
+    border-radius: 6px;
+    border: none;
+  }
+
+  button {
+    background-color: #ff4081;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #e91e63;
+  }
+
+  .card {
+    background: #fff;
+    color: #000;
+    border-radius: 10px;
+    padding: 12px;
+    margin: 12px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    font-size: 0.6rem;
+    animation: slideUp 0.8s ease;
+  }
+
+  .options button {
+    margin: 6px 3px;
+    background-color: #673ab7;
+    font-size: 0.6rem;
+    padding: 8px 10px;
+    border-radius: 6px;
+  }
+
+  .menu-button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    font-size: 0.7rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+
+  .menu-button:hover {
+    background-color: #45a049;
+  }
+}
+
+</style>
+
+</head>
+<body>
+<div class="background"></div>
+
+  <div id="setup" class="container">
+    <h1>🎭 Fake or Fakt</h1>
+    <p>Wähle die Anzahl der Spieler 👥</p>
+
+    <label>Spieleranzahl:
+      <select id="playerCount">
+        <option value="3" selected>3 Spieler</option>
+        <option value="4">4 Spieler</option>
+        <option value="5">5 Spieler</option>
+        <option value="6">6 Spieler</option>
+      </select>
+    </label><br>
+
+    <button onclick="generatePlayerInputs()">📝 Namen eingeben</button>
+    <div id="playerInputs" class="hidden"></div>
+<button onclick="window.location.href='startseite.html'" class="menu-button">
+  Zurück zum Hauptmenü
+</button>
+
+
+
+    <div id="liarSelection" class="hidden">
+      <label>Lügneranzahl:
+        <select id="liarCount">
+          <!-- Optionen werden dynamisch eingefügt -->
+        </select>
+      </label><br>
+    </div>
+
+    <button onclick="startGame()" class="hidden" id="startBtn">▶️ Spiel starten</button>
+  </div>
+
+  <div id="game" class="container hidden">
+    <h2 id="currentPlayer"></h2>
+    <div class="card" id="card" onclick="revealCard()">📄 Karte ziehen</div>
+    <p id="cardText"></p>
+    <button onclick="nextCard()">➡️ Nächste Karte</button>
+  </div>
+
+  <div id="end" class="container hidden">
+    <h2>🎉 Alle Karten wurden gespielt!</h2>
+    <button onclick="revealLiars()">🔍 Lügner aufdecken</button>
+    <div id="liarList"></div>
+    <button onclick="restartGame()">🔁 Erneut spielen</button>
+  </div>
+
+  <script>
+    let players = [];
+    let liars = [];
+    let currentIndex = 0;
+
+    let factsPool = [
+  "🌕 Auf der Venus ist ein Tag länger als ein Jahr. ",
+  "🌍 Die Erde ist nicht perfekt rund.",
+  "💧 Wasser kann unter bestimmten Bedingungen bei über 100°C flüssig bleiben.",
+  "🗼 Der Eiffelturm wird im Sommer bis zu 15 cm höher.",
+  "🐘 Elefanten können Infraschall nutzen, um über Kilometer zu kommunizieren.",
+  "🧠 Das menschliche Gehirn verbraucht etwa 20 % der gesamten Energie des Körpers.",
+  "🐬 Delfine schlafen mit nur einer Gehirnhälfte gleichzeitig.",
+  "🐦 Tauben können sich selbst im Spiegel erkennen.",
+  "🐢 Schildkröten können durch ihre Kloake Sauerstoff aufnehmen.",
+  "🐝 Bienen erkennen menschliche Gesichter und erinnern sich daran.",
+  "🐍 Einige Schlangenarten können mehrere Monate ohne Nahrung überleben.",
+  "🐳 Wale singen in Dialekten, die sich regional unterscheiden.",
+  "🐜 Ameisen können komplexe Entscheidungen kollektiv treffen – ähnlich wie ein Gehirn.",
+  "🐠 Manche Fische können ihr Geschlecht im Laufe ihres Lebens ändern.",
+  "🐧 Pinguine haben eine Drüse, mit der sie Salzwasser in Trinkwasser umwandeln.",
+  "🐌 Schnecken haben über 14.000 Zähne.",
+  "🐕 Hunde können bestimmte Krankheiten wie Krebs durch Geruch erkennen.",
+  "🦑 Tintenfische haben drei Herzen und blaues Blut.",
+  "🐛 Raupen lösen sich beim Verpuppen fast vollständig auf und bauen sich neu.",
+  "🐦 Kolibris schlagen ihre Flügel bis zu 80-mal pro Sekunde.",
+  "🐕‍🦺 Hunde können den emotionalen Zustand eines Menschen am Geruch erkennen.",
+  "🐓 Hühner träumen im REM-Schlaf – genau wie Menschen.",
+  "🐈 Katzen können Vibrationen im Boden spüren, bevor Erdbeben eintreten.",
+  "🐀 Ratten können sich an komplexe Labyrinthe erinnern – auch nach Wochen.",
+  "🐬 Delfine helfen verletzten Artgenossen und zeigen Mitgefühl.",
+  "🐘 Elefanten beerdigen ihre Toten und zeigen Trauerverhalten.",
+  "🐝 Bienen kommunizieren durch Tanzrichtungen und -winkel, um Futterquellen zu zeigen.",
+  "🐠 Goldfische können Farben unterscheiden und einfache Tricks lernen.",
+  "🐦 Vögel nutzen das Magnetfeld der Erde zur Navigation – manche mit dem Schnabel.",
+  "🐢 Manche Schildkrötenarten überleben monatelang ohne Nahrung oder Wasser.",
+  "🐎 Pferde können Gesichtsausdrücke von Menschen lesen.",
+  "🐬 Delfine erkennen sich selbst im Spiegel.",
+  "🐜 Ameisen können sich gegenseitig als Individuen erkennen.",
+  "🐍 Schlangen hören mit dem Kieferknochen – nicht mit Ohren.",
+  "🐘 Elefanten können Wasserquellen unter der Erde erschnüffeln.",
+  "🐦 Einige Vögel können über 200 verschiedene Lieder imitieren.",
+  "🐕 Hunde können den Herzschlag eines Menschen hören.",
+  "🐛 Manche Insektenarten können sich selbst klonen.",
+  "🐙 Oktopusse haben neuronale Steuerung in ihren Armen – sie denken teilweise lokal.",
+  "🐝 Bienen können zählen."
+    ];
+
+    let fakesPool = [
+  "🐙 Oktopusse haben drei Herzen, aber nur zwei schlagen gleichzeitig.",
+  "🧊 In Island gibt es mehr Schafe als Menschen.",
+  "🐘 Elefanten können Farben erkennen, aber sind farbenblind bei Rot.",
+  "🕷️ Spinnen können ihre Beine bewusst abwerfen wie Eidechsen ihren Schwanz.",
+  "🐦 Tauben erkennen sich selbst im Spiegel – aber nur in Japan.",
+  "🧠 Das menschliche Gehirn ist aktiver im Schlaf als im Wachzustand.",
+  "🐬 Delfine geben sich gegenseitig Namen durch Pfeiflaute.",
+  "🌋 Der Vesuv ist der einzige Vulkan, der regelmäßig Schnee produziert.",
+  "🐍 Schlangen können träumen.",
+  "🦜 Papageien können Dialekte lernen, je nachdem wo sie leben.",
+  "🐢 Schildkröten können durch ihren Hintern atmen.",
+  "🐼 Pandas sind biologisch Fleischfresser, essen aber fast nur Pflanzen.",
+  "🐎 Pferde können nicht kotzen.",
+  "🦘 Kängurus können rückwärts springen – aber nur auf Sand.",
+  "🐜 Ameisen schlafen nie, sondern machen Mikro-Pausen.",
+  "🐳 Wale können Sonnenbrand bekommen.",
+  "🐓 Hühner erkennen über 100 Gesichter anderer Hühner.",
+  "🐕 Hunde träumen von ihren Besitzern.",
+  "🐈 Katzen können über 100 verschiedene Laute erzeugen.",
+  "🐀 Ratten lachen, wenn man sie kitzelt.",
+  "🐝 Bienen können Fußball spielen in Laborexperimenten.",
+  "🐸 Frösche können durch ihre Haut trinken.",
+  "🐠 Goldfische haben ein Gedächtnis von mehreren Monaten.",
+  "🐧 Pinguine schenken sich Kieselsteine als Liebesbeweis.",
+  "🐌 Schnecken können bis zu drei Jahre schlafen.",
+  "🐦 Kolibris wiegen weniger als eine 1-Euro-Münze.",
+  "🐕‍🦺 Hunde können Krankheiten wie Krebs erschnüffeln.",
+  "🐍 Einige Schlangenarten können fliegen – zumindest gleiten.",
+  "🐘 Elefanten können mit Infraschall über Kilometer kommunizieren.",
+  "🦑 Tintenfische können ihre DNA verändern, um sich anzupassen.",
+  "🐬 Delfine schlafen mit nur einer Gehirnhälfte gleichzeitig.",
+  "🐜 Ameisen können sich gegenseitig als „Freunde“ markieren.",
+  "🐢 Manche Schildkrötenarten können 150 Jahre alt werden.",
+  "🐦 Vögel orientieren sich am Magnetfeld der Erde – manche sogar mit dem Schnabel.",
+  "🐠 Manche Fische können ihr Geschlecht wechseln.",
+  "🐕 Hunde können Zeit riechen – z. B. ob jemand vor Stunden da war.",
+  "🐛 Raupen haben mehr Muskeln als Menschen.",
+  "🐙 Oktopusse können Werkzeuge benutzen.",
+  "🐝 Bienen erkennen menschliche Gesichter.",
+  "🐸 Manche Frösche frieren im Winter komplett ein und tauen im Frühling wieder auf."
+    ];
+
+    let usedFacts = [...factsPool];
+    let usedFakes = [...fakesPool];
+
+    function generatePlayerInputs() {
+      const count = parseInt(document.getElementById("playerCount").value);
+      const container = document.getElementById("playerInputs");
+      container.innerHTML = "";
+      container.classList.remove("hidden");
+
+      for (let i = 0; i < count; i++) {
+        container.innerHTML += `<input type="text" placeholder="Spieler ${i + 1}" id="player${i}"><br>`;
+      }
+
+      updateLiarOptions();
+      document.getElementById("liarSelection").classList.remove("hidden");
+      document.getElementById("startBtn").classList.remove("hidden");
+    }
+
+    function updateLiarOptions() {
+      const playerCount = parseInt(document.getElementById("playerCount").value);
+      const liarSelect = document.getElementById("liarCount");
+      liarSelect.innerHTML = "";
+
+      const maxLiars = Math.min(3, playerCount - 2);
+      for (let i = 1; i <= maxLiars; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = `${i} Lügner`;
+        liarSelect.appendChild(option);
+      }
+    }
+
+    function startGame() {
+      const count = parseInt(document.getElementById("playerCount").value);
+      const liarCount = parseInt(document.getElementById("liarCount").value);
+      players = [];
+      liars = [];
+      currentIndex = 0;
+      usedFacts = [...factsPool];
+      usedFakes = [...fakesPool];
+
+      for (let i = 0; i < count; i++) {
+        const name = document.getElementById(`player${i}`).value || `Spieler ${i + 1}`;
+        players.push(name);
+      }
+
+      while (liars.length < liarCount) {
+        const liar = players[Math.floor(Math.random() * players.length)];
+        if (!liars.includes(liar)) liars.push(liar);
+      }
+
+      document.getElementById("setup").classList.add("hidden");
+      document.getElementById("game").classList.remove("hidden");
+      showCard();
+    }
+
+    function showCard() {
+      document.getElementById("cardText").innerText = "";
+      document.getElementById("card").classList.remove("dragging");
+      document.getElementById("currentPlayer").innerText = `🎯 Karte für: ${players[currentIndex]}`;
+    }
+
+    function revealCard() {
+      document.getElementById("card").classList.add("dragging");
+      const isLiar = liars.includes(players[currentIndex]);
+
+      if (isLiar) {
+        if (usedFakes.length < 2) usedFakes = [...fakesPool];
+        const index1 = Math.floor(Math.random() * usedFakes.length);
+        const fake1 = usedFakes.splice(index1, 1)[0];
+        const index2 = Math.floor(Math.random() * usedFakes.length);
+        const fake2 = usedFakes.splice(index2, 1)[0];
+        document.getElementById("cardText").innerHTML = `
+          ❌ Fake: Wähle eine Aussage<br><br>
+          <button onclick="selectFake('${fake1.replace(/'/g, "\\'")}')">${fake1}</button><br><br>
+          <button onclick="selectFake('${fake2.replace(/'/g, "\\'")}')">${fake2}</button>
+        `;
+      } else {
+        if (usedFacts.length === 0) usedFacts = [...factsPool];
+        const index = Math.floor(Math.random() * usedFacts.length);
+        const text = usedFacts.splice(index, 1)[0];
+        document.getElementById("cardText").innerText = `✅ Fakt: ${text}`;
+      }
+    }
+
+    function selectFake(text) {
+      document.getElementById("cardText").innerText = `❌ Fake: ${text}`;
+    }
+
+    function nextCard() {
+      currentIndex++;
+      if (currentIndex >= players.length) {
+        document.getElementById("game").classList.add("hidden");
+        document.getElementById("end").classList.remove("hidden");
+      } else {
+        showCard();
+      }
+    }
+
+    function revealLiars() {
+      const list = document.getElementById("liarList");
+      list.innerHTML = "<h3>🤥 Die Lügner sind:</h3><ul>" + liars.map(name => `<li>${name}</li>`).join("") + "</ul>";
+    }
+
+    function restartGame() {
+      document.getElementById("setup").classList.remove("hidden");
+      document.getElementById("end").classList.add("hidden");
+      document.getElementById("playerInputs").innerHTML = "";
+      document.getElementById("liarSelection").classList.add("hidden");
+      document.getElementById("startBtn").classList.add("hidden");
+
+      players = [];
+      liars = [];
+      currentIndex = 0;
+      usedFacts = [...factsPool];
+      usedFakes = [...fakesPool];
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      updateLiarOptions();
+    });
+  </script>
+</body>
+</html>

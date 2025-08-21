@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Ich hab noch nie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('habnochnie.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      margin-top: 40px;
+      animation: fadeIn 1s ease;
+    }
+
+    h1, h2 {
+      text-align: center;
+      text-shadow: 2px 2px 6px #000;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .card {
+      background: #fff;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: slideUp 0.8s ease;
+    }
+
+    .menu-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .menu-button:hover {
+      background-color: #45a049;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="app"></div>
+
+  <script>
+    const app = document.getElementById('app');
+    const state = {
+      page: 'start',
+      players: [],
+      spicy: false,
+      usedQuestions: []
+    };
+
+    const normalQuestions = [
+      "Ich hab noch nie im Kino geweint.",
+      "Ich hab noch nie einen ganzen Tag im Pyjama verbracht.",
+      "Ich hab noch nie aus Versehen jemanden beleidigt.",
+      "Ich hab noch nie einen Promi getroffen.",
+      "Ich hab noch nie etwas Wichtiges vergessen.",
+      "Ich hab noch nie Karaoke gesungen.",
+      "Ich hab noch nie einen Horrorfilm alleine geschaut.",
+      "Ich hab noch nie einen peinlichen Social-Media-Post gemacht.",
+"Ich hab noch nie mein Handy verloren.",
+"Ich hab noch nie einen ganzen Kuchen alleine gegessen.",
+"Ich hab noch nie vergessen, wo ich geparkt habe.",
+"Ich hab noch nie einen Tag komplett verschlafen.",
+"Ich hab noch nie aus Versehen jemanden angerufen.",
+"Ich hab noch nie eine Nachricht im falschen Chat geschickt.",
+"Ich hab noch nie einen Lachanfall in der Öffentlichkeit bekommen.",
+"Ich hab noch nie beim Sport aufgegeben, bevor ich angefangen habe.",
+"Ich hab noch nie ein peinliches Foto von mir entdeckt.",
+"Ich hab noch nie einen Ohrwurm den ganzen Tag gehabt.",
+"Ich hab noch nie beim Online-Shopping etwas bereut.",
+"Ich hab noch nie ein Geheimnis aus Versehen verraten.",
+"Ich hab noch nie einen Traum gehabt, der sich echt angefühlt hat.",
+"Ich hab noch nie einen Film zweimal hintereinander geschaut.",
+"Ich hab noch nie mich für etwas entschuldigt, das ich nicht getan habe.",
+"Ich hab noch nie einen Witz erzählt, den niemand verstanden hat.",
+"Ich hab noch nie ein Lied falsch mitgesungen.",
+"Ich hab noch nie einen peinlichen Moment verdrängt.",
+"Ich hab noch nie beim Kochen etwas komplett vergessen.",
+"Ich hab noch nie einen Screenshot aus Versehen verschickt.",
+"Ich hab noch nie jemanden aus Versehen ignoriert.",
+"Ich hab noch nie einen falschen Namen genannt.",
+"Ich hab noch nie ein Geschenk vergessen.",
+"Ich hab noch nie laut mit mir selbst gesprochen.",
+"Ich hab noch nie einen Social-Media-Post sofort wieder gelöscht.",
+"Ich hab noch nie ein Outfit bereut, sobald ich das Haus verlassen habe.",
+"Ich hab noch nie beim Videocall vergessen, dass die Kamera an ist.",
+"Ich hab noch nie einen peinlichen Spitznamen bekommen.",
+"Ich hab noch nie ein Lied gehört und geweint.",
+"Ich hab noch nie jemanden gegoogelt, den ich gerade erst kennengelernt habe.",
+"Ich hab noch nie vergessen, auf 'Senden' zu klicken.",
+"Ich hab noch nie beim Tanzen jemanden aus Versehen getroffen.",
+"Ich hab noch nie ein peinliches Video von mir gesehen.",
+"Ich hab noch nie einen falschen Geburtstag angegeben.",
+"Ich hab noch nie aus Versehen etwas kaputt gemacht und so getan, als wär’s nicht passiert.",
+"Ich hab noch nie einen Tag ohne Internet verbracht.",
+"Ich hab noch nie ein Gespräch belauscht und dann aus Versehen mitgeredet.",
+"Ich hab noch nie ein Lied gehört und sofort in Dauerschleife gespielt.",
+"Ich hab noch nie beim Friseur etwas bereut.",
+"Ich hab noch nie einen peinlichen Moment auf Video gehabt.",
+"Ich hab noch nie jemanden aus Versehen geduzt, obwohl ich sollte siezen.",
+"Ich hab noch nie ein Geschenk weitergeschenkt.",
+"Ich hab noch nie einen Film geschaut und erst am Ende verstanden, worum es ging.",
+"Ich hab noch nie beim Essen gekleckert und so getan, als wär’s Absicht.",
+"Ich hab noch nie einen Screenshot gemacht und vergessen, ihn zu löschen.",
+"Ich hab noch nie mein Passwort vergessen und panisch versucht, es zu erraten.",
+"Ich hab noch nie ein Outfit nur für ein Foto angezogen.",
+"Ich hab noch nie einen peinlichen Kommentar unter einem Post gelassen.",
+"Ich hab noch nie beim Singen im Auto erwischt worden.",
+"Ich hab noch nie jemanden aus Versehen angelächelt, der gar nicht gemeint war.",
+"Ich hab noch nie ein Gespräch begonnen und dann vergessen, worum es ging.",
+"Ich hab noch nie ein Meme gesehen und laut gelacht – alleine.",
+"Ich hab noch nie einen peinlichen Moment in Zeitlupe erlebt.",
+"Ich hab noch nie beim Videocall vergessen, dass ich stummgeschaltet bin.",
+"Ich hab noch nie einen Witz gemacht, den nur ich lustig fand.",
+"Ich hab noch nie aus Versehen jemanden blockiert.",
+"Ich hab noch nie einen peinlichen Spitznamen erfunden – und behalten.",
+"Ich hab noch nie beim Scrollen aus Versehen geliked.",
+"Ich hab noch nie ein Emoji falsch verwendet.",
+"Ich hab noch nie beim Online-Meeting so getan, als wär die Verbindung schlecht."
+
+
+    ];
+
+    const spicyQuestions = [
+"Ich hab noch nie jemanden nackt gesehen, den ich nicht sehen wollte.",
+"Ich hab noch nie beim Küssen gelacht.",
+"Ich hab noch nie etwas Verbotenes im Schlafzimmer ausprobiert.",
+"Ich hab noch nie einen Crush auf jemanden in diesem Raum gehabt.",
+"Ich hab noch nie nackt getanzt.",
+"Ich hab noch nie ein Sexting geschickt.",
+"Ich hab noch nie beim Flirten versagt.",
+"Ich hab noch nie etwas Intimes bereut.",
+"Ich hab noch nie beim ersten Date geküsst.",
+"Ich hab noch nie jemanden nur wegen seines Aussehens gedatet.",
+"Ich hab noch nie ein Nacktbild bekommen.",
+"Ich hab noch nie ein Nacktbild verschickt.",
+"Ich hab noch nie jemanden beim Duschen überrascht.",
+"Ich hab noch nie beim Flirten etwas komplett Falsches gesagt.",
+"Ich hab noch nie jemanden beim Schlafen beobachtet.",
+"Ich hab noch nie ein romantisches Date geplant.",
+"Ich hab noch nie jemanden verführt.",
+"Ich hab noch nie beim Küssen an jemand anderen gedacht.",
+"Ich hab noch nie ein Geheimnis über meine Gefühle behalten.",
+"Ich hab noch nie jemanden aus Eifersucht ignoriert.",
+"Ich hab noch nie mit jemandem geflirtet, obwohl ich wusste, dass ich es nicht sollte.",
+"Ich hab noch nie ein Liebesgeständnis bereut.",
+"Ich hab noch nie jemanden nur aus Langeweile angeschrieben.",
+"Ich hab noch nie beim Flirten rot geworden.",
+"Ich hab noch nie jemanden aus Versehen angemacht.",
+"Ich hab noch nie ein Date abgesagt, weil ich nervös war.",
+"Ich hab noch nie jemanden geküsst, den ich kaum kannte.",
+"Ich hab noch nie beim Flirten gestottert.",
+"Ich hab noch nie jemanden beim Umziehen beobachtet.",
+"Ich hab noch nie ein romantisches Geheimnis gehabt.",
+"Ich hab noch nie beim Küssen die Orientierung verloren.",
+"Ich hab noch nie jemanden beim Schlafen geküsst.",
+"Ich hab noch nie beim Flirten absichtlich übertrieben.",
+"Ich hab noch nie jemanden nur wegen seiner Stimme attraktiv gefunden.",
+"Ich hab noch nie ein Date gehabt, das im Schlafzimmer geendet ist.",
+"Ich hab noch nie jemanden beim Umziehen geholfen – und mehr gesehen als geplant.",
+"Ich hab noch nie beim Sexting etwas falsch geschrieben.",
+"Ich hab noch nie jemanden beim Feiern geküsst.",
+"Ich hab noch nie ein Spiel gespielt, das mit Ausziehen endete.",
+"Ich hab noch nie jemanden beim Tanzen verführt.",
+"Ich hab noch nie ein erotisches Buch gelesen.",
+"Ich hab noch nie jemanden beim Flirten angelogen.",
+"Ich hab noch nie beim Küssen gedacht: 'Was mach ich hier eigentlich?'",
+"Ich hab noch nie jemanden beim Flirten aus Versehen beleidigt.",
+"Ich hab noch nie ein Date gehabt, das komplett eskaliert ist.",
+"Ich hab noch nie jemanden beim Flirten ignoriert – und dann bereut.",
+"Ich hab noch nie ein romantisches Abenteuer im Urlaub erlebt.",
+"Ich hab noch nie jemanden beim Flirten eifersüchtig gemacht.",
+"Ich hab noch nie jemanden beim Küssen unterbrochen, um zu lachen.",
+"Ich hab noch nie ein Geheimnis über meine Fantasien geteilt.",
+"Ich hab noch nie jemanden beim Flirten absichtlich berührt.",
+"Ich hab noch nie ein Date gehabt, das länger als geplant ging – sehr viel länger.",
+"Ich hab noch nie jemanden beim Flirten mit Blicken ausgezogen.",
+"Ich hab noch nie ein Spiel gespielt, das mit Küssen endete.",
+"Ich hab noch nie jemanden beim Flirten komplett aus dem Konzept gebracht.",
+"Ich hab noch nie jemanden beim Küssen überrascht.",
+"Ich hab noch nie ein Date gehabt, das im Chaos endete – aber trotzdem schön war.",
+"Ich hab noch nie jemanden beim Flirten so angeschaut, dass es eindeutig war.",
+"Ich hab noch nie jemanden beim Küssen mit einem Kompliment überrumpelt.",
+"Ich hab noch nie ein Date gehabt, das ich nie vergessen werde – aus gutem Grund.",
+"Ich hab noch nie jemanden beim Flirten absichtlich eifersüchtig gemacht.",
+"Ich hab noch nie beim Küssen gedacht, ich bin verliebt.",
+"Ich hab noch nie jemanden beim Tanzen verführt – oder es versucht.",
+"Ich hab noch nie ein Date gehabt, das mit einem Kuss begonnen hat.",
+"Ich hab noch nie jemanden beim Flirten aus dem Konzept gebracht.",
+"Ich hab noch nie ein Nacktbild bekommen und nicht gewusst, wie reagieren.",
+"Ich hab noch nie jemanden beim Flirten absichtlich berührt.",
+"Ich hab noch nie beim Küssen die Zeit vergessen.",
+"Ich hab noch nie jemanden beim Flirten mit Blicken ausgezogen.",
+"Ich hab noch nie ein Date gehabt, das im Bett endete.",
+"Ich hab noch nie jemanden beim Flirten so angeschaut, dass es eindeutig war.",
+"Ich hab noch nie ein Spiel gespielt, das mit Ausziehen endete.",
+"Ich hab noch nie jemanden beim Küssen überrascht.",
+"Ich hab noch nie ein Sexting bereut.",
+"Ich hab noch nie jemanden beim Flirten angelogen – und es hat funktioniert.",
+"Ich hab noch nie ein Date gehabt, das ich nie vergessen werde.",
+"Ich hab noch nie jemanden beim Flirten mit einem Kompliment überrumpelt.",
+"Ich hab noch nie beim Küssen gelacht – und es war trotzdem schön.",
+"Ich hab noch nie jemanden beim Flirten ignoriert, obwohl ich interessiert war.",
+"Ich hab noch nie ein romantisches Abenteuer erlebt, das geheim bleiben musste.",
+"Ich hab noch nie jemanden beim Flirten so nervös gemacht, dass er rot wurde.",
+"Ich hab noch nie ein Date gehabt, das ganz anders lief als geplant.",
+"Ich hab noch nie jemanden beim Flirten absichtlich provoziert.",
+"Ich hab noch nie beim Küssen gedacht: 'Das ist besser als erwartet.'",
+"Ich hab noch nie jemanden beim Flirten so angeschaut, dass es knisterte.",
+"Ich hab noch nie ein Date gehabt, das mit einem Geständnis endete.",
+"Ich hab noch nie jemanden beim Flirten so verwirrt, dass er nichts mehr sagen konnte.",
+"Ich hab noch nie beim Küssen gedacht: 'Das darf niemand wissen.'",
+"Ich hab noch nie jemanden beim Flirten so berührt, dass es Gänsehaut gab.",
+"Ich hab noch nie ein Date gehabt, das heimlich war."
+
+    ];
+
+    function renderStartPage() {
+      app.innerHTML = `
+        <h1>🎉 Ich hab noch nie</h1>
+        <label for="playerCount">Anzahl der Spieler:</label>
+        <select id="playerCount">
+          ${Array.from({length: 12}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join('')}
+        </select>
+        <div id="nameInputs"></div>
+        <button onclick="generateNameFields()">Namen eingeben</button>
+        <button onclick="toggleSpicy()" id="spicyBtn">Spicy-Modus: AUS</button>
+        <button onclick="startGame()">Spiel starten</button>
+        <button class="menu-button" onclick="window.location.href='startseite.html'">Zurück zum Hauptmenü</button>
+      `;
+    }
+
+    function generateNameFields() {
+      const count = parseInt(document.getElementById('playerCount').value);
+      const container = document.getElementById('nameInputs');
+      container.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        container.innerHTML += `<input type="text" placeholder="Spieler ${i + 1} Name" id="player${i}">`;
+      }
+    }
+
+    function toggleSpicy() {
+      state.spicy = !state.spicy;
+      document.getElementById('spicyBtn').innerText = `Spicy-Modus: ${state.spicy ? 'AN' : 'AUS'}`;
+    }
+
+    function startGame() {
+      const count = parseInt(document.getElementById('playerCount').value);
+      const names = [];
+      for (let i = 0; i < count; i++) {
+        const name = document.getElementById(`player${i}`).value.trim();
+        if (!name) return alert("Bitte alle Namen eingeben!");
+        names.push(name);
+      }
+      state.players = names;
+      state.page = 'spiel';
+      state.usedQuestions = [];
+      renderGame();
+    }
+
+    function getNextQuestion() {
+      const pool = state.spicy ? spicyQuestions : normalQuestions;
+      const available = pool.filter(q => !state.usedQuestions.includes(q));
+      if (available.length === 0) return null;
+      const next = available[Math.floor(Math.random() * available.length)];
+      state.usedQuestions.push(next);
+      return next;
+    }
+
+    function renderGame() {
+      const question = getNextQuestion();
+      if (!question) {
+        app.innerHTML = `
+          <h2>🎉 Alle Fragen wurden gestellt!</h2>
+          <button onclick="renderStartPage()">Zurück zum Start</button>
+        `;
+        return;
+      }
+
+      app.innerHTML = `
+        <h2>Ich hab noch nie...</h2>
+        <div class="card">${question}</div>
+        <button onclick="renderGame()">Nächste Frage</button>
+        <button class="menu-button" onclick="renderStartPage()">Spiel beenden</button>
+      `;
+    }
+
+    renderStartPage();
+  </script>
+</body>
+</html>

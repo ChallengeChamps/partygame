@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sie ist eine 10 von 10, aber...</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('10von10.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      margin-top: 40px;
+      animation: fadeIn 1s ease;
+    }
+
+    h1, h2 {
+      text-align: center;
+      text-shadow: 2px 2px 6px #000;
+    }
+
+select, input, button {
+  width: 100%;
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.1rem;
+  box-sizing: border-box;
+}
+
+
+    button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .card {
+      background: #fff;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: slideUp 0.8s ease;
+    }
+
+    .options button {
+      margin: 10px 5px;
+      background-color: #673ab7;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+.menu-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.menu-button:hover {
+  background-color: #45a049;
+}
+@media (max-width: 600px) {
+  .container {
+    margin: 20px;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  select, input, button {
+    padding: 16px;
+    font-size: 1.2rem;
+  }
+}
+
+
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="setup">
+    <h1>💘 Sie ist eine 10 von 10, aber...</h1>
+    <label>Spieleranzahl:</label>
+    <select id="playerCount">
+      <option value="2">2 Spieler</option>
+      <option value="3">3 Spieler</option>
+      <option value="4">4 Spieler</option>
+      <option value="5">5 Spieler</option>
+      <option value="6">6 Spieler</option>
+    </select>
+<label for="spicyToggle">🌶️ Spicy-Modus:</label>
+<input type="checkbox" id="spicyToggle">
+
+    <div id="playerInputs"></div>
+    <button onclick="startGame()">Spiel starten</button>
+<button onclick="window.location.href='startseite.html'" class="menu-button">
+  Zurück zum Hauptmenü
+</button>
+
+  </div>
+
+  <div class="container hidden" id="game">
+    <h2 id="currentPlayer"></h2>
+    <div class="card" id="questionCard"></div>
+    <input type="number" id="ratingInput" min="1" max="10" placeholder="Deine Bewertung (1–10)">
+    <button onclick="submitRating()">Weiter</button>
+  </div>
+
+  <div class="container hidden" id="guessPhase">
+    <h2>Welche Aussage hat Spieler gewählt?</h2>
+    <div class="card options" id="guessOptions"></div>
+    <button onclick="confirmGuess()">Antwort bestätigen</button>
+  </div>
+
+  <div class="container hidden" id="resultPhase">
+    <h2 id="resultText"></h2>
+    <button onclick="nextRound()">Nächste Runde</button>
+  </div>
+
+  <script>
+    const normalStatements = [
+  "sie hat ein TikTok Account für ihren Hund",
+  "sie trägt Crocs mit Socken",
+  "sie hat 12 verschiedene Zahnbürsten",
+  "sie isst Pizza mit Ketchup",
+  "sie isst Pizza mit Ananas",
+  "sie benutzt ihr Handy auf dem Klo",
+  "sie redet beim Schlafen",
+  "sie liest nie ihre WhatsApp Nachrichten",
+  "sie hat ein Hamster-Instagram Account",
+  "sie nennt ihren Toaster liebevoll Karl",
+  "sie hat ein Tagebuch",
+  "sie trägt ihren Fahrradhelm auch im Supermarkt",
+  "sie hat ein Poster von ihrem Celebrity Crush",
+  "sie isst Müsli ohne Milch",
+  "sie hat ein Tattoo von ihrer Mutter",
+  "sie hat eine Playlist zum staubsaugen",
+  "sie schreibt Einkaufslisten",
+  "sie schreibt unleserlich",
+  "sie hat ein Kissen mit dem Gesicht ihres Celebrity Crush´s",
+  "sie hat ein Aquarium ohne Wasser",
+  "sie gibt ihren Zahnbürsten Namen",
+  "sie hat ein WhatsApp-Profilbild von einer Blume",
+  "sie trägt ihre Sonnenbrille auch nachts",
+  "sie hat ein Abo für Gurkenrezepte",
+  "sie hat ein Lieblingslöffel",
+  "sie singt, obwohl sie nicht singen kann",
+  "sie hört ausschließlich Rock-Musik",
+  "sie lädt Tanzvideos auf Tik Tok hoch",
+  "sie hat einen Snaps-Score von über 2 Millionen",
+  "sie schaut noch Kinderserien",
+  "sie lässt dich auf gelesen",
+  "sie ist beim Essen nur am Handy",
+  "sie snapt über 100 Leuten",
+  "sie folgt ausschließlich Jungs auf Instagram",
+  "sie postet cringe Bilder auf Instagram"
+];
+
+const spicyStatements = [
+  "sie nennt ihren Freund 'Daddy'",
+  "sie hat ein Tattoo von ihrem Ex",
+  "sie hat einen OnlyFans-Account",
+  "sie hat ihren Ex noch in den Kontakten",
+  "sie flirtet mit deinem besten Freund",
+  "sie stalkt ihren Crush",
+  "sie geht fremd",
+  "sie telefoniert immer nackt",
+  "sie denkt beim Küssen an jemand anderes",
+  "sie erzählt Geheimnisse weiter",
+  "sie datet Jungs für Geld",
+  "sie flirtet in der Öffentlichkeit",
+  "sie postet cringe Bilder auf Instagram",
+  "sie postet cringe Bilder auf Instagram von dir",
+  "sie denkt beim Sex an andere",
+  "sie verschickt Nudes",
+  "sie lügt dich an",
+  "sie ghosted alle",
+  "sie klaut im Supermarkt",
+  "sie stalkt ihren Ex",
+  "sie hat ein Fake-profil auf Instagram",
+  "sie ist beim Date nur am Handy",
+  "sie ist richtig eifersüchtig",
+  "sie screenshotet ihre Chats für ihre Freunde",
+  "sie betreibt Sexting",
+  "sie trifft aus langeweile andere Typen",
+  "sie muss beim Küssen immer lachen",
+  "sie trinkt enorm viel Alkohol",
+  "sie hat ein Date mit zwei Typen gleichzeitig gehabt"
+
+];
+
+let usedStatements = [];
+
+
+    let players = [];
+    let currentPlayerIndex = 0;
+    let currentStatement = "";
+    let distractors = [];
+    let correctRating = 0;
+
+    document.getElementById("playerCount").addEventListener("change", () => {
+      const count = parseInt(document.getElementById("playerCount").value);
+      const container = document.getElementById("playerInputs");
+      container.innerHTML = "";
+      for (let i = 0; i < count; i++) {
+        container.innerHTML += `<input type="text" placeholder="Spieler ${i + 1}" id="player${i}">`;
+      }
+    });
+
+    function startGame() {
+      const count = parseInt(document.getElementById("playerCount").value);
+      players = [];
+      for (let i = 0; i < count; i++) {
+        const name = document.getElementById(`player${i}`).value || `Spieler ${i + 1}`;
+        players.push(name);
+      }
+      document.getElementById("setup").classList.add("hidden");
+      document.getElementById("game").classList.remove("hidden");
+      showQuestion();
+    }
+
+function showQuestion() {
+  document.getElementById("ratingInput").value = "";
+  document.getElementById("currentPlayer").innerText = `🎯 ${players[currentPlayerIndex]} ist dran`;
+
+  const spicyMode = document.getElementById("spicyToggle").checked;
+  const activeList = spicyMode ? spicyStatements : normalStatements;
+  let available = activeList.filter(s => !usedStatements.includes(s));
+
+  if (available.length === 0) {
+    usedStatements = [];
+    available = [...activeList];
+  }
+
+  currentStatement = available[Math.floor(Math.random() * available.length)];
+  usedStatements.push(currentStatement);
+
+  document.getElementById("questionCard").innerHTML = `
+    <button onclick="revealStatement()" style="background-color:#ff4081;color:#fff;border:none;padding:10px;border-radius:10px;cursor:pointer;">
+      👀 Frage anzeigen
+    </button>
+  `;
+}
+
+// ⬇️ Hier kommt die neue Funktion
+function revealStatement() {
+  const card = document.getElementById("questionCard");
+  card.innerHTML = `<p>Sie ist eine 10 von 10, aber ${currentStatement}</p>`;
+}
+
+
+
+
+    function submitRating() {
+      const rating = parseInt(document.getElementById("ratingInput").value);
+      if (isNaN(rating) || rating < 1 || rating > 10) return alert("Bitte eine Zahl zwischen 1 und 10 eingeben!");
+      correctRating = rating;
+let ratingDisplay = document.getElementById("ratingDisplay");
+if (!ratingDisplay) {
+  ratingDisplay = document.createElement("div");
+  ratingDisplay.className = "card";
+  ratingDisplay.id = "ratingDisplay";
+  document.getElementById("guessPhase").prepend(ratingDisplay);
+}
+ratingDisplay.innerText = `Bewertung: ${correctRating}/10`;
+
+
+const spicyMode = document.getElementById("spicyToggle").checked;
+const activeList = spicyMode ? spicyStatements : normalStatements;
+
+distractors = [];
+while (distractors.length < 2) {
+  const s = activeList[Math.floor(Math.random() * activeList.length)];
+  if (s !== currentStatement && !distractors.includes(s)) distractors.push(s);
+}
+
+
+      const allOptions = [currentStatement, ...distractors].sort(() => Math.random() - 0.5);
+      document.getElementById("guessOptions").innerHTML = allOptions.map(s =>
+        `<button onclick="selectGuess(this)" data-text="${s}">${s}</button>`
+      ).join("");
+
+      document.getElementById("game").classList.add("hidden");
+      document.getElementById("guessPhase").classList.remove("hidden");
+    }
+
+    let selectedGuess = "";
+
+    function selectGuess(btn) {
+      document.querySelectorAll("#guessOptions button").forEach(b => b.style.backgroundColor = "#673ab7");
+      btn.style.backgroundColor = "#ff4081";
+      selectedGuess = btn.getAttribute("data-text");
+    }
+
+    function confirmGuess() {
+      if (!selectedGuess) return alert("Bitte eine Aussage auswählen!");
+      const result = selectedGuess === currentStatement ? "✅ Richtig!" : `❌ Falsch! Die richtige Aussage war: ${currentStatement} (${correctRating}/10)`;
+      document.getElementById("resultText").innerText = result;
+      document.getElementById("guessPhase").classList.add("hidden");
+      document.getElementById("resultPhase").classList.remove("hidden");
+    }
+
+    function nextRound() {
+      currentPlayerIndex++;
+      if (currentPlayerIndex >= players.length) {
+        alert("🎉 Spiel beendet!");
+        location.reload();
+      } else {
+        document.getElementById("resultPhase").classList.add("hidden");
+        document.getElementById("game").classList.remove("hidden");
+        showQuestion();
+      }
+    }
+  </script>
+</body>
+</html>

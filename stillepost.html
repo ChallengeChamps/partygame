@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Stille Post mit Malen</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-image: url('stillepost.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    color: #fff;
+  }
+
+  .container {
+    max-width: 100%;
+    margin: auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    margin-top: 20px;
+    animation: fadeIn 1s ease;
+  }
+
+  h1, h2, h3 {
+    text-align: center;
+    text-shadow: 2px 2px 6px #000;
+    font-size: 1.6rem;
+  }
+
+  select, input, textarea, button {
+    width: 100%;
+    padding: 16px;
+    margin: 12px 0;
+    border-radius: 12px;
+    border: none;
+    font-size: 1.2rem;
+  }
+
+  button {
+    background-color: #ff4081;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #e91e63;
+  }
+
+  .card {
+    background: #fff;
+    color: #000;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    animation: slideUp 0.8s ease;
+    font-size: 1.1rem;
+  }
+
+  .menu-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+
+  .menu-button:hover {
+    background-color: #45a049;
+  }
+
+  canvas {
+    background: #fff;
+    border-radius: 10px;
+    margin: 10px 0;
+    width: 100%;
+    max-width: 100%;
+    height: 300px;
+    touch-action: none;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  @media (max-width: 600px) {
+    h1, h2, h3 {
+      font-size: 1.4rem;
+    }
+
+    select, input, textarea, button {
+      font-size: 1.1rem;
+      padding: 14px;
+    }
+
+    canvas {
+      height: 250px;
+    }
+
+    .container {
+      padding: 15px;
+    }
+  }
+</style>
+
+</head>
+<body>
+  <div class="container" id="app"></div>
+
+  <script>
+    const app = document.getElementById('app');
+    const state = {
+      page: 'start',
+      players: [],
+      rounds: [],
+      step: 0
+    };
+
+    function renderStartPage() {
+      app.innerHTML = `
+        <h1>🎨 Stille Post mit Malen</h1>
+        <label for="playerCount">Anzahl der Spieler:</label>
+        <select id="playerCount">
+          ${[3,4,5,6,7,8].map(n => `<option value="${n}">${n}</option>`).join('')}
+        </select>
+        <div id="nameInputs"></div>
+        <button onclick="generateNameFields()">Namen eingeben</button>
+        <button onclick="startGame()">Spiel starten</button>
+    <button class="menu-button" onclick="window.location.href='startseite.html'">Zurück zum Hauptmenü</button>
+      `;
+    }
+
+    function generateNameFields() {
+      const count = parseInt(document.getElementById('playerCount').value);
+      const container = document.getElementById('nameInputs');
+      container.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        container.innerHTML += `<input type="text" placeholder="Spieler ${i + 1} Name" id="player${i}">`;
+      }
+    }
+
+    function startGame() {
+      const count = parseInt(document.getElementById('playerCount').value);
+      const names = [];
+      for (let i = 0; i < count; i++) {
+        const name = document.getElementById(`player${i}`).value.trim();
+        if (!name) return alert("Bitte alle Namen eingeben!");
+        names.push(name);
+      }
+      state.players = names.sort(() => Math.random() - 0.5);
+      state.page = 'spiel';
+      state.rounds = [];
+      state.step = 0;
+      renderGameStep();
+    }
+
+function renderGameStep() {
+  const currentPlayer = state.players[state.step];
+  const isTextStep = state.step % 2 === 0;
+  const lastEntry = state.rounds[state.rounds.length - 1];
+
+  let imagePreview = '';
+  if (isTextStep && lastEntry && lastEntry.content.includes('<img')) {
+    imagePreview = `<div class="card"><strong>Bild vom vorherigen Spieler:</strong><br>${lastEntry.content}</div>`;
+  }
+
+  app.innerHTML = `
+    <h2>${currentPlayer}, ${isTextStep ? 'gib einen Satz ein:' : 'male folgendes:'}</h2>
+    ${!isTextStep && lastEntry ? `<div class="card"><strong>Satz:</strong> ${lastEntry.content}</div>` : ''}
+    ${imagePreview}
+    ${isTextStep
+      ? `<input type="text" id="textInput" placeholder="Was zeigt das Bild?">`
+      : `<canvas id="drawingCanvas"></canvas>
+         <button onclick="saveDrawing()">Weiter</button>`}
+    ${isTextStep ? `<button onclick="nextStep()">Weiter</button>` : ''}
+    <button class="menu-button" onclick="window.location.href='startseite.html'">Zurück zum Hauptmenü</button>
+  `;
+
+  if (!isTextStep) setupCanvas();
+}
+
+
+    function setupCanvas() {
+      const canvas = document.getElementById('drawingCanvas');
+      const ctx = canvas.getContext('2d');
+      let drawing = false;
+
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "#000";
+
+      canvas.addEventListener('mousedown', () => drawing = true);
+      canvas.addEventListener('mouseup', () => drawing = false);
+      canvas.addEventListener('mouseout', () => drawing = false);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('touchstart', () => drawing = true);
+      canvas.addEventListener('touchend', () => drawing = false);
+      canvas.addEventListener('touchcancel', () => drawing = false);
+      canvas.addEventListener('touchmove', drawTouch);
+
+      function draw(e) {
+        if (!drawing) return;
+        const rect = canvas.getBoundingClientRect();
+        ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+      }
+
+      function drawTouch(e) {
+        if (!drawing) return;
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+        e.preventDefault();
+      }
+    }
+
+    function saveDrawing() {
+      const canvas = document.getElementById('drawingCanvas');
+      const dataURL = canvas.toDataURL();
+      state.rounds.push({ player: state.players[state.step], content: `<img src="${dataURL}" style="width:100%;border-radius:10px;">` });
+      state.step++;
+      if (state.step >= state.players.length) {
+        state.page = 'ergebnis';
+        renderResults();
+      } else {
+        renderGameStep();
+      }
+    }
+
+    function nextStep() {
+      const input = document.getElementById('textInput').value.trim();
+      if (!input) return alert("Bitte etwas eingeben!");
+      state.rounds.push({ player: state.players[state.step], content: input });
+      state.step++;
+      if (state.step >= state.players.length) {
+        state.page = 'ergebnis';
+        renderResults();
+      } else {
+        renderGameStep();
+      }
+    }
+
+    function renderResults() {
+      app.innerHTML = `<h1>📜 Spielverlauf</h1>`;
+      state.rounds.forEach((entry, i) => {
+        app.innerHTML += `
+          <div class="card">
+            <h3>Spieler ${i + 1}: ${entry.player}</h3>
+            <div>${entry.content}</div>
+          </div>
+        `;
+      });
+      app.innerHTML += `
+        <button onclick="restartGame()">Erneut spielen</button>
+    <button class="menu-button" onclick="window.location.href='startseite.html'">Zurück zum Hauptmenü</button>
+      `;
+    }
+
+    function restartGame() {
+      state.rounds = [];
+      state.step = 0;
+      state.page = 'spiel';
+      renderGameStep();
+    }
+
+    // Initialer Start
+    renderStartPage();
+  </script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wahrheit oder Pflicht</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('wop.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      margin-top: 40px;
+      animation: fadeIn 1s ease;
+    }
+
+    h1, h2 {
+      text-align: center;
+      text-shadow: 2px 2px 6px #000;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    select {
+      appearance: none;
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    select:hover {
+      background-color: #e91e63;
+    }
+
+    button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .card {
+      background: #fff;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: slideUp 0.8s ease;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .mode-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .mode-button {
+      flex: 1;
+      background-color: #607d8b;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .mode-button.active {
+      background-color: #ff9800;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Wahrheit oder Pflicht</h1>
+
+    <!-- Einstellungen -->
+    <div id="setupArea">
+      <label for="playerCount">Anzahl der Spieler:</label>
+      <select id="playerCount">
+        <option value="">Bitte wählen</option>
+        <option value="1">1 Spieler</option>
+        <option value="2">2 Spieler</option>
+        <option value="3">3 Spieler</option>
+        <option value="4">4 Spieler</option>
+        <option value="5">5 Spieler</option>
+        <option value="6">6 Spieler</option>
+      </select>
+
+      <div id="nameInputs"></div>
+
+      <h2>Spielmodus wählen:</h2>
+      <div class="mode-buttons">
+        <button class="mode-button" onclick="setMode('normal')">Normal</button>
+        <button class="mode-button" onclick="setMode('hard')">Hart</button>
+        <button class="mode-button" onclick="setMode('spicy')">Spicy</button>
+      </div>
+
+      <button onclick="startGame()">Spiel starten</button>
+<button onclick="window.location.href='startseite.html'" class="menu-button">
+  Zurück zum Hauptmenü
+
+    </div>
+
+    <!-- Spielbereich -->
+    <div id="gameArea" class="hidden">
+      <h2 id="currentPlayer"></h2>
+      <button onclick="choose('truth')">Wahrheit</button>
+      <button onclick="choose('dare')">Pflicht</button>
+      <div class="card" id="questionCard"></div>
+      <button onclick="nextPlayer()">Erledigt</button>
+    </div>
+
+    <!-- Spielende -->
+    <div id="endArea" class="hidden">
+      <h2>🎉 Spiel beendet!</h2>
+      <button onclick="location.href='startseite.html'">Zurück zur Startseite</button>
+      <button onclick="location.reload()">Erneut spielen</button>
+    </div>
+  </div>
+
+  <script>
+    const nameInputs = document.getElementById('nameInputs');
+    const playerCountInput = document.getElementById('playerCount');
+    const currentPlayer = document.getElementById('currentPlayer');
+    const questionCard = document.getElementById('questionCard');
+    const gameArea = document.getElementById('gameArea');
+    const modeButtons = document.querySelectorAll('.mode-button');
+    const setupArea = document.getElementById('setupArea');
+    const endArea = document.getElementById('endArea');
+
+    let players = [];
+    let mode = 'normal';
+    let turn = 0;
+    let rounds = [];
+
+    const questions = {
+      normal: {
+        truth: [
+  "Was war dein peinlichstes Erlebnis?",
+  "Hast du schon mal gelogen, um jemanden zu beeindrucken?",
+  "Was ist dein größtes Geheimnis?",
+  "Was war dein schlimmster Fehlkauf?",
+  "Hast du schon mal etwas geklaut?",
+  "Was würdest du tun, wenn du einen Tag lang unsichtbar wärst?",
+  "Was ist das Dümmste, was du je gesagt hast?",
+  "Hast du schon mal jemanden aus Spaß ignoriert?",
+  "Was war dein letzter großer Lachanfall?",
+  "Was ist dein seltsamster Tick?",
+  "Was war dein schlimmster Schulmoment?",
+  "Hast du schon mal bei einem Spiel geschummelt?",
+  "Was ist das Unnötigste, das du besitzt?",
+  "Was war dein letzter peinlicher Chatverlauf?",
+  "Hast du schon mal jemanden gegoogelt, den du kennengelernt hast?",
+  "Was war dein letzter Ohrwurm?",
+  "Was ist deine größte Schwäche?",
+  "Was würdest du niemals öffentlich zugeben?",
+  "Was war dein letzter peinlicher Versprecher?",
+  "Hast du schon mal so getan, als würdest du jemanden nicht sehen?"
+
+        ],
+dare: [
+  "Tanze 30 Sekunden wie verrückt.",
+  "Erzähle einen Witz.",
+  "Mach ein Tiergeräusch deiner Wahl.",
+  "Zieh eine Grimasse für 10 Sekunden.",
+  "Sprich in einer Fantasiesprache für 20 Sekunden.",
+  "Tu so, als wärst du ein Roboter.",
+  "Laufe wie ein Model durch den Raum.",
+  "Erfinde einen neuen Spitznamen für dich.",
+  "Summ ein Lied, das alle erraten müssen.",
+  "Mach ein Selfie mit deiner lustigsten Pose.",
+  "Tu so, als würdest du telefonieren – ohne Handy.",
+  "Sag das Alphabet rückwärts (so weit du kommst).",
+  "Mach ein Luftinstrument-Solo (z. B. Luftgitarre).",
+  "Erzähle eine Geschichte mit völlig erfundenem Inhalt.",
+  "Tu so, als wärst du ein Nachrichtensprecher.",
+  "Mach ein Tier nach, das jemand anderes auswählt.",
+  "Sag deinen Namen in drei verschiedenen Stimmen.",
+  "Tu so, als wärst du ein berühmter Influencer.",
+  "Mach ein Werbevideo für einen imaginären Gegenstand.",
+  "Erfinde einen Tanzschritt und zeig ihn."
+]
+
+      },
+      hard: {
+truth: [
+  "Was bereust du am meisten in deinem Leben?",
+  "Was war der größte Fehler, den du je gemacht hast?",
+  "Hast du jemals jemanden absichtlich verletzt?",
+  "Was ist deine größte Angst, über die du selten sprichst?",
+  "Was denkst du über dich selbst, wenn du allein bist?",
+  "Was würdest du tun, wenn du wüsstest, du hast nur noch ein Jahr zu leben?",
+  "Was war der schwerste Moment, den du je durchgemacht hast?",
+  "Gibt es jemanden, dem du nie vergeben konntest?",
+  "Was ist etwas, das du niemandem erzählt hast – bis jetzt?",
+  "Was ist deine größte Unsicherheit?",
+  "Was würdest du an deinem Charakter ändern, wenn du könntest?",
+  "Was ist eine Wahrheit über dich, die andere überraschen würde?",
+  "Hast du schon mal jemanden enttäuscht, der dir wichtig war?",
+  "Was ist deine größte Angst in Beziehungen?",
+  "Was ist eine Entscheidung, die dein Leben stark verändert hat?",
+  "Was denkst du, ist deine größte Schwäche?",
+  "Was war der letzte Moment, in dem du dich wirklich verletzlich gefühlt hast?",
+  "Was ist etwas, das du dir selbst nicht verzeihen kannst?",
+  "Was ist dein größter innerer Konflikt?",
+  "Was würdest du tun, wenn du niemanden enttäuschen könntest?"
+],
+
+        dare: [
+          "Rufe jemanden an und singe ein Lied.",
+          "Iss etwas, das du nicht magst.",
+          "Erzähle ein Geheimnis aus deiner Kindheit.",
+ 	  "Lies laut den letzten drei Nachrichten auf deinem Handy vor.",
+  	  "Tu so, als würdest du jemanden aus der Runde romantisch ansprechen.",
+ 	  "Erzähle ein peinliches Erlebnis aus deiner Kindheit.",
+ 	  "Sprich 1 Minute lang in einer übertriebenen Baby-Stimme.",
+  	  "Mach ein TikTok-Tanzvideo – ohne Musik.",
+  	  "Simuliere ein Bewerbungsgespräch für deinen Traumjob – aber als Clown.",
+  	 "Lies einen dramatischen Liebesbrief an einen Gegenstand im Raum.",
+  "Tu so, als wärst du ein Influencer, der ein Produkt bewirbt.",
+  "Mach ein Selfie und poste es mit dem Text: 'Ich bin heute besonders mutig.'",
+  "Rufe jemanden an und sag nur: 'Ich wollte nur sagen, du bist toll.'",
+  "Erfinde eine peinliche Ausrede für zu spät kommen und erzähle sie glaubhaft.",
+  "Erkläre einem imaginären Publikum, wie man sich richtig die Zähne putzt – mit Gestik.",
+  "Tu so, als wärst du ein Lehrer, der eine peinliche Schulstunde hält.",
+  "Mach ein Tiergeräusch und bleib 30 Sekunden in der Rolle.",
+  "Stell dich vor einen Spiegel und führe ein ernstes Gespräch mit dir selbst.",
+  "Zeige deine letzten drei Fotos in deiner Galerie (wenn du willst).",
+  "Tu so, als wärst du ein Nachrichtensprecher, der über ein peinliches Ereignis berichtet.",
+  "Erfinde eine peinliche Geschichte über dich und erzähle sie, als wäre sie echt.",
+  "Mach ein Model-Walk mit übertriebener Pose und Gesichtsausdruck.",
+  "Sprich einen Songtext wie ein Gedicht – mit Gefühl."
+
+        ]
+      },
+      spicy: {
+       truth: [
+  "Was ist deine wildeste Fantasie?",
+  "Hattest du schon mal einen Crush auf jemanden hier?",
+  "Was war dein heißester Flirt?",
+  "Was würdest du tun, wenn du für einen Tag unsichtbar wärst?",
+  "Was ist dein guilty pleasure?",
+  "Was war dein peinlichster Moment beim Flirten?",
+  "Hast du schon mal jemanden nur wegen seines Aussehens gedatet?",
+  "Was ist das Verrückteste, was du je in einer Beziehung gemacht hast?",
+  "Was war dein erster Gedanke heute Morgen?",
+  "Was ist deine Lieblingsstelle zum Küssen?",
+  "Was ist deine geheime Schwäche bei anderen?",
+  "Was war dein wildester Traum?",
+  "Was würdest du tun, wenn du jemanden hier auf ein Date einladen müsstest?",
+  "Was ist das Frechste, das du je geschrieben hast?",
+  "Hast du schon mal jemanden verführt?",
+  "Was ist deine Meinung zu One-Night-Stands?",
+  "Was war dein letzter sexy Gedanke?",
+  "Was ist das Ungewöhnlichste, was dich attraktiv macht?",
+  "Was würdest du tun, wenn du heute Abend alles dürftest?",
+  "Was ist deine Lieblingsfantasie, die du noch nie erzählt hast?",
+  "Was ist das frechste Kompliment, das du je bekommen hast?",
+  "Was war dein letzter Crush – und weiß die Person davon?",
+  "Was ist deine Meinung zu Küssen beim ersten Date?",
+  "Was ist das Mutigste, das du je in Sachen Liebe getan hast?",
+  "Was ist deine geheime Dating-Regel?"
+],
+
+dare: [
+  "Flirte mit jemandem in der Runde – 30 Sekunden lang.",
+  "Mach ein sexy Model-Posing.",
+  "Simuliere einen Heiratsantrag an eine Person deiner Wahl.",
+  "Sag jemandem hier, was du an ihm oder ihr attraktiv findest.",
+  "Tu so, als würdest du ein Date planen – mit jemandem aus der Runde.",
+  "Lies einen romantischen Text mit ernster Stimme vor.",
+  "Schicke einem Kontakt ein Herz-Emoji – live.",
+  "Mach ein Werbevideo für ein imaginäres Dating-Portal.",
+  "Zeige dein verführerischstes Lächeln.",
+  "Tu so, als würdest du jemanden verführen – mit Worten.",
+  "Erfinde einen Flirtspruch und sag ihn laut.",
+  "Mach ein Selfie mit deinem besten 'Date-Gesicht'.",
+  "Sag jemandem hier, wie du ihn oder sie auf Tinder beschreiben würdest.",
+  "Simuliere ein Gespräch beim ersten Date – mit übertriebener Romantik.",
+  "Mach ein 'Liebesgeständnis' an einen Gegenstand im Raum.",
+  "Tu so, als würdest du ein Liebeslied singen – ohne Musik.",
+  "Sag deinen Namen und füge 'verführerisch' hinzu.",
+  "Mach ein 'Hot or Not'-Ranking von Dingen im Raum.",
+  "Erzähle, wie dein perfekter Kuss aussehen würde – mit Gestik.",
+  "Tu so, als würdest du ein Liebesdrama spielen – mit dir in der Hauptrolle."
+]
+
+      }
+    };
+
+    playerCountInput.addEventListener('change', () => {
+      nameInputs.innerHTML = '';
+      const count = parseInt(playerCountInput.value);
+      if (!count) return;
+
+      for (let i = 0; i < count; i++) {
+        const input = document.createElement('input');
+        input.placeholder = `Name Spieler ${i + 1}`;
+        input.id = `player${i}`;
+        nameInputs.appendChild(input);
+      }
+    });
+
+    function setMode(selectedMode) {
+      mode = selectedMode;
+      modeButtons.forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.mode-button[onclick="setMode('${selectedMode}')"]`).classList.add('active');
+    }
+
+    function startGame() {
+      const count = parseInt(playerCountInput.value);
+      players = [];
+      for (let i = 0; i < count; i++) {
+        const name = document.getElementById(`player${i}`).value.trim();
+        if (name) players.push(name);
+      }
+
+      if (players.length < 1) {
+        alert("Bitte Namen eingeben.");
+        return;
+      }
+
+      rounds = [];
+      for (let i = 0; i < 2; i++) {
+        rounds.push(...players);
+      }
+
+      turn = 0;
+
+      setupArea.classList.add('hidden');
+      gameArea.classList.remove('hidden');
+      endArea.classList.add('hidden');
+
+      showNextPlayer();
+    }
+
+    function showNextPlayer() {
+      if (turn >= rounds.length) {
+        gameArea.classList.add('hidden');
+        endArea.classList.remove('hidden');
+        return;
+      }
+
+      currentPlayer.textContent = `${rounds[turn]} ist dran!`;
+      questionCard.textContent = "";
+    }
+
+    function choose(type) {
+      const pool = questions[mode][type];
+      const question = pool[Math.floor(Math.random() * pool.length)];
+      questionCard.textContent = question;
+    }
+
+    function nextPlayer() {
+      turn++;
+      showNextPlayer();
+    }
+  </script>
+</body>
+</html>

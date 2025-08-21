@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Schattenrätsel</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1e1e2f;
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #ffd700;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .card {
+      background-color: #2e2e3f;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🕶️ Schattenrätsel</h1>
+    <h2>Ein Spiel voller Täuschung, Sabotage und Geheimnisse</h2>
+
+    <div id="setupCard" class="card">
+      <h3>👥 Spieleranzahl wählen</h3>
+      <p>Mindestens 6 Spieler, empfohlen: 10–12 Spieler</p>
+      <select id="playerCount" onchange="generateNameInputs()">
+        <option value="">-- Anzahl wählen --</option>
+        <option value="6">6 Spieler</option>
+        <option value="7">7 Spieler</option>
+        <option value="8">8 Spieler</option>
+        <option value="9">9 Spieler</option>
+        <option value="10">10 Spieler</option>
+        <option value="11">11 Spieler</option>
+        <option value="12">12 Spieler</option>
+      </select>
+
+      <div id="nameInputs" class="card hidden">
+        <h3>📝 Spielernamen eingeben</h3>
+        <div id="namesContainer"></div>
+        <button onclick="startGame()">🎮 Spiel starten</button>
+      </div>
+
+      <button onclick="showInstructions()">📘 Spielanleitung anzeigen</button>
+    </div>
+
+    <div id="instructionCard" class="card hidden">
+      <h3>📘 Spielanleitung</h3>
+      <p>Hier kommt die ausführliche Anleitung...</p>
+      <button onclick="hideInstructions()">❌ Schließen</button>
+    </div>
+  <h1>🕵️‍♂️ Agentenspiel</h1>
+
+  <div id="setup">
+    <input type="text" id="playerName" placeholder="Spielername">
+    <select id="roleSelect">
+      <option>Agent</option>
+      <option>Saboteur</option>
+      <option>Schutzmeister</option>
+      <option>Hacker</option>
+      <option>Shadow</option>
+    </select>
+    <button onclick="addPlayer()">➕ Spieler hinzufügen</button>
+    <button onclick="startGame()">🚀 Spiel starten</button>
+  </div>
+
+  <div id="gameArea" style="display:none;">
+    <h2>🎲 Runde <span id="roundNumber">1</span></h2>
+    <div id="playerCards"></div>
+    <button onclick="nextRound()">⏭️ Nächste Runde</button>
+  </div>
+</body>
+
+<script>
+  const roles = ["Agent", "Shadow", "Schutzmeister", "Hacker", "Saboteur"];
+  const traitsPool = ["schwarze Haare", "Brille", "Bart", "rote Jacke", "lange Haare", "grüne Augen", "Stirnband", "Tätowierung"];
+  let players = [];
+
+  function generateNameInputs() {
+    const count = parseInt(document.getElementById("playerCount").value);
+    const container = document.getElementById("namesContainer");
+    container.innerHTML = "";
+    document.getElementById("nameInputs").classList.remove("hidden");
+
+    for (let i = 0; i < count; i++) {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = `Spieler ${i + 1} Name`;
+      input.id = `player${i}`;
+      container.appendChild(input);
+    }
+  }
+
+  function startGame() {
+    const count = parseInt(document.getElementById("playerCount").value);
+    players = [];
+
+    for (let i = 0; i < count; i++) {
+      const name = document.getElementById(`player${i}`).value.trim();
+      if (!name) {
+        alert("Bitte alle Namen eingeben!");
+        return;
+      }
+
+      players.push({
+        name: name,
+        role: null,
+        traits: [],
+        info: [],
+        codeDigits: [],
+        sabotageUsed: 0,
+        notes: [],
+        isOut: false
+      });
+    }
+
+    assignRoles(count);
+    assignTraits();
+    alert("🎲 Rollen und Eigenschaften wurden verteilt!");
+    console.log(players); // Debug-Ausgabe
+  }
+
+  function assignRoles(count) {
+    let rolePool = [];
+
+    // Basisrollen
+    rolePool.push("Schutzmeister");
+    rolePool.push("Hacker");
+    rolePool.push("Saboteur");
+
+    // Shadows: immer 2
+    rolePool.push("Shadow");
+    rolePool.push("Shadow");
+
+    // Rest sind Agenten
+    while (rolePool.length < count) {
+      rolePool.push("Agent");
+    }
+
+    // Shuffle
+    rolePool = rolePool.sort(() => Math.random() - 0.5);
+
+    // Zuweisen
+    for (let i = 0; i < count; i++) {
+      players[i].role = rolePool[i];
+    }
+
+    // Shadow-Namen gegenseitig speichern
+    const shadowNames = players.filter(p => p.role === "Shadow").map(p => p.name);
+    players.forEach(p => {
+      if (p.role === "Shadow") {
+        p.shadowPartner = shadowNames.find(n => n !== p.name);
+      }
+    });
+  }
+
+  function assignTraits() {
+    players.forEach(player => {
+      const shuffled = traitsPool.sort(() => Math.random() - 0.5);
+      player.traits = shuffled.slice(0, 3);
+    });
+  }
+
+  function showInstructions() {
+    document.getElementById("instructionCard").classList.remove("hidden");
+  }
+
+  function hideInstructions() {
+    document.getElementById("instructionCard").classList.add("hidden");
+  }
+
+  let fullCode = [];
+  let securityKey = [];
+  let hackerLetters = [];
+  let round = 1;
+  let maxRounds = 10;
+  let votes = [];
+  let eliminatedPlayers = [];
+
+  function generateCode() {
+    fullCode = [];
+    for (let i = 0; i < 6; i++) {
+      fullCode.push(Math.floor(Math.random() * 10)); // 0–9
+    }
+
+    securityKey = [
+      Math.floor(Math.random() * 10),
+      Math.floor(Math.random() * 10)
+    ];
+
+    hackerLetters = [
+      String.fromCharCode(65 + Math.floor(Math.random() * 26)),
+      String.fromCharCode(65 + Math.floor(Math.random() * 26))
+    ];
+  }
+
+  function distributeInitialCards() {
+    generateCode();
+
+    let agentDigits = [...fullCode];
+    let digitIndex = 0;
+
+    players.forEach(player => {
+      if (player.role === "Agent") {
+        player.codeDigits.push(agentDigits[digitIndex]);
+        digitIndex++;
+      } else if (player.role === "Schutzmeister") {
+        player.securityKey = [...securityKey];
+      } else if (player.role === "Hacker") {
+        player.hackerLetters = [...hackerLetters];
+      } else if (player.role === "Saboteur") {
+        player.codeDigits.push(fullCode[0]);
+        player.codeDigits.push(fullCode[1]);
+      } else if (player.role === "Shadow") {
+        player.shadowRiddle = generateRiddleForCode();
+      }
+    });
+  }
+
+  function generateRiddleForCode() {
+    // Beispielrätsel für Shadow
+    const index = Math.floor(Math.random() * fullCode.length);
+    const digit = fullCode[index];
+    return `🔐 Rätsel: Die gesuchte Zahl ist die Summe aus ${digit - 2} und 2.`;
+  }
+
+  function getNextCard(player) {
+    if (player.isOut) return null;
+
+    if (player.role === "Agent" || player.role === "Hacker") {
+      return {
+        type: "Code-Zahl",
+        value: fullCode[Math.floor(Math.random() * fullCode.length)]
+      };
+    }
+
+    if (player.role === "Shadow") {
+      return {
+        type: "Rätsel",
+        value: generateRiddleForCode()
+      };
+    }
+
+    if (player.role === "Saboteur") {
+      if (player.sabotageUsed < 2) {
+        return {
+          type: "Sabotage",
+          options: generateFakeInfoOptions()
+        };
+      } else {
+        return {
+          type: "Sichtung",
+          value: generateRandomSighting()
+        };
+      }
+    }
+
+    if (player.role === "Schutzmeister") {
+      return {
+        type: "Hinweis",
+        value: generateRealOrFakeHint()
+      };
+    }
+
+    return {
+      type: "Sichtung",
+      value: generateRandomSighting()
+    };
+  }
+
+  function generateFakeInfoOptions() {
+    const agentTraits = players.filter(p => p.role === "Agent").flatMap(p => p.traits);
+    const options = [];
+
+    for (let i = 0; i < 3; i++) {
+      const trait = agentTraits[Math.floor(Math.random() * agentTraits.length)];
+      options.push(`🕵️ Verdächtiger trägt ${trait}`);
+    }
+
+    return options;
+  }
+
+  function generateRealOrFakeHint() {
+    const saboteur = players.find(p => p.role === "Saboteur");
+    if (saboteur && saboteur.sabotageUsed > 0 && saboteur.fakeHintChosen) {
+      return saboteur.fakeHintChosen;
+    }
+
+    const shadowTraits = players.filter(p => p.role === "Shadow").flatMap(p => p.traits);
+    const trait = shadowTraits[Math.floor(Math.random() * shadowTraits.length)];
+    return `🕶️ Jemand mit ${trait} versuchte Zugriff auf das Netzwerk.`;
+  }
+
+  function generateRandomSighting() {
+    const trait = traitsPool[Math.floor(Math.random() * traitsPool.length)];
+    return `👀 Sichtung: Person mit ${trait} wurde in der Nähe gesehen.`;
+  }
+
+  function saboteurSabotage(player) {
+    if (player.sabotageUsed >= 2) return;
+
+    const options = generateFakeInfoOptions();
+    const chosen = options[Math.floor(Math.random() * options.length)];
+    player.fakeHintChosen = chosen;
+    player.sabotageUsed++;
+  }
+  let currentPhase = "Kartenverteilung"; // oder "Voting", "Codeeingabe"
+  let voteResults = {};
+  let codeAttempts = 0;
+  let maxCodeAttempts = 2;
+  let gameEnded = false;
+
+  function startRound() {
+    if (gameEnded) return;
+
+    round++;
+    console.log(`🔁 Runde ${round} beginnt`);
+
+    players.forEach(player => {
+      if (!player.isOut) {
+        const card = getNextCard(player);
+        player.info.push(card);
+      }
+    });
+
+    currentPhase = "Voting";
+    showVotingInterface();
+  }
+
+  function showVotingInterface() {
+    // Simulierte Voting-Logik
+    votes = [];
+    voteResults = {};
+
+    players.forEach(player => {
+      if (!player.isOut) {
+        const others = players.filter(p => p.name !== player.name && !p.isOut);
+        const voteTarget = others[Math.floor(Math.random() * others.length)];
+        votes.push({ voter: player.name, target: voteTarget.name });
+      }
+    });
+
+    votes.forEach(v => {
+      if (!voteResults[v.target]) voteResults[v.target] = 0;
+      voteResults[v.target]++;
+    });
+
+    const sorted = Object.entries(voteResults).sort((a, b) => b[1] - a[1]);
+    const eliminated = sorted[0][0];
+    const eliminatedPlayer = players.find(p => p.name === eliminated);
+    eliminatedPlayer.isOut = true;
+    eliminatedPlayers.push(eliminatedPlayer.name);
+
+    console.log(`🚫 ${eliminatedPlayer.name} wurde rausgevotet.`);
+
+    checkEndConditions();
+    if (!gameEnded) currentPhase = "Kartenverteilung";
+  }
+
+  function checkEndConditions() {
+    const shadows = players.filter(p => p.role === "Shadow" && !p.isOut);
+    if (shadows.length === 0) {
+      endGame("Agenten haben alle Shadows eliminiert! 🕵️‍♂️✅");
+      return;
+    }
+
+    if (codeAttempts >= maxCodeAttempts) {
+      endGame("Shadows gewinnen – zu viele Fehlversuche beim Code! 🕶️💀");
+      return;
+    }
+  }
+
+  function enterCode(player, inputCode) {
+    if (gameEnded) return;
+
+    const correct = fullCode.join("") === inputCode.join("");
+    if (player.role === "Schutzmeister") {
+      codeAttempts++;
+      if (correct) {
+        endGame("Agenten haben den Code geknackt! 🔓🎉");
+      } else if (codeAttempts >= maxCodeAttempts) {
+        endGame("Shadows gewinnen – Agenten haben den Code nicht geknackt! 🕶️💀");
+      } else {
+        alert("❌ Falscher Code. Noch ein Versuch übrig.");
+      }
+    }
+
+    if (player.role === "Shadow") {
+      if (correct) {
+        endGame("Shadows haben den Code geknackt! 🕶️🔓");
+      } else {
+        endGame("Shadows haben den Code falsch eingegeben. Agenten gewinnen! 🕵️‍♂️🎉");
+      }
+    }
+  }
+
+  function endGame(message) {
+    gameEnded = true;
+    alert(`🏁 Spiel beendet: ${message}`);
+    console.log("Spielerstatus:", players);
+  }
+
+  function showPlayerTraits(name) {
+    const player = players.find(p => p.name === name);
+    if (!player) return;
+    alert(`👤 Eigenschaften von ${name}: ${player.traits.join(", ")}`);
+  }
+
+  function showCodeInterface(player) {
+    if (player.role !== "Schutzmeister" && player.role !== "Shadow") return;
+    const autoFilled = [...fullCode];
+    alert(`🔢 Codeeingabe für ${player.name}: ${autoFilled.join("")}`);
+    enterCode(player, autoFilled);
+  }
+
+  // Shadow-Notizblock (gemeinsam)
+  let shadowNotes = [];
+
+  function addToShadowNotes(note) {
+    if (!shadowNotes.includes(note)) {
+      shadowNotes.push(note);
+    }
+    players.forEach(p => {
+      if (p.role === "Shadow") {
+        p.notes = [...shadowNotes];
+      }
+    });
+  }
+
+  function showShadowNotes(name) {
+    const player = players.find(p => p.name === name);
+    if (player && player.role === "Shadow") {
+      alert(`📝 Notizen für ${name}:\n${player.notes.join("\n")}`);
+    }
+  }
+
+  // Spieleraktionen am Ende der Runde
+  function showActionMenu(player) {
+    if (player.isOut) return;
+
+    let actions = [];
+
+    if (player.role === "Saboteur" && player.sabotageUsed < 2) {
+      actions.push("Sabotieren");
+    }
+
+    if (player.role === "Saboteur" || player.role === "Schutzmeister" || player.role === "Shadow") {
+      actions.push("Code eingeben");
+    }
+
+    actions.push("Weitergeben");
+
+    let choice = prompt(`🎮 ${player.name}, wähle eine Aktion:\n${actions.map((a, i) => `${i + 1}. ${a}`).join("\n")}`, "1");
+    let index = parseInt(choice) - 1;
+    let selected = actions[index];
+
+    if (selected === "Sabotieren") {
+      saboteurSabotage(player);
+      alert("💣 Sabotage durchgeführt.");
+    }
+
+    if (selected === "Code eingeben") {
+      showCodeInterface(player);
+    }
+
+    if (selected === "Weitergeben") {
+      alert("🔄 Karte weitergegeben.");
+    }
+  }
+
+  // Kartenanzeige pro Spieler
+  function showPlayerCard(player) {
+    if (player.isOut) return;
+
+    let infoText = `🃏 ${player.name} – Rolle: ${player.role}\nEigenschaften: ${player.traits.join(", ")}`;
+
+    if (player.role === "Agent") {
+      infoText += `\n🔢 Code-Zahl: ${player.codeDigits.join(", ")}`;
+    }
+
+    if (player.role === "Schutzmeister") {
+      infoText += `\n🔐 Sicherheitscode: ${player.securityKey.join(" & ")}`;
+    }
+
+    if (player.role === "Hacker") {
+      infoText += `\n🧬 Hacker-Buchstaben: ${player.hackerLetters.join(" & ")}`;
+    }
+
+    if (player.role === "Saboteur") {
+      infoText += `\n💣 Erste Code-Zahlen: ${player.codeDigits.join(", ")}`;
+    }
+
+    if (player.role === "Shadow") {
+      infoText += `\n🧩 Rätsel: ${player.shadowRiddle}`;
+      infoText += `\n🕶️ Partner: ${player.shadowPartner}`;
+    }
+
+    alert(infoText);
+  }
+  let round = 1;
+
+  function addPlayer() {
+    const name = document.getElementById("playerName").value;
+    const role = document.getElementById("roleSelect").value;
+    if (!name) return alert("❗ Name eingeben");
+
+    const newPlayer = {
+      name,
+      role,
+      traits: [],
+      codeDigits: [],
+      securityKey: [],
+      hackerLetters: [],
+      shadowRiddle: "",
+      shadowPartner: "",
+      notes: [],
+      sabotageUsed: 0,
+      isOut: false
+    };
+
+    players.push(newPlayer);
+    alert(`✅ ${name} als ${role} hinzugefügt`);
+  }
+
+function startGame() {
+  if (players.length < 6 || players.length > 12) {
+    alert("❗ Spieleranzahl muss zwischen 6 und 12 liegen");
+    return;
+  }
+
+  document.getElementById("setup").style.display = "none";
+  document.getElementById("gameArea").style.display = "block";
+
+  assignRolesRandomly(); // ✅ neue zufällige Rollenverteilung
+  assignTraits();
+  distributeInitialCards();
+  updatePlayerCards();
+}
+
+
+  function updatePlayerCards() {
+    const container = document.getElementById("playerCards");
+    container.innerHTML = "";
+
+    players.forEach(p => {
+      const card = document.createElement("div");
+      card.style.border = "1px solid #333";
+      card.style.padding = "10px";
+      card.style.margin = "5px";
+      card.innerHTML = `
+        <strong>${p.name}</strong> – ${p.role}<br>
+        <button onclick="showPlayerCard(players.find(x => x.name === '${p.name}'))">🃏 Karte anzeigen</button>
+        <button onclick="showActionMenu(players.find(x => x.name === '${p.name}'))">🎮 Aktion</button>
+        ${p.role === "Shadow" ? `<button onclick="showShadowNotes('${p.name}')">📝 Notizen</button>` : ""}
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function nextRound() {
+    round++;
+    document.getElementById("roundNumber").innerText = round;
+    alert(`🔄 Runde ${round} beginnt`);
+    updatePlayerCards();
+  }
+function assignRolesRandomly() {
+  const count = players.length;
+  if (count < 6 || count > 12) {
+    alert("Spieleranzahl muss zwischen 6 und 12 liegen.");
+    return;
+  }
+
+  let rolePool = [];
+
+  // Feste Rollen
+  rolePool.push("Schutzmeister");
+  rolePool.push("Hacker");
+  rolePool.push("Saboteur");
+  rolePool.push("Shadow");
+  rolePool.push("Shadow");
+
+  // Rest sind Agenten
+  while (rolePool.length < count) {
+    rolePool.push("Agent");
+  }
+
+  // Shuffle Rollen
+  rolePool = rolePool.sort(() => Math.random() - 0.5);
+
+  // Zuweisen
+  players.forEach((player, index) => {
+    player.role = rolePool[index];
+  });
+
+  // Shadow-Partner speichern
+  const shadows = players.filter(p => p.role === "Shadow");
+  if (shadows.length === 2) {
+    shadows[0].shadowPartner = shadows[1].name;
+    shadows[1].shadowPartner = shadows[0].name;
+  }
+}
+
+</body>
+</html>
