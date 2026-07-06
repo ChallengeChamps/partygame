@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Spieleanleitungen</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #222;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      margin-top: 40px;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    select, button {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border-radius: 12px;
+      border: none;
+      font-size: 1.1rem;
+    }
+
+    button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .card {
+      background: #fff;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .menu-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+body {
+  background-image: url('dein-bild-url-hier.png'); /* Pfad zum Bild */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Optional: Bild bleibt beim Scrollen */
+}
+
+
+    .menu-button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎮 Spieleanleitungen</h1>
+    <h2>Wähle ein Spiel aus:</h2>
+
+    <select id="gameSelector">
+      <option value="">-- Bitte wählen --</option>
+      <option value="fakeorfakt">Fake or Fakt 🎭</option>
+      <option value="10von10">Sie ist eine 10 von 10, aber... 💘</option>
+      <option value="wop">Wahrheit oder Pflicht 🔥</option>
+      <option value="imposter">Finde den Imposter 🕵️‍♂️</option>
+      <option value="imposterpremium">Wer lügt am Besten 🔍</option>
+      <option value="wort">Verbotene Wörter 🙊</option>
+      <option value="liste">TopSort 📜</option>
+      <option value="tipptopf">TippTopf 👆</option>
+      <option value="stillepost">PinselPost 🖌️</option>
+      <option value="habnochnie">Ich hab noch nie... 🚫</option>
+      <option value="werbinich">Wer bin ich ⁉️</option>
+      <option value="superquiz">Superquiz 🧠</option>
+      <option value="duoPantomieme">Duo-Pantomieme 🎬</option>
+      <option value="battleBid">BattleBid 📈</option>
+      <option value="matchmaster">MatchMaster ⚽</option>
+      <option value="playmaster">PlayMaster ⭐</option>
+
+    </select>
+
+    <button id="showBtn">Anleitung anzeigen</button>
+
+    <div id="instructionCard" class="card"></div>
+
+    <button class="menu-button" onclick="window.location.href='startseite.html'">Zurück zum Hauptmenü</button>
+  </div>
+
+  <script>
+    const instructions = {
+"fakeorfakt": "<h2>Fake or Fakt 🎭</h2><ul><li>🔢 <strong>Zu Beginn:</strong> Wählt die Anzahl der Mitspieler sowie die Anzahl der Lügner.</li><li>🃠 <strong>Jeder Spieler:</strong> Erhält verdeckt eine Karte – entweder mit einem echten Fakt oder mit zwei realistisch klingenden Fakes zur Auswahl.</li><li>🤫 <strong>Wichtig:</strong> Niemand darf seine Karte anderen zeigen oder weitergeben.</li><li>🧠 <strong>Faktenspieler:</strong> Lesen ihren echten Fakt laut vor.</li><li>🎭 <strong>Lügner:</strong> Wählen einen der beiden Fakes (oder denken sich selbst einen aus) und präsentieren ihn als vermeintlichen Fakt.</li><li>🗣️ <strong>Diskussionsrunde:</strong> Nachdem alle vorgelesen haben, wird gemeinsam diskutiert, wer die Lügner sein könnten.</li><li>➡️ <strong>Spielablauf:</strong> Das Spiel beginnt mit Spieler 1 und geht reihum bis zum letzten Spieler.</li><li>📚 <strong>Inhalt:</strong> Über <strong>50 echte Fakten</strong> und <strong>50 raffinierte Fakes</strong> sind eingebaut – ideal zum Raten, Lernen und Lachen!</li></ul>",
+
+"10von10": "<h2>Sie ist eine 10 von 10, aber... 💘</h2><ul><li>🔢 <strong>Zu Beginn:</strong> Wählt man die Anzahl der Mitspieler.</li><li>🌶️ <strong>Optional:</strong> Aktiviert den Spicy-Modus für frechere, gewagtere Fragen.</li><li>🃠 <strong>Der aktive Spieler:</strong> Erhält eine verdeckte Karte mit einer „Sie ist eine 10 von 10, aber…“-Aussage.</li><li>📊 <strong>Bewertung:</strong> Der Spieler bewertet die Aussage mit einer Zahl von 1 bis 10.</li><li>👀 <strong>Geheimnis:</strong> Die anderen Spieler sehen nur die Bewertung, nicht die Aussage.</li><li>❓ <strong>Raterunde:</strong> Anschließend erscheinen 3 Aussagen, von denen eine die echte ist.</li><li>🕵️ <strong>Diskussion:</strong> Die Gruppe versucht herauszufinden, welche Aussage der Spieler bewertet hat.</li><li>➡️ <strong>Spielablauf:</strong> Das Spiel geht reihum, bis jeder einmal bewertet hat.</li><li>💬 <strong>Fazit:</strong> Perfekt, um die Denkweise und Vorlieben der anderen besser zu verstehen – mit viel Humor und Überraschung!</li></ul>",
+
+"wop": "<h2>Wahrheit oder Pflicht 🔥</h2><ul><li>🔢 <strong>Zu Beginn:</strong> Wählt man die Spieleranzahl und den Schwierigkeitsgrad: <em>Normal</em>, <em>Hart</em> oder <em>Spicy</em>.</li><li>🎲 <strong>Spielstart:</strong> Der erste Spieler bekommt die Auswahl zwischen <strong>Wahrheit</strong> oder <strong>Pflicht</strong>.</li><li>✅ <strong>Aufgabe:</strong> Nachdem die gewählte Aktion erledigt wurde, ist der nächste Spieler an der Reihe.</li><li>🔁 <strong>Runden:</strong> Das Spiel geht reihum, bis jeder Spieler <strong>zweimal</strong> dran war.</li></ul>",
+
+"imposter": "<h2>Finde den Imposter 🕵️‍♂️</h2><ul><li>🔢 <strong>Zu Beginn:</strong> Wählt man die Spieleranzahl und bestimmt, wie viele Imposter es geben soll.</li><li>🃠 <strong>Kartenvergabe:</strong> Jeder Spieler erhält verdeckt eine Karte – entweder mit dem geheimen Wort oder, falls Imposter, nur mit einem Hinweis (z. B. bei <em>Liebe</em> → <em>Herz</em>).</li><li>👁️ <strong>Runde 1:</strong> Jeder Spieler sieht seine Karte – der Imposter kennt das Wort nicht!</li><li>🗣️ <strong>Begriffsphase:</strong> Ein Spieler beginnt mit einem Begriff zum geheimen Wort (z. B. bei <em>Liebe</em> → <em>Rot</em>), dann geht es reihum.</li><li>🎭 <strong>Herausforderung:</strong> Da der Imposter das Wort nicht kennt, fällt es ihm schwer, passende Begriffe zu nennen.</li><li>🕵️ <strong>Ratephase:</strong> Die Gruppe diskutiert und versucht herauszufinden, wer der Imposter ist.</li><li>🎯 <strong>Finale:</strong> Der Imposter darf versuchen, das geheime Wort zu erraten – schafft er es, gewinnt er!</li></ul>",
+
+"imposterpremium": "<h2>Wer lügt am Besten 🔍</h2><ul><li>🔢 <strong>Setup:</strong> Zu Beginn wählt ihr die Spieleranzahl, die Anzahl der Imposter und eine Kategorie mit Fragen.</li><li>🃠 <strong>Fragenvergabe:</strong> Alle Spieler bekommen dieselbe Frage – nur die Imposter erhalten eine andere, aber thematisch passende Frage.</li><li>👁️ <strong>Aufdecken:</strong> Jeder Spieler sieht seine Frage. Die normalen Spieler haben dieselbe Frage, die Imposter eine alternative Frage.</li><li>🗣️ <strong>Antwortphase:</strong> Reihum beantwortet jeder Spieler seine Frage. Die Antworten unterscheiden sich – aber nicht offensichtlich.</li><li>🎭 <strong>Herausforderung:</strong> Der Imposter versucht, mit seiner anderen Frage trotzdem glaubwürdig zu antworten.</li><li>🕵️ <strong>Diskussion:</strong> Die Gruppe vergleicht die Antworten und versucht herauszufinden, wer die „falsche“ Frage hatte.</li><li>🎯 <strong>Auflösung:</strong> Am Ende werden die Imposter aufgedeckt – lag die Gruppe richtig oder hat der Imposter sich perfekt versteckt?</li></ul>",
+
+"wort": "<h2>Verbotene Wörter 🙊</h2><ul><li>⏱️ <strong>Spielstart:</strong> Zu Beginn wählt man die gewünschte Spielzeit.</li><li>🧩 <strong>Aufgabe:</strong> Es erscheint ein Wort, das beschrieben werden soll – dazu gibt es <strong>5 Begriffe</strong>, die nicht genannt werden dürfen.</li><li>🗣️ <strong>Beschreibung:</strong> Man versucht, das Wort so zu erklären, dass die anderen es erraten – ohne die verbotenen Begriffe zu verwenden.</li><li>🚫 <strong>Regel:</strong> Wenn einer der verbotenen Begriffe gesagt wird, muss das Wort als falsch bewertet werden.</li><li>⏳ <strong>Ende:</strong> Wenn die Zeit abgelaufen ist, wird angezeigt, wie viele Wörter richtig erraten wurden.</li></ul>",
+
+"liste": "<h2>TopSort 📜</h2><ul><li>🔢 <strong>Spielstart:</strong> Zu Beginn wählt man die Spieleranzahl.</li><li>📊 <strong>Aufgabe:</strong> Es erscheint ein Sortier-Thema, z. B. <em>„Erfolgreichste Kinofilme aller Zeiten (Weltweites Einspielergebnis in Milliarden US-$)”</em>.</li><li>🔟 <strong>Begriffe:</strong> 10 Begriffe werden angezeigt, die in die richtige Reihenfolge gebracht werden müssen.</li><li>🔁 <strong>Spielablauf:</strong> Die Spieler sind abwechselnd dran und versuchen, jeden Begriff auf die passende Position in der Liste zu setzen.</li><li>✅ <strong>Ziel:</strong> Das Spiel läuft so lange, bis alle Begriffe korrekt eingeordnet wurden.</li><li>📈 <strong>Auswertung:</strong> Am Ende wird angezeigt, wie viele Platzierungen jeder Spieler richtig hatte.</li></ul>",
+
+"tipptopf": "<h2>TippTopf 👆</h2><ul><li>🔢 <strong>Spielstart:</strong> Zu Beginn wählt man die Spieleranzahl und die gewünschte Spielzeit.</li><li>⏱️ <strong>Begriffsphase:</strong> Alle 2 Sekunden erscheint ein neuer Begriff, der das gesuchte Wort beschreibt.</li><li>🧠 <strong>Hinweise:</strong> Nach 5 Begriffen beginnt ein Countdown von 10 Sekunden – danach wird das Wort automatisch übersprungen.</li><li>🗣️ <strong>Antwort:</strong> Wer das Wort errät, sagt es laut und klickt anschließend auf <em>Lösen</em>.</li><li>✅ <strong>Auswertung:</strong> Wenn die Antwort richtig war, klickt man auf seinen Namen und erhält einen Punkt – bei falscher Antwort klickt man auf <em>Falsch</em>.</li><li>🔁 <strong>Runden:</strong> Danach erscheint das nächste Wort – das Spiel läuft weiter, bis der Timer abgelaufen ist.</li><li>📊 <strong>Ergebnis:</strong> Am Ende wird angezeigt, wie viele Wörter jeder Spieler richtig hatte.</li></ul>",
+
+"stillepost": "<h2>PinselPost 🖌️</h2><ul><li>👥 <strong>Spielstart:</strong> Zu Beginn wird die Spieleranzahl festgelegt.</li><li>✍️ <strong>Erster Zug:</strong> Der erste Spieler gibt einen Satz ein, z. B. <em>„Ein Elefant isst eine Banane“</em>.</li><li>🎨 <strong>Malen:</strong> Der zweite Spieler sieht diesen Satz und versucht ihn als Bild darzustellen.</li><li>📝 <strong>Raten:</strong> Der dritte Spieler sieht nur das Bild und schreibt einen neuen Satz, der beschreibt, was er sieht.</li><li>🔁 <strong>Wechsel:</strong> Dieser Ablauf wiederholt sich – Bild, Satz, Bild, Satz – bis der letzte Spieler an der Reihe war.</li><li>😂 <strong>Ergebnis:</strong> Am Ende wird der letzte Satz mit dem ursprünglichen verglichen – oft mit lustigen Abweichungen!</li></ul>",
+
+"habnochnie": "<h2>Ich hab noch nie... 🚫</h2><ul><li>👥 <strong>Spielstart:</strong> Zuerst wählt man die Spieleranzahl und den Spielmodus – <em>Normal</em> oder <em>Spicy 🌶️</em>.</li><li>🗣️ <strong>Aussagen:</strong> Es erscheint eine Aussage wie z. B. <em>„Ich hab noch nie im Regen getanzt“</em>.</li><li>✋ <strong>Reaktion:</strong> Wer das schon einmal gemacht hat, hebt die Hand – oder trinkt einen Shot (im 18+ Modus).</li><li>🔁 <strong>Runden:</strong> Danach kommt die nächste Aussage – das Spiel geht weiter, bis ihr keine Lust mehr habt.</li><li>🎉 <strong>Fun-Faktor:</strong> Ideal zum Lachen, Staunen und besser Kennenlernen – je nach Modus harmlos oder wild!</li></ul>",
+
+"werbinich": "<h2>Wer bin ich? ⁉️</h2><ul><li>📱 <strong>Spielstart:</strong> Jeder Spieler benötigt ein Handy. Nach dem Klick auf <em>Spiel starten</em> gibt man sein Handy an die rechts sitzende Person weiter.</li><li>✍️ <strong>Begriff wählen:</strong> Die Nachbarin oder der Nachbar denkt sich einen Begriff aus und schreibt ihn auf dem Handy auf.</li><li>🙈 <strong>Rückgabe:</strong> Das Handy wird verdeckt zurückgegeben und vor sich aufgestellt – ohne den Begriff selbst zu sehen.</li><li>❓ <strong>Fragen stellen:</strong> Nun stellt man Ja/Nein-Fragen, um den Begriff zu erraten. Man darf weiterraten, solange die Antwort <em>Ja</em> ist.</li><li>🔁 <strong>Reihum:</strong> Sobald eine Frage mit <em>Nein</em> beantwortet wird, ist der nächste Spieler an der Reihe.</li><li>🏆 <strong>Ziel:</strong> Wer seinen Begriff errät, gewinnt!</li></ul>",
+
+"superquiz": "<h2>Superquiz 🧠</h2><ul><li>👥 <strong>Spielstart:</strong> Zuerst wählt ihr die Spieleranzahl und den Spielmodus – <em>Feste Kategorie</em> oder <em>Zufällige Kategorien</em> pro Runde.</li><li>🎲 <strong>Kategorie-Zulosung:</strong> In Runde 1 bekommt Spieler 1 eine Kategorie zugelost – z. B. <em>Technik</em>, <em>Geschichte</em> oder <em>Natur</em>.</li><li>❓ <strong>Fragezeit:</strong> Alle Spieler beantworten eine Frage aus dieser Kategorie, indem sie eine der 3 Antwortmöglichkeiten auswählen .</li><li>🔁 <strong>Runden:</strong> In jeder der 8 Runden wird eine neue Kategorie ausgewählt (bei Zufallsmodus) oder bleibt gleich (bei festem Modus).</li><li>✅ <strong>Punktevergabe:</strong> Für jede richtige Antwort gibt es 1 Punkt – für falsche Antworten leider 0.</li><li>🏆 <strong>Sieger:</strong> Am Ende gewinnt der Spieler mit den meisten Punkten!</li></ul>",
+
+"duoPantomieme": "<h2>Duo-Pantomime 🎬</h2><ul><li>👥 <strong>Spielstart:</strong> Wählt zuerst die Anzahl der Mitspieler (3–10) und gebt ihre Namen ein.</li><li>🎯 <strong>Auswahl:</strong> In jeder Runde werden zwei zufällige Spieler bestimmt, die gemeinsam eine Szene darstellen.</li><li>🃏 <strong>Karte aufdecken:</strong> Die ausgewählten Spieler decken eine versteckte Karte auf – z. B. <em>„Ein tauber Passagier diskutiert mit dem Piloten“</em>.</li><li>🎬 <strong>Darstellung:</strong> Die beiden Spieler führen die Szene pantomimisch vor, egal ob mit Worten, Gestik oder Mimik.</li><li>🔁 <strong>Nächste Runde:</strong> Mit einem Klick wird die nächste zufällige Spielpaarung und Szene ausgewählt. Kein Satz wiederholt sich!</li><li>🛑 <strong>Spielende:</strong> Ihr könnt jederzeit das Spiel beenden oder weiterspielen, solange es noch ungenutzte Szenen gibt.</li></ul>",
+
+"battleBid": "<h2>BattleBid 📈</h2><ul><li>👥 <strong>Spielstart:</strong> Wählt zuerst die Anzahl der Spieler (mind. 2) und anschließend die Anzahl der Teams. Danach gebt ihr jedem Team einen Namen.</li><li>🎲 <strong>Zufallsrunde:</strong> Zu Beginn jeder Runde wird automatisch ein Startteam ausgelost und eine zufällige Kategorie angezeigt – z. B. <em>„Sport“</em>.</li><li>⚔️ <strong>Team-Duell:</strong> Zwei zufällige Teams treten gegeneinander an. Beide wählen jeweils einen Spieler, der die Runde bestreiten soll.</li><li>❓ <strong>Frage aufdecken:</strong> Eine zufällige Frage aus der Kategorie erscheint – z. B. <em>„Wer kennt mehr Fußball‑Weltmeister?“</em>. Keine Frage kommt doppelt vor!</li><li>📈 <strong>Bieten:</strong> Die Teamkapitäne überbieten sich gegenseitig: <em>„Mein Spieler kennt 3!“</em> – <em>„Mein Spieler kennt 4!“</em> – bis ein Team sagt: <em>„Okay, meiner kennt nicht mehr. Du kannst beginnen.“</em></li><li>🏆 <strong>Ergebnis:</strong> Nach der Runde wählt ihr das Gewinnerteam aus. Dieses erhält einen Punkt.</li><li>🔁 <strong>Nächste Runde:</strong> Es geht automatisch weiter mit neuen Kategorien, neuen Fragen und neuen Team‑Duellen. Jedes Team kommt mindestens zweimal dran!</li><li>🛑 <strong>Spielende:</strong> Nach allen Runden werden die Punkte angezeigt und das Gewinnerteam gekürt. Ihr könnt zurück zur Startseite oder das Spiel mit denselben Teams erneut starten.</li></ul>",
+
+"matchmaster": "<h2>MatchMaster ⚽</h2><ul><li>👥 <strong>Spielstart:</strong> Wählt zuerst die Anzahl der Spieler (1–8). Danach gebt ihr jedem Spieler einen Namen.</li><li>🎚️ <strong>Schwierigkeitsgrad:</strong> Wählt zwischen <em>Leicht</em>, <em>Mittel</em>, <em>Schwer</em> oder <em>Zufällig</em>. Jede Stufe zeigt andere Hinweise zu den Spielen.</li><li>📸 <strong>Match-Anzeige:</strong> In jeder Runde wird ein zufälliges Fußballspiel angezeigt – ohne Wiederholungen! Je nach Schwierigkeit seht ihr z. B. Tore, Torschützen, Minuten oder fast gar keine Infos.</li><li>🔍 <strong>Runde lösen:</strong> Jeder Spieler muss das richtige Turnier erraten – z. B. <em>„WM 2014“</em> oder <em>„EM 2020“</em>. Die Eingabe erfolgt direkt auf dem Bildschirm.</li><li>🏆 <strong>Punkte:</strong> Richtige Antworten geben einen Punkte.</li><li>🔁 <strong>Automatische Runden:</strong> MatchMaster zeigt automatisch das nächste Spiel an. Jeder Spieler kommt genau dreimal dran, bevor das Spiel endet.</li><li>🎉 <strong>Finale:</strong> Am Ende werden alle Punkte angezeigt. Der Spieler mit den meisten Punkten gewinnt!</li><li>🔄 <strong>Neustart:</strong> Ihr könnt das Spiel erneut spielen – entweder komplett neu oder mit denselben Spielern und einer neuen Auswahl an Matches.</li></ul>",
+
+"playmaster": "<h2>PlayMaster ⭐</h2><ul><li>👥 <strong>Spielstart:</strong> Wählt zuerst eine Kategorie – z. B. <em>Fußball</em>, <em>Musik</em>, <em>Filme</em> oder <em>Geografie</em>. Danach gebt ihr jedem Spieler einen Namen (1–8 Spieler).</li><li>🎚️ <strong>Kategorie‑System:</strong> Jede Kategorie besitzt 8 einzigartige Werte – z. B. bei Musik <em>Songs</em>, <em>Alben</em>, <em>Streams</em> oder bei Tieren <em>Größe</em>, <em>Gewicht</em>, <em>Lebensdauer</em>. Jede Runde nutzt eine dieser Kategorien.</li><li>🎲 <strong>Zufallsrunde:</strong> PlayMaster wählt automatisch einen zufälligen Spieler und zeigt eine zufällige Karte aus der gewählten Kategorie an – z. B. <em>„Michael Jackson“</em> oder <em>„Tiger“</em>.</li><li>📊 <strong>Wert auswählen:</strong> Der Spieler muss nun einen der acht Werte auswählen, von dem er glaubt, dass er besonders stark ist – z. B. <em>„Streams“</em> oder <em>„Geschwindigkeit“</em>.</li><li>⚔️ <strong>Vergleich:</strong> PlayMaster zeigt sofort die Werte aller anderen Spieler an. Der höchste Wert gewinnt die Runde und erhält einen Punkt.</li<li>🔁 <strong>Nächste Runde:</strong> Jeder Spieler kommt genau dreimal dran. Die Karten wiederholen sich nicht – jede Runde ist einzigartig.</li><li>🎉 <strong>Finale:</strong> Nach allen Runden zeigt PlayMaster automatisch die Gesamtpunktzahl an. Der Spieler mit den meisten Punkten gewinnt! Dazu gibt es Konfetti, Sounds und eine animierte Siegerehrung.</li><li>🔄 <strong>Neustart:</strong> Ihr könnt das Spiel erneut spielen – entweder komplett neu oder mit denselben Spielern und einer neuen Kartenauswahl.</li></ul>"
+
+
+    };
+
+    document.getElementById("showBtn").addEventListener("click", function () { 
+      const selected = document.getElementById("gameSelector").value;
+      const card = document.getElementById("instructionCard");
+      card.innerHTML = instructions[selected] || "<p>Bitte wähle ein Spiel aus.</p>";
+    });
+  </script>
+</body>
+<footer>
+  <a href="agb.html">AGB</a> |
+  <a href="datenschutz.html">Datenschutz</a> |
+  <a href="cookies.html">Cookies</a>
+</footer>
+
+</html>
+ 
