@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BattleBid 📈</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+background-image: url('wop.png');
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+
+  color: #fff;
+  text-align: center;
+}
+
+h1, h2, h3 {
+  text-shadow: 2px 2px 6px #000;
+}
+
+.container {
+  width: 90%;
+  max-width: 500px;
+  margin: auto;
+  margin-top: 20px;
+}
+
+select, input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 20px;
+  border-radius: 12px;
+  border: none;
+  background: #FFD700;
+  color: #000;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+button:hover {
+  background: #FFC300;
+}
+
+.hidden {
+  display: none;
+}
+
+.card {
+  background: #222;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+.result-btn {
+  background: #00eaff;
+}
+
+.result-btn:hover {
+  background: #00c4d4;
+}
+
+.final-btn {
+  background: #ff4d4d;
+}
+
+.final-btn:hover {
+  background: #ff2a2a;
+}
+</style>
+</head>
+<body>
+
+<h1>BattleBid 📈</h1>
+
+<!-- STARTSCREEN -->
+<div id="screen-start" class="container">
+  <h2>Spieleranzahl wählen</h2>
+  <select id="playerCount">
+    <option value="2">2 Spieler</option>
+    <option value="3">3 Spieler</option>
+    <option value="4">4 Spieler</option>
+    <option value="5">5 Spieler</option>
+    <option value="6">6 Spieler</option>
+    <option value="7">7 Spieler</option>
+    <option value="8">8 Spieler</option>
+    <option value="9">9 Spieler</option>
+    <option value="10">10 Spieler</option>
+  </select>
+
+  <h2>Teamanzahl wählen</h2>
+  <select id="teamCount">
+    <option value="2">2 Teams</option>
+    <option value="3">3 Teams</option>
+    <option value="4">4 Teams</option>
+    <option value="5">5 Teams</option>
+    <option value="6">6 Teams</option>
+    <option value="7">7 Teams</option>
+    <option value="8">8 Teams</option>
+    <option value="9">9 Teams</option>
+    <option value="10">10 Teams</option>
+  </select>
+
+  <button onclick="goToTeamNames()">Weiter</button>
+  <button class="menu-button" onclick="window.location.href='startseite.html'">Zurück zum Hauptmenü</button>
+</div>
+
+<!-- TEAMNAMEN -->
+<div id="screen-teamnames" class="container hidden">
+  <h2>Teamnamen eingeben</h2>
+  <div id="teamNameInputs"></div>
+  <button onclick="startGame()">Spiel starten</button>
+</div>
+
+<!-- KATEGORIE -->
+<div id="screen-category" class="container hidden">
+  <h2 id="startTeamText"></h2>
+  <h3 id="categoryText"></h3>
+  <h3 id="matchupText"></h3>
+  <p>Bitte wählt jeweils einen Spieler für diese Runde.</p>
+  <button onclick="showQuestion()">Weiter</button>
+</div>
+
+<!-- FRAGE -->
+<div id="screen-question" class="container hidden">
+  <h2 id="questionText"></h2>
+  <p>Die Teamkapitäne überbieten sich jetzt gegenseitig.</p>
+  <button class="result-btn" onclick="showResult()">Ergebnis</button>
+</div>
+
+<!-- ERGEBNIS -->
+<div id="screen-result" class="container hidden">
+  <h2>Welches Team hat gewonnen?</h2>
+  <div id="resultButtons"></div>
+</div>
+
+<!-- FINALE -->
+<div id="screen-final" class="container hidden">
+  <h2>Endstand</h2>
+  <div id="finalScores"></div>
+  <h2 id="winnerTeam"></h2>
+
+  <button onclick="location.href='startseite.html'">Zurück zur Startseite</button>
+  <button onclick="restartGame()">Erneut spielen</button>
+</div>
+
+<script>
+// ----------------------------
+// DATEN
+// ----------------------------
+
+const categories = ["Sport", "Musik", "Filme und Serien", "Essen", "Geografie", "Technik", "Wirtschaft", "Haushalt", "Gaming"];
+const questions = {
+  "Sport": [
+"Wer kennt mehr Fußball‑Weltmeister?",
+"Wer kennt mehr Champions‑League‑Sieger?",
+"Wer kennt mehr Bundesliga‑Vereine?",
+"Wer kennt mehr deutsche Nationalspieler?",
+"Wer kennt mehr berühmte Torhüter?",
+"Wer kennt mehr Trainerlegenden?",
+"Wer kennt mehr Fußball‑Stadien?",
+"Wer kennt mehr EM‑Sieger?",
+"Wer kennt mehr WM‑Finalisten?",
+"Wer kennt mehr Ballon‑d’Or‑Gewinner?",
+"Wer kennt mehr Fußball‑Schiedsrichter?",
+"Wer kennt mehr Vereine aus der 2. Bundesliga?",
+
+"Wer kennt mehr Formel‑1‑Weltmeister?",
+"Wer kennt mehr F1‑Teams?",
+"Wer kennt mehr berühmte Rennstrecken?",
+"Wer kennt mehr MotoGP‑Fahrer?",
+"Wer kennt mehr Rallye‑Weltmeister?",
+
+"Wer kennt mehr Tennis‑Grand‑Slam‑Sieger?",
+"Wer kennt mehr berühmte Tennisspieler?",
+"Wer kennt mehr Wimbledon‑Sieger?",
+"Wer kennt mehr Tennis‑Legenden?",
+
+"Wer kennt mehr Olympia‑Sportarten?",
+"Wer kennt mehr Sportarten, die nicht mehr olympisch sind?",
+"Wer kennt mehr Wintersportarten?",
+"Wer kennt mehr Sommersportarten?",
+"Wer kennt mehr Sportarten, die im Wasser stattfinden?",
+"Wer kennt mehr Sportarten, die man alleine macht?",
+"Wer kennt mehr Sportarten, die man im Team macht?",
+
+"Wer kennt mehr Boxweltmeister?",
+"Wer kennt mehr UFC‑Champions?",
+"Wer kennt mehr Kampfsportarten?",
+
+"Wer kennt mehr NBA‑Teams?",
+"Wer kennt mehr berühmte Basketballspieler?",
+"Wer kennt mehr Basketball‑Legenden?",
+
+"Wer kennt mehr NFL‑Teams?",
+"Wer kennt mehr Super‑Bowl‑Sieger?",
+"Wer kennt mehr berühmte American‑Football‑Spieler?",
+
+"Wer kennt mehr berühmte Leichtathleten?",
+"Wer kennt mehr Weltrekorde im Sport?",
+"Wer kennt mehr Sportarten mit einem Ball?",
+"Wer kennt mehr Sportarten ohne Ball?"
+
+  ],
+  "Musik": [
+"Wer kennt mehr deutsche Sänger?",
+"Wer kennt mehr deutsche Bands?",
+"Wer kennt mehr berühmte DJs?",
+"Wer kennt mehr Musikgenres?",
+"Wer kennt mehr Songs mit nur einem Wort im Titel?",
+"Wer kennt mehr Songs, die älter als 20 Jahre sind?",
+"Wer kennt mehr Songs, die jünger als 1 Jahr sind?",
+"Wer kennt mehr Eurovision-Gewinner?",
+"Wer kennt mehr berühmte Musikduos?",
+"Wer kennt mehr Instrumente?",
+"Wer kennt mehr Songs, die in Filmen vorkommen?",
+"Wer kennt mehr Songs mit einem Tier im Titel?",
+"Wer kennt mehr Songs, die in den Charts Platz 1 waren?",
+"Wer kennt mehr Alben, die einen Grammy gewonnen haben?",
+"Wer kennt mehr berühmte Rapper?",
+"Wer kennt mehr berühmte Sängerinnen?",
+"Wer kennt mehr Bands aus den 2000ern?",
+"Wer kennt mehr Bands aus den 90ern?",
+"Wer kennt mehr Songs, die über 1 Milliarde Streams haben?",
+"Wer kennt mehr Musiker, die schon verstorben sind?",
+"Wer kennt mehr Songs, die nur aus einem Wort bestehen?",
+"Wer kennt mehr Songs, die ein Farbwort im Titel haben?",
+"Wer kennt mehr Songs, die ein Land im Titel haben?",
+"Wer kennt mehr Songs, die ein Name im Titel haben?",
+"Wer kennt mehr Songs, die ein Tier im Titel haben?",
+"Wer kennt mehr Songs, die ein Lebensmittel im Titel haben?",
+"Wer kennt mehr Songs, die ein Gefühl im Titel haben?",
+"Wer kennt mehr Songs, die ein Wetterphänomen im Titel haben?",
+"Wer kennt mehr Songs, die ein Kleidungsstück im Titel haben?",
+"Wer kennt mehr Songs, die eine Zahl im Titel haben?"
+
+  ],
+  "Filme und Serien": [
+"Wer kennt mehr Filmklassiker?",
+"Wer kennt mehr Animationsfilme?",
+"Wer kennt mehr Marvel‑Charaktere?",
+"Wer kennt mehr DC‑Charaktere?",
+"Wer kennt mehr Oscar‑Gewinner?",
+"Wer kennt mehr Filme, die einen Oscar für den besten Film gewonnen haben?",
+"Wer kennt mehr Horrorfilme?",
+"Wer kennt mehr Weihnachtsfilme?",
+"Wer kennt mehr berühmte Filmzitate?",
+"Wer kennt mehr Schauspieler?",
+"Wer kennt mehr Schauspielerinnen?",
+"Wer kennt mehr Regisseure?",
+"Wer kennt mehr Filme, die auf wahren Ereignissen basieren?",
+"Wer kennt mehr Filme, die in der Zukunft spielen?",
+"Wer kennt mehr Filme, die in der Vergangenheit spielen?",
+"Wer kennt mehr Filme, die in New York spielen?",
+"Wer kennt mehr Filme, die in Los Angeles spielen?",
+"Wer kennt mehr Filme, die in Deutschland spielen?",
+"Wer kennt mehr Serien mit mehr als 5 Staffeln?",
+"Wer kennt mehr Serien, die abgeschlossen sind?",
+"Wer kennt mehr Serien, die aktuell laufen?",
+"Wer kennt mehr Comedy‑Serien?",
+"Wer kennt mehr Krimi‑Serien?",
+"Wer kennt mehr Fantasy‑Serien?",
+"Wer kennt mehr Science‑Fiction‑Serien?",
+"Wer kennt mehr Sitcoms?",
+"Wer kennt mehr Seriencharaktere?",
+"Wer kennt mehr Filmreihen (z. B. Harry Potter, Star Wars)?",
+"Wer kennt mehr Filme, die Fortsetzungen haben?",
+"Wer kennt mehr Animationsserien?",
+"Wer kennt mehr Filme, die ab 18 sind?",
+"Wer kennt mehr Filme, die jünger als 5 Jahre sind?",
+"Wer kennt mehr Filme, die älter als 20 Jahre sind?",
+"Wer kennt mehr Filme, die auf Büchern basieren?",
+"Wer kennt mehr Filme, die auf Comics basieren?"
+
+  ],
+  "Essen": [
+"Wer kennt mehr Obstsorten?",
+"Wer kennt mehr Gemüsesorten?",
+"Wer kennt mehr Nudelsorten?",
+"Wer kennt mehr italienische Gerichte?",
+"Wer kennt mehr asiatische Gerichte?",
+"Wer kennt mehr Fast‑Food‑Gerichte?",
+"Wer kennt mehr Süßigkeitenmarken?",
+"Wer kennt mehr Schokoladensorten?",
+"Wer kennt mehr Getränke ohne Alkohol?",
+"Wer kennt mehr Getränke mit Alkohol?",
+"Wer kennt mehr Käsesorten?",
+"Wer kennt mehr Brotsorten?",
+"Wer kennt mehr Gewürze?",
+"Wer kennt mehr Kräuter?",
+"Wer kennt mehr Lebensmittel, die rund sind?",
+"Wer kennt mehr Lebensmittel, die man kochen muss?",
+"Wer kennt mehr Lebensmittel, die man nicht kochen muss?",
+"Wer kennt mehr Gerichte, die man nur im Winter isst?",
+"Wer kennt mehr Gerichte, die man nur im Sommer isst?",
+"Wer kennt mehr Obstsorten mit Kern?",
+"Wer kennt mehr Obstsorten ohne Kern?",
+"Wer kennt mehr Gemüsesorten, die grün sind?",
+"Wer kennt mehr Gemüsesorten, die rot sind?",
+"Wer kennt mehr Frühstücksgerichte?",
+"Wer kennt mehr Desserts?",
+"Wer kennt mehr Eissorten?",
+"Wer kennt mehr Suppen?",
+"Wer kennt mehr Salatarten?",
+"Wer kennt mehr Teigarten (z. B. Blätterteig, Hefeteig)?",
+"Wer kennt mehr Lebensmittel, die aus Kartoffeln bestehen?",
+"Wer kennt mehr Lebensmittel, die aus Milch bestehen?"
+
+  ],
+  "Geografie": [
+"Wer kennt mehr Hauptstädte?",
+"Wer kennt mehr Länder in Europa?",
+"Wer kennt mehr Länder in Afrika?",
+"Wer kennt mehr Länder in Asien?",
+"Wer kennt mehr Länder in Südamerika?",
+"Wer kennt mehr Inselstaaten?",
+"Wer kennt mehr Länder ohne Meerzugang?",
+"Wer kennt mehr Länder mit Meerzugang?",
+"Wer kennt mehr Länder mit Rot in der Flagge?",
+"Wer kennt mehr Länder mit Blau in der Flagge?",
+"Wer kennt mehr Länder mit Gelb in der Flagge?",
+"Wer kennt mehr Länder, die kleiner als Deutschland sind?",
+"Wer kennt mehr Länder, die größer als Deutschland sind?",
+"Wer kennt mehr Städte mit über 1 Million Einwohnern?",
+"Wer kennt mehr berühmte Flüsse?",
+"Wer kennt mehr Gebirge?",
+"Wer kennt mehr Seen?",
+"Wer kennt mehr Wüsten?",
+"Wer kennt mehr Meere?",
+"Wer kennt mehr Ozeane?",
+"Wer kennt mehr europäische Hauptstädte?",
+"Wer kennt mehr afrikanische Hauptstädte?",
+"Wer kennt mehr asiatische Hauptstädte?",
+"Wer kennt mehr amerikanische Hauptstädte?",
+"Wer kennt mehr Länder, die an Deutschland grenzen?",
+"Wer kennt mehr Länder, die an China grenzen?",
+"Wer kennt mehr Länder, die an Frankreich grenzen?",
+"Wer kennt mehr Länder, die an Russland grenzen?",
+"Wer kennt mehr Länder, die am Mittelmeer liegen?",
+"Wer kennt mehr Länder, die am Atlantik liegen?",
+"Wer kennt mehr Länder, die am Pazifik liegen?",
+"Wer kennt mehr Inselstaaten?",
+"Wer kennt mehr Halbinseln?",
+"Wer kennt mehr Vulkane?",
+"Wer kennt mehr Nationalparks?",
+"Wer kennt mehr berühmte Sehenswürdigkeiten?",
+"Wer kennt mehr UNESCO‑Welterbestätten?"
+
+  ],
+
+  "Technik": [
+"Wer kennt mehr Handy‑Marken?",
+"Wer kennt mehr Laptop‑Marken?",
+"Wer kennt mehr Kopfhörer‑Marken?",
+"Wer kennt mehr TV‑Marken?",
+"Wer kennt mehr Spielkonsolen?",
+"Wer kennt mehr bekannte Apps?",
+"Wer kennt mehr Internet‑Browser?",
+"Wer kennt mehr Social‑Media‑Plattformen?",
+"Wer kennt mehr Computer‑Teile?",
+"Wer kennt mehr Kabelarten (z. B. HDMI, USB‑C)?",
+"Wer kennt mehr Akku‑Geräte?",
+"Wer kennt mehr Haushaltsgeräte?",
+"Wer kennt mehr Smart‑Home‑Geräte?",
+"Wer kennt mehr Lautsprecher‑Marken?",
+"Wer kennt mehr Kamera‑Marken?",
+"Wer kennt mehr Mikrofon‑Arten?",
+"Wer kennt mehr Display‑Arten (z. B. OLED, LCD)?",
+"Wer kennt mehr bekannte Webseiten?",
+"Wer kennt mehr Streaming‑Dienste?",
+"Wer kennt mehr Bluetooth‑Geräte?",
+"Wer kennt mehr WLAN‑Router‑Marken?",
+"Wer kennt mehr Spiele‑Controller‑Arten?",
+"Wer kennt mehr Geräte, die man aufladen muss?",
+"Wer kennt mehr Geräte, die Batterien brauchen?",
+"Wer kennt mehr Technik‑Begriffe, die jeder kennt?"
+
+
+],
+
+  "Haushalt": [
+"Wer kennt mehr Haushaltsgeräte?",
+"Wer kennt mehr Reinigungsmittel?",
+"Wer kennt mehr Küchenutensilien?",
+"Wer kennt mehr Werkzeuge?",
+"Wer kennt mehr Dinge, die man im Kühlschrank findet?",
+"Wer kennt mehr Dinge, die man im Gefrierschrank findet?",
+"Wer kennt mehr Dinge, die man im Badezimmer findet?",
+"Wer kennt mehr Dinge, die man im Wohnzimmer findet?",
+"Wer kennt mehr Dinge, die man im Schlafzimmer findet?",
+"Wer kennt mehr Dinge, die man im Keller findet?",
+"Wer kennt mehr Dinge, die man im Garten benutzt?",
+"Wer kennt mehr Putzgeräte?",
+"Wer kennt mehr Arten von Müll (z. B. Papier)?",
+"Wer kennt mehr Lampentypen?",
+"Wer kennt mehr Bodenarten (z. B. Parkett)?",
+"Wer kennt mehr Möbelstücke über 1000€?",
+"Wer kennt mehr Arten von Schränken?",
+"Wer kennt mehr Arten von Töpfen und Pfannen?",
+"Wer kennt mehr Arten von Besteck?",
+"Wer kennt mehr Arten von Gläsern?",
+"Wer kennt mehr Waschmittelarten?",
+"Wer kennt mehr Arten von Lappen und Tüchern?",
+"Wer kennt mehr Haushaltsmarken?",
+"Wer kennt mehr Küchenmaschinen?",
+"Wer kennt mehr Arten von Heizungen?",
+"Wer kennt mehr Arten von Steckern und Kabeln?",
+"Wer kennt mehr Dinge, die man zum Putzen braucht?",
+"Wer kennt mehr Dinge, die man zum Kochen braucht?",
+"Wer kennt mehr Dinge, die man zum Waschen braucht?",
+"Wer kennt mehr Dinge, die man zum Reparieren braucht?"
+
+],
+
+  "Wirtschaft": [
+"Wer kennt mehr deutsche Unternehmen?",
+"Wer kennt mehr internationale Unternehmen?",
+"Wer kennt mehr Marken, die jeder kennt?",
+"Wer kennt mehr Automarken?",
+"Wer kennt mehr Banken?",
+"Wer kennt mehr Versicherungen?",
+"Wer kennt mehr Handelsketten?",
+"Wer kennt mehr Supermarktketten?",
+"Wer kennt mehr bekannte Start‑ups?",
+"Wer kennt mehr große Tech‑Firmen?",
+"Wer kennt mehr Luxusmarken?",
+"Wer kennt mehr Lebensmittelmarken?",
+"Wer kennt mehr Getränkehersteller?",
+"Wer kennt mehr Energiekonzerne?",
+"Wer kennt mehr Logistikunternehmen?",
+"Wer kennt mehr Fluggesellschaften?",
+"Wer kennt mehr Unternehmen aus Deutschland, die weltweit bekannt sind?",
+"Wer kennt mehr Unternehmen, die es nicht mehr gibt?",
+"Wer kennt mehr Firmen, die Produkte für Kinder herstellen?",
+"Wer kennt mehr Firmen, die Sportartikel herstellen?",
+"Wer kennt mehr Firmen, die Haushaltsgeräte herstellen?",
+"Wer kennt mehr Firmen, die Kleidung herstellen?",
+"Wer kennt mehr Firmen, die Autos herstellen?",
+"Wer kennt mehr Firmen, die Software herstellen?",
+"Wer kennt mehr Firmen, die Maschinen herstellen?",
+"Wer kennt mehr Firmen, die Lebensmittel produzieren?",
+"Wer kennt mehr Firmen, die Getränke produzieren?",
+"Wer kennt mehr Firmen, die Spielzeug herstellen?",
+"Wer kennt mehr Firmen, die Möbel herstellen?",
+"Wer kennt mehr Firmen, die Kosmetik herstellen?"
+
+],
+  "Gaming": [
+"Wer kennt mehr Videospiel‑Charaktere?",
+"Wer kennt mehr Konsolen?",
+"Wer kennt mehr Spiele, die älter als 10 Jahre sind?",
+"Wer kennt mehr Spiele, die jünger als 1 Jahr sind?",
+"Wer kennt mehr Open‑World‑Spiele?",
+"Wer kennt mehr Shooter‑Spiele?",
+"Wer kennt mehr Horror‑Spiele?",
+"Wer kennt mehr Puzzle‑Spiele?",
+"Wer kennt mehr Rennspiele?",
+"Wer kennt mehr Jump‑and‑Run‑Spiele?",
+"Wer kennt mehr Spiele, die man zu zweit spielen kann?",
+"Wer kennt mehr Spiele, die man alleine spielt?",
+"Wer kennt mehr Nintendo‑Spiele?",
+"Wer kennt mehr PlayStation‑Exclusives?",
+"Wer kennt mehr Xbox‑Exclusives?",
+"Wer kennt mehr PC‑Spiele?",
+"Wer kennt mehr Spiele, die ein Battle‑Royale sind?",
+"Wer kennt mehr Spiele, die ein Simulator sind?",
+"Wer kennt mehr Spiele, die eine Story haben?",
+"Wer kennt mehr Spiele, die keine Story haben?",
+"Wer kennt mehr Spiele, die in der Zukunft spielen?",
+"Wer kennt mehr Spiele, die in der Vergangenheit spielen?",
+"Wer kennt mehr Spiele, die in einer Fantasy‑Welt spielen?",
+"Wer kennt mehr Spiele, die in der echten Welt spielen?",
+"Wer kennt mehr Spiele, die ein Tier als Hauptfigur haben?",
+"Wer kennt mehr Spiele, die ein Fahrzeug als Hauptfigur haben?",
+"Wer kennt mehr Spiele, die ein Roboter als Hauptfigur haben?",
+"Wer kennt mehr Spiele, die ein Kind als Hauptfigur haben?",
+"Wer kennt mehr Spiele, die ein Bösewicht als Hauptfigur haben?",
+"Wer kennt mehr Spiele, die eine Zahl im Titel haben?"
+
+  ]
+};
+
+let usedQuestions = [];
+let teams = [];
+let scores = {};
+let totalRounds = 0;
+let currentRound = 0;
+let currentCategory = "";
+let currentQuestion = "";
+let matchup = [];
+
+// ----------------------------
+// STARTSCREEN → TEAMNAMEN
+// ----------------------------
+
+function goToTeamNames() {
+  const players = Number(document.getElementById("playerCount").value);
+  const teamCount = Number(document.getElementById("teamCount").value);
+
+  if (players < teamCount) {
+    alert("Spieleranzahl muss mindestens so groß sein wie die Teamanzahl!");
+    return;
+  }
+
+  document.getElementById("screen-start").classList.add("hidden");
+  document.getElementById("screen-teamnames").classList.remove("hidden");
+
+  const container = document.getElementById("teamNameInputs");
+  container.innerHTML = "";
+
+  for (let i = 1; i <= teamCount; i++) {
+    container.innerHTML += `
+      <input class="team-input" id="team${i}" value="Team ${i}">
+    `;
+  }
+}
+
+// ----------------------------
+// TEAMNAMEN → SPIEL STARTEN
+// ----------------------------
+
+function startGame() {
+  const teamCount = Number(document.getElementById("teamCount").value);
+
+  teams = [];
+  scores = {};
+
+  for (let i = 1; i <= teamCount; i++) {
+    const name = document.getElementById(`team${i}`).value || `Team ${i}`;
+    teams.push(name);
+    scores[name] = 0;
+  }
+
+  totalRounds = teams.length * 2 - 1;
+  currentRound = 0;
+
+  document.getElementById("screen-teamnames").classList.add("hidden");
+  nextRound();
+}
+
+// ----------------------------
+// RUNDE STARTEN
+// ----------------------------
+
+function nextRound() {
+  if (currentRound >= totalRounds) {
+    return showFinal();
+  }
+
+  currentRound++;
+
+  const startTeam = teams[Math.floor(Math.random() * teams.length)];
+  document.getElementById("startTeamText").innerText =
+    `Startteam der Runde: ${startTeam}`;
+
+  currentCategory = categories[Math.floor(Math.random() * categories.length)];
+  document.getElementById("categoryText").innerText =
+    `Kategorie: ${currentCategory}`;
+
+  let t1 = teams[Math.floor(Math.random() * teams.length)];
+  let t2 = teams[Math.floor(Math.random() * teams.length)];
+
+  while (t1 === t2) {
+    t2 = teams[Math.floor(Math.random() * teams.length)];
+  }
+
+  matchup = [t1, t2];
+  document.getElementById("matchupText").innerText =
+    `${t1} gegen ${t2}`;
+
+  document.getElementById("screen-category").classList.remove("hidden");
+}
+
+// ----------------------------
+// FRAGE ANZEIGEN
+// ----------------------------
+
+function showQuestion() {
+  document.getElementById("screen-category").classList.add("hidden");
+
+  let qList = questions[currentCategory];
+  let q = qList[Math.floor(Math.random() * qList.length)];
+
+  while (usedQuestions.includes(q)) {
+    q = qList[Math.floor(Math.random() * qList.length)];
+  }
+
+  usedQuestions.push(q);
+  currentQuestion = q;
+
+  document.getElementById("questionText").innerText = q;
+  document.getElementById("screen-question").classList.remove("hidden");
+}
+
+// ----------------------------
+// ERGEBNIS
+// ----------------------------
+
+function showResult() {
+  document.getElementById("screen-question").classList.add("hidden");
+  document.getElementById("screen-result").classList.remove("hidden");
+
+  const container = document.getElementById("resultButtons");
+  container.innerHTML = "";
+
+  matchup.forEach(team => {
+    container.innerHTML += `
+      <button onclick="awardPoint('${team}')">${team} gewinnt</button>
+    `;
+  });
+}
+
+function awardPoint(team) {
+  scores[team]++;
+  document.getElementById("screen-result").classList.add("hidden");
+  nextRound();
+}
+
+// ----------------------------
+// FINALE
+// ----------------------------
+
+function showFinal() {
+  document.getElementById("screen-final").classList.remove("hidden");
+
+  const container = document.getElementById("finalScores");
+  container.innerHTML = "";
+
+  let winner = "";
+  let maxPoints = -1;
+
+  for (let t of teams) {
+    container.innerHTML += `<p>${t}: ${scores[t]} Punkte</p>`;
+    if (scores[t] > maxPoints) {
+      maxPoints = scores[t];
+      winner = t;
+    }
+  }
+
+  document.getElementById("winnerTeam").innerText =
+    `Gewinnerteam: ${winner} 🎉`;
+}
+
+// ----------------------------
+// RESTART
+// ----------------------------
+
+function restartGame() {
+  usedQuestions = [];
+  currentRound = 0;
+  for (let t of teams) scores[t] = 0;
+
+  document.getElementById("screen-final").classList.add("hidden");
+  nextRound();
+}
+
+</script>
+
+</body>
+<footer>
+  <a href="agb.html">AGB</a> |
+  <a href="datenschutz.html">Datenschutz</a> |
+  <a href="cookies.html">Cookies</a>
+</footer>
+
+</html>

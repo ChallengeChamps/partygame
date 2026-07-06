@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MatchMaster ⚽</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-image: url('wm.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    color: #fff;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: rgba(0,0,0,0.6);
+    border-radius: 20px;
+    margin-top: 40px;
+    animation: fadeIn 1s ease;
+  }
+
+  h1, h2 {
+    text-align: center;
+    text-shadow: 2px 2px 6px #000;
+  }
+
+  select, input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+  }
+
+  button {
+    background-color: #ff4081;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #e91e63;
+  }
+
+  .menu-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+
+  .menu-button:hover {
+    background-color: #45a049;
+  }
+
+  .card {
+    background: #fff;
+    color: #000;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    animation: slideUp 0.8s ease;
+    position: relative;
+  }
+
+  .hidden { display: none; }
+
+  .result-icon {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 4rem;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 10;
+  }
+
+  .result-icon.show {
+    transform: scale(1.4);
+    opacity: 1;
+    animation: popBounce 0.35s ease;
+  }
+
+  @keyframes popBounce {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.6); }
+    100% { transform: scale(1.3); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<audio id="bg-sound" src="wm.mp3" autoplay loop></audio>
+
+<div class="container" id="start-screen">
+  <h1>MatchMaster ⚽</h1>
+
+  <label>Spieleranzahl:</label>
+  <select id="player-count">
+    <option value="1">1 Spieler</option>
+    <option value="2">2 Spieler</option>
+    <option value="3">3 Spieler</option>
+    <option value="4">4 Spieler</option>
+    <option value="5">5 Spieler</option>
+    <option value="6">6 Spieler</option>
+    <option value="7">7 Spieler</option>
+    <option value="8">8 Spieler</option>
+  </select>
+
+  <div id="player-names"></div>
+
+  <label>Schwierigkeit:</label>
+  <select id="difficulty">
+    <option value="leicht">Leicht</option>
+    <option value="mittel">Mittel</option>
+    <option value="schwer">Schwer</option>
+    <option value="zufall">Zufall</option>
+  </select>
+
+  <button id="start-game" class="menu-button">Spiel starten</button>
+  <button onclick="location.href='startseite.html'" class="menu-button">Zur Startseite</button>
+</div>
+
+<div class="container hidden" id="game-screen">
+  <h2 id="round-title"></h2>
+
+  <div id="match-card" class="card">
+    <div id="match-content"></div>
+    <div id="result-icon" class="result-icon"></div>
+  </div>
+
+  <div id="answer-buttons"></div>
+</div>
+
+<div class="container hidden" id="end-screen">
+  <h2>Spiel beendet!</h2>
+  <div id="winner-card" class="card"></div>
+  <button id="restart-game" class="menu-button">Erneut spielen</button>
+  <button onclick="location.href='startseite.html'" class="menu-button">Zur Startseite</button>
+</div>
+
+<script>
+const matches = [
+{
+  teams: "Chile 🇨🇱 - Argentinien 🇦🇷",
+  score: "0:0 (4:1 n.E.)",
+  scorers: [],
+  tournament: "CA2015",
+  year: 2015,
+  answers: ["CA2015", "CA2011", "CA2019", "CA2007"]
+},
+{
+  teams: "Chile 🇨🇱 - Argentinien 🇦🇷",
+  score: "0:0 (4:2 n.E.)",
+  scorers: [],
+  tournament: "CA2016",
+  year: 2016,
+  answers: ["CA2016", "CA2019", "CA2011", "CA2004"]
+},
+{
+  teams: "Brasilien 🇧🇷 - Peru 🇵🇪",
+  score: "3:1",
+  scorers: [
+    "⚽ Everton 🇧🇷 15'",
+    "⚽ Guerrero 🇵🇪 44'",
+    "⚽ Jesus 🇧🇷 45'",
+    "⚽ Richarlison 🇧🇷 90'"
+  ],
+  tournament: "CA2019",
+  year: 2019,
+  answers: ["CA2019", "CA2015", "CA2021", "CA2007"]
+},
+{
+  teams: "Argentinien 🇦🇷 - Brasilien 🇧🇷",
+  score: "1:0",
+  scorers: [
+    "⚽ Di Maria 🇦🇷 22'"
+  ],
+  tournament: "CA2021",
+  year: 2021,
+  answers: ["CA2021", "CA2019", "CA2015", "CA2007"]
+},
+{
+  teams: "Uruguay 🇺🇾 - Paraguay 🇵🇾",
+  score: "3:0",
+  scorers: [
+    "⚽ Cavani 🇺🇾 21'",
+    "⚽ Cavani 🇺🇾 45'",
+    "⚽ Suarez 🇺🇾 78'"
+  ],
+  tournament: "CA2011",
+  year: 2011,
+  answers: ["CA2011", "CA2007", "CA2015", "CA2019"]
+},
+{
+  teams: "Peru 🇵🇪 - Chile 🇨🇱",
+  score: "3:0",
+  scorers: [
+    "⚽ Flores 🇵🇪 21'",
+    "⚽ Yotún 🇵🇪 38'",
+    "⚽ Guerrero 🇵🇪 90+1'"
+  ],
+  tournament: "CA2019",
+  year: 2019,
+  answers: ["CA2019", "CA2015", "CA2021", "CA2007"]
+},
+{
+  teams: "Kolumbien 🇨🇴 - Chile 🇨🇱",
+  score: "0:0 (5:4 n.E.)",
+  scorers: [],
+  tournament: "CA2019",
+  year: 2019,
+  answers: ["CA2019", "CA2015", "CA2011", "CA2007"]
+},
+{
+  teams: "Brasilien 🇧🇷 - Argentinien 🇦🇷",
+  score: "2:0",
+  scorers: [
+    "⚽ Jesus 🇧🇷 19'",
+    "⚽ Firmino 🇧🇷 71'"
+  ],
+  tournament: "CA2019",
+  year: 2019,
+  answers: ["CA2019", "CA2015", "CA2021", "CA2007"]
+},
+{
+  teams: "Uruguay 🇺🇾 - Argentinien 🇦🇷",
+  score: "1:1",
+  scorers: [
+    "⚽ Suarez 🇺🇾 30'",
+    "⚽ Messi 🇦🇷 57'"
+  ],
+  tournament: "CA2015",
+  year: 2015,
+  answers: ["CA2015", "CA2011", "CA2019", "CA2007"]
+},
+{
+  teams: "Chile 🇨🇱 - Uruguay 🇺🇾",
+  score: "1:0",
+  scorers: [
+    "⚽ Isla 🇨🇱 81'"
+  ],
+  tournament: "CA2015",
+  year: 2015,
+  answers: ["CA2015", "CA2011", "CA2019", "CA2007"]
+},
+{
+  teams: "Argentinien 🇦🇷 - Paraguay 🇵🇾",
+  score: "6:1",
+  scorers: [
+    "⚽ Rojo 🇦🇷 15'",
+    "⚽ Pastore 🇦🇷 27'",
+    "⚽ Lucas Barrios 🇵🇾 43'",
+    "⚽ Di Maria 🇦🇷 47'",
+    "⚽ Di Maria 🇦🇷 53'",
+    "⚽ Aguero 🇦🇷 80'",
+    "⚽ Higuain 🇦🇷 83'"
+  ],
+  tournament: "CA2015",
+  year: 2015,
+  answers: ["CA2015", "CA2011", "CA2019", "CA2007"]
+},
+{
+  teams: "Brasilien 🇧🇷 - Venezuela 🇻🇪",
+  score: "3:1",
+  scorers: [
+    "⚽ Marquinhos 🇧🇷 23'",
+    "⚽ Neymar 🇧🇷 64'",
+    "⚽ Gabigol 🇧🇷 89'",
+    "⚽ Córdova 🇻🇪 90+2'"
+  ],
+  tournament: "CA2021",
+  year: 2021,
+  answers: ["CA2021", "CA2019", "CA2015", "CA2007"]
+},
+{
+  teams: "Peru 🇵🇪 - Uruguay 🇺🇾",
+  score: "0:0 (5:4 n.E.)",
+  scorers: [],
+  tournament: "CA2019",
+  year: 2019,
+  answers: ["CA2019", "CA2015", "CA2021", "CA2011"]
+},
+{
+  teams: "Chile 🇨🇱 - Bolivien 🇧🇴",
+  score: "2:1",
+  scorers: [
+    "⚽ Vidal 🇨🇱 10'",
+    "⚽ Aránguiz 🇨🇱 38'",
+    "⚽ Moreno 🇧🇴 90'"
+  ],
+  tournament: "CA2021",
+  year: 2021,
+  answers: ["CA2021", "CA2019", "CA2015", "CA2007"]
+},
+{
+  teams: "Argentinien 🇦🇷 - Ecuador 🇪🇨",
+  score: "3:0",
+  scorers: [
+    "⚽ De Paul 🇦🇷 40'",
+    "⚽ Lautaro 🇦🇷 84'",
+    "⚽ Messi 🇦🇷 90+3'"
+  ],
+  tournament: "CA2021",
+  year: 2021,
+  answers: ["CA2021", "CA2019", "CA2015", "CA2007"]
+},
+{
+  teams: "Kolumbien 🇨🇴 - Peru 🇵🇪",
+  score: "3:2",
+  scorers: [
+    "⚽ Cuadrado 🇨🇴 45'",
+    "⚽ Yotún 🇵🇪 49'",
+    "⚽ Díaz 🇨🇴 66'",
+    "⚽ Lapadula 🇵🇪 82'",
+    "⚽ Díaz 🇨🇴 90+4'"
+  ],
+  tournament: "CA2021",
+  year: 2021,
+  answers: ["CA2021", "CA2019", "CA2015", "CA2007"]
+},
+{
+  teams: "Uruguay 🇺🇾 - Chile 🇨🇱",
+  score: "1:1",
+  scorers: [
+    "⚽ Vargas 🇨🇱 26'",
+    "⚽ Suarez 🇺🇾 66'"
+  ],
+  tournament: "CA2021",
+  year: 2021,
+  answers: ["CA2021", "CA2019", "CA2015", "CA2011"]
+},
+{
+  teams: "Brasilien 🇧🇷 - Kolumbien 🇨🇴",
+  score: "2:1",
+  scorers: [
+    "⚽ Díaz 🇨🇴 10'",
+    "⚽ Firmino 🇧🇷 78'",
+    "⚽ Casemiro 🇧🇷 90+10'"
+  ],
+  tournament: "CA2021",
+  year: 2021,
+  answers: ["CA2021", "CA2019", "CA2015", "CA2007"]
+},
+{
+  teams: "Argentinien 🇦🇷 - Paraguay 🇵🇾",
+  score: "1:0",
+  scorers: [
+    "⚽ Papu Gómez 🇦🇷 10'"
+  ],
+  tournament: "CA2021",
+  year: 2021,
+  answers: ["CA2021", "CA2019", "CA2015", "CA2011"]
+},
+  {
+    teams: "Deutschland 🇩🇪 - Spanien 🇪🇸",
+    score: "1:2 n.V.",
+    scorers: [
+      "⚽ F. Wirtz 🇩🇪 89'",
+      "⚽ D. Olmo 🇪🇸 51'",
+      "⚽ M. Merino 🇪🇸 119'"
+    ],
+    tournament: "EM2024",
+    year: 2024,
+    answers: ["EM2020", "EM2024", "WM2022", "WM2018"]
+  },
+  {
+    teams: "Frankreich 🇫🇷 - Argentinien 🇦🇷",
+    score: "3:3",
+    scorers: [
+      "⚽ Messi 🇦🇷 23'",
+      "⚽ Di Maria 🇦🇷 36'",
+      "⚽ Mbappé 🇫🇷 80'"
+    ],
+    tournament: "WM2022",
+    year: 2022,
+    answers: ["WM2022", "WM2018", "WM2014", "WM2006"]
+  },
+  {
+    teams: "England 🏴 - Kroatien 🇭🇷",
+    score: "1:2 n.V.",
+    scorers: [
+      "⚽ Kane 🏴 30'",
+      "⚽ Perisic 🇭🇷 68'",
+      "⚽ Mandzukic 🇭🇷 109'"
+    ],
+    tournament: "WM2018",
+    year: 2018,
+    answers: ["EM2012", "WM2014", "EM2016", "WM2018"]
+  },
+  {
+    teams: "Italien 🇮🇹 - Belgien 🇧🇪",
+    score: "2:1",
+    scorers: [
+      "⚽ Barella 🇮🇹 31'",
+      "⚽ Insigne 🇮🇹 44'",
+      "⚽ Lukaku 🇧🇪 61'"
+    ],
+    tournament: "EM2020",
+    year: 2021,
+    answers: ["EM2020", "WM2018", "EM2012", "EM2008"]
+  },
+  {
+    teams: "Deutschland 🇩🇪 - Brasilien 🇧🇷",
+    score: "7:1",
+    scorers: [
+      "⚽ Müller 🇩🇪 11'",
+      "⚽ Klose 🇩🇪 23'",
+      "⚽ Kroos 🇩🇪 24'",
+      "⚽ Kroos 🇩🇪 26'",
+      "⚽ Khedira 🇩🇪 29'",
+      "⚽ Schürrle 🇩🇪 69'",
+      "⚽ Schürrle 🇩🇪 79'",
+      "⚽ Oscar 🇧🇷 90'"
+    ],
+    tournament: "WM2014",
+    year: 2014,
+    answers: ["WM2006", "WM2010", "WM2014", "WM2018"]
+  },
+  {
+    teams: "Italien 🇮🇹 - Frankreich 🇫🇷",
+    score: "1:1 (5:3 n.E.)",
+    scorers: [
+      "⚽ Zidane 🇫🇷 7'",
+      "⚽ Materazzi 🇮🇹 19'"
+    ],
+    tournament: "WM2006",
+    year: 2006,
+    answers: ["WM2006", "EM2012", "WM2010", "WM1998"]
+  },
+  {
+    teams: "Niederlande 🇳🇱 - Spanien 🇪🇸",
+    score: "5:1",
+    scorers: [
+      "⚽ Alonso 🇪🇸 27'",
+      "⚽ van Persie 🇳🇱 44'",
+      "⚽ Robben 🇳🇱 53'",
+      "⚽ de Vrij 🇳🇱 64'",
+      "⚽ van Persie 🇳🇱 72'",
+      "⚽ Robben 🇳🇱 80'"
+    ],
+    tournament: "WM2014",
+    year: 2014,
+    answers: ["WM2010", "WM2014", "EM2012", "EM2008"]
+  },
+  {
+    teams: "Portugal 🇵🇹 - Niederlande 🇳🇱",
+    score: "2:1",
+    scorers: [
+      "⚽ Ronaldo 🇵🇹 26'",
+      "⚽ Maniche 🇵🇹 58'",
+      "⚽ Andrade 🇵🇹 (ET) 63'"
+    ],
+    tournament: "EM2004",
+    year: 2004,
+    answers: ["EM2008", "EM2000", "WM1998", "EM2004"]
+  },
+  {
+    teams: "Argentinien 🇦🇷 - Brasilien 🇧🇷",
+    score: "0:3",
+    scorers: [
+      "⚽ Júlio Baptista 🇧🇷 4'",
+      "⚽ Ayala 🇦🇷 (ET) 40'",
+      "⚽ Dani Alves 🇧🇷 69'"
+    ],
+    tournament: "CA2007",
+    year: 2007,
+    answers: ["CA2007", "CA2004", "CA2011", "CA2015"]
+  },
+  {
+    teams: "Dänemark 🇩🇰 - Deutschland 🇩🇪",
+    score: "2:0",
+    scorers: [
+      "⚽ Jensen 🇩🇰 18'",
+      "⚽ Vilfort 🇩🇰 78'"
+    ],
+    tournament: "EM1992",
+    year: 1992,
+    answers: ["EM1992", "EM1988", "EM1996", "EM1984"]
+  },
+  {
+    teams: "Frankreich 🇫🇷 - Kroatien 🇭🇷",
+    score: "4:2",
+    scorers: [
+      "⚽ Mandzukic 🇭🇷 (ET) 18'",
+      "⚽ Perisic 🇭🇷 28'",
+      "⚽ Griezmann 🇫🇷 38'",
+      "⚽ Pogba 🇫🇷 59'",
+      "⚽ Mbappé 🇫🇷 65'",
+      "⚽ Mandzukic 🇭🇷 69'"
+    ],
+    tournament: "WM2018",
+    year: 2018,
+    answers: ["WM2018", "EM2016", "WM2022", "WM2010"]
+  },
+  {
+    teams: "Belgien 🇧🇪 - Japan 🇯🇵",
+    score: "3:2",
+    scorers: [
+      "⚽ Haraguchi 🇯🇵 48'",
+      "⚽ Inui 🇯🇵 52'",
+      "⚽ Vertonghen 🇧🇪 69'",
+      "⚽ Fellaini 🇧🇪 74'",
+      "⚽ Chadli 🇧🇪 90+4'"
+    ],
+    tournament: "WM2018",
+    year: 2018,
+    answers: ["WM2018", "WM2014", "WM2022", "WM2010"]
+  },
+  {
+    teams: "Brasilien 🇧🇷 - Deutschland 🇩🇪",
+    score: "2:0",
+    scorers: [
+      "⚽ Ronaldo 🇧🇷 67'",
+      "⚽ Ronaldo 🇧🇷 79'"
+    ],
+    tournament: "WM2002",
+    year: 2002,
+    answers: ["WM2002", "WM1998", "WM2006", "WM1994"]
+  },
+  {
+    teams: "Spanien 🇪🇸 - Italien 🇮🇹",
+    score: "4:0",
+    scorers: [
+      "⚽ Silva 🇪🇸 14'",
+      "⚽ Jordi Alba 🇪🇸 41'",
+      "⚽ Torres 🇪🇸 84'",
+      "⚽ Mata 🇪🇸 88'"
+    ],
+    tournament: "EM2012",
+    year: 2012,
+    answers: ["EM2012", "EM2008", "WM2018", "WM2014"]
+  },
+  {
+    teams: "Deutschland 🇩🇪 - Argentinien 🇦🇷",
+    score: "1:0 n.V.",
+    scorers: [
+      "⚽ Götze 🇩🇪 113'"
+    ],
+    tournament: "WM2014",
+    year: 2014,
+    answers: ["WM2014", "WM2010", "WM2006", "WM2018"]
+  },
+  {
+    teams: "Brasilien 🇧🇷 - Chile 🇨🇱",
+    score: "1:1 (3:2 n.E.)",
+    scorers: [
+      "⚽ David Luiz 🇧🇷 18'",
+      "⚽ Alexis Sánchez 🇨🇱 32'"
+    ],
+    tournament: "WM2014",
+    year: 2014,
+    answers: ["WM2014", "CA2019", "WM2006", "WM2018"]
+  },
+  {
+    teams: "Deutschland 🇩🇪 - Italien 🇮🇹",
+    score: "1:1 (6:5 n.E.)",
+    scorers: [
+      "⚽ Özil 🇩🇪 65'",
+      "⚽ Bonucci 🇮🇹 78'"
+    ],
+    tournament: "EM2016",
+    year: 2016,
+    answers: ["EM2016", "EM2012", "WM2014", "WM2010"]
+  },
+  {
+    teams: "Frankreich 🇫🇷 - Portugal 🇵🇹",
+    score: "0:1 n.V.",
+    scorers: [
+      "⚽ Eder 🇵🇹 109'"
+    ],
+    tournament: "EM2016",
+    year: 2016,
+    answers: ["EM2016", "EM2012", "EM2020", "EM2008"]
+  },
+{
+  teams: "Brasilien 🇧🇷 - Argentinien 🇦🇷",
+  score: "3:1",
+  scorers: [
+    "⚽ Neymar 🇧🇷 12'",
+    "⚽ Messi 🇦🇷 44'",
+    "⚽ Richarlison 🇧🇷 67'",
+    "⚽ Paquetá 🇧🇷 81'"
+  ],
+  tournament: "CA2019",
+  year: 2019,
+  answers: ["CA2015", "CA2019", "CA2021", "CA2007"]
+},
+{
+  teams: "Deutschland 🇩🇪 - Frankreich 🇫🇷",
+  score: "0:2",
+  scorers: [
+    "⚽ Griezmann 🇫🇷 38'",
+    "⚽ Griezmann 🇫🇷 72'"
+  ],
+  tournament: "EM2016",
+  year: 2016,
+  answers: ["EM2012", "EM2016", "EM2020", "EM2008"]
+},
+{
+  teams: "Spanien 🇪🇸 - Niederlande 🇳🇱",
+  score: "0:1",
+  scorers: [
+    "⚽ van Persie 🇳🇱 87'"
+  ],
+  tournament: "WM2010",
+  year: 2010,
+  answers: ["WM2014", "WM2006", "WM2010", "WM1998"]
+},
+{
+  teams: "Chile 🇨🇱 - Argentinien 🇦🇷",
+  score: "0:0 (4:2 n.E.)",
+  scorers: [],
+  tournament: "CA2016",
+  year: 2016,
+  answers: ["CA2011", "CA2016", "CA2019", "CA2004"]
+},
+{
+  teams: "Portugal 🇵🇹 - Frankreich 🇫🇷",
+  score: "1:0 n.V.",
+  scorers: [
+    "⚽ Eder 🇵🇹 109'"
+  ],
+  tournament: "EM2016",
+  year: 2016,
+  answers: ["EM2016", "EM2020", "EM2012", "EM2008"]
+},
+{
+  teams: "Uruguay 🇺🇾 - Brasilien 🇧🇷",
+  score: "2:1",
+  scorers: [
+    "⚽ Schiaffino 🇺🇾 66'",
+    "⚽ Ghiggia 🇺🇾 79'",
+    "⚽ Friaca 🇧🇷 34'"
+  ],
+  tournament: "WM1950",
+  year: 1950,
+  answers: ["WM1954", "WM1950", "WM1938", "WM1958"]
+},
+{
+  teams: "Deutschland 🇩🇪 - Italien 🇮🇹",
+  score: "0:2",
+  scorers: [
+    "⚽ Balotelli 🇮🇹 20'",
+    "⚽ Balotelli 🇮🇹 36'"
+  ],
+  tournament: "EM2012",
+  year: 2012,
+  answers: ["EM2008", "EM2016", "EM2012", "EM2004"]
+},
+{
+  teams: "Brasilien 🇧🇷 - Peru 🇵🇪",
+  score: "3:1",
+  scorers: [
+    "⚽ Everton 🇧🇷 15'",
+    "⚽ Guerrero 🇵🇪 44'",
+    "⚽ Jesus 🇧🇷 45'",
+    "⚽ Richarlison 🇧🇷 90'"
+  ],
+  tournament: "CA2019",
+  year: 2019,
+  answers: ["CA2019", "CA2015", "CA2021", "CA2007"]
+},
+{
+  teams: "Argentinien 🇦🇷 - Deutschland 🇩🇪",
+  score: "0:4",
+  scorers: [
+    "⚽ Müller 🇩🇪 3'",
+    "⚽ Klose 🇩🇪 67'",
+    "⚽ Friedrich 🇩🇪 74'",
+    "⚽ Klose 🇩🇪 89'"
+  ],
+  tournament: "WM2010",
+  year: 2010,
+  answers: ["WM2010", "WM2006", "WM2014", "WM1998"]
+},
+{
+  teams: "Spanien 🇪🇸 - Russland 🇷🇺",
+  score: "3:0",
+  scorers: [
+    "⚽ Villa 🇪🇸 20'",
+    "⚽ Villa 🇪🇸 44'",
+    "⚽ Villa 🇪🇸 75'"
+  ],
+  tournament: "EM2008",
+  year: 2008,
+  answers: ["EM2008", "EM2004", "EM2012", "EM2016"]
+},
+{
+  teams: "Kolumbien 🇨🇴 - Chile 🇨🇱",
+  score: "0:2",
+  scorers: [
+    "⚽ Aránguiz 🇨🇱 20'",
+    "⚽ Fuenzalida 🇨🇱 34'"
+  ],
+  tournament: "CA2016",
+  year: 2016,
+  answers: ["CA2016", "CA2019", "CA2011", "CA2004"]
+},
+{
+  teams: "Deutschland 🇩🇪 - Portugal 🇵🇹",
+  score: "4:0",
+  scorers: [
+    "⚽ Müller 🇩🇪 12'",
+    "⚽ Hummels 🇩🇪 32'",
+    "⚽ Müller 🇩🇪 45'",
+    "⚽ Müller 🇩🇪 78'"
+  ],
+  tournament: "WM2014",
+  year: 2014,
+  answers: ["WM2014", "WM2010", "WM2006", "WM2018"]
+},
+{
+  teams: "Italien 🇮🇹 - England 🏴",
+  score: "1:1 (3:2 n.E.)",
+  scorers: [
+    "⚽ Shaw 🏴 2'",
+    "⚽ Bonucci 🇮🇹 67'"
+  ],
+  tournament: "EM2020",
+  year: 2021,
+  answers: ["EM2020", "EM2016", "EM2012", "EM2008"]
+},
+{
+  teams: "Brasilien 🇧🇷 - Kolumbien 🇨🇴",
+  score: "2:1",
+  scorers: [
+    "⚽ Neymar 🇧🇷 27'",
+    "⚽ Luiz 🇧🇷 69'",
+    "⚽ James 🇨🇴 80'"
+  ],
+  tournament: "WM2014",
+  year: 2014,
+  answers: ["WM2014", "WM2010", "WM2006", "WM2018"]
+},
+{
+  teams: "Argentinien 🇦🇷 - Chile 🇨🇱",
+  score: "0:0 (1:4 n.E.)",
+  scorers: [
+    "⚽ /'"
+  ],
+  tournament: "CA2011",
+  year: 2011,
+  answers: ["CA2011", "CA2007", "CA2015", "CA2019"]
+},
+{
+  teams: "Frankreich 🇫🇷 - Belgien 🇧🇪",
+  score: "1:0",
+  scorers: [
+    "⚽ Umtiti 🇫🇷 51'"
+  ],
+  tournament: "WM2018",
+  year: 2018,
+  answers: ["WM2018", "WM2014", "WM2022", "WM2010"]
+},
+{
+  teams: "Uruguay 🇺🇾 - Argentinien 🇦🇷",
+  score: "0:1",
+  scorers: [
+    "⚽ Aguero 🇦🇷 56'"
+  ],
+  tournament: "CA2015",
+  year: 2015,
+  answers: ["CA2015", "CA2011", "CA2019", "CA2007"]
+},
+{
+  teams: "Deutschland 🇩🇪 - Schweden 🇸🇪",
+  score: "2:1",
+  scorers: [
+    "⚽ Toivonen 🇸🇪 32'",
+    "⚽ Reus 🇩🇪 48'",
+    "⚽ Kroos 🇩🇪 95'"
+  ],
+  tournament: "WM2018",
+  year: 2018,
+  answers: ["WM2018", "WM2014", "WM2022", "WM2010"]
+},
+{
+  teams: "Spanien 🇪🇸 - Kroatien 🇭🇷",
+  score: "5:3 n.V.",
+  scorers: [
+    "⚽ Morata 🇪🇸 7'",
+    "⚽ Ruiz 🇪🇸 57'",
+    "⚽ Perisic 🇭🇷 67'",
+    "⚽ Modric 🇭🇷 75'",
+    "⚽ Torres 🇪🇸 85'",
+    "⚽ Oyarzabal 🇪🇸 98'",
+    "⚽ Torres 🇪🇸 103'"
+  ],
+  tournament: "EM2020",
+  year: 2021,
+  answers: ["EM2020", "EM2016", "EM2012", "EM2008"]
+}
+];
+
+let players = [];
+let scores = {};
+let used = [];
+let currentPlayer = 0;
+let difficulty = "leicht";
+let totalRounds = 0;
+
+const startScreen = document.getElementById("start-screen");
+const gameScreen = document.getElementById("game-screen");
+const endScreen = document.getElementById("end-screen");
+
+const playerNamesDiv = document.getElementById("player-names");
+const roundTitle = document.getElementById("round-title");
+const matchContent = document.getElementById("match-content");
+const resultIcon = document.getElementById("result-icon");
+const answerButtons = document.getElementById("answer-buttons");
+const winnerCard = document.getElementById("winner-card");
+
+document.getElementById("player-count").addEventListener("change", () => {
+  const count = parseInt(document.getElementById("player-count").value);
+  playerNamesDiv.innerHTML = "";
+  for (let i = 0; i < count; i++) {
+    const input = document.createElement("input");
+    input.placeholder = `Spieler ${i + 1}`;
+    playerNamesDiv.appendChild(input);
+  }
+});
+
+document.getElementById("start-game").addEventListener("click", () => {
+  const inputs = playerNamesDiv.querySelectorAll("input");
+
+  if (inputs.length === 0) {
+    alert("Bitte Spieleranzahl wählen!");
+    return;
+  }
+
+  players = [...inputs].map((i, idx) => i.value || `Spieler ${idx+1}`);
+  difficulty = document.getElementById("difficulty").value;
+
+  players.forEach(p => scores[p] = 0);
+
+  totalRounds = players.length * 3;
+  used = [];
+  currentPlayer = 0;
+
+  startScreen.classList.add("hidden");
+  gameScreen.classList.remove("hidden");
+
+  nextRound();
+});
+
+function nextRound() {
+  if (used.length >= totalRounds || used.length >= matches.length) {
+    endGame();
+    return;
+  }
+
+  resultIcon.innerHTML = "";
+  resultIcon.classList.remove("show");
+
+  const player = players[currentPlayer];
+  roundTitle.textContent = `${player} ist dran`;
+
+  const available = matches.filter(m => !used.includes(m));
+  const match = available[Math.floor(Math.random() * available.length)];
+  used.push(match);
+
+  renderMatch(match);
+}
+
+function renderMatch(match) {
+  matchContent.innerHTML = `
+    <h3>${match.teams}</h3>
+    <h2>${match.score}</h2>
+    ${match.scorers.map(s => `<p>${s}</p>`).join("")}
+  `;
+
+  renderAnswers(match);
+}
+
+function renderAnswers(match) {
+  answerButtons.innerHTML = "";
+
+  match.answers.forEach(answer => {
+    const btn = document.createElement("button");
+    btn.textContent = answer;
+    btn.onclick = () => checkAnswer(answer, match);
+    answerButtons.appendChild(btn);
+  });
+}
+
+function checkAnswer(answer, match) {
+  if (answer === match.tournament) {
+    scores[players[currentPlayer]]++;
+    new Audio("yay.mp3").play();
+    resultIcon.innerHTML = "✔️";
+    resultIcon.style.color = "#4CAF50";
+  } else {
+    new Audio("oh.mp3").play();
+    resultIcon.innerHTML = "❌";
+    resultIcon.style.color = "#ff0000";
+  }
+
+  resultIcon.classList.add("show");
+
+  currentPlayer = (currentPlayer + 1) % players.length;
+  setTimeout(nextRound, 1500);
+}
+
+function endGame() {
+  gameScreen.classList.add("hidden");
+  endScreen.classList.remove("hidden");
+
+  new Audio("sieg.mp3").play();
+
+  const winner = [...players].sort((a,b) => scores[b] - scores[a])[0];
+  winnerCard.innerHTML = `<h3>${winner} hat gewonnen! 🎉</h3>`;
+}
+
+document.getElementById("restart-game").addEventListener("click", () => {
+  endScreen.classList.add("hidden");
+  gameScreen.classList.remove("hidden");
+
+  used = [];
+  currentPlayer = 0;
+  nextRound();
+});
+</script>
+
+</body>
+</html>

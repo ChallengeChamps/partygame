@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Verbotene Wörter</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('wort.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      margin-top: 40px;
+      animation: fadeIn 1s ease;
+    }
+
+    h1, h2, h3 {
+      text-align: center;
+      text-shadow: 2px 2px 6px #000;
+    }
+
+    button {
+      padding: 10px;
+      margin: 10px 5px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .card {
+      background: #fff;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: slideUp 0.8s ease;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .result-item {
+      padding: 10px;
+      border-radius: 10px;
+      margin: 5px 0;
+    }
+
+    .correct {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .wrong {
+      background-color: #f44336;
+      color: white;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="startScreen">
+    <h1>🎉 Verbotene Wörter</h1>
+    <h2>Wähle die Spielzeit:</h2>
+    <button onclick="startGame(60)">1 Minute</button>
+    <button onclick="startGame(120)">2 Minuten</button>
+    <button onclick="startGame(180)">3 Minuten</button>
+<button onclick="window.location.href='startseite.html'" class="menu-button">
+  Zurück zum Hauptmenü
+  </div>
+
+
+  <div class="container hidden" id="countdownScreen">
+    <h2 id="countdownDisplay">Bereit?</h2>
+  </div>
+
+  <div class="container hidden" id="gameScreen">
+    <h2 id="timerDisplay">Zeit: 00:00</h2>
+    <div class="card" id="gameCard">
+      <h2 id="mainWord">Begriff</h2>
+      <p><strong>Verbotene Wörter:</strong></p>
+      <ul id="forbiddenWords"></ul>
+    </div>
+    <div style="text-align:center;">
+      <button onclick="markCorrect()">✔️ Richtig</button>
+      <button onclick="markWrong()">❌ Falsch</button>
+      <button onclick="skipCard()">⏭️ Überspringen</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="resultScreen">
+    <h2>📝 Deine Ergebnisse</h2>
+    <div id="resultsList"></div>
+    <h3 id="scoreDisplay"></h3>
+    <button onclick="restartGame()">🔄 Erneut spielen</button>
+    <button onclick="goToStart()">🏠 Zurück zur Startseite</button>
+  </div>
+
+  <script>
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+let originalCards = [
+  // 🏠 Alltag
+  { word: "Zahnbürste", forbidden: ["Zähne", "Putzen", "Pasta", "Bad", "Mund"] },
+  { word: "Fernseher", forbidden: ["Bildschirm", "Sender", "Programm", "Fernbedienung", "Serie"] },
+  { word: "Spiegel", forbidden: ["Reflexion", "Glas", "Gesicht", "Bad", "Rahmen"] },
+  { word: "Lampe", forbidden: ["Licht", "Glühbirne", "Schalter", "Strom", "Tisch"] },
+  { word: "Tür", forbidden: ["Öffnen", "Schließen", "Klinke", "Schloss", "Raum"] },
+  { word: "Fenster", forbidden: ["Glas", "Ausblick", "Vorhang", "Rahmen", "Haus"] },
+  { word: "Fußball", forbidden: ["Bundesliga", "Ball", "Stadion", "Verein", "Tor"] },
+  { word: "Haus", forbidden: ["Wohnen", "Zimmer", "Dach", "Tür", "Fenster"] },
+  { word: "Stuhl", forbidden: ["Sitzen", "Beine", "Lehne", "Tisch", "Möbel"] },
+  { word: "Tisch", forbidden: ["Essen", "Beine", "Platte", "Stuhl", "Möbel"] },
+  { word: "Uhr", forbidden: ["Zeit", "Zeiger", "Armband", "Sekunde", "Stunde"] },
+
+  // 👩‍⚕️ Berufe
+  { word: "Zahnarzt", forbidden: ["Zähne", "Bohrer", "Praxis", "Schmerzen", "Behandlung"] },
+  { word: "Arzt", forbidden: ["Krankenhaus", "Patient", "Medizin", "Behandlung", "Praxis"] },
+  { word: "Lehrer", forbidden: ["Schule", "Unterricht", "Klasse", "Tafel", "Schüler"] },
+  { word: "Polizist", forbidden: ["Uniform", "Verbrechen", "Festnahme", "Gesetz", "Auto"] },
+  { word: "Feuerwehrmann", forbidden: ["Löschen", "Brand", "Schlauch", "Alarm", "Wasser"] },
+  { word: "Bäcker", forbidden: ["Brot", "Brötchen", "Ofen", "Mehl", "Teig"] },
+  { word: "Friseur", forbidden: ["Haare", "Schere", "Salon", "Waschen", "Stylen"] },
+  { word: "Pilot", forbidden: ["Flugzeug", "Fliegen", "Cockpit", "Reise", "Himmel"] },
+  { word: "Koch", forbidden: ["Küche", "Topf", "Rezept", "Zutaten", "Essen"] },
+  { word: "Mechaniker", forbidden: ["Auto", "Reparieren", "Werkstatt", "Motor", "Werkzeug"] },
+
+  // 🐶 Tiere
+  { word: "Hund", forbidden: ["Bellen", "Tier", "Leine", "Pfote", "Haustier"] },
+  { word: "Katze", forbidden: ["Miau", "Schnurren", "Tier", "Fell", "Haustier"] },
+  { word: "Vogel", forbidden: ["Fliegen", "Flügel", "Nest", "Singen", "Schnabel"] },
+  { word: "Fisch", forbidden: ["Wasser", "Schwimmen", "Aquarium", "Flosse", "Meer"] },
+  { word: "Kuh", forbidden: ["Milch", "Weide", "Tier", "Hof", "Muh"] },
+  { word: "Pferd", forbidden: ["Reiten", "Hufe", "Stall", "Tier", "Galopp"] },
+  { word: "Schwein", forbidden: ["Rosa", "Stall", "Grunzen", "Bauernhof", "Tier"] },
+  { word: "Hase", forbidden: ["Ostern", "Fell", "Möhre", "Springen", "Tier"] },
+  { word: "Schaf", forbidden: ["Wolle", "Weide", "Tier", "Herde", "Blöken"] },
+  { word: "Ente", forbidden: ["Wasser", "Schnabel", "Quaken", "Federn", "Tier"] },
+
+  // 📱 Technik
+  { word: "Handy", forbidden: ["Handy", "Touchscreen", "App", "Telefon", "Internet"] },
+  { word: "Computer", forbidden: ["Tastatur", "Bildschirm", "Maus", "Programm", "Internet"] },
+  { word: "Tablet", forbidden: ["Touch", "App", "Display", "Mobil", "Gerät"] },
+  { word: "Kamera", forbidden: ["Foto", "Objektiv", "Bild", "Blitz", "Speicher"] },
+  { word: "Drucker", forbidden: ["Papier", "Tinte", "Computer", "Kopieren", "Gerät"] },
+  { word: "Fernbedienung", forbidden: ["Knopf", "Fernseher", "Steuern", "Batterie", "Sender"] },
+  { word: "Lautsprecher", forbidden: ["Musik", "Ton", "Box", "Kabel", "Sound"] },
+  { word: "WLAN", forbidden: ["Internet", "Router", "Netzwerk", "kabellos", "Handy"] },
+  { word: "Mikrofon", forbidden: ["Sprechen", "Ton", "Aufnahme", "Gerät", "Kabel"] },
+  { word: "Router", forbidden: ["Internet", "WLAN", "Verbindung", "Modem", "Signal"] },
+  { word: "Kopfhörer", forbidden: ["Musik", "Ohren", "Ton", "Kabel", "Tragen"] },
+
+  // 🍕 Essen & Trinken
+  { word: "Pizza", forbidden: ["Teig", "Käse", "Tomatensoße", "Ofen", "Italien"] },
+  { word: "Eis", forbidden: ["Kalt", "Sommer", "Kugel", "Geschmack", "Waffel"] },
+  { word: "Kaffee", forbidden: ["Tasse", "Bohne", "Trinken", "Koffein", "Heiß"] },
+  { word: "Milch", forbidden: ["Kuh", "Trinken", "Weiß", "Kalt", "Frühstück"] },
+  { word: "Wasser", forbidden: ["Trinken", "Flüssigkeit", "Glas", "Durst", "Nass"] },
+  { word: "Schokolade", forbidden: ["Süß", "Kakao", "Tafel", "Naschen", "Milch"] },
+  { word: "Apfel", forbidden: ["Obst", "Rot", "Baum", "Kern", "Schale"] },
+  { word: "Döner", forbidden: ["Spieß", "Brot", "Salat", "Sauce", "Dürüm"] },
+  { word: "Nudeln", forbidden: ["Tomatensoße", "Käse", "Spaghetti", "Weizen", "Kochtopf"] },
+  { word: "Banane", forbidden: ["Gelb", "Obst", "Schale", "Affe", "Krumm"] },
+  { word: "Brot", forbidden: ["Backen", "Mehl", "Scheibe", "Bäcker", "Brötchen"] },
+  { word: "Kuchen", forbidden: ["Backen", "Süß", "Mehl", "Zucker", "Geburtstag"] },
+
+  // 🎉 Feiertage & Events
+  { word: "Weihnachten", forbidden: ["Geschenke", "Baum", "Familie", "Feier", "Plätzchen"] },
+  { word: "Ostern", forbidden: ["Eier", "Hase", "Frühling", "Nest", "Feiertag"] },
+  { word: "Geburtstag", forbidden: ["Feier", "Kerzen", "Geschenk", "Kuchen", "Alter"] },
+  { word: "Silvester", forbidden: ["Feuerwerk", "Jahr", "Countdown", "Party", "Mitternacht"] },
+  { word: "Halloween", forbidden: ["Kostüm", "Süßigkeiten", "Gruselig", "Kürbis", "Geist"] },
+  { word: "Karneval", forbidden: ["Verkleidung", "Umzug", "Feier", "Musik", "Helau"] },
+  { word: "Hochzeit", forbidden: ["Braut", "Ring", "Feier", "Liebe", "Kleid"] },
+  { word: "Party", forbidden: ["Musik", "Feiern", "Tanzen", "Getränke", "Freunde"] },
+  { word: "Ferien", forbidden: ["Urlaub", "Schule", "Pause", "Reise", "Sommer"] },
+  { word: "Urlaub", forbidden: ["Reise", "Strand", "Hotel", "Ferien", "Koffer"] },
+
+  // 🌍 Orte & Verkehr
+  { word: "Zug", forbidden: ["Schiene", "Bahnhof", "Fahrt", "Lokomotive", "Waggon"] },
+  { word: "Auto", forbidden: ["Fahren", "Motor", "Straße", "Lenkrad", "Reifen"] },
+  { word: "Bus", forbidden: ["Haltestelle", "Fahrt", "Fahrer", "Linie", "ÖPNV"] },
+  { word: "Flugzeug", forbidden: ["Fliegen", "Pilot", "Reise", "Flughafen", "Wolken"] },
+  { word: "Taxi", forbidden: ["Fahrer", "Geld", "Stadt", "Fahrt", "Rufen"] },
+  { word: "Schiff", forbidden: ["Wasser", "Meer", "Kapitän", "Reise", "Deck"] },
+  { word: "Fahrrad", forbidden: ["Pedale", "Lenker", "Rad", "Helm", "Fahren"] },
+  { word: "Straße", forbidden: ["Autos", "Asphalt", "Verkehr", "Kreuzung", "Ampel"] },
+  { word: "Brücke", forbidden: ["Fluss", "Überqueren", "Bogen", "Straße", "Verbindung"] },
+  { word: "Tunnel", forbidden: ["Unterirdisch", "Dunkel", "Durchfahrt", "Straße", "Bau"] },
+  { word: "Bahnhof", forbidden: ["Zug", "Gleis", "Reise", "Fahrplan", "Warten"] },
+  { word: "Flughafen", forbidden: ["Flugzeug", "Reise", "Terminal", "Gepäck", "Pass"] },
+  { word: "Hotel", forbidden: ["Zimmer", "Übernachtung", "Reise", "Rezeption", "Schlüssel"] },
+  { word: "Supermarkt", forbidden: ["Einkaufen", "Regal", "Kasse", "Lebensmittel", "Waren"] },
+  { word: "Schule", forbidden: ["Lehrer", "Unterricht", "Klasse", "Hausaufgaben", "Pause"] },
+  { word: "Universität", forbidden: ["Studium", "Vorlesung", "Professor", "Campus", "Student"] },
+  { word: "Krankenhaus", forbidden: ["Arzt", "Patient", "Behandlung", "Zimmer", "Pflege"] },
+  { word: "Bibliothek", forbidden: ["Bücher", "Lesen", "Ausleihen", "Regal", "Ruhe"] },
+  { word: "Park", forbidden: ["Grün", "Spazieren", "Bäume", "Bank", "Spielplatz"] },
+  { word: "Spielplatz", forbidden: ["Kinder", "Rutsche", "Schaukel", "Sand", "Spaß"] },
+  { word: "Zoo", forbidden: ["Tiere", "Gehege", "Besucher", "Füttern", "Safari"] },
+  { word: "Museum", forbidden: ["Ausstellung", "Kunst", "Geschichte", "Besucher", "Objekte"] },
+  { word: "Restaurant", forbidden: ["Essen", "Tisch", "Kellner", "Menü", "Bestellen"] },
+  { word: "Café", forbidden: ["Kaffee", "Tasse", "Kuchen", "Sitzen", "Bedienung"] },
+  { word: "Markt", forbidden: ["Stände", "Verkauf", "Gemüse", "Früchte", "Einkaufen"] },
+  { word: "Kirche", forbidden: ["Glaube", "Gottesdienst", "Kreuz", "Gebet", "Priester"] },
+  { word: "Rathaus", forbidden: ["Stadt", "Bürger", "Politik", "Verwaltung", "Amt"] },
+  { word: "Tankstelle", forbidden: ["Benzin", "Auto", "Zapfsäule", "Zahlen", "Fahren"] },
+  { word: "Post", forbidden: ["Brief", "Paket", "Zusteller", "Adresse", "Stempel"] }
+    ];
+let shuffledCards = [];
+
+let currentIndex = 0;
+let timer;
+let timeLeft = 0;
+let results = [];
+let selectedDuration = 0;
+
+function startGame(duration) {
+  selectedDuration = duration;
+  shuffledCards = [...originalCards];
+  shuffle(shuffledCards);
+  currentIndex = 0;
+
+  document.getElementById("startScreen").classList.add("hidden");
+  document.getElementById("countdownScreen").classList.remove("hidden");
+
+  let countdown = 3;
+  document.getElementById("countdownDisplay").textContent = `Start in ${countdown}...`;
+
+  const countdownInterval = setInterval(() => {
+    countdown--;
+    if (countdown > 0) {
+      document.getElementById("countdownDisplay").textContent = `Start in ${countdown}...`;
+    } else {
+      clearInterval(countdownInterval);
+      document.getElementById("countdownScreen").classList.add("hidden");
+      document.getElementById("gameScreen").classList.remove("hidden");
+
+      timeLeft = selectedDuration;
+      updateTimerDisplay();
+      timer = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+        if (timeLeft <= 0) endGame();
+      }, 1000);
+
+      showCard();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+  const seconds = (timeLeft % 60).toString().padStart(2, '0');
+  document.getElementById("timerDisplay").textContent = `Zeit: ${minutes}:${seconds}`;
+}
+
+function showCard() {
+  if (currentIndex >= shuffledCards.length) {
+    endGame();
+    return;
+  }
+
+  const card = shuffledCards[currentIndex];
+  document.getElementById("mainWord").textContent = card.word;
+  const list = document.getElementById("forbiddenWords");
+  list.innerHTML = "";
+  card.forbidden.forEach(word => {
+    const li = document.createElement("li");
+    li.textContent = word;
+    list.appendChild(li);
+  });
+}
+
+function markCorrect() {
+  results.push({ word: shuffledCards[currentIndex].word, correct: true });
+  nextCard();
+}
+
+function markWrong() {
+  results.push({ word: shuffledCards[currentIndex].word, correct: false });
+  nextCard();
+}
+
+function skipCard() {
+  nextCard();
+}
+
+// ✅ Wiederhergestellte Funktion
+function nextCard() {
+  currentIndex++;
+  showCard();
+}
+
+function endGame() {
+  clearInterval(timer);
+  document.getElementById("gameScreen").classList.add("hidden");
+  document.getElementById("resultScreen").classList.remove("hidden");
+
+  const resultsList = document.getElementById("resultsList");
+  resultsList.innerHTML = "";
+  let score = 0;
+
+  results.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "result-item " + (item.correct ? "correct" : "wrong");
+    div.textContent = item.word;
+    resultsList.appendChild(div);
+    if (item.correct) score++;
+  });
+
+  document.getElementById("scoreDisplay").textContent = `✅ Du hast ${score} von ${results.length} richtig!`;
+}
+
+function restartGame() {
+  currentIndex = 0;
+  results = [];
+  document.getElementById("resultScreen").classList.add("hidden");
+  document.getElementById("countdownScreen").classList.remove("hidden");
+
+  let countdown = 3;
+  document.getElementById("countdownDisplay").textContent = `Start in ${countdown}...`;
+
+  const countdownInterval = setInterval(() => {
+    countdown--;
+    if (countdown > 0) {
+      document.getElementById("countdownDisplay").textContent = `Start in ${countdown}...`;
+    } else {
+      clearInterval(countdownInterval);
+      document.getElementById("countdownScreen").classList.add("hidden");
+      document.getElementById("gameScreen").classList.remove("hidden");
+
+      timeLeft = selectedDuration;
+      updateTimerDisplay();
+      timer = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+        if (timeLeft <= 0) endGame();
+      }, 1000);
+
+      showCard();
+    }
+  }, 1000);
+}
+
+function goToStart() {
+  currentIndex = 0;
+  results = [];
+  document.getElementById("resultScreen").classList.add("hidden");
+  document.getElementById("startScreen").classList.remove("hidden");
+}
+function endGame() {
+  clearInterval(timer);
+  document.getElementById("gameScreen").classList.add("hidden");
+  document.getElementById("resultScreen").classList.remove("hidden");
+
+  const resultsList = document.getElementById("resultsList");
+  resultsList.innerHTML = "";
+  let score = 0;
+
+  results.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "result-item " + (item.correct ? "correct" : "wrong");
+    div.textContent = item.word;
+    resultsList.appendChild(div);
+    if (item.correct) score++;
+  });
+
+  let reason = currentIndex >= shuffledCards.length ? "🃏 Alle Karten gespielt!" : "⏰ Zeit abgelaufen!";
+  document.getElementById("scoreDisplay").textContent = `${reason} ✅ Du hast ${score} von ${results.length} richtig!`;
+}
+  </script>
+</body>
+</html>
+

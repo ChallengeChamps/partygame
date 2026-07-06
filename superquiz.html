@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('10von10.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      margin-top: 40px;
+      animation: fadeIn 1s ease;
+    }
+
+    h1, h2 {
+      text-align: center;
+      text-shadow: 2px 2px 6px #000;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border-radius: 12px;
+      border: none;
+      font-size: 1.1rem;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .card {
+      background: #fff;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.8s ease;
+    }
+
+    .options button {
+      margin: 10px 5px;
+      background-color: #673ab7;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .menu-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .menu-button:hover {
+      background-color: #45a049;
+    }
+
+    .scoreboard {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 1rem;
+      z-index: 1000;
+    }
+
+    .plusOne, .minusOne {
+      position: absolute;
+      font-size: 2rem;
+      font-weight: bold;
+      animation: popUp 1s ease-out;
+      z-index: 999;
+    }
+
+    .plusOne {
+      color: #00ff00;
+    }
+
+    .minusOne {
+      color: #ff4444;
+    }
+
+    @keyframes popUp {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0; transform: scale(1); top: -50px; }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      select, input, button {
+        padding: 16px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="setup">
+    <h1>Quiz Game</h1>
+    <label>Spieleranzahl (1–8):</label>
+    <input type="number" id="playerCount" min="1" max="8" value="4">
+
+    <div id="playerInputs"></div>
+
+    <label>Kategorie:</label>
+    <select id="categorySelect">
+      <option value="random">Zufällig</option>
+      <option value="Allgemeinwissen">Allgemeinwissen</option>
+      <option value="Sport">Sport</option>
+      <option value="Geschichte">Geschichte</option>
+      <option value="Technik">Technik</option>
+      <option value="Natur">Natur</option>
+      <option value="Film und Fernsehen">Film und Fernsehen</option>
+      <option value="Unnützes Wissen">Unnützes Wissen</option>
+      <option value="Expertenwissen">Expertenwissen</option>
+    </select>
+
+    <button onclick="setupPlayers()">Weiter</button>
+    <button onclick="window.location.href='startseite.html'">Zurück zum Hauptmenü</button>
+  </div>
+
+  <div class="container hidden" id="categoryAnimation">
+    <h2>Kategorie wird ausgewählt...</h2>
+    <h1 id="animatedCategory">🎲</h1>
+  </div>
+
+  <div class="container hidden" id="quizRound">
+    <h2 id="currentPlayer"></h2>
+    <div class="card">
+      <h3 id="questionText"></h3>
+      <div class="options" id="answerOptions"></div>
+    </div>
+  </div>
+
+  <div class="container hidden" id="results">
+    <h2>🏆 Gewinner</h2>
+    <div id="winnerBoard"></div>
+    <button onclick="location.reload()">Erneut spielen</button>
+  </div>
+
+  <div class="scoreboard" id="scoreDisplay"></div>
+
+  <script>
+  const questionPool = {
+"Allgemeinwissen": [
+  { q: "Wie viele Kontinente gibt es?", a: ["5", "6", "7"], correct: 2 },
+  { q: "Was ist die Hauptstadt von Brasilien?", a: ["Brasilia", "Rio de Janeiro", "Sao Paulo"], correct: 0 },
+  { q: "Welches Element hat das chemische Symbol 'Fe'?", a: ["Fluor", "Eisen", "Fermium"], correct: 1 },
+  { q: "Wie viele Planeten hat unser Sonnensystem?", a: ["7", "8", "9"], correct: 1 },
+  { q: "Wer schrieb 'Faust'?", a: ["Schiller", "Goethe", "Lessing"], correct: 1 },
+  { q: "Wie heißt der längste Fluss der Welt?", a: ["Nil", "Amazonas", "Yangtse"], correct: 1 },
+  { q: "Welcher Kontinent hat die meisten Länder?", a: ["Afrika", "Europa", "Asien"], correct: 0 },
+  { q: "Was ist die Quadratwurzel von 144?", a: ["10", "12", "14"], correct: 1 },
+  { q: "Wie viele Länder gibt es auf der Welt?", a: ["190", "195", "200"], correct: 1 },
+  { q: "Welches Land hat die größte Bevölkerung?", a: ["Indien", "China", "USA"], correct: 0 },
+  { q: "Was ist die Hauptstadt von Kanada?", a: ["Toronto", "Ottawa", "Vancouver"], correct: 1 },
+  { q: "Welcher Planet ist der heißeste im Sonnensystem?", a: ["Merkur", "Venus", "Mars"], correct: 1 },
+  { q: "Wie viele Zähne hat ein erwachsener Mensch normalerweise?", a: ["28", "30", "32"], correct: 2 },
+  { q: "Welches Tier ist das größte lebende Säugetier?", a: ["Elefant", "Blauwal", "Giraffe"], correct: 1 },
+  { q: "Wie schwer ist ein Zentner?", a: ["50kg", "100kg", "200kg"], correct: 1 },
+  { q: "Was ist die Hauptstadt von Australien?", a: ["Sydney", "Melbourne", "Canberra"], correct: 2 },
+  { q: "Welcher Wissenschaftler entwickelte die Relativitätstheorie?", a: ["Newton", "Einstein", "Galilei"], correct: 1 },
+  { q: "Wie viele Farben hat ein Regenbogen?", a: ["6", "7", "8"], correct: 1 },
+  { q: "Was ist das größte Land der Welt (Fläche)?", a: ["China", "USA", "Russland"], correct: 2 },
+  { q: "Welcher Ozean ist der tiefste?", a: ["Atlantik", "Indischer Ozean", "Pazifik"], correct: 2 },
+  { q: "Wie viele Beine hat ein Insekt?", a: ["4", "6", "8"], correct: 1 },
+  { q: "Wie viele Felder hat ein normales Schachbrett?", a: ["32", "64", "128"], correct: 1 },
+  { q: "Welcher Planet hat die meisten Monde?", a: ["Saturn", "Jupiter", "Uranus"], correct: 1 },
+  { q: "Was ist die chemische Formel für Wasser?", a: ["H2O", "CO2", "O2"], correct: 0 },
+  { q: "Wie viele Sekunden hat ein Tag?", a: ["86.400", "93.200", "101.600"], correct: 0 },
+  { q: "Welcher Kontinent liegt vollständig auf der Südhalbkugel?", a: ["Afrika", "Australien", "Südamerika"], correct: 1 },
+  { q: "Was ist die Hauptstadt von Polen?", a: ["Krakau", "Warschau", "Danzig"], correct: 1 },
+  { q: "Welcher Planet ist der Erde am nächsten?", a: ["Mars", "Venus", "Merkur"], correct: 1 },
+  { q: "Wie viele Tage hat ein Schaltjahr?", a: ["365", "366", "367"], correct: 1 },
+  { q: "Was ist die Hauptstadt von Norwegen?", a: ["Oslo", "Bergen", "Trondheim"], correct: 0 }
+],
+"Sport": [
+  { q: "Wie viele Personen stehen bei einem normalen Fußballspiel auf den Feld?", a: ["19", "22", "25"], correct: 2 },
+  { q: "In welcher Sportart ist Michael Jordan berühmt?", a: ["Basketball", "Baseball", "Football"], correct: 0 },
+  { q: "Wie viele Minuten dauert ein reguläres Fußballspiel?", a: ["90", "80", "100"], correct: 0 },
+  { q: "Welcher Tennisspieler hat die meisten Grand-Slam-Titel (Einzel, Herren)?", a: ["Roger Federer", "Rafael Nadal", "Novak Djokovic"], correct: 2 },
+  { q: "Wie viele Ringe hat das olympische Symbol?", a: ["4", "5", "6"], correct: 1 },
+  { q: "In welcher Stadt fanden die Olympischen Spiele 2012 statt?", a: ["London", "Rio", "Peking"], correct: 0 },
+  { q: "Wie viele Spieler sind bei Volleyball gleichzeitig pro Team auf dem Feld?", a: ["5", "6", "7"], correct: 1 },
+  { q: "Welcher Fußballer wurde als 'La Pulga' bekannt?", a: ["Cristiano Ronaldo", "Lionel Messi", "Neymar"], correct: 1 },
+  { q: "Wie viele Punkte gibt es für einen Touchdown im American Football?", a: ["6", "7", "3"], correct: 0 },
+  { q: "Welcher deutsche Formel-1-Fahrer gewann sieben Weltmeisterschaften?", a: ["Sebastian Vettel", "Michael Schumacher", "Nico Rosberg"], correct: 1 },
+  { q: "Wie heißt die höchste Spielklasse im deutschen Basketball?", a: ["BBL", "DBL", "NBL"], correct: 0 },
+  { q: "Wie viele Löcher hat ein Standard-Golfplatz?", a: ["9", "18", "21"], correct: 1 },
+  { q: "Welcher Verein gewann die UEFA Champions League 2021?", a: ["Manchester City", "Chelsea", "Real Madrid"], correct: 1 },
+  { q: "Wie viele Sätze muss man im Tennis gewinnen (Herren Grand Slam)?", a: ["2", "3", "5"], correct: 2 },
+  { q: "Welcher Sport wird mit einem Puck gespielt?", a: ["Eishockey", "Lacrosse", "Rugby"], correct: 0 },
+  { q: "Wie viele Spieler sind bei Handball pro Team auf dem Feld?", a: ["6", "7", "8"], correct: 1 },
+  { q: "Welcher deutsche Verein hat die meisten Bundesliga-Titel?", a: ["Borussia Dortmund", "Bayern München", "Werder Bremen"], correct: 1 },
+  { q: "Wie viele Disziplinen gibt es im Zehnkampf?", a: ["10", "12", "8"], correct: 0 },
+  { q: "Welcher Schwimmer gewann 8 Goldmedaillen bei Olympia 2008?", a: ["Mark Spitz", "Michael Phelps", "Ian Thorpe"], correct: 1 },
+  { q: "Wie viele Sekunden dauert ein Sprint über 100 Meter bei Weltrekordtempo?", a: ["9,58", "10,01", "9,72"], correct: 0 },
+  { q: "Welcher Wintersport nutzt eine Schanze?", a: ["Biathlon", "Skispringen", "Langlauf"], correct: 1 },
+  { q: "Wie viele Spieler sind bei Baseball gleichzeitig im Feldteam?", a: ["9", "10", "11"], correct: 0 },
+  { q: "Welcher Boxer war als 'The Greatest' bekannt?", a: ["Mike Tyson", "Muhammad Ali", "George Foreman"], correct: 1 },
+  { q: "Wie viele Bahnen hat ein olympisches Schwimmbecken?", a: ["6", "8", "10"], correct: 2 },
+  { q: "Welcher Fußballer gewann 2022 den Ballon d'Or?", a: ["Karim Benzema", "Lionel Messi", "Kylian Mbappé"], correct: 0 },
+  { q: "Was ist die maximale Punktzahl beim Bowling?", a: ["200", "250", "300"], correct: 2 },
+  { q: "Wie viele Minuten dauert ein Eishockey-Drittel?", a: ["15", "20", "25"], correct: 1 },
+  { q: "Welcher Rennfahrer starb tragisch in Imola 1994?", a: ["Ayrton Senna", "James Hunt", "Niki Lauda"], correct: 0 },
+  { q: "Wie viele Spieler sind bei Rugby Union pro Team auf dem Feld?", a: ["13", "15", "17"], correct: 1 },
+  { q: "Welcher deutsche Tennisspieler gewann Wimbledon 1985?", a: ["Tommy Haas", "Boris Becker", "Michael Stich"], correct: 1 }
+],
+"Geschichte": [
+  { q: "Wann begann der Erste Weltkrieg?", a: ["1914", "1939", "1945"], correct: 0 },
+  { q: "Wann fiel die Berliner Mauer?", a: ["1987", "1989", "1991"], correct: 1 },
+  { q: "Wer war der erste Bundeskanzler der Bundesrepublik Deutschland?", a: ["Willy Brandt", "Konrad Adenauer", "Helmut Kohl"], correct: 1 },
+  { q: "In welchem Jahr wurde die DDR gegründet?", a: ["1949", "1955", "1961"], correct: 0 },
+  { q: "Welcher König wurde während der Französischen Revolution hingerichtet?", a: ["Ludwig XIV", "Ludwig XVI", "Napoleon"], correct: 1 },
+  { q: "Was war der Auslöser für den Ersten Weltkrieg?", a: ["Attentat von Sarajevo", "Vertrag von Versailles", "Besetzung Polens"], correct: 0 },
+  { q: "Welches Jahr gilt als Beginn der Reformation?", a: ["1517", "1618", "1492"], correct: 0 },
+  { q: "Wer war der erste Mensch im Weltall?", a: ["Neil Armstrong", "Yuri Gagarin", "Buzz Aldrin"], correct: 1 },
+  { q: "Vor wie vielen Jahren starben die Dinosaurier aus (in Mio Jahren)?", a: ["ca. 37", "ca. 66", "91"], correct: 1 },
+  { q: "Welcher US-Präsident war während des Bürgerkriegs im Amt?", a: ["George Washington", "Abraham Lincoln", "Franklin D. Roosevelt"], correct: 1 },
+  { q: "Wann wurde die Weimarer Republik gegründet?", a: ["1918", "1923", "1933"], correct: 0 },
+  { q: "Welches Ereignis markiert den Beginn der industriellen Revolution?", a: ["Erfindung der Dampfmaschine", "Französische Revolution", "Entdeckung Amerikas"], correct: 0 },
+  { q: "Wer war der erste Kaiser des Römischen Reiches?", a: ["Julius Caesar", "Augustus", "Nero"], correct: 1 },
+  { q: "Was war der Kalte Krieg?", a: ["Ein bewaffneter Konflikt", "Ein ideologischer Machtkampf", "Ein Handelskrieg"], correct: 1 },
+  { q: "Wann wurde die UNO gegründet?", a: ["1919", "1945", "1950"], correct: 1 },
+  { q: "Wie viele Dinosaurierarten wurden bisher entdeckt?", a: ["ca. 250", "ca. 1000", "über 2500"], correct: 1 },
+  { q: "Wie alt ist die Erde (in Mrd Jahren)?", a: ["ca. 4,5", "ca. 48,5", "ca. 137,5"], correct: 0 },
+  { q: "Wer war die erste Frau auf dem Mond?", a: ["Valentina Tereshkova", "Sally Ride", "Keine bisher"], correct: 2 },
+  { q: "Welches ist das älteste deutsche Bundesland?", a: ["Sachsen", "Bayern", "Baden-Würtenberg"], correct: 2 },
+  { q: "Was war die Magna Carta?", a: ["Ein Gesetz zur Abschaffung der Monarchie", "Ein Vertrag zur Begrenzung königlicher Macht", "Ein Friedensabkommen"], correct: 1 },
+  { q: "Welcher deutsche Politiker prägte die Ostpolitik?", a: ["Helmut Schmidt", "Willy Brandt", "Gerhard Schröder"], correct: 1 },
+  { q: "Wann endete der Dreißigjährige Krieg?", a: ["1618", "1648", "1688"], correct: 1 },
+  { q: "Was war die 'Operation Barbarossa'?", a: ["Die Landung in der Normandie", "Der Angriff auf die Sowjetunion", "Die Luftschlacht um England"], correct: 1 },
+  { q: "Wer war der letzte Kaiser von Deutschland?", a: ["Wilhelm I", "Friedrich III", "Wilhelm II"], correct: 2 },
+  { q: "Was war die 'Glorreiche Revolution' in England?", a: ["Ein Bürgerkrieg", "Ein friedlicher Machtwechsel", "Ein Bauernaufstand"], correct: 1 },
+  { q: "Wann wurde das Römische Reich endgültig aufgelöst?", a: ["476 n. Chr.", "1453", "800 n. Chr."], correct: 0 },
+  { q: "Was war die 'Schlacht bei Waterloo'?", a: ["Napoleons letzter Sieg", "Napoleons Niederlage", "Beginn des Ersten Weltkriegs"], correct: 1 },
+  { q: "Wer war der erste Präsident der Vereinigten Staaten?", a: ["Thomas Jefferson", "George Washington", "John Adams"], correct: 1 },
+  { q: "Was war der 'Eiserne Vorhang'?", a: ["Eine physische Mauer", "Ein Symbol für die Teilung Europas", "Ein militärisches Bündnis"], correct: 1 },
+  { q: "Wann wurde Adolf Hitler Reichskanzler?", a: ["1929", "1933", "1939"], correct: 1 },
+  { q: "Wie viele Bundesländer hatte die ehemalige DDR?", a: ["4", "5", "6"], correct: 1 },
+  { q: "Was war die 'Kubakrise'?", a: ["Ein Putschversuch", "Ein Atomkonflikt zwischen USA und UdSSR", "Ein Bürgerkrieg"], correct: 1 },
+  { q: "Wer war Karl der Große?", a: ["Ein französischer König", "Ein römischer Feldherr", "Ein fränkischer Kaiser"], correct: 2 },
+  { q: "Was war die 'Reichspogromnacht'?", a: ["Ein Aufstand gegen das Kaiserreich", "Ein Angriff auf jüdische Einrichtungen", "Ein militärischer Putsch"], correct: 1 },
+  { q: "Wann wurde die EU gegründet (Vertrag von Maastricht)?", a: ["1990", "1993", "1995"], correct: 1 }
+],
+"Technik": [
+  { q: "Was bedeutet 'HTML'?", a: ["HyperText Markup Language", "HighTech Machine Language", "HyperTool Modern Logic"], correct: 0 },
+  { q: "Was ist ein Browser?", a: ["Ein Computerprogramm zum Surfen im Internet", "Ein Gerät zum Drucken", "Ein Musikplayer"], correct: 0 },
+  { q: "Was ist eine App?", a: ["Ein Betriebssystem", "Ein Anwendungsprogramm", "Ein Computerchip"], correct: 1 },
+  { q: "Was bedeutet 'USB'?", a: ["Universal Serial Bus", "Ultra Speed Band", "Unified Signal Base"], correct: 0 },
+  { q: "Was ist ein Algorithmus?", a: ["Ein Computerfehler", "Eine Rechenvorschrift", "Ein Speicherchip"], correct: 1 },
+  { q: "Was ist ein Pixel?", a: ["Ein kleiner Roboter", "Ein Bildpunkt", "Ein Datenformat"], correct: 1 },
+  { q: "Was ist ein Prozessor?", a: ["Das Herzstück eines Computers", "Ein Bildschirm", "Ein Lautsprecher"], correct: 0 },
+  { q: "Was bedeutet 'WLAN'?", a: ["Wireless Local Area Network", "Wide Line Access Node", "Web Link Adapter Network"], correct: 0 },
+  { q: "Was ist ein Betriebssystem?", a: ["Ein Computergehäuse", "Die Software, die den Computer steuert", "Ein Internetanbieter"], correct: 1 },
+  { q: "Was ist ein Smartphone?", a: ["Ein tragbarer Fernseher", "Ein intelligentes Mobiltelefon", "Ein Mini-Laptop"], correct: 1 },
+  { q: "Was ist Bluetooth?", a: ["Ein kabelloser Übertragungsstandard", "Ein Musikdienst", "Ein Virenschutzprogramm"], correct: 0 },
+  { q: "Was ist ein Touchscreen?", a: ["Ein Bildschirm, der auf Berührung reagiert", "Ein Lautsprecher", "Ein Drucker"], correct: 0 },
+  { q: "Was ist eine Cloud?", a: ["Ein Speicherplatz im Internet", "Ein Computergehäuse", "Ein Grafikchip"], correct: 0 },
+  { q: "Was ist ein QR-Code?", a: ["Ein Barcode für schnelle Infos", "Ein Passwort", "Ein Computervirus"], correct: 0 },
+  { q: "Was ist eine Festplatte?", a: ["Ein Speichergerät", "Ein Bildschirm", "Ein Prozessor"], correct: 0 },
+  { q: "Was ist eine Firewall?", a: ["Ein Schutzprogramm gegen Hacker", "Ein Heizsystem", "Ein Grafikchip"], correct: 0 },
+  { q: "Was ist ein Link?", a: ["Eine Internetverbindung zu einer anderen Seite", "Ein Computerfehler", "Ein Passwort"], correct: 0 },
+  { q: "Was ist ein Update?", a: ["Eine Software-Aktualisierung", "Ein Computerabsturz", "Ein neues Gerät"], correct: 0 },
+  { q: "Was ist ein Tablet?", a: ["Ein tragbarer Computer mit Touchscreen", "Ein Smartphone", "Ein Lautsprecher"], correct: 0 },
+  { q: "Was ist ein Screenshot?", a: ["Ein Foto vom Bildschirm", "Ein Virus", "Ein Musikclip"], correct: 0 },
+  { q: "Was ist ein USB-Stick?", a: ["Ein tragbares Speichergerät", "Ein Lautsprecher", "Ein Bildschirm"], correct: 0 },
+  { q: "Was ist ein Router?", a: ["Ein Gerät zur Internetverbindung", "Ein Drucker", "Ein Monitor"], correct: 0 },
+  { q: "Was ist ein Code?", a: ["Ein Satz von Befehlen für ein Programm", "Ein Passwort", "Ein Bildformat"], correct: 0 },
+  { q: "Was ist ein Hacker?", a: ["Jemand, der Computersysteme manipuliert", "Ein Programmierer", "Ein Designer"], correct: 0 },
+  { q: "Was ist ein Emoji?", a: ["Ein kleines Bildsymbol", "Ein Computervirus", "Ein Dateiformat"], correct: 0 },
+  { q: "Was ist ein Ladegerät?", a: ["Ein Gerät zum Aufladen von Akkus", "Ein Lautsprecher", "Ein Speicherchip"], correct: 0 },
+  { q: "Was ist ein Passwort?", a: ["Ein geheimer Zugangscode", "Ein Dateiformat", "Ein Computerfehler"], correct: 0 },
+  { q: "Was ist ein Monitor?", a: ["Ein Bildschirm", "Ein Prozessor", "Ein Speicherchip"], correct: 0 },
+  { q: "Was ist ein Cursor?", a: ["Ein Mauszeiger", "Ein Speicherchip", "Ein Lautsprecher"], correct: 0 },
+  { q: "Was ist ein Motherboard?", a: ["Die Hauptplatine eines Computers", "Ein Bildschirm", "Ein Drucker"], correct: 0 }
+],
+"Natur": [
+  { q: "Was ist Photosynthese?", a: ["Ein chemischer Prozess zur Energiegewinnung in Pflanzen", "Ein Tierverhalten", "Ein Wetterphänomen"], correct: 0 },
+  { q: "Was ist ein Ökosystem?", a: ["Ein Zusammenspiel von Lebewesen und Umwelt", "Ein Computernetzwerk", "Ein Bauwerk"], correct: 0 },
+  { q: "Was ist ein Säugetier?", a: ["Ein Tier, das Milch gibt und Fell hat", "Ein Reptil", "Ein Insekt"], correct: 0 },
+  { q: "Was ist ein Baum?", a: ["Eine große Pflanze mit Stamm und Ästen", "Ein Tier", "Ein Berg"], correct: 0 },
+  { q: "Was ist ein Insekt?", a: ["Ein kleines Tier mit sechs Beinen", "Ein Vogel", "Ein Fisch"], correct: 0 },
+  { q: "Was ist ein Vulkan?", a: ["Ein Berg, aus dem Lava austreten kann", "Ein See", "Ein Gletscher"], correct: 0 },
+  { q: "Was ist ein Gletscher?", a: ["Eine große Eismasse, die sich langsam bewegt", "Ein Vulkan", "Ein See"], correct: 0 },
+  { q: "Was ist ein Regenwald?", a: ["Ein feuchter, dichter Wald in tropischen Regionen", "Ein trockener Wüstenwald", "Ein Nadelwald"], correct: 0 },
+  { q: "Was ist ein Blatt?", a: ["Ein Teil einer Pflanze zur Photosynthese", "Ein Tierorgan", "Ein Gestein"], correct: 0 },
+  { q: "Was ist ein Vogel?", a: ["Ein Tier mit Federn und Flügeln", "Ein Fisch", "Ein Reptil"], correct: 0 },
+  { q: "Was ist ein Planet?", a: ["Ein Himmelskörper, der um eine Sonne kreist", "Ein Stern", "Ein Asteroid"], correct: 0 },
+  { q: "Was ist ein Fossil?", a: ["Ein versteinerter Rest eines Lebewesens", "Ein Edelstein", "Ein Metall"], correct: 0 },
+  { q: "Was ist Biodiversität?", a: ["Die Vielfalt von Leben in einem bestimmten Gebiet", "Die Menge an CO₂ in der Atmosphäre", "Die Geschwindigkeit der Evolution"], correct: 0 },
+  { q: "Was beschreibt der Begriff 'Symbiose'?", a: ["Eine vorteilhafte Beziehung zwischen zwei Organismen", "Ein Kampf um Ressourcen", "Die Mutation eines Gens"], correct: 0 },
+  { q: "Was ist ein endemisches Tier?", a: ["Ein Tier, das nur in einem bestimmten Gebiet vorkommt", "Ein Tier, das ausgestorben ist", "Ein Tier, das weltweit verbreitet ist"], correct: 0 },
+  { q: "Was ist der Treibhauseffekt?", a: ["Die Erwärmung der Erde durch bestimmte Gase", "Die Abkühlung der Atmosphäre durch Pflanzen", "Die Reflexion von Sonnenlicht durch Eisflächen"], correct: 0 },
+  { q: "Was ist ein Biotop?", a: ["Ein Lebensraum für bestimmte Pflanzen und Tiere", "Ein genetisches Labor", "Ein künstlicher See"], correct: 0 },
+  { q: "Was ist eine invasive Art?", a: ["Eine fremde Art, die einheimische Arten verdrängt", "Eine bedrohte Tierart", "Eine Art, die nur in Zoos lebt"], correct: 0 },
+  { q: "Was ist ein Myzel?", a: ["Das unterirdische Geflecht von Pilzen", "Ein Mineral im Boden", "Ein Wurzelgeflecht von Bäumen"], correct: 0 },
+  { q: "Was ist ein Karstgebiet?", a: ["Eine Landschaft mit Höhlen und Dolinen durch Kalksteinverwitterung", "Ein vulkanisches Gebiet", "Ein Gletscherfeld"], correct: 0 },
+  { q: "Was ist ein Primärwald?", a: ["Ein ursprünglicher, unberührter Wald", "Ein aufgeforsteter Wald", "Ein Mischwald"], correct: 0 },
+  { q: "Was ist eine ökologische Nische?", a: ["Die Rolle und Lebensweise einer Art im Ökosystem", "Ein Rückzugsort für bedrohte Tiere", "Ein unterirdischer Lebensraum"], correct: 0 },
+  { q: "Was ist ein Tundra-Biom?", a: ["Ein kaltes, baumloses Gebiet mit Permafrost", "Ein tropischer Regenwald", "Ein Wüstengebiet"], correct: 0 },
+  { q: "Was ist ein aquatisches Ökosystem?", a: ["Ein Lebensraum im Wasser", "Ein Lebensraum in der Luft", "Ein Lebensraum im Gebirge"], correct: 0 },
+  { q: "Was ist ein Detritus?", a: ["Abgestorbenes organisches Material", "Ein Gesteinstyp", "Ein Luftschadstoff"], correct: 0 },
+  { q: "Was ist eine Population?", a: ["Alle Individuen einer Art in einem bestimmten Gebiet", "Die Anzahl der Pflanzen in einem Wald", "Die Vielfalt der Arten weltweit"], correct: 0 },
+  { q: "Was ist ein Klimadiagramm?", a: ["Eine grafische Darstellung von Temperatur und Niederschlag", "Ein Diagramm zur CO₂-Emission", "Ein Diagramm zur Windgeschwindigkeit"], correct: 0 },
+  { q: "Was ist ein Laubbaum?", a: ["Ein Baum mit breiten Blättern", "Ein Nadelbaum", "Ein Busch"], correct: 0 },
+  { q: "Was ist ein Nadelbaum?", a: ["Ein Baum mit nadelförmigen Blättern", "Ein Laubbaum", "Ein Gras"], correct: 0 },
+  { q: "Was ist ein Naturpark?", a: ["Ein geschütztes Gebiet zur Erhaltung der Natur", "Ein Freizeitpark", "Ein Zoo"], correct: 0 },
+  { q: "Was ist Kompost?", a: ["Zersetzte organische Abfälle zur Düngung", "Ein Plastikbehälter", "Ein Metallstück"], correct: 0 }
+],
+"Film und Fernsehen": [
+  { q: "Wer spielte Jack in 'Titanic'?", a: ["Tom Cruise", "Leonardo DiCaprio", "Brad Pitt"], correct: 1 },
+  { q: "Was ist 'Hogwarts'?", a: ["Ein Planet", "Ein Schloss in Schottland", "Eine Zauberschule"], correct: 2 },
+  { q: "Was bedeutet 'IMDb'?", a: ["Image Motion Data", "Internet Movie Database", "International Media Board"], correct: 1 },
+  { q: "Wer ist der Regisseur von 'Inception'?", a: ["James Cameron", "Christopher Nolan", "Steven Spielberg"], correct: 1 },
+  { q: "Was ist 'The Mandalorian'?", a: ["Ein Westernfilm", "Ein Marvel-Comic", "Eine Star-Wars-Serie"], correct: 2 },
+  { q: "Was ist ein Oscar?", a: ["Ein Schauspieler", "Ein Filmpreis", "Ein Filmgenre"], correct: 1 },
+  { q: "Wer ist der Bösewicht in 'Avengers: Infinity War'?", a: ["Ultron", "Thanos", "Loki"], correct: 1 },
+  { q: "Was ist 'Netflix'?", a: ["Ein Kinofilm", "Ein Streamingdienst", "Ein Fernsehsender"], correct: 1 },
+  { q: "Was ist 'Breaking Bad'?", a: ["Ein Computerspiel", "Ein Kinofilm", "Eine Fernsehserie"], correct: 2 },
+  { q: "Wer spielte den Joker in 'The Dark Knight'?", a: ["Jim Carrey", "Heath Ledger", "Joaquin Phoenix"], correct: 1 },
+  { q: "Was ist 'Pixar'?", a: ["Ein Filmgenre", "Ein Animationsstudio", "Ein Schauspieler"], correct: 1 },
+  { q: "Was ist 'Friends'?", a: ["Ein Horrorfilm", "Ein Drama", "Eine Sitcom"], correct: 2 },
+  { q: "Was ist 'Game of Thrones'?", a: ["Ein Zeichentrickfilm", "Eine Fantasy-Serie", "Ein Dokumentarfilm"], correct: 1 },
+  { q: "Wer ist 'Darth Vader'?", a: ["Ein Hobbit", "Ein Star-Wars-Charakter", "Ein Marvel-Held"], correct: 1 },
+  { q: "Was ist 'Hollywood'?", a: ["Ein Schauspieler", "Ein Filmzentrum in Kalifornien", "Ein Filmgenre"], correct: 1 },
+  { q: "Wer spielte Harry Potter?", a: ["Rupert Grint", "Elijah Wood", "Daniel Radcliffe"], correct: 2 },
+  { q: "Was ist 'Die Simpsons'?", a: ["Ein Theaterstück", "Eine Zeichentrickserie", "Ein Kinofilm"], correct: 1 },
+  { q: "Wer ist der Regisseur von 'Jurassic Park'?", a: ["Peter Jackson", "Steven Spielberg", "James Cameron"], correct: 1 },
+  { q: "Was ist 'Disney+'?", a: ["Ein Filmstudio", "Ein Streamingdienst", "Ein Freizeitpark"], correct: 1 },
+  { q: "Wer spielte Frodo in 'Der Herr der Ringe'?", a: ["Daniel Radcliffe", "Elijah Wood", "Orlando Bloom"], correct: 1 },
+  { q: "Was ist 'Stranger Things'?", a: ["Ein Videospiel", "Eine Mystery-Serie", "Ein Kinofilm"], correct: 1 },
+  { q: "Was ist 'Tatort'?", a: ["Ein Nachrichtenformat", "Eine deutsche Krimiserie", "Ein Kinofilm"], correct: 1 },
+  { q: "Wer spielte James Bond in 'Skyfall'?", a: ["Sean Connery", "Daniel Craig", "Pierce Brosnan"], correct: 1 },
+  { q: "Was ist 'Marvel'?", a: ["Ein Kinogenre", "Ein Fernsehsender", "Ein Comic- und Filmstudio"], correct: 2 },
+  { q: "Was ist 'Der König der Löwen'?", a: ["Ein Western", "Ein Zeichentrickfilm", "Ein Dokumentarfilm"], correct: 1 },
+  { q: "Wer ist 'Yoda'?", a: ["Ein Superheld", "Ein Jedi-Meister", "Ein Hobbit"], correct: 1 },
+  { q: "Was ist 'The Crown'?", a: ["Ein Krimi", "Eine Serie über die britische Monarchie", "Ein Fantasyfilm"], correct: 1 },
+  { q: "Was ist 'Avatar'?", a: ["Ein Musikvideo", "Ein Science-Fiction-Film", "Ein Zeichentrickfilm"], correct: 1 },
+  { q: "Wer spielte Wolverine?", a: ["Chris Hemsworth", "Robert Downey Jr.", "Hugh Jackman"], correct: 2 },
+  { q: "Was ist 'SpongeBob Schwammkopf'?", a: ["Ein Computerspiel", "Eine Zeichentrickserie", "Ein Kinofilm"], correct: 1 },
+  { q: "Was ist 'Sherlock'?", a: ["Ein Musikvideo", "Eine Detektivserie", "Ein Horrorfilm"], correct: 1 },
+  { q: "Wer spielte Katniss Everdeen?", a: ["Scarlett Johansson", "Jennifer Lawrence", "Emma Watson"], correct: 1 },
+  { q: "Was ist 'How I Met Your Mother'?", a: ["Ein Thriller", "Eine Sitcom", "Ein Drama"], correct: 1 },
+  { q: "Was ist 'Der Pate'?", a: ["Ein Western", "Ein Mafiafilm", "Ein Liebesfilm"], correct: 1 },
+  { q: "Wer ist 'Iron Man'?", a: ["Clark Kent", "Tony Stark", "Bruce Wayne"], correct: 1 },
+  { q: "Was ist 'Rick and Morty'?", a: ["Ein Podcast", "Eine Zeichentrickserie", "Ein Kinofilm"], correct: 1 },
+  { q: "Was ist 'Loki'?", a: ["Ein Star-Wars-Charakter", "Eine Marvel-Serie", "Ein DC-Film"], correct: 1 },
+  { q: "Was ist 'Die Eiskönigin'?", a: ["Ein Animationsfilm", "Ein Horrorfilm", "Ein Actionfilm"], correct: 0 },
+  { q: "Wer spielte Batman in 'The Dark Knight Rises'?", a: ["Ben Affleck", "Michael Keaton", "Christian Bale"], correct: 2 },
+  { q: "Was ist 'Der Hobbit'?", a: ["Ein Krimi", "Ein Fantasyfilm", "Ein Science-Fiction-Film"], correct: 1 },
+  { q: "Was ist 'Black Mirror'?", a: ["Ein Comedyformat", "Eine dystopische Serie", "Ein Zeichentrickfilm"], correct: 1 },
+  { q: "Was ist 'Minions'?", a: ["Ein Actionfilm", "Ein Animationsfilm", "Ein Dokumentarfilm"], correct: 1 },
+  { q: "Was ist 'The Office'?", a: ["Ein Musikvideo", "Eine Comedyserie", "Ein Horrorfilm"], correct: 1 },
+  { q: "Wer ist 'Gollum'?", a: ["Ein Zauberer aus Harry Potter", "Eine Figur aus 'Der Herr der Ringe'", "Ein Marvel-Bösewicht"], correct: 1 },
+  { q: "Was ist 'Die drei ???'?", a: ["Ein Musikprojekt", "Eine Detektivserie", "Ein Fantasyfilm"], correct: 1 }
+],
+"Unnützes Wissen": [
+  { q: "Wie lange kann ein Schneckenpaar miteinander 'kuscheln'?", a: ["5 Minuten", "3 Stunden", "Bis zu 12 Stunden"], correct: 2 },
+  { q: "Was ist das Lieblingssportgerät eines Seehunds?", a: ["Ein Ball", "Ein Hula-Hoop-Reifen", "Ein Surfbrett"], correct: 0 },
+  { q: "Wie viele Wörter kann ein Papagei durchschnittlich lernen?", a: ["20", "100", "Über 800"], correct: 2 },
+  { q: "Was passiert, wenn man eine Gurke in Alufolie wickelt?", a: ["Sie wird süß", "Sie bleibt länger frisch", "Sie leuchtet im Dunkeln"], correct: 1 },
+  { q: "Welches Tier kann seinen eigenen Kopf durch den After ziehen?", a: ["Seegurke", "Qualle", "Tintenfisch"], correct: 0 },
+  { q: "Wie viele Toastscheiben passen in einen handelsüblichen Toaster?", a: ["2", "4", "Kommt auf die Toastgröße an"], correct: 2 },
+  { q: "Was war früher der Zweck von High Heels?", a: ["Mode", "Kampf", "Reiten"], correct: 2 },
+  { q: "Was ist das einzige Land, das offiziell Einhörner als Nationaltier hat?", a: ["Island", "Schottland", "Nepal"], correct: 1 },
+  { q: "Wie viele Kalorien verbrennt man beim 1-Minuten-Lachen?", a: ["1", "3", "12"], correct: 2 },
+  { q: "Was ist das Lieblingsessen von Pinguinen im Zoo?", a: ["Sushi", "Hering", "Eiswürfel"], correct: 1 },
+  { q: "Was passiert, wenn man eine Banane mit Sprite mischt?", a: ["Sie explodiert", "Man muss fast immer würgen", "Sie wird blau"], correct: 1 },
+  { q: "Wie viele Gehirne hat ein Tintenfisch?", a: ["1", "3", "9"], correct: 2 },
+  { q: "Was ist das lauteste Tier der Welt (bezogen auf Körpergröße)?", a: ["Löwe", "Schnappgarnele", "Kolibri"], correct: 1 },
+  { q: "Was war das erste Emoji überhaupt?", a: ["Smiley 😊", "Herz ❤️", "Faxgerät 📠"], correct: 2 },
+  { q: "Was ist das einzige Gemüse, das früher als Zahlungsmittel verwendet wurde?", a: ["Kartoffel", "Knoblauch", "Zwiebel"], correct: 1 },
+  { q: "Wie viele Erdnüsse passen in eine Boeing 747?", a: ["Etwa 2 Millionen", "Etwa 10 Millionen", "Niemand weiß es genau"], correct: 2 },
+  { q: "Wie heißt das Geräusch, das eine Giraffe macht?", a: ["Sie brüllen", "Sie summen", "Giraffen sind meist stumm"], correct: 2 },
+  { q: "Was passiert, wenn man Cola mit Mentos mischt?", a: ["Nichts", "Es entsteht eine Fontäne", "Es wird zu Eis"], correct: 1 },
+  { q: "Wie viele Beine hat ein Tausendfüßler wirklich?", a: ["1000", "Zwischen 30 und 400", "Nur 10"], correct: 1 },
+  { q: "Was ist der längste Ortsname Europas?", a: ["Llanfairpwllgwyngyll", "Chargoggagoggmanchauggagoggchaubunagungamaugg", "Äänekoski"], correct: 0 },
+  { q: "Wie viele Liter Spucke produziert ein Mensch pro Tag?", a: ["0,5 Liter", "1 Liter", "1,5 Liter"], correct: 2 },
+  { q: "Was war das erste Produkt mit einem Barcode?", a: ["Kaugummi", "Milch", "Batterien"], correct: 0 },
+  { q: "Wie viele Sekunden dauert ein durchschnittlicher Wimpernschlag?", a: ["0,1 Sekunde", "0,3 Sekunde", "1 Sekunde"], correct: 1 },
+  { q: "Was ist das Lieblingsessen von Faultieren?", a: ["Blätter", "Pizza", "Insekten"], correct: 0 },
+  { q: "Wie viele Herzen hat ein Oktopus?", a: ["1", "2", "3"], correct: 2 },
+  { q: "Was ist das Nationaltier von Schottland?", a: ["Löwe", "Einhorn", "Schaf"], correct: 1 },
+  { q: "Wie viele Muskeln braucht man zum Stirnrunzeln?", a: ["5", "12", "43"], correct: 2 },
+  { q: "Wie lange dauert ein Niesen?", a: ["1 Sekunde", "3 Sekunden", "0,2 Sekunden"], correct: 2 },
+  { q: "Was ist die häufigste Farbe bei Zahnbürsten?", a: ["Blau", "Rot", "Grün"], correct: 0 },
+  { q: "Wie viele Toastscheiben isst ein durchschnittlicher Mensch pro Jahr?", a: ["100", "300", "1000"], correct: 1 },
+  { q: "Was war das erste Tier im Weltall?", a: ["Hund", "Affe", "Maus"], correct: 0 },
+  { q: "Wie viele Haare verliert ein Mensch täglich?", a: ["20-50", "50–100", "500-1000"], correct: 1 },
+  { q: "Was ist die Hauptstadt von Atlantis?", a: ["Poseidonia", "Atlantida", "Gibt es nicht"], correct: 2 },
+  { q: "Wie viele Augen hat eine Honigbiene?", a: ["2", "5", "8"], correct: 1 },
+  { q: "Was ist das Gegenteil von 'Unnützes Wissen'?", a: ["Nützliches Wissen", "Gar kein Wissen", "Wikipedia"], correct: 0 }
+],
+"Expertenwissen": [
+  { q: "Was ist die Heisenbergsche Unschärferelation?", a: ["Eine physikalische Grenze der Messgenauigkeit", "Ein mathematischer Beweis", "Ein biologisches Prinzip"], correct: 0 },
+  { q: "Wer entwickelte die Relativitätstheorie?", a: ["Isaac Newton", "Albert Einstein", "Stephen Hawking"], correct: 1 },
+  { q: "Was ist ein Genom?", a: ["Die Gesamtheit aller Gene eines Organismus", "Ein Zellkern", "Ein Protein"], correct: 0 },
+  { q: "Was ist der Unterschied zwischen RNA und DNA?", a: ["RNA hat Uracil statt Thymin", "RNA ist doppeltsträngig", "RNA speichert genetische Information dauerhaft"], correct: 0 },
+  { q: "Was ist ein Quasar?", a: ["Ein extrem heller galaktischer Kern", "Ein Planet außerhalb des Sonnensystems", "Ein schwarzes Loch"], correct: 0 },
+  { q: "Was ist die Funktion der Mitochondrien?", a: ["Energieproduktion in Zellen", "Informationsspeicherung", "Zellteilung"], correct: 0 },
+  { q: "Was ist ein Algorithmus?", a: ["Eine eindeutige Rechenvorschrift", "Ein Computerfehler", "Ein Speicherchip"], correct: 0 },
+  { q: "Was ist der Unterschied zwischen einem Virus und einem Bakterium?", a: ["Viren benötigen Wirtszellen zur Vermehrung", "Viren sind größer", "Bakterien sind keine Lebewesen"], correct: 0 },
+  { q: "Was ist ein Oxymoron?", a: ["Eine rhetorische Figur mit widersprüchlichen Begriffen", "Ein medizinischer Zustand", "Ein chemisches Element"], correct: 0 },
+  { q: "Was ist ein Plankton?", a: ["Kleine Lebewesen im Wasser", "Ein Mineral", "Ein Fisch"], correct: 0 },
+  { q: "Was ist die Funktion des Hypothalamus?", a: ["Regulation von Hunger, Durst und Temperatur", "Gedächtnisbildung", "Sprachverarbeitung"], correct: 0 },
+  { q: "Was ist ein Palindrom?", a: ["Ein Wort, das vorwärts und rückwärts gleich ist", "Ein Fremdwort", "Ein Dialekt"], correct: 0 },
+  { q: "Was ist ein Neutronenstern?", a: ["Ein extrem dichter Sternrest", "Ein Planet", "Ein Asteroid"], correct: 0 },
+  { q: "Was ist die Fibonacci-Folge?", a: ["Eine Zahlenreihe, bei der jede Zahl die Summe der beiden vorherigen ist", "Ein chemisches Gesetz", "Ein biologischer Zyklus"], correct: 0 },
+  { q: "Was ist ein Enzym?", a: ["Ein Protein, das biochemische Reaktionen beschleunigt", "Ein Zellorganell", "Ein Virus"], correct: 0 },
+  { q: "Was ist ein Molekül?", a: ["Eine Verbindung aus mindestens zwei Atomen", "Ein einzelnes Atom", "Ein Elektron"], correct: 0 },
+  { q: "Was ist ein Paradoxon?", a: ["Eine scheinbar widersprüchliche Aussage", "Ein mathematischer Fehler", "Ein physikalisches Gesetz"], correct: 0 },
+  { q: "Was ist ein Proton?", a: ["Ein positiv geladenes Teilchen im Atomkern", "Ein Neutron", "Ein Elektron"], correct: 0 },
+  { q: "Was ist ein Algorithmus in der Informatik?", a: ["Eine Schritt-für-Schritt-Anleitung zur Problemlösung", "Ein Computerfehler", "Ein Speicherchip"], correct: 0 },
+  { q: "Was ist ein Thermodynamisches Gesetz?", a: ["Ein physikalisches Prinzip zur Energieumwandlung", "Ein biologisches Gesetz", "Ein chemisches Experiment"], correct: 0 },
+  { q: "Was ist ein Axon?", a: ["Ein Fortsatz einer Nervenzelle zur Signalweiterleitung", "Ein Muskel", "Ein Blutgefäß"], correct: 0 },
+  { q: "Was ist ein Isotop?", a: ["Ein Atom mit gleicher Protonenzahl, aber unterschiedlicher Neutronenzahl", "Ein Molekül", "Ein Ion"], correct: 0 },
+  { q: "Was ist ein Fraktal?", a: ["Ein geometrisches Muster mit Selbstähnlichkeit", "Ein chemisches Element", "Ein biologischer Prozess"], correct: 0 },
+  { q: "Was ist ein Katalysator?", a: ["Ein Stoff, der eine Reaktion beschleunigt, ohne verbraucht zu werden", "Ein Reaktionsprodukt", "Ein Lösungsmittel"], correct: 0 },
+  { q: "Was ist ein Photon?", a: ["Ein Lichtteilchen", "Ein Atom", "Ein Elektron"], correct: 0 },
+  { q: "Was ist ein Turing-Test?", a: ["Ein Test zur Feststellung künstlicher Intelligenz", "Ein medizinischer Test", "Ein mathematischer Beweis"], correct: 0 },
+  { q: "Was ist ein Genotyp?", a: ["Die genetische Ausstattung eines Organismus", "Die äußere Erscheinung", "Ein Zelltyp"], correct: 0 },
+  { q: "Was ist ein Plagiat?", a: ["Die unerlaubte Übernahme fremder geistiger Leistungen", "Ein Virus", "Ein chemischer Stoff"], correct: 0 },
+  { q: "Was ist ein Spektrum?", a: ["Die Aufspaltung von Licht in verschiedene Wellenlängen", "Ein chemisches Element", "Ein biologischer Zyklus"], correct: 0 },
+  { q: "Was ist ein Quantensprung?", a: ["Ein diskreter Energieübergang eines Elektrons", "Ein großer Fortschritt", "Ein physikalischer Fehler"], correct: 0 },
+  { q: "Was ist ein Antikörper?", a: ["Ein Protein zur Abwehr von Krankheitserregern", "Ein Virus", "Ein Hormon"], correct: 0 },
+  { q: "Was ist ein Fossil?", a: ["Ein versteinerter Rest eines Lebewesens", "Ein Edelstein", "Ein Metall"], correct: 0 },
+  { q: "Was ist ein Algorithmus in der Mathematik?", a: ["Eine präzise Rechenvorschrift", "Ein Zufallswert", "Ein Diagramm"], correct: 0 },
+  { q: "Was ist ein Hormon?", a: ["Ein biochemischer Botenstoff", "Ein Muskel", "Ein Enzym"], correct: 0 },
+  { q: "Was ist ein Plasmid?", a: ["Ein ringförmiges DNA-Stück in Bakterien", "Ein Zellkern", "Ein Virus"], correct: 0 },
+  { q: "Was ist ein Vektor in der Biologie?", a: ["Ein Überträger von Krankheitserregern", "Ein genetischer Code", "Ein Zelltyp"], correct: 0 },
+  { q: "Was ist ein Black Hole?", a: ["Ein Objekt mit so starker Gravitation, dass nichts entkommt", "Ein Planet", "Ein Stern"], correct: 0 },
+  { q: "Was ist ein Neuron?", a: ["Eine Nervenzelle", "Ein Muskel", "Ein Blutkörperchen"], correct: 0 }
+]
+
+
+
+  };
+
+  const categories = Object.keys(questionPool);
+  let remainingCategories = [...categories];
+  let remainingQuestions = {};
+  categories.forEach(cat => {
+    remainingQuestions[cat] = [...questionPool[cat]];
+  });
+
+  let players = [];
+  let scores = {};
+  let currentPlayerIndex = 0;
+  let currentRound = 1;
+  const maxRounds = 5;
+  let selectedCategory = "";
+
+  function setupPlayers() {
+    const count = parseInt(document.getElementById("playerCount").value);
+    const inputDiv = document.getElementById("playerInputs");
+    inputDiv.innerHTML = "";
+
+    for (let i = 0; i < count; i++) {
+      const input = document.createElement("input");
+      input.placeholder = `Spieler ${i + 1}`;
+      input.id = `player${i}`;
+      inputDiv.appendChild(input);
+    }
+
+    const startBtn = document.createElement("button");
+    startBtn.innerText = "Spiel starten";
+    startBtn.onclick = () => {
+      players = [];
+      scores = {};
+      for (let i = 0; i < count; i++) {
+        const name = document.getElementById(`player${i}`).value || `Spieler ${i + 1}`;
+        players.push(name);
+        scores[name] = 0;
+      }
+      document.getElementById("setup").classList.add("hidden");
+      animateCategory();
+    };
+    inputDiv.appendChild(startBtn);
+  }
+
+  function animateCategory() {
+    document.getElementById("categoryAnimation").classList.remove("hidden");
+    const catDisplay = document.getElementById("animatedCategory");
+    let i = 0;
+    const interval = setInterval(() => {
+      catDisplay.innerText = categories[i % categories.length];
+      i++;
+      if (i > categories.length * 2) {
+        clearInterval(interval);
+        selectedCategory = document.getElementById("categorySelect").value;
+        if (selectedCategory === "random") {
+          const index = Math.floor(Math.random() * remainingCategories.length);
+          selectedCategory = remainingCategories.splice(index, 1)[0];
+        }
+        catDisplay.innerText = selectedCategory;
+        setTimeout(() => {
+          document.getElementById("categoryAnimation").classList.add("hidden");
+          startRound();
+        }, 1500);
+      }
+    }, 200);
+  }
+
+  function startRound() {
+    currentPlayerIndex = 0;
+    showQuestion();
+  }
+
+  function showQuestion() {
+    if (currentPlayerIndex >= players.length) {
+      currentRound++;
+      if (currentRound > maxRounds || remainingCategories.length === 0) {
+        showResults();
+      } else {
+        animateCategory();
+      }
+      return;
+    }
+
+    document.getElementById("quizRound").classList.remove("hidden");
+    const player = players[currentPlayerIndex];
+    document.getElementById("currentPlayer").innerText = `Frage für ${player}`;
+
+    const questions = remainingQuestions[selectedCategory];
+    if (questions.length === 0) {
+      document.getElementById("questionText").innerText = "Keine Fragen mehr in dieser Kategorie.";
+      return;
+    }
+
+    const index = Math.floor(Math.random() * questions.length);
+    const q = questions.splice(index, 1)[0];
+
+    document.getElementById("questionText").innerText = q.q;
+    const optionsDiv = document.getElementById("answerOptions");
+    optionsDiv.innerHTML = "";
+
+    q.a.forEach((opt, i) => {
+      const btn = document.createElement("button");
+      btn.innerText = opt;
+      btn.onclick = () => {
+        if (i === q.correct) {
+          scores[player]++;
+          showPlusOne(btn);
+        } else {
+          showMinusOne(btn);
+        }
+
+        updateScoreDisplay();
+        currentPlayerIndex++;
+        setTimeout(showQuestion, 1000);
+      };
+      optionsDiv.appendChild(btn);
+    });
+  }
+
+  function showPlusOne(element) {
+    const plus = document.createElement("div");
+    plus.className = "plusOne";
+    plus.innerText = "+1";
+    plus.style.left = element.getBoundingClientRect().left + "px";
+    plus.style.top = element.getBoundingClientRect().top + "px";
+    document.body.appendChild(plus);
+    setTimeout(() => plus.remove(), 1000);
+  }
+
+  function showMinusOne(element) {
+    const minus = document.createElement("div");
+    minus.className = "minusOne";
+    minus.innerText = "–1";
+    minus.style.left = element.getBoundingClientRect().left + "px";
+    minus.style.top = element.getBoundingClientRect().top + "px";
+    document.body.appendChild(minus);
+    setTimeout(() => minus.remove(), 1000);
+  }
+
+  function updateScoreDisplay() {
+    const scoreDiv = document.getElementById("scoreDisplay");
+    scoreDiv.innerHTML = players.map(p => `${p}: ${scores[p]} Punkte`).join("<br>");
+  }
+
+  function showResults() {
+    document.getElementById("quizRound").classList.add("hidden");
+    document.getElementById("results").classList.remove("hidden");
+    const board = document.getElementById("winnerBoard");
+    board.innerHTML = "";
+
+    const sorted = [...players].sort((a, b) => scores[b] - scores[a]);
+    const highestScore = scores[sorted[0]];
+    const winners = sorted.filter(p => scores[p] === highestScore);
+
+    winners.forEach(winner => {
+      const div = document.createElement("div");
+      div.innerText = `🏆 ${winner} gewinnt mit ${scores[winner]} Punkten!`;
+      board.appendChild(div);
+    });
+
+    sorted.forEach(p => {
+      if (!winners.includes(p)) {
+        const div = document.createElement("div");
+        div.innerText = `${p}: ${scores[p]} Punkte`;
+        board.appendChild(div);
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

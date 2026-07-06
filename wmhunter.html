@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>PlayerMaster ⭐</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('wm.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 20px;
+  margin-top: 40px;
+  animation: fadeIn 1s ease;
+}
+
+h1, h2 {
+  text-align: center;
+  text-shadow: 2px 2px 6px #000;
+}
+
+select, input, button {
+  width: 100%;
+  padding: 16px;
+  margin: 14px 0;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.2rem;
+}
+
+button {
+  background-color: #ff4081;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #e91e63;
+}
+
+.card {
+  background: #fff;
+  color: #000;
+  border-radius: 20px;
+  padding: 24px;
+  margin: 24px 0;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  animation: slideUp 0.8s ease;
+  font-size: 1.2rem;
+}
+
+.hidden { display: none; }
+
+.menu-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 28px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.menu-button:hover {
+  background-color: #45a049;
+}
+
+.premium-popup {
+  background: rgba(0,0,0,0.85);
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  margin-top: 20px;
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.premium-popup button {
+  background-color: #ff4081;
+  margin-top: 10px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<audio id="bg-sound" src="wm.mp3" autoplay loop></audio>
+
+<!-- STARTSCREEN -->
+<div class="container" id="startScreen">
+  <h1>PlayerMaster ⭐</h1>
+
+  <label>Kategorie wählen:</label>
+  <select id="themeSelect">
+    <option value="fussball">⚽ Fußball (Kostenlos)</option>
+    <option value="wirtschaft">🏦 Wirtschaft (Premium 💎)</option>
+    <option value="musik">🎶 Musik (Premium 💎)</option>
+    <option value="filme">🎥 Filme (Premium 💎)</option>
+    <option value="geografie">🌍 Geografie (Premium 💎)</option>
+    <option value="tiere">🙉 Tiere (Premium 💎)</option>
+  </select>
+
+  <!-- Premium Popup -->
+  <div id="premiumPopup" class="premium-popup">
+    <h3>Premium Kategorie 🔒</h3>
+    <p>Diese Kategorie ist nur mit Premium spielbar.</p>
+    <button onclick="closePremiumPopup()">OK</button>
+  </div>
+
+  <button id="start-game" class="menu-button">Starten</button>
+  <button onclick="location.href='startseite.html'" class="menu-button">Zur Startseite</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div class="container hidden" id="game-screen">
+  <h2 id="round-title"></h2>
+
+  <div id="player-card" class="card">
+    <div id="player-content"></div>
+  </div>
+
+  <div id="category-buttons"></div>
+</div>
+
+<!-- END SCREEN -->
+<div class="container hidden" id="end-screen">
+  <h2>Spiel beendet!</h2>
+  <div id="summary-card" class="card"></div>
+  <button id="restart-game" class="menu-button">Nochmal spielen</button>
+  <button onclick="location.href='startseite.html'" class="menu-button">Zur Startseite</button>
+</div>
+
+<script>
+/* PREMIUM SYSTEM — EXACTLY LIKE DUOPLAY */
+const hasPremium = localStorage.getItem("premium") === "true";
+
+const premiumCategories = ["musik","wirtschaft","tiere", "filme","geografie"];
+
+const themeSelect = document.getElementById("themeSelect");
+
+themeSelect.addEventListener("change", () => {
+  const selected = themeSelect.value;
+
+  if (!hasPremium && premiumCategories.includes(selected)) {
+    document.getElementById("premiumPopup").style.display = "block";
+    themeSelect.value = "fussball";
+  }
+});
+
+function closePremiumPopup() {
+  document.getElementById("premiumPopup").style.display = "none";
+}
+
+/* PLAYER POOLS — jede Kategorie hat eigene Spieler */
+const playerPools = {
+  fussball: [
+    { name: "Miroslav Klose 🇩🇪", stats: { tore: 71, vorlagen: 30, spiele: 137, gegentorlos: 0, titel: 1, wmTore: 16, emTore: 3, vereine: 5 }},
+    { name: "Lionel Messi 🇦🇷", stats: { tore: 800, vorlagen: 350, spiele: 1050, gegentorlos: 0, titel: 44, wmTore: 13, emTore: 0, vereine: 3 }},
+    { name: "Cristiano Ronaldo 🇵🇹", stats: { tore: 890, vorlagen: 250, spiele: 1200, gegentorlos: 0, titel: 35, wmTore: 8, emTore: 14, vereine: 5 }},
+    { name: "Manuel Neuer 🇩🇪", stats: { tore: 0, vorlagen: 10, spiele: 900, gegentorlos: 350, titel: 30, wmTore: 0, emTore: 0, vereine: 3 }},
+{ name: "Erling Haaland 🇳🇴", stats: { tore: 240, vorlagen: 60, spiele: 260, gegentorlos: 0, titel: 12, wmTore: 0, emTore: 0, vereine: 3 }},
+{ name: "Kevin De Bruyne 🇧🇪", stats: { tore: 170, vorlagen: 260, spiele: 620, gegentorlos: 0, titel: 20, wmTore: 2, emTore: 1, vereine: 4 }},
+{ name: "Luka Modrić 🇭🇷", stats: { tore: 120, vorlagen: 160, spiele: 900, gegentorlos: 0, titel: 25, wmTore: 2, emTore: 1, vereine: 3 }},
+{ name: "Sergio Ramos 🇪🇸", stats: { tore: 110, vorlagen: 40, spiele: 1000, gegentorlos: 0, titel: 28, wmTore: 3, emTore: 2, vereine: 3 }},
+{ name: "Virgil van Dijk 🇳🇱", stats: { tore: 55, vorlagen: 20, spiele: 550, gegentorlos: 180, titel: 10, wmTore: 1, emTore: 0, vereine: 4 }},
+{ name: "Mohamed Salah 🇪🇬", stats: { tore: 350, vorlagen: 150, spiele: 600, gegentorlos: 0, titel: 8, wmTore: 2, emTore: 0, vereine: 5 }},
+{ name: "Sadio Mané 🇸🇳", stats: { tore: 250, vorlagen: 120, spiele: 550, gegentorlos: 0, titel: 7, wmTore: 3, emTore: 0, vereine: 4 }},
+{ name: "Harry Kane 🏴", stats: { tore: 380, vorlagen: 110, spiele: 520, gegentorlos: 0, titel: 0, wmTore: 8, emTore: 4, vereine: 2 }},
+{ name: "Karim Benzema 🇫🇷", stats: { tore: 430, vorlagen: 180, spiele: 820, gegentorlos: 0, titel: 25, wmTore: 3, emTore: 2, vereine: 3 }},
+{ name: "Toni Kroos 🇩🇪", stats: { tore: 110, vorlagen: 180, spiele: 750, gegentorlos: 0, titel: 32, wmTore: 3, emTore: 2, vereine: 3 }},
+
+{ name: "Joshua Kimmich 🇩🇪", stats: { tore: 70, vorlagen: 140, spiele: 500, gegentorlos: 0, titel: 20, wmTore: 1, emTore: 1, vereine: 2 }},
+{ name: "Pedri 🇪🇸", stats: { tore: 25, vorlagen: 40, spiele: 180, gegentorlos: 0, titel: 3, wmTore: 0, emTore: 0, vereine: 1 }},
+{ name: "Gavi 🇪🇸", stats: { tore: 20, vorlagen: 30, spiele: 150, gegentorlos: 0, titel: 2, wmTore: 1, emTore: 0, vereine: 1 }},
+{ name: "Jude Bellingham 🏴", stats: { tore: 60, vorlagen: 50, spiele: 200, gegentorlos: 0, titel: 4, wmTore: 1, emTore: 0, vereine: 3 }},
+{ name: "Declan Rice 🏴", stats: { tore: 25, vorlagen: 20, spiele: 300, gegentorlos: 0, titel: 1, wmTore: 0, emTore: 0, vereine: 2 }},
+{ name: "Bruno Fernandes 🇵🇹", stats: { tore: 160, vorlagen: 110, spiele: 450, gegentorlos: 0, titel: 4, wmTore: 2, emTore: 1, vereine: 3 }},
+{ name: "João Cancelo 🇵🇹", stats: { tore: 40, vorlagen: 70, spiele: 400, gegentorlos: 0, titel: 10, wmTore: 0, emTore: 0, vereine: 5 }},
+{ name: "Rúben Dias 🇵🇹", stats: { tore: 20, vorlagen: 10, spiele: 350, gegentorlos: 120, titel: 6, wmTore: 0, emTore: 0, vereine: 3 }},
+{ name: "Alisson Becker 🇧🇷", stats: { tore: 1, vorlagen: 5, spiele: 450, gegentorlos: 180, titel: 10, wmTore: 0, emTore: 0, vereine: 3 }},
+{ name: "Ederson 🇧🇷", stats: { tore: 0, vorlagen: 6, spiele: 400, gegentorlos: 160, titel: 12, wmTore: 0, emTore: 0, vereine: 3 }},
+
+{ name: "Marc-André ter Stegen 🇩🇪", stats: { tore: 0, vorlagen: 4, spiele: 550, gegentorlos: 200, titel: 15, wmTore: 0, emTore: 0, vereine: 2 }},
+{ name: "Thibaut Courtois 🇧🇪", stats: { tore: 0, vorlagen: 3, spiele: 600, gegentorlos: 230, titel: 12, wmTore: 0, emTore: 0, vereine: 3 }},
+{ name: "Jan Oblak 🇸🇮", stats: { tore: 0, vorlagen: 2, spiele: 520, gegentorlos: 210, titel: 1, wmTore: 0, emTore: 0, vereine: 2 }},
+{ name: "Iker Casillas 🇪🇸", stats: { tore: 0, vorlagen: 5, spiele: 1040, gegentorlos: 350, titel: 30, wmTore: 0, emTore: 0, vereine: 2 }},
+{ name: "Petr Čech 🇨🇿", stats: { tore: 0, vorlagen: 4, spiele: 900, gegentorlos: 380, titel: 20, wmTore: 0, emTore: 0, vereine: 3 }},
+{ name: "Oliver Kahn 🇩🇪", stats: { tore: 0, vorlagen: 3, spiele: 780, gegentorlos: 320, titel: 18, wmTore: 0, emTore: 0, vereine: 2 }},
+{ name: "Fabio Cannavaro 🇮🇹", stats: { tore: 15, vorlagen: 10, spiele: 700, gegentorlos: 0, titel: 10, wmTore: 0, emTore: 0, vereine: 4 }},
+{ name: "Paolo Maldini 🇮🇹", stats: { tore: 40, vorlagen: 30, spiele: 1020, gegentorlos: 0, titel: 26, wmTore: 0, emTore: 0, vereine: 1 }},
+{ name: "Franz Beckenbauer 🇩🇪", stats: { tore: 80, vorlagen: 70, spiele: 700, gegentorlos: 0, titel: 20, wmTore: 4, emTore: 2, vereine: 2 }},
+{ name: "Lothar Matthäus 🇩🇪", stats: { tore: 200, vorlagen: 150, spiele: 900, gegentorlos: 0, titel: 18, wmTore: 6, emTore: 3, vereine: 5 }},
+
+{ name: "Andrés Iniesta 🇪🇸", stats: { tore: 90, vorlagen: 160, spiele: 750, gegentorlos: 0, titel: 32, wmTore: 2, emTore: 1, vereine: 2 }},
+{ name: "Xavi 🇪🇸", stats: { tore: 85, vorlagen: 180, spiele: 800, gegentorlos: 0, titel: 33, wmTore: 1, emTore: 1, vereine: 2 }},
+{ name: "Sergio Busquets 🇪🇸", stats: { tore: 30, vorlagen: 40, spiele: 750, gegentorlos: 0, titel: 30, wmTore: 0, emTore: 0, vereine: 1 }},
+{ name: "David Villa 🇪🇸", stats: { tore: 380, vorlagen: 80, spiele: 600, gegentorlos: 0, titel: 10, wmTore: 9, emTore: 4, vereine: 6 }},
+{ name: "Fernando Torres 🇪🇸", stats: { tore: 260, vorlagen: 70, spiele: 550, gegentorlos: 0, titel: 8, wmTore: 3, emTore: 2, vereine: 5 }},
+{ name: "Wayne Rooney 🏴", stats: { tore: 310, vorlagen: 140, spiele: 700, gegentorlos: 0, titel: 8, wmTore: 1, emTore: 5, vereine: 3 }},
+{ name: "Zlatan Ibrahimović 🇸🇪", stats: { tore: 570, vorlagen: 150, spiele: 900, gegentorlos: 0, titel: 31, wmTore: 0, emTore: 6, vereine: 7 }},
+{ name: "Thierry Henry 🇫🇷", stats: { tore: 420, vorlagen: 180, spiele: 800, gegentorlos: 0, titel: 20, wmTore: 6, emTore: 3, vereine: 4 }},
+{ name: "Didier Drogba 🇨🇮", stats: { tore: 310, vorlagen: 80, spiele: 600, gegentorlos: 0, titel: 12, wmTore: 3, emTore: 0, vereine: 6 }},
+{ name: "Samuel Eto'o 🇨🇲", stats: { tore: 420, vorlagen: 120, spiele: 700, gegentorlos: 0, titel: 18, wmTore: 3, emTore: 0, vereine: 7 }},
+
+{ name: "Ronaldinho 🇧🇷", stats: { tore: 280, vorlagen: 200, spiele: 600, gegentorlos: 0, titel: 20, wmTore: 2, emTore: 0, vereine: 5 }},
+{ name: "Rivaldo 🇧🇷", stats: { tore: 350, vorlagen: 120, spiele: 700, gegentorlos: 0, titel: 15, wmTore: 8, emTore: 0, vereine: 6 }},
+{ name: "Kaká 🇧🇷", stats: { tore: 230, vorlagen: 140, spiele: 550, gegentorlos: 0, titel: 12, wmTore: 2, emTore: 0, vereine: 4 }},
+{ name: "Romário 🇧🇷", stats: { tore: 740, vorlagen: 120, spiele: 900, gegentorlos: 0, titel: 20, wmTore: 5, emTore: 0, vereine: 8 }},
+{ name: "Pelé 🇧🇷", stats: { tore: 1280, vorlagen: 300, spiele: 1360, gegentorlos: 0, titel: 30, wmTore: 12, emTore: 0, vereine: 2 }},
+{ name: "Diego Maradona 🇦🇷", stats: { tore: 350, vorlagen: 200, spiele: 680, gegentorlos: 0, titel: 10, wmTore: 8, emTore: 0, vereine: 6 }},
+{ name: "Gabriel Batistuta 🇦🇷", stats: { tore: 420, vorlagen: 70, spiele: 600, gegentorlos: 0, titel: 5, wmTore: 10, emTore: 0, vereine: 5 }},
+{ name: "Sergio Agüero 🇦🇷", stats: { tore: 420, vorlagen: 120, spiele: 700, gegentorlos: 0, titel: 15, wmTore: 2, emTore: 0, vereine: 4 }},
+{ name: "Ángel Di María 🇦🇷", stats: { tore: 180, vorlagen: 220, spiele: 700, gegentorlos: 0, titel: 20, wmTore: 3, emTore: 1, vereine: 5 }},
+{ name: "Paulo Dybala 🇦🇷", stats: { tore: 160, vorlagen: 80, spiele: 400, gegentorlos: 0, titel: 8, wmTore: 1, emTore: 0, vereine: 3 }},
+
+{ name: "Mesut Özil 🇩🇪", stats: { tore: 120, vorlagen: 220, spiele: 650, gegentorlos: 0, titel: 10, wmTore: 2, emTore: 1, vereine: 4 }},
+{ name: "Mario Götze 🇩🇪", stats: { tore: 120, vorlagen: 90, spiele: 450, gegentorlos: 0, titel: 8, wmTore: 1, emTore: 1, vereine: 4 }},
+{ name: "Thomas Müller 🇩🇪", stats: { tore: 330, vorlagen: 200, spiele: 750, gegentorlos: 0, titel: 30, wmTore: 10, emTore: 6, vereine: 1 }},
+{ name: "Marco Reus 🇩🇪", stats: { tore: 210, vorlagen: 140, spiele: 550, gegentorlos: 0, titel: 5, wmTore: 0, emTore: 2, vereine: 2 }},
+{ name: "Ilkay Gündogan 🇩🇪", stats: { tore: 110, vorlagen: 90, spiele: 500, gegentorlos: 0, titel: 15, wmTore: 1, emTore: 1, vereine: 3 }},
+{ name: "Kai Havertz 🇩🇪", stats: { tore: 90, vorlagen: 60, spiele: 300, gegentorlos: 0, titel: 4, wmTore: 2, emTore: 1, vereine: 3 }},
+{ name: "Jamal Musiala 🇩🇪", stats: { tore: 40, vorlagen: 35, spiele: 150, gegentorlos: 0, titel: 3, wmTore: 1, emTore: 0, vereine: 1 }},
+{ name: "Florian Wirtz 🇩🇪", stats: { tore: 35, vorlagen: 40, spiele: 140, gegentorlos: 0, titel: 2, wmTore: 0, emTore: 1, vereine: 1 }},
+{ name: "Niklas Süle 🇩🇪", stats: { tore: 20, vorlagen: 10, spiele: 350, gegentorlos: 0, titel: 10, wmTore: 0, emTore: 0, vereine: 3 }},
+{ name: "Mats Hummels 🇩🇪", stats: { tore: 50, vorlagen: 30, spiele: 650, gegentorlos: 0, titel: 12, wmTore: 2, emTore: 1, vereine: 3 }},
+
+{ name: "Antoine Griezmann 🇫🇷", stats: { tore: 260, vorlagen: 140, spiele: 650, gegentorlos: 0, titel: 8, wmTore: 4, emTore: 3, vereine: 4 }},
+{ name: "Paul Pogba 🇫🇷", stats: { tore: 90, vorlagen: 80, spiele: 450, gegentorlos: 0, titel: 6, wmTore: 1, emTore: 0, vereine: 3 }},
+{ name: "N'Golo Kanté 🇫🇷", stats: { tore: 40, vorlagen: 50, spiele: 550, gegentorlos: 0, titel: 10, wmTore: 0, emTore: 0, vereine: 4 }},
+{ name: "Kingsley Coman 🇫🇷", stats: { tore: 90, vorlagen: 80, spiele: 350, gegentorlos: 0, titel: 25, wmTore: 1, emTore: 0, vereine: 4 }},
+{ name: "Ousmane Dembélé 🇫🇷", stats: { tore: 70, vorlagen: 90, spiele: 300, gegentorlos: 0, titel: 8, wmTore: 0, emTore: 0, vereine: 3 }},
+{ name: "Raphaël Varane 🇫🇷", stats: { tore: 20, vorlagen: 10, spiele: 500, gegentorlos: 150, titel: 18, wmTore: 1, emTore: 0, vereine: 2 }},
+{ name: "Hugo Lloris 🇫🇷", stats: { tore: 0, vorlagen: 2, spiele: 820, gegentorlos: 290, titel: 4, wmTore: 0, emTore: 0, vereine: 3 }},
+
+{ name: "Phil Foden 🏴", stats: { tore: 75, vorlagen: 60, spiele: 250, gegentorlos: 0, titel: 10, wmTore: 1, emTore: 0, vereine: 1 }},
+{ name: "Bukayo Saka 🏴", stats: { tore: 55, vorlagen: 50, spiele: 220, gegentorlos: 0, titel: 0, wmTore: 2, emTore: 1, vereine: 1 }},
+{ name: "Raheem Sterling 🏴", stats: { tore: 180, vorlagen: 120, spiele: 550, gegentorlos: 0, titel: 6, wmTore: 3, emTore: 2, vereine: 3 }},
+{ name: "Jordan Henderson 🏴", stats: { tore: 55, vorlagen: 70, spiele: 600, gegentorlos: 0, titel: 8, wmTore: 1, emTore: 0, vereine: 2 }},
+{ name: "Kyle Walker 🏴", stats: { tore: 15, vorlagen: 40, spiele: 650, gegentorlos: 0, titel: 10, wmTore: 0, emTore: 0, vereine: 3 }},
+
+{ name: "Gareth Bale 🏴", stats: { tore: 210, vorlagen: 90, spiele: 550, gegentorlos: 0, titel: 15, wmTore: 3, emTore: 3, vereine: 4 }},
+{ name: "Aaron Ramsey 🏴", stats: { tore: 80, vorlagen: 70, spiele: 450, gegentorlos: 0, titel: 3, wmTore: 1, emTore: 2, vereine: 3 }},
+{ name: "Joe Allen 🏴", stats: { tore: 20, vorlagen: 30, spiele: 400, gegentorlos: 0, titel: 0, wmTore: 0, emTore: 1, vereine: 3 }},
+
+{ name: "Christian Pulisic 🇺🇸", stats: { tore: 70, vorlagen: 50, spiele: 250, gegentorlos: 0, titel: 2, wmTore: 1, emTore: 0, vereine: 3 }},
+{ name: "Weston McKennie 🇺🇸", stats: { tore: 35, vorlagen: 25, spiele: 200, gegentorlos: 0, titel: 2, wmTore: 0, emTore: 0, vereine: 3 }},
+{ name: "Giovanni Reyna 🇺🇸", stats: { tore: 20, vorlagen: 25, spiele: 120, gegentorlos: 0, titel: 1, wmTore: 0, emTore: 0, vereine: 2 }},
+
+{ name: "Alphonso Davies 🇨🇦", stats: { tore: 40, vorlagen: 60, spiele: 220, gegentorlos: 0, titel: 6, wmTore: 1, emTore: 0, vereine: 1 }},
+{ name: "Jonathan David 🇨🇦", stats: { tore: 120, vorlagen: 40, spiele: 250, gegentorlos: 0, titel: 1, wmTore: 0, emTore: 0, vereine: 2 }},
+
+{ name: "Son Heung-min 🇰🇷", stats: { tore: 210, vorlagen: 90, spiele: 520, gegentorlos: 0, titel: 4, wmTore: 3, emTore: 0, vereine: 3 }},
+{ name: "Kim Min-jae 🇰🇷", stats: { tore: 15, vorlagen: 10, spiele: 250, gegentorlos: 80, titel: 3, wmTore: 0, emTore: 0, vereine: 3 }},
+
+{ name: "Takefusa Kubo 🇯🇵", stats: { tore: 40, vorlagen: 35, spiele: 180, gegentorlos: 0, titel: 1, wmTore: 0, emTore: 0, vereine: 4 }},
+{ name: "Shinji Kagawa 🇯🇵", stats: { tore: 140, vorlagen: 80, spiele: 450, gegentorlos: 0, titel: 6, wmTore: 1, emTore: 0, vereine: 4 }},
+{ name: "Keisuke Honda 🇯🇵", stats: { tore: 160, vorlagen: 70, spiele: 500, gegentorlos: 0, titel: 4, wmTore: 4, emTore: 0, vereine: 6 }},
+
+{ name: "Sunil Chhetri 🇮🇳", stats: { tore: 95, vorlagen: 30, spiele: 140, gegentorlos: 0, titel: 0, wmTore: 0, emTore: 0, vereine: 3 }},
+{ name: "Ali Daei 🇮🇷", stats: { tore: 380, vorlagen: 60, spiele: 450, gegentorlos: 0, titel: 5, wmTore: 4, emTore: 0, vereine: 6 }},
+{ name: "Mehdi Taremi 🇮🇷", stats: { tore: 140, vorlagen: 50, spiele: 250, gegentorlos: 0, titel: 2, wmTore: 1, emTore: 0, vereine: 3 }},
+
+{ name: "Sardar Azmoun 🇮🇷", stats: { tore: 120, vorlagen: 40, spiele: 200, gegentorlos: 0, titel: 3, wmTore: 0, emTore: 0, vereine: 3 }},
+{ name: "Hakim Ziyech 🇲🇦", stats: { tore: 90, vorlagen: 110, spiele: 350, gegentorlos: 0, titel: 4, wmTore: 1, emTore: 0, vereine: 4 }},
+{ name: "Achraf Hakimi 🇲🇦", stats: { tore: 35, vorlagen: 55, spiele: 300, gegentorlos: 0, titel: 5, wmTore: 1, emTore: 0, vereine: 4 }},
+
+{ name: "Riyad Mahrez 🇩🇿", stats: { tore: 200, vorlagen: 130, spiele: 550, gegentorlos: 0, titel: 10, wmTore: 1, emTore: 0, vereine: 4 }},
+{ name: "Yacine Brahimi 🇩🇿", stats: { tore: 80, vorlagen: 70, spiele: 300, gegentorlos: 0, titel: 2, wmTore: 1, emTore: 0, vereine: 4 }},
+{ name: "Islam Slimani 🇩🇿", stats: { tore: 160, vorlagen: 40, spiele: 350, gegentorlos: 0, titel: 3, wmTore: 2, emTore: 0, vereine: 5 }},
+
+{ name: "Victor Osimhen 🇳🇬", stats: { tore: 120, vorlagen: 40, spiele: 200, gegentorlos: 0, titel: 1, wmTore: 0, emTore: 0, vereine: 3 }},
+{ name: "Wilfred Ndidi 🇳🇬", stats: { tore: 20, vorlagen: 15, spiele: 300, gegentorlos: 0, titel: 0, wmTore: 0, emTore: 0, vereine: 2 }},
+{ name: "Ahmed Musa 🇳🇬", stats: { tore: 110, vorlagen: 50, spiele: 400, gegentorlos: 0, titel: 2, wmTore: 4, emTore: 0, vereine: 5 }},
+
+{ name: "Edin Džeko 🇧🇦", stats: { tore: 330, vorlagen: 120, spiele: 700, gegentorlos: 0, titel: 5, wmTore: 1, emTore: 0, vereine: 5 }},
+{ name: "Miralem Pjanić 🇧🇦", stats: { tore: 80, vorlagen: 110, spiele: 500, gegentorlos: 0, titel: 6, wmTore: 0, emTore: 0, vereine: 4 }},
+{ name: "Asmir Begović 🇧🇦", stats: { tore: 1, vorlagen: 2, spiele: 350, gegentorlos: 110, titel: 1, wmTore: 0, emTore: 0, vereine: 4 }}
+
+  ],
+
+musik: [
+  { name: "Michael Jackson 🎤", stats: { songs: 250, alben: 10, streams: 35, auszeichnungen: 800, konzerte: 450, jahreaktiv: 45, genres: 5, topplatzierungen: 120 }},
+  { name: "Eminem 🎤", stats: { songs: 320, alben: 12, streams: 30, auszeichnungen: 250, konzerte: 300, jahreaktiv: 28, genres: 3, topplatzierungen: 90 }},
+  { name: "Taylor Swift 🎤", stats: { songs: 250, alben: 11, streams: 40, auszeichnungen: 500, konzerte: 600, jahreaktiv: 20, genres: 4, topplatzierungen: 150 }},
+  { name: "Drake 🎤", stats: { songs: 350, alben: 15, streams: 50, auszeichnungen: 300, konzerte: 350, jahreaktiv: 18, genres: 3, topplatzierungen: 130 }},
+  { name: "Rihanna 🎤", stats: { songs: 220, alben: 8, streams: 35, auszeichnungen: 300, konzerte: 250, jahreaktiv: 19, genres: 4, topplatzierungen: 110 }},
+
+  { name: "Ed Sheeran 🎸", stats: { songs: 210, alben: 6, streams: 45, auszeichnungen: 200, konzerte: 500, jahreaktiv: 15, genres: 3, topplatzierungen: 90 }},
+  { name: "The Weeknd 🌙", stats: { songs: 180, alben: 5, streams: 60, auszeichnungen: 250, konzerte: 300, jahreaktiv: 13, genres: 3, topplatzierungen: 100 }},
+  { name: "Billie Eilish 💚", stats: { songs: 70, alben: 3, streams: 30, auszeichnungen: 150, konzerte: 120, jahreaktiv: 8, genres: 3, topplatzierungen: 60 }},
+  { name: "Ariana Grande 🎤", stats: { songs: 120, alben: 6, streams: 35, auszeichnungen: 200, konzerte: 200, jahreaktiv: 15, genres: 3, topplatzierungen: 80 }},
+  { name: "Beyoncé 👑", stats: { songs: 200, alben: 7, streams: 40, auszeichnungen: 500, konzerte: 450, jahreaktiv: 25, genres: 4, topplatzierungen: 100 }},
+
+  { name: "Kanye West 🎧", stats: { songs: 250, alben: 11, streams: 30, auszeichnungen: 270, konzerte: 250, jahreaktiv: 20, genres: 4, topplatzierungen: 70 }},
+  { name: "Jay‑Z 💼", stats: { songs: 220, alben: 13, streams: 20, auszeichnungen: 280, konzerte: 300, jahreaktiv: 30, genres: 3, topplatzierungen: 60 }},
+  { name: "Kendrick Lamar 🔥", stats: { songs: 120, alben: 5, streams: 25, auszeichnungen: 200, konzerte: 150, jahreaktiv: 14, genres: 3, topplatzierungen: 50 }},
+  { name: "Travis Scott 🌵", stats: { songs: 140, alben: 4, streams: 30, auszeichnungen: 100, konzerte: 180, jahreaktiv: 10, genres: 3, topplatzierungen: 40 }},
+  { name: "Post Malone 🍻", stats: { songs: 100, alben: 5, streams: 35, auszeichnungen: 120, konzerte: 160, jahreaktiv: 9, genres: 3, topplatzierungen: 50 }},
+
+  { name: "Dua Lipa 💎", stats: { songs: 60, alben: 2, streams: 20, auszeichnungen: 80, konzerte: 120, jahreaktiv: 8, genres: 3, topplatzierungen: 40 }},
+  { name: "Olivia Rodrigo 💜", stats: { songs: 40, alben: 2, streams: 15, auszeichnungen: 50, konzerte: 60, jahreaktiv: 5, genres: 2, topplatzierungen: 30 }},
+  { name: "Bruno Mars 🎷", stats: { songs: 100, alben: 3, streams: 30, auszeichnungen: 200, konzerte: 250, jahreaktiv: 15, genres: 4, topplatzierungen: 70 }},
+  { name: "Lady Gaga 🎭", stats: { songs: 150, alben: 6, streams: 35, auszeichnungen: 300, konzerte: 300, jahreaktiv: 18, genres: 4, topplatzierungen: 80 }},
+  { name: "Shakira 💃", stats: { songs: 180, alben: 11, streams: 20, auszeichnungen: 250, konzerte: 350, jahreaktiv: 30, genres: 4, topplatzierungen: 60 }},
+
+  { name: "Coldplay 🎶", stats: { songs: 150, alben: 9, streams: 40, auszeichnungen: 200, konzerte: 600, jahreaktiv: 25, genres: 3, topplatzierungen: 70 }},
+  { name: "Imagine Dragons 🔥", stats: { songs: 80, alben: 5, streams: 30, auszeichnungen: 100, konzerte: 200, jahreaktiv: 12, genres: 3, topplatzierungen: 40 }},
+  { name: "Linkin Park ⚡", stats: { songs: 120, alben: 7, streams: 35, auszeichnungen: 150, konzerte: 400, jahreaktiv: 20, genres: 3, topplatzierungen: 60 }},
+  { name: "Queen 👑", stats: { songs: 180, alben: 15, streams: 45, auszeichnungen: 300, konzerte: 700, jahreaktiv: 50, genres: 4, topplatzierungen: 90 }},
+  { name: "AC/DC ⚡", stats: { songs: 150, alben: 17, streams: 30, auszeichnungen: 100, konzerte: 800, jahreaktiv: 50, genres: 2, topplatzierungen: 40 }},
+
+  { name: "Metallica 🎸", stats: { songs: 160, alben: 10, streams: 35, auszeichnungen: 150, konzerte: 900, jahreaktiv: 40, genres: 2, topplatzierungen: 50 }},
+  { name: "Nirvana 💔", stats: { songs: 75, alben: 3, streams: 20, auszeichnungen: 50, konzerte: 150, jahreaktiv: 7, genres: 2, topplatzierungen: 20 }},
+  { name: "The Beatles 🎵", stats: { songs: 250, alben: 12, streams: 45, auszeichnungen: 300, konzerte: 1400, jahreaktiv: 10, genres: 4, topplatzierungen: 100 }},
+  { name: "The Rolling Stones 🎸", stats: { songs: 200, alben: 30, streams: 25, auszeichnungen: 100, konzerte: 2000, jahreaktiv: 60, genres: 3, topplatzierungen: 50 }},
+  { name: "Pink Floyd 🌈", stats: { songs: 150, alben: 15, streams: 30, auszeichnungen: 100, konzerte: 500, jahreaktiv: 30, genres: 3, topplatzierungen: 40 }},
+
+  { name: "Snoop Dogg 🌿", stats: { songs: 250, alben: 20, streams: 20, auszeichnungen: 50, konzerte: 500, jahreaktiv: 30, genres: 3, topplatzierungen: 30 }},
+  { name: "50 Cent 💵", stats: { songs: 120, alben: 5, streams: 15, auszeichnungen: 80, konzerte: 200, jahreaktiv: 15, genres: 2, topplatzierungen: 30 }},
+  { name: "Nicki Minaj 💗", stats: { songs: 150, alben: 4, streams: 30, auszeichnungen: 100, konzerte: 150, jahreaktiv: 14, genres: 3, topplatzierungen: 40 }},
+  { name: "Doja Cat 🐾", stats: { songs: 80, alben: 3, streams: 20, auszeichnungen: 50, konzerte: 100, jahreaktiv: 8, genres: 3, topplatzierungen: 30 }},
+  { name: "Bad Bunny 🐰", stats: { songs: 120, alben: 5, streams: 50, auszeichnungen: 100, konzerte: 150, jahreaktiv: 8, genres: 3, topplatzierungen: 50 }},
+
+  { name: "Marshmello 🎧", stats: { songs: 70, alben: 2, streams: 20, auszeichnungen: 20, konzerte: 300, jahreaktiv: 7, genres: 3, topplatzierungen: 20 }},
+  { name: "David Guetta 🎛️", stats: { songs: 150, alben: 7, streams: 35, auszeichnungen: 50, konzerte: 500, jahreaktiv: 20, genres: 3, topplatzierungen: 40 }},
+  { name: "Calvin Harris 🎚️", stats: { songs: 120, alben: 6, streams: 30, auszeichnungen: 40, konzerte: 400, jahreaktiv: 18, genres: 3, topplatzierungen: 30 }},
+  { name: "Avicii ✨", stats: { songs: 80, alben: 2, streams: 25, auszeichnungen: 30, konzerte: 200, jahreaktiv: 10, genres: 3, topplatzierungen: 40 }},
+  { name: "Kygo 🌅", stats: { songs: 70, alben: 3, streams: 15, auszeichnungen: 20, konzerte: 150, jahreaktiv: 8, genres: 2, topplatzierungen: 20 }}
+],
+
+
+
+wirtschaft: [
+  { name: "Apple 🍏", stats: { umsatz: 383, mitarbeiter: 161, gruendung: 1976, standorte: 525, marktwert: 2900, produkte: 120, laender: 175, kunden: 1500 }},
+  { name: "Microsoft 🪟", stats: { umsatz: 212, mitarbeiter: 221, gruendung: 1975, standorte: 600, marktwert: 3100, produkte: 200, laender: 190, kunden: 1800 }},
+  { name: "Google 🌐", stats: { umsatz: 307, mitarbeiter: 182, gruendung: 1998, standorte: 450, marktwert: 2100, produkte: 150, laender: 150, kunden: 2000 }},
+  { name: "Amazon 📦", stats: { umsatz: 575, mitarbeiter: 1600, gruendung: 1994, standorte: 1100, marktwert: 1800, produkte: 12000, laender: 180, kunden: 3100 }},
+  { name: "Tesla ⚡", stats: { umsatz: 97, mitarbeiter: 140, gruendung: 2003, standorte: 150, marktwert: 800, produkte: 40, laender: 45, kunden: 120 }},
+  { name: "Samsung 📱", stats: { umsatz: 244, mitarbeiter: 270, gruendung: 1938, standorte: 700, marktwert: 450, produkte: 300, laender: 160, kunden: 2000 }},
+  { name: "Sony 🎮", stats: { umsatz: 90, mitarbeiter: 110, gruendung: 1946, standorte: 250, marktwert: 120, produkte: 250, laender: 130, kunden: 900 }},
+  { name: "Meta (Facebook) 📘", stats: { umsatz: 135, mitarbeiter: 67, gruendung: 2004, standorte: 100, marktwert: 900, produkte: 20, laender: 190, kunden: 3000 }},
+  { name: "Netflix 🎬", stats: { umsatz: 34, mitarbeiter: 13, gruendung: 1997, standorte: 50, marktwert: 250, produkte: 8000, laender: 190, kunden: 270 }},
+  { name: "Disney 🏰", stats: { umsatz: 89, mitarbeiter: 225, gruendung: 1923, standorte: 800, marktwert: 180, produkte: 500, laender: 100, kunden: 1500 }},
+
+  { name: "BMW 🚗", stats: { umsatz: 142, mitarbeiter: 150, gruendung: 1916, standorte: 120, marktwert: 70, produkte: 80, laender: 140, kunden: 120 }},
+  { name: "Mercedes-Benz 🚘", stats: { umsatz: 153, mitarbeiter: 170, gruendung: 1926, standorte: 140, marktwert: 80, produkte: 90, laender: 150, kunden: 130 }},
+  { name: "Volkswagen 🚗", stats: { umsatz: 322, mitarbeiter: 670, gruendung: 1937, standorte: 300, marktwert: 60, produkte: 120, laender: 150, kunden: 200 }},
+  { name: "Porsche 🏎️", stats: { umsatz: 40, mitarbeiter: 42, gruendung: 1931, standorte: 40, marktwert: 30, produkte: 30, laender: 100, kunden: 40 }},
+  { name: "Audi 🚘", stats: { umsatz: 69, mitarbeiter: 87, gruendung: 1909, standorte: 60, marktwert: 35, produkte: 50, laender: 120, kunden: 60 }},
+
+  { name: "Nike 👟", stats: { umsatz: 51, mitarbeiter: 83, gruendung: 1964, standorte: 1100, marktwert: 160, produkte: 5000, laender: 190, kunden: 900 }},
+  { name: "Adidas 👟", stats: { umsatz: 22, mitarbeiter: 60, gruendung: 1949, standorte: 900, marktwert: 40, produkte: 4000, laender: 160, kunden: 700 }},
+  { name: "Puma 🐆", stats: { umsatz: 8, mitarbeiter: 20, gruendung: 1948, standorte: 500, marktwert: 10, produkte: 2000, laender: 120, kunden: 300 }},
+  { name: "Under Armour 🏋️", stats: { umsatz: 6, mitarbeiter: 17, gruendung: 1996, standorte: 300, marktwert: 5, produkte: 1500, laender: 100, kunden: 200 }},
+  { name: "New Balance 👟", stats: { umsatz: 5, mitarbeiter: 9, gruendung: 1906, standorte: 200, marktwert: 4, produkte: 1200, laender: 80, kunden: 150 }},
+
+  { name: "Coca-Cola 🥤", stats: { umsatz: 48, mitarbeiter: 79, gruendung: 1892, standorte: 900, marktwert: 260, produkte: 500, laender: 200, kunden: 3000 }},
+  { name: "Pepsi 🥤", stats: { umsatz: 91, mitarbeiter: 315, gruendung: 1898, standorte: 850, marktwert: 230, produkte: 600, laender: 190, kunden: 2800 }},
+  { name: "Nestlé 🍫", stats: { umsatz: 93, mitarbeiter: 275, gruendung: 1866, standorte: 450, marktwert: 300, produkte: 2000, laender: 190, kunden: 4000 }},
+  { name: "McDonald's 🍔", stats: { umsatz: 25, mitarbeiter: 150, gruendung: 1955, standorte: 41000, marktwert: 200, produkte: 150, laender: 120, kunden: 700 }},
+  { name: "Starbucks ☕", stats: { umsatz: 36, mitarbeiter: 450, gruendung: 1971, standorte: 38000, marktwert: 110, produkte: 200, laender: 80, kunden: 400 }},
+
+  { name: "IKEA 🛋️", stats: { umsatz: 47, mitarbeiter: 230, gruendung: 1943, standorte: 460, marktwert: 60, produkte: 12000, laender: 60, kunden: 800 }},
+  { name: "Zara 👗", stats: { umsatz: 35, mitarbeiter: 165, gruendung: 1975, standorte: 2000, marktwert: 90, produkte: 8000, laender: 90, kunden: 600 }},
+  { name: "H&M 👚", stats: { umsatz: 22, mitarbeiter: 106, gruendung: 1947, standorte: 4200, marktwert: 20, produkte: 7000, laender: 75, kunden: 500 }},
+  { name: "Primark 🛍️", stats: { umsatz: 9, mitarbeiter: 70, gruendung: 1969, standorte: 400, marktwert: 8, produkte: 3000, laender: 15, kunden: 200 }},
+  { name: "Louis Vuitton 👜", stats: { umsatz: 20, mitarbeiter: 35, gruendung: 1854, standorte: 460, marktwert: 500, produkte: 1500, laender: 65, kunden: 150 }},
+
+  { name: "Intel 💻", stats: { umsatz: 54, mitarbeiter: 130, gruendung: 1968, standorte: 150, marktwert: 140, produkte: 300, laender: 70, kunden: 500 }},
+  { name: "AMD 🔥", stats: { umsatz: 23, mitarbeiter: 26, gruendung: 1969, standorte: 60, marktwert: 70, produkte: 200, laender: 50, kunden: 300 }},
+  { name: "Nvidia 🟩", stats: { umsatz: 60, mitarbeiter: 30, gruendung: 1993, standorte: 80, marktwert: 2500, produkte: 150, laender: 60, kunden: 400 }},
+  { name: "ASUS 💻", stats: { umsatz: 18, mitarbeiter: 15, gruendung: 1989, standorte: 50, marktwert: 10, produkte: 500, laender: 50, kunden: 200 }},
+  { name: "Dell 💻", stats: { umsatz: 102, mitarbeiter: 133, gruendung: 1984, standorte: 300, marktwert: 30, produkte: 400, laender: 80, kunden: 500 }},
+
+  { name: "Uber 🚕", stats: { umsatz: 37, mitarbeiter: 30, gruendung: 2009, standorte: 10000, marktwert: 90, produkte: 5, laender: 70, kunden: 130 }},
+  { name: "Airbnb 🏡", stats: { umsatz: 9, mitarbeiter: 6, gruendung: 2008, standorte: 0, marktwert: 100, produkte: 1, laender: 220, kunden: 150 }},
+  { name: "Booking.com 🛏️", stats: { umsatz: 17, mitarbeiter: 21, gruendung: 1996, standorte: 0, marktwert: 110, produkte: 1, laender: 220, kunden: 200 }},
+  { name: "Spotify 🎵", stats: { umsatz: 14, mitarbeiter: 9, gruendung: 2006, standorte: 30, marktwert: 30, produkte: 1, laender: 180, kunden: 600 }},
+  { name: "TikTok 🎥", stats: { umsatz: 20, mitarbeiter: 10, gruendung: 2016, standorte: 20, marktwert: 250, produkte: 1, laender: 150, kunden: 1500 }},
+
+  { name: "PayPal 💳", stats: { umsatz: 29, mitarbeiter: 30, gruendung: 1998, standorte: 50, marktwert: 70, produkte: 10, laender: 200, kunden: 430 }},
+  { name: "Visa 💳", stats: { umsatz: 32, mitarbeiter: 26, gruendung: 1958, standorte: 20, marktwert: 500, produkte: 5, laender: 200, kunden: 4500 }},
+  { name: "Mastercard 💳", stats: { umsatz: 25, mitarbeiter: 29, gruendung: 1966, standorte: 20, marktwert: 420, produkte: 5, laender: 200, kunden: 4000 }},
+  { name: "American Express 💳", stats: { umsatz: 55, mitarbeiter: 77, gruendung: 1850, standorte: 50, marktwert: 140, produkte: 10, laender: 130, kunden: 130 }},
+  { name: "Stripe 💳", stats: { umsatz: 15, mitarbeiter: 7, gruendung: 2010, standorte: 10, marktwert: 70, produkte: 5, laender: 45, kunden: 200 }}
+],
+
+filme: [
+  { name: "Avatar 🌊", stats: { bewertung: 8, einspielergebnis: 2840, jahr: 2009, dauer: 162, auszeichnungen: 3, schauspieler: 25, genre: 3, budget: 237 }},
+  { name: "Titanic 🚢", stats: { bewertung: 9, einspielergebnis: 2260, jahr: 1997, dauer: 195, auszeichnungen: 11, schauspieler: 30, genre: 2, budget: 200 }},
+  { name: "Avengers: Endgame 🦸", stats: { bewertung: 9, einspielergebnis: 2798, jahr: 2019, dauer: 181, auszeichnungen: 2, schauspieler: 35, genre: 3, budget: 356 }},
+  { name: "Star Wars: Episode IV ⭐", stats: { bewertung: 8, einspielergebnis: 775, jahr: 1977, dauer: 121, auszeichnungen: 7, schauspieler: 20, genre: 3, budget: 11 }},
+  { name: "The Dark Knight 🦇", stats: { bewertung: 9, einspielergebnis: 1005, jahr: 2008, dauer: 152, auszeichnungen: 2, schauspieler: 25, genre: 3, budget: 185 }},
+
+  { name: "Inception 🌀", stats: { bewertung: 9, einspielergebnis: 836, jahr: 2010, dauer: 148, auszeichnungen: 4, schauspieler: 20, genre: 3, budget: 160 }},
+  { name: "Interstellar 🚀", stats: { bewertung: 9, einspielergebnis: 701, jahr: 2014, dauer: 169, auszeichnungen: 1, schauspieler: 18, genre: 3, budget: 165 }},
+  { name: "Joker 🤡", stats: { bewertung: 9, einspielergebnis: 1074, jahr: 2019, dauer: 122, auszeichnungen: 2, schauspieler: 15, genre: 2, budget: 55 }},
+  { name: "Frozen ❄️", stats: { bewertung: 8, einspielergebnis: 1280, jahr: 2013, dauer: 102, auszeichnungen: 2, schauspieler: 12, genre: 2, budget: 150 }},
+  { name: "Harry Potter ⚡", stats: { bewertung: 8, einspielergebnis: 974, jahr: 2001, dauer: 152, auszeichnungen: 1, schauspieler: 35, genre: 3, budget: 125 }},
+
+  { name: "Lord of the Rings: Return of the King 💍", stats: { bewertung: 10, einspielergebnis: 1142, jahr: 2003, dauer: 201, auszeichnungen: 11, schauspieler: 40, genre: 3, budget: 94 }},
+  { name: "Matrix 🟩", stats: { bewertung: 9, einspielergebnis: 466, jahr: 1999, dauer: 136, auszeichnungen: 4, schauspieler: 15, genre: 2, budget: 63 }},
+  { name: "Gladiator ⚔️", stats: { bewertung: 9, einspielergebnis: 503, jahr: 2000, dauer: 155, auszeichnungen: 5, schauspieler: 20, genre: 2, budget: 103 }},
+  { name: "Pirates of the Caribbean 🏴‍☠️", stats: { bewertung: 8, einspielergebnis: 654, jahr: 2003, dauer: 143, auszeichnungen: 1, schauspieler: 25, genre: 3, budget: 140 }},
+  { name: "Jurassic Park 🦖", stats: { bewertung: 9, einspielergebnis: 1045, jahr: 1993, dauer: 127, auszeichnungen: 3, schauspieler: 18, genre: 2, budget: 63 }},
+
+  { name: "Spider-Man: No Way Home 🕷️", stats: { bewertung: 9, einspielergebnis: 1900, jahr: 2021, dauer: 148, auszeichnungen: 1, schauspieler: 30, genre: 3, budget: 200 }},
+  { name: "Black Panther 🐾", stats: { bewertung: 8, einspielergebnis: 1347, jahr: 2018, dauer: 134, auszeichnungen: 3, schauspieler: 25, genre: 3, budget: 200 }},
+  { name: "Minions 💛", stats: { bewertung: 7, einspielergebnis: 1159, jahr: 2015, dauer: 91, auszeichnungen: 0, schauspieler: 10, genre: 2, budget: 74 }},
+  { name: "Shrek 🧅", stats: { bewertung: 8, einspielergebnis: 487, jahr: 2001, dauer: 90, auszeichnungen: 1, schauspieler: 12, genre: 2, budget: 60 }},
+  { name: "Finding Nemo 🐠", stats: { bewertung: 8, einspielergebnis: 940, jahr: 2003, dauer: 100, auszeichnungen: 1, schauspieler: 10, genre: 2, budget: 94 }},
+
+  { name: "The Lion King 🦁", stats: { bewertung: 9, einspielergebnis: 1657, jahr: 2019, dauer: 118, auszeichnungen: 1, schauspieler: 15, genre: 2, budget: 260 }},
+  { name: "Toy Story 🤖", stats: { bewertung: 8, einspielergebnis: 394, jahr: 1995, dauer: 81, auszeichnungen: 1, schauspieler: 10, genre: 2, budget: 30 }},
+  { name: "Up 🎈", stats: { bewertung: 9, einspielergebnis: 735, jahr: 2009, dauer: 96, auszeichnungen: 2, schauspieler: 10, genre: 2, budget: 175 }},
+  { name: "Inside Out 🌈", stats: { bewertung: 9, einspielergebnis: 858, jahr: 2015, dauer: 95, auszeichnungen: 1, schauspieler: 12, genre: 2, budget: 175 }},
+  { name: "Coco 🎸", stats: { bewertung: 9, einspielergebnis: 814, jahr: 2017, dauer: 105, auszeichnungen: 2, schauspieler: 15, genre: 2, budget: 175 }},
+
+  { name: "The Hunger Games 🎯", stats: { bewertung: 8, einspielergebnis: 694, jahr: 2012, dauer: 142, auszeichnungen: 1, schauspieler: 20, genre: 2, budget: 78 }},
+  { name: "Transformers 🤖", stats: { bewertung: 7, einspielergebnis: 709, jahr: 2007, dauer: 144, auszeichnungen: 0, schauspieler: 25, genre: 2, budget: 150 }},
+  { name: "Terminator 2 🤖", stats: { bewertung: 9, einspielergebnis: 520, jahr: 1991, dauer: 137, auszeichnungen: 4, schauspieler: 15, genre: 2, budget: 102 }},
+  { name: "Rocky 🥊", stats: { bewertung: 8, einspielergebnis: 225, jahr: 1976, dauer: 120, auszeichnungen: 3, schauspieler: 12, genre: 2, budget: 1 }},
+  { name: "Rambo 🔥", stats: { bewertung: 7, einspielergebnis: 125, jahr: 1982, dauer: 93, auszeichnungen: 0, schauspieler: 10, genre: 2, budget: 15 }},
+
+  { name: "IT 🎈", stats: { bewertung: 8, einspielergebnis: 701, jahr: 2017, dauer: 135, auszeichnungen: 0, schauspieler: 20, genre: 2, budget: 35 }},
+  { name: "The Conjuring 👻", stats: { bewertung: 8, einspielergebnis: 320, jahr: 2013, dauer: 112, auszeichnungen: 0, schauspieler: 15, genre: 2, budget: 20 }},
+  { name: "Annabelle 👁️", stats: { bewertung: 7, einspielergebnis: 257, jahr: 2014, dauer: 99, auszeichnungen: 0, schauspieler: 12, genre: 2, budget: 6 }},
+  { name: "Saw 🪚", stats: { bewertung: 7, einspielergebnis: 103, jahr: 2004, dauer: 103, auszeichnungen: 0, schauspieler: 10, genre: 2, budget: 1 }},
+  { name: "Scream 😱", stats: { bewertung: 7, einspielergebnis: 173, jahr: 1996, dauer: 111, auszeichnungen: 0, schauspieler: 15, genre: 2, budget: 15 }},
+
+  { name: "Fast & Furious 🚗", stats: { bewertung: 7, einspielergebnis: 626, jahr: 2001, dauer: 106, auszeichnungen: 0, schauspieler: 20, genre: 2, budget: 38 }},
+  { name: "Mad Max: Fury Road 🔥", stats: { bewertung: 9, einspielergebnis: 375, jahr: 2015, dauer: 120, auszeichnungen: 6, schauspieler: 15, genre: 2, budget: 150 }},
+  { name: "John Wick 🔫", stats: { bewertung: 8, einspielergebnis: 86, jahr: 2014, dauer: 101, auszeichnungen: 0, schauspieler: 12, genre: 2, budget: 20 }},
+  { name: "Mission Impossible 🎭", stats: { bewertung: 8, einspielergebnis: 457, jahr: 1996, dauer: 110, auszeichnungen: 0, schauspieler: 20, genre: 2, budget: 80 }},
+  { name: "Top Gun ✈️", stats: { bewertung: 8, einspielergebnis: 357, jahr: 1986, dauer: 110, auszeichnungen: 1, schauspieler: 15, genre: 2, budget: 15 }},
+
+  { name: "The Godfather 🍝", stats: { bewertung: 10, einspielergebnis: 250, jahr: 1972, dauer: 175, auszeichnungen: 3, schauspieler: 25, genre: 2, budget: 7 }},
+  { name: "Goodfellas 🔪", stats: { bewertung: 9, einspielergebnis: 47, jahr: 1990, dauer: 146, auszeichnungen: 1, schauspieler: 20, genre: 2, budget: 25 }},
+  { name: "Scarface 💵", stats: { bewertung: 8, einspielergebnis: 66, jahr: 1983, dauer: 170, auszeichnungen: 0, schauspieler: 18, genre: 2, budget: 25 }},
+  { name: "The Irishman 👴", stats: { bewertung: 8, einspielergebnis: 8, jahr: 2019, dauer: 209, auszeichnungen: 0, schauspieler: 30, genre: 2, budget: 159 }},
+  { name: "The Wolf of Wall Street 🐺", stats: { bewertung: 9, einspielergebnis: 406, jahr: 2013, dauer: 180, auszeichnungen: 0, schauspieler: 25, genre: 2, budget: 100 }},
+],
+
+tiere: [
+  { name: "Tiger 🐅", stats: { groesse: 120, gewicht: 300, lebenserwartung: 26, geschwindigkeit: 65, lebensraum: 4, population: 4, verbreitung: 7, gefahr: 4 }},
+  { name: "Elefant 🐘", stats: { groesse: 330, gewicht: 6000, lebenserwartung: 70, geschwindigkeit: 40, lebensraum: 3, population: 42, verbreitung: 10, gefahr: 3 }},
+  { name: "Löwe 🦁", stats: { groesse: 120, gewicht: 190, lebenserwartung: 20, geschwindigkeit: 80, lebensraum: 3, population: 2, verbreitung: 6, gefahr: 3 }},
+  { name: "Wolf 🐺", stats: { groesse: 90, gewicht: 60, lebenserwartung: 14, geschwindigkeit: 55, lebensraum: 5, population: 20, verbreitung: 12, gefahr: 2 }},
+  { name: "Gepard 🐆", stats: { groesse: 90, gewicht: 72, lebenserwartung: 12, geschwindigkeit: 120, lebensraum: 2, population: 0, verbreitung: 4, gefahr: 3 }},
+
+  { name: "Panda 🐼", stats: { groesse: 150, gewicht: 100, lebenserwartung: 20, geschwindigkeit: 30, lebensraum: 2, population: 0, verbreitung: 1, gefahr: 4 }},
+  { name: "Koala 🐨", stats: { groesse: 80, gewicht: 12, lebenserwartung: 18, geschwindigkeit: 15, lebensraum: 1, population: 0, verbreitung: 1, gefahr: 3 }},
+  { name: "Känguru 🦘", stats: { groesse: 160, gewicht: 85, lebenserwartung: 23, geschwindigkeit: 70, lebensraum: 2, population: 0, verbreitung: 1, gefahr: 1 }},
+  { name: "Gorilla 🦍", stats: { groesse: 170, gewicht: 160, lebenserwartung: 35, geschwindigkeit: 40, lebensraum: 2, population: 0, verbreitung: 2, gefahr: 4 }},
+  { name: "Schimpanse 🐒", stats: { groesse: 100, gewicht: 50, lebenserwartung: 40, geschwindigkeit: 25, lebensraum: 3, population: 0, verbreitung: 3, gefahr: 3 }},
+
+  { name: "Nashorn 🦏", stats: { groesse: 180, gewicht: 2300, lebenserwartung: 45, geschwindigkeit: 50, lebensraum: 2, population: 0, verbreitung: 2, gefahr: 4 }},
+  { name: "Flusspferd 🦛", stats: { groesse: 150, gewicht: 1500, lebenserwartung: 40, geschwindigkeit: 30, lebensraum: 2, population: 2, verbreitung: 2, gefahr: 2 }},
+  { name: "Zebra 🦓", stats: { groesse: 140, gewicht: 350, lebenserwartung: 25, geschwindigkeit: 65, lebensraum: 2, population: 1, verbreitung: 2, gefahr: 2 }},
+  { name: "Giraffe 🦒", stats: { groesse: 500, gewicht: 1200, lebenserwartung: 28, geschwindigkeit: 60, lebensraum: 2, population: 1, verbreitung: 2, gefahr: 3 }},
+  { name: "Hyäne 🐾", stats: { groesse: 90, gewicht: 60, lebenserwartung: 20, geschwindigkeit: 60, lebensraum: 2, population: 1, verbreitung: 3, gefahr: 2 }},
+
+  { name: "Eisbär 🐻‍❄️", stats: { groesse: 250, gewicht: 600, lebenserwartung: 25, geschwindigkeit: 40, lebensraum: 1, population: 0, verbreitung: 1, gefahr: 3 }},
+  { name: "Pinguin 🐧", stats: { groesse: 110, gewicht: 40, lebenserwartung: 20, geschwindigkeit: 10, lebensraum: 1, population: 12, verbreitung: 2, gefahr: 2 }},
+  { name: "Wal 🐋", stats: { groesse: 3000, gewicht: 150000, lebenserwartung: 90, geschwindigkeit: 50, lebensraum: 1, population: 0, verbreitung: 5, gefahr: 3 }},
+  { name: "Delfin 🐬", stats: { groesse: 250, gewicht: 200, lebenserwartung: 30, geschwindigkeit: 55, lebensraum: 1, population: 6, verbreitung: 5, gefahr: 2 }},
+  { name: "Robbe 🦭", stats: { groesse: 180, gewicht: 300, lebenserwartung: 35, geschwindigkeit: 35, lebensraum: 1, population: 7, verbreitung: 4, gefahr: 2 }},
+
+  { name: "Adler 🦅", stats: { groesse: 85, gewicht: 6, lebenserwartung: 25, geschwindigkeit: 160, lebensraum: 3, population: 1, verbreitung: 4, gefahr: 2 }},
+  { name: "Falke 🦅", stats: { groesse: 50, gewicht: 1, lebenserwartung: 20, geschwindigkeit: 390, lebensraum: 3, population: 2, verbreitung: 5, gefahr: 1 }},
+  { name: "Eule 🦉", stats: { groesse: 60, gewicht: 3, lebenserwartung: 15, geschwindigkeit: 40, lebensraum: 3, population: 5, verbreitung: 4, gefahr: 1 }},
+  { name: "Papagei 🦜", stats: { groesse: 40, gewicht: 1, lebenserwartung: 50, geschwindigkeit: 30, lebensraum: 3, population: 3, verbreitung: 3, gefahr: 2 }},
+  { name: "Kranich 🕊️", stats: { groesse: 120, gewicht: 6, lebenserwartung: 25, geschwindigkeit: 80, lebensraum: 3, population: 2, verbreitung: 3, gefahr: 2 }},
+
+  { name: "Hai 🦈", stats: { groesse: 400, gewicht: 1100, lebenserwartung: 30, geschwindigkeit: 60, lebensraum: 1, population: 10, verbreitung: 5, gefahr: 3 }},
+  { name: "Thunfisch 🐟", stats: { groesse: 250, gewicht: 300, lebenserwartung: 20, geschwindigkeit: 75, lebensraum: 1, population: 20, verbreitung: 5, gefahr: 2 }},
+  { name: "Seepferdchen 🐠", stats: { groesse: 20, gewicht: 0.1, lebenserwartung: 6, geschwindigkeit: 5, lebensraum: 1, population: 5, verbreitung: 3, gefahr: 2 }},
+  { name: "Krake 🐙", stats: { groesse: 150, gewicht: 50, lebenserwartung: 5, geschwindigkeit: 40, lebensraum: 1, population: 3, verbreitung: 4, gefahr: 1 }},
+  { name: "Qualle 🪼", stats: { groesse: 100, gewicht: 5, lebenserwartung: 3, geschwindigkeit: 10, lebensraum: 1, population: 50, verbreitung: 5, gefahr: 1 }},
+
+  { name: "Fuchs 🦊", stats: { groesse: 60, gewicht: 8, lebenserwartung: 10, geschwindigkeit: 50, lebensraum: 4, population: 15, verbreitung: 5, gefahr: 1 }},
+  { name: "Dachs 🦡", stats: { groesse: 70, gewicht: 12, lebenserwartung: 15, geschwindigkeit: 30, lebensraum: 4, population: 3, verbreitung: 3, gefahr: 1 }},
+  { name: "Hase 🐇", stats: { groesse: 40, gewicht: 4, lebenserwartung: 9, geschwindigkeit: 70, lebensraum: 4, population: 50, verbreitung: 4, gefahr: 1 }},
+  { name: "Reh 🦌", stats: { groesse: 100, gewicht: 30, lebenserwartung: 15, geschwindigkeit: 60, lebensraum: 4, population: 20, verbreitung: 4, gefahr: 1 }},
+  { name: "Wildschwein 🐗", stats: { groesse: 90, gewicht: 120, lebenserwartung: 20, geschwindigkeit: 40, lebensraum: 4, population: 30, verbreitung: 4, gefahr: 1 }},
+
+  { name: "Kamel 🐪", stats: { groesse: 210, gewicht: 600, lebenserwartung: 40, geschwindigkeit: 65, lebensraum: 1, population: 3, verbreitung: 3, gefahr: 2 }},
+  { name: "Esel 🫏", stats: { groesse: 100, gewicht: 180, lebenserwartung: 30, geschwindigkeit: 50, lebensraum: 4, population: 45, verbreitung: 4, gefahr: 1 }},
+  { name: "Pferd 🐎", stats: { groesse: 160, gewicht: 500, lebenserwartung: 30, geschwindigkeit: 88, lebensraum: 4, population: 60, verbreitung: 4, gefahr: 1 }},
+  { name: "Schaf 🐑", stats: { groesse: 70, gewicht: 80, lebenserwartung: 12, geschwindigkeit: 40, lebensraum: 4, population: 100, verbreitung: 4, gefahr: 1 }},
+  { name: "Kuh 🐄", stats: { groesse: 150, gewicht: 700, lebenserwartung: 20, geschwindigkeit: 40, lebensraum: 4, population: 300, verbreitung: 4, gefahr: 1 }}
+],
+
+
+geografie: [
+  { name: "Deutschland 🇩🇪", stats: { einwohner: 84, flaeche: 357, staedte: 2050, berge: 120, kueste: 2.4, continent: 100, tourismus: 40, nachbarlaender: 9 }},
+  { name: "Frankreich 🇫🇷", stats: { einwohner: 65, flaeche: 551, staedte: 36000, berge: 200, kueste: 4.7, continent: 100, tourismus: 90, nachbarlaender: 8 }},
+  { name: "Spanien 🇪🇸", stats: { einwohner: 48, flaeche: 506, staedte: 8200, berge: 150, kueste: 5.0, continent: 100, tourismus: 85, nachbarlaender: 5 }},
+  { name: "Italien 🇮🇹", stats: { einwohner: 59, flaeche: 301, staedte: 7900, berge: 200, kueste: 7.6, continent: 100, tourismus: 65, nachbarlaender: 6 }},
+  { name: "Portugal 🇵🇹", stats: { einwohner: 10, flaeche: 92, staedte: 308, berge: 40, kueste: 1.8, continent: 100, tourismus: 25, nachbarlaender: 1 }},
+
+  { name: "Niederlande 🇳🇱", stats: { einwohner: 18, flaeche: 42, staedte: 350, berge: 0, kueste: 0.5, continent: 100, tourismus: 20, nachbarlaender: 2 }},
+  { name: "Belgien 🇧🇪", stats: { einwohner: 12, flaeche: 30, staedte: 589, berge: 10, kueste: 0.07, continent: 100, tourismus: 10, nachbarlaender: 4 }},
+  { name: "Österreich 🇦🇹", stats: { einwohner: 9, flaeche: 84, staedte: 200, berge: 900, kueste: 0, continent: 100, tourismus: 30, nachbarlaender: 8 }},
+  { name: "Schweiz 🇨🇭", stats: { einwohner: 9, flaeche: 41, staedte: 220, berge: 1200, kueste: 0, continent: 100, tourismus: 12, nachbarlaender: 5 }},
+  { name: "Polen 🇵🇱", stats: { einwohner: 38, flaeche: 312, staedte: 900, berge: 70, kueste: 0.8, continent: 100, tourismus: 20, nachbarlaender: 7 }},
+
+  { name: "Tschechien 🇨🇿", stats: { einwohner: 11, flaeche: 79, staedte: 600, berge: 50, kueste: 0, continent: 100, tourismus: 12, nachbarlaender: 4 }},
+  { name: "Slowakei 🇸🇰", stats: { einwohner: 5, flaeche: 49, staedte: 140, berge: 100, kueste: 0, continent: 100, tourismus: 6, nachbarlaender: 5 }},
+  { name: "Ungarn 🇭🇺", stats: { einwohner: 10, flaeche: 93, staedte: 350, berge: 30, kueste: 0, continent: 100, tourismus: 15, nachbarlaender: 7 }},
+  { name: "Rumänien 🇷🇴", stats: { einwohner: 19, flaeche: 238, staedte: 320, berge: 60, kueste: 0.2, continent: 100, tourismus: 10, nachbarlaender: 5 }},
+  { name: "Bulgarien 🇧🇬", stats: { einwohner: 7, flaeche: 111, staedte: 250, berge: 40, kueste: 0.4, continent: 100, tourismus: 9, nachbarlaender: 5 }},
+
+  { name: "Griechenland 🇬🇷", stats: { einwohner: 10, flaeche: 131, staedte: 350, berge: 300, kueste: 13.7, continent: 100, tourismus: 35, nachbarlaender: 4 }},
+  { name: "Türkei 🇹🇷", stats: { einwohner: 85, flaeche: 783, staedte: 1400, berge: 500, kueste: 7.2, continent: 200, tourismus: 45, nachbarlaender: 8 }},
+  { name: "Russland 🇷🇺", stats: { einwohner: 145, flaeche: 17098, staedte: 1100, berge: 2000, kueste: 37, continent: 200, tourismus: 25, nachbarlaender: 14 }},
+  { name: "Ukraine 🇺🇦", stats: { einwohner: 36, flaeche: 603, staedte: 460, berge: 50, kueste: 2.8, continent: 100, tourismus: 14, nachbarlaender: 7 }},
+  { name: "Belarus 🇧🇾", stats: { einwohner: 9, flaeche: 208, staedte: 200, berge: 10, kueste: 0, continent: 100, tourismus: 2, nachbarlaender: 5 }},
+
+  { name: "USA 🇺🇸", stats: { einwohner: 335, flaeche: 9834, staedte: 19500, berge: 3000, kueste: 19, continent: 100, tourismus: 80, nachbarlaender: 2 }},
+  { name: "Kanada 🇨🇦", stats: { einwohner: 40, flaeche: 9985, staedte: 5000, berge: 2000, kueste: 20, continent: 100, tourismus: 22, nachbarlaender: 1 }},
+  { name: "Mexiko 🇲🇽", stats: { einwohner: 130, flaeche: 1964, staedte: 2400, berge: 300, kueste: 9.3, continent: 100, tourismus: 45, nachbarlaender: 3 }},
+  { name: "Brasilien 🇧🇷", stats: { einwohner: 214, flaeche: 8516, staedte: 5570, berge: 300, kueste: 7.5, continent: 100, tourismus: 6, nachbarlaender: 10 }},
+  { name: "Argentinien 🇦🇷", stats: { einwohner: 46, flaeche: 2780, staedte: 2300, berge: 400, kueste: 4.7, continent: 100, tourismus: 7, nachbarlaender: 5 }},
+
+  { name: "Chile 🇨🇱", stats: { einwohner: 20, flaeche: 756, staedte: 350, berge: 500, kueste: 6.4, continent: 100, tourismus: 5, nachbarlaender: 3 }},
+  { name: "Peru 🇵🇪", stats: { einwohner: 34, flaeche: 1285, staedte: 300, berge: 600, kueste: 2.4, continent: 100, tourismus: 4, nachbarlaender: 5 }},
+  { name: "Kolumbien 🇨🇴", stats: { einwohner: 52, flaeche: 1142, staedte: 1100, berge: 400, kueste: 3.2, continent: 100, tourismus: 5, nachbarlaender: 5 }},
+  { name: "Venezuela 🇻🇪", stats: { einwohner: 29, flaeche: 916, staedte: 300, berge: 200, kueste: 2.8, continent: 100, tourismus: 1, nachbarlaender: 3 }},
+  { name: "Ecuador 🇪🇨", stats: { einwohner: 18, flaeche: 256, staedte: 200, berge: 150, kueste: 2.2, continent: 100, tourismus: 2, nachbarlaender: 2 }},
+
+  { name: "China 🇨🇳", stats: { einwohner: 1410, flaeche: 9600, staedte: 680, berge: 2000, kueste: 14.5, continent: 100, tourismus: 65, nachbarlaender: 14 }},
+  { name: "Japan 🇯🇵", stats: { einwohner: 125, flaeche: 377, staedte: 1700, berge: 400, kueste: 29.7, continent: 100, tourismus: 32, nachbarlaender: 0 }},
+  { name: "Südkorea 🇰🇷", stats: { einwohner: 52, flaeche: 100, staedte: 220, berge: 200, kueste: 2.4, continent: 100, tourismus: 17, nachbarlaender: 1 }},
+  { name: "Indien 🇮🇳", stats: { einwohner: 1420, flaeche: 3287, staedte: 4000, berge: 1500, kueste: 7.5, continent: 100, tourismus: 18, nachbarlaender: 6 }},
+  { name: "Indonesien 🇮🇩", stats: { einwohner: 280, flaeche: 1905, staedte: 1500, berge: 400, kueste: 54.7, continent: 100, tourismus: 16, nachbarlaender: 3 }},
+
+  { name: "Australien 🇦🇺", stats: { einwohner: 26, flaeche: 7692, staedte: 100, berge: 200, kueste: 25.7, continent: 100, tourismus: 10, nachbarlaender: 0 }},
+  { name: "Neuseeland 🇳🇿", stats: { einwohner: 5, flaeche: 268, staedte: 120, berge: 200, kueste: 15.1, continent: 100, tourismus: 4, nachbarlaender: 0 }},
+  { name: "Ägypten 🇪🇬", stats: { einwohner: 110, flaeche: 1001, staedte: 200, berge: 80, kueste: 2.5, continent: 200, tourismus: 13, nachbarlaender: 4 }},
+  { name: "Südafrika 🇿🇦", stats: { einwohner: 60, flaeche: 1221, staedte: 300, berge: 200, kueste: 2.8, continent: 100, tourismus: 10, nachbarlaender: 6 }},
+  { name: "Nigeria 🇳🇬", stats: { einwohner: 220, flaeche: 924, staedte: 800, berge: 50, kueste: 0.9, continent: 100, tourismus: 5, nachbarlaender: 4 }}
+]
+};
+
+
+
+/* KATEGORIEN JE NACH THEMA */
+const categorySets = {
+  fussball: [
+    { key: "tore", label: "Tore" },
+    { key: "vorlagen", label: "Vorlagen" },
+    { key: "spiele", label: "Spiele" },
+    { key: "gegentorlos", label: "Spiele ohne Gegentor" },
+    { key: "titel", label: "Titel" },
+    { key: "wmTore", label: "WM-Tore" },
+    { key: "emTore", label: "EM-Tore" },
+    { key: "vereine", label: "Vereine" }
+  ],
+
+wirtschaft: [
+  { key: "umsatz", label: "Umsatz (Mrd. €)" },
+  { key: "mitarbeiter", label: "Mitarbeiterzahl (Tsd)." },
+  { key: "gruendung", label: "Gründungsjahr" },
+  { key: "standorte", label: "Anzahl Standorte" },
+  { key: "marktwert", label: "Marktwert (Mrd. €)" },
+  { key: "produkte", label: "Anzahl Produkte" },
+  { key: "laender", label: "Länder aktiv" },
+  { key: "kunden", label: "Kunden weltweit (Mio.)" }
+],
+
+geografie: [
+  { key: "einwohner", label: "Einwohner (Mio)" },
+  { key: "flaeche", label: "Fläche (Tsd km²)" },
+  { key: "staedte", label: "Anzahl Städte" },
+  { key: "berge", label: "Anzahl Berge" },
+  { key: "kueste", label: "Küstenlänge (Tsd km)" },
+  { key: "continent", label: "Kontinente * 100" },
+  { key: "tourismus", label: "Touristen pro Jahr (Mio.)" },
+  { key: "nachbarlaender", label: "Anzahl Nachbarländer" }
+],
+
+filme: [
+  { key: "bewertung", label: "Bewertung (1–10)" },
+  { key: "einspielergebnis", label: "Einspielergebnis (Mio. €)" },
+  { key: "jahr", label: "Erscheinungsjahr" },
+  { key: "dauer", label: "Filmlänge (Minuten)" },
+  { key: "auszeichnungen", label: "Auszeichnungen" },
+  { key: "schauspieler", label: "Anzahl Schauspieler" },
+  { key: "genre", label: "Genre‑Vielfalt" },
+  { key: "budget", label: "Budget (Mio. €)" }
+],
+
+musik: [
+  { key: "songs", label: "Veröffentlichte Songs" },
+  { key: "alben", label: "Veröffentlichte Alben" },
+  { key: "streams", label: "Streams (Mrd.)" },
+  { key: "auszeichnungen", label: "Auszeichnungen" },
+  { key: "konzerte", label: "Gespielte Konzerte" },
+  { key: "jahreaktiv", label: "Jahre aktiv" },
+  { key: "genres", label: "Genres" },
+  { key: "topplatzierungen", label: "Top‑Chart Platzierungen" }
+],
+
+tiere: [
+  { key: "groesse", label: "Größe (cm)" },
+  { key: "gewicht", label: "Gewicht (kg)" },
+  { key: "lebenserwartung", label: "Lebensdauer (Jahre)" },
+  { key: "geschwindigkeit", label: "Geschwindigkeit (km/h)" },
+  { key: "lebensraum", label: "Lebensräume" },
+  { key: "population", label: "Population (Anzahl in Millionen)" },
+  { key: "verbreitung", label: "Verbreitungsgebiete" },
+  { key: "gefahr", label: "Gefährdungsstufe" }
+]
+};
+
+let players = playerPools["fussball"];
+let categories = categorySets["fussball"];
+
+let usedCategories = [];
+let usedPlayers = [];
+let round = 0;
+let totalPoints = 0;
+let history = [];
+
+document.getElementById("start-game").addEventListener("click", () => {
+  const selected = themeSelect.value;
+
+  players = playerPools[selected];
+  categories = categorySets[selected];
+
+  document.getElementById("startScreen").classList.add("hidden");
+  document.getElementById("game-screen").classList.remove("hidden");
+
+  startGame();
+});
+
+function startGame() {
+  usedCategories = [];
+  usedPlayers = [];
+  round = 0;
+  totalPoints = 0;
+  history = [];
+  nextRound();
+}
+
+function nextRound() {
+  if (round >= 8) {
+    endGame();
+    return;
+  }
+
+  const availablePlayers = players.filter(p => !usedPlayers.includes(p));
+  const player = availablePlayers[Math.floor(Math.random() * availablePlayers.length)];
+  usedPlayers.push(player);
+
+  document.getElementById("round-title").textContent = `Runde ${round + 1} von 8`;
+  document.getElementById("player-content").innerHTML = `<h3>${player.name}</h3>`;
+
+  renderCategories(player);
+}
+
+function renderCategories(player) {
+  const container = document.getElementById("category-buttons");
+  container.innerHTML = "";
+
+  const availableCats = categories.filter(c => !usedCategories.includes(c.key));
+
+  availableCats.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.textContent = cat.label;
+    btn.onclick = () => chooseCategory(player, cat);
+    container.appendChild(btn);
+  });
+}
+
+function chooseCategory(player, cat) {
+  usedCategories.push(cat.key);
+
+  const points = player.stats[cat.key];
+  totalPoints += points;
+
+  history.push({
+    player: player.name,
+    category: cat.label,
+    points: points
+  });
+
+  round++;
+  nextRound();
+}
+
+function endGame() {
+  document.getElementById("game-screen").classList.add("hidden");
+  document.getElementById("end-screen").classList.remove("hidden");
+
+  document.getElementById("summary-card").innerHTML = `
+    <h3>Gesamtpunkte: ${totalPoints}</h3>
+    <hr>
+    ${history.map(h => `
+      <p><b>${h.player}</b> → ${h.category}: ${h.points} Punkte</p>
+    `).join("")}
+  `;
+}
+
+document.getElementById("restart-game").addEventListener("click", () => {
+  document.getElementById("end-screen").classList.add("hidden");
+  document.getElementById("game-screen").classList.remove("hidden");
+  startGame();
+});
+</script>
+
+</body>
+</html>

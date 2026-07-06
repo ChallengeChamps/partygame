@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Begriffe-Raten-Spiel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('tipptopf.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      margin-top: 40px;
+      animation: fadeIn 1s ease;
+    }
+
+    h1, h2 {
+      text-align: center;
+      text-shadow: 2px 2px 6px #000;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .card {
+      background: #fff;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: slideUp 0.8s ease;
+    }
+
+    .options button {
+      margin: 10px 5px;
+      background-color: #673ab7;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .menu-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .menu-button:hover {
+      background-color: #45a049;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="setup">
+    <h1>Begriffe-Raten</h1>
+    <label for="spieleranzahl">Spieleranzahl:</label>
+    <select id="spieleranzahl" onchange="generateSpielerInputs()">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+    </select>
+
+    <div id="spielerInputs"></div>
+
+    <label for="spielzeit">Spielzeit:</label>
+    <select id="spielzeit">
+      <option value="2">2 Minuten</option>
+      <option value="3">3 Minuten</option>
+      <option value="4">4 Minuten</option>
+      <option value="5">5 Minuten</option>
+    </select>
+
+    <button onclick="startGame()">Spiel starten</button>
+    <button class="menu-button" onclick="window.location.href='startseite.html'">Zum Hauptmenü</button>
+  </div>
+
+  <div class="container hidden" id="game">
+    <h2 id="countdownDisplay"></h2>
+    <div id="cardArea"></div>
+    <button onclick="lösen()" id="lösenBtn" class="hidden">Lösen</button>
+  </div>
+
+  <div class="container hidden" id="auswertung">
+    <h2>Spiel beendet!</h2>
+    <div id="scoreboard"></div>
+    <button onclick="location.reload()">Erneut spielen</button>
+    <button class="menu-button" onclick="window.location.href='startseite.html'">Zum Hauptmenü</button>
+  </div>
+
+<script>
+  const begriffe = [
+{ wort: "Apfel", tipps: ["Rund", "Wächst draußen", "Obst", "Rot oder grün", "Hat ein Kerngehäuse"] },
+{ wort: "Zug", tipps: ["Bewegt sich", "Transportmittel", "Fährt auf Schienen", "Bahnhof", "Lokomotive"] },
+{ wort: "Katze", tipps: ["Lebewesen", "Haustier", "Fell", "Schnurrt", "Macht Miau"] },
+{ wort: "Pizza", tipps: ["Essen", "Rund", "Teig", "Käse und Tomate", "Wird im Ofen gebacken"] },
+{ wort: "Schule", tipps: ["Ort", "Gebäude", "Kinder", "Lehrer", "Hausaufgaben"] },
+{ wort: "Auto", tipps: ["Bewegt sich", "Straße", "Motor", "Lenkrad", "Fährt mit Benzin"] },
+{ wort: "Hund", tipps: ["Lebewesen", "Vier Beine", "Haustier", "Bellt", "Leine beim Spazieren"] },
+{ wort: "Buch", tipps: ["Objekt", "Papier", "Seiten", "Lesen", "Kapitel und Titel"] },
+{ wort: "Musik", tipps: ["Kunstform", "Hören", "Rhythmus", "Instrumente", "Lied mit Melodie"] },
+{ wort: "Sommer", tipps: ["Jahreszeit", "Wärmer", "Ferien", "Sonne", "Hitze und Eis"] },
+{ wort: "Regen", tipps: ["Wetter", "Feuchtigkeit", "Wolken", "Tropfen", "Schirm nötig"] },
+{ wort: "Feuerwehr", tipps: ["Beruf", "Einsatz", "Wasser", "Löschen", "Rotes Fahrzeug mit Sirene"] },
+{ wort: "Mond", tipps: ["Himmel", "Rund", "Leuchtet", "Nacht", "Silberner Begleiter der Erde"] },
+{ wort: "Kino", tipps: ["Ort", "Dunkel", "Sitzen", "Film", "Leinwand mit Popcorn"] },
+{ wort: "Garten", tipps: ["Ort", "Grün", "Pflanzen", "Blumen", "Beet mit Gießkanne"] },
+{ wort: "Flugzeug", tipps: ["Transportmittel", "Schnell", "Hoch", "Fliegen", "Pilot im Cockpit"] },
+{ wort: "Schokolade", tipps: ["Süßigkeit", "Braun", "Kakao", "Tafel", "Naschen mit Genuss"] },
+{ wort: "Polizei", tipps: ["Beruf", "Uniform", "Gesetz", "Auto mit Blaulicht", "Verbrechensbekämpfung"] },
+{ wort: "Einhorn", tipps: ["Fabelwesen", "Pferdeähnlich", "Magisch", "Regenbogen", "Horn auf der Stirn"] },
+{ wort: "Bibliothek", tipps: ["Ort", "Still", "Regale", "Lesen", "Bücher ausleihen"] },
+{ wort: "Berg", tipps: ["Natur", "Hoch", "Stein", "Wandern", "Gipfel mit Aussicht"] },
+{ wort: "Trommel", tipps: ["Gegenstand", "Musik", "Schlagen", "Rhythmus", "Percussion-Instrument"] },
+{ wort: "Brille", tipps: ["Objekt", "Gesicht", "Glas", "Sehen", "Gestell mit zwei Gläsern"] },
+{ wort: "Roboter", tipps: ["Technik", "Bewegt sich", "Programm", "Maschine", "Künstlicher Helfer"] },
+{ wort: "Tankstelle", tipps: ["Ort", "Auto", "Pause", "Zapfsäule", "Benzin und Diesel"] },
+{ wort: "Zauberer", tipps: ["Person", "Geheimnisvoll", "Magie", "Zauberstab", "Hut und Trick"] },
+{ wort: "Krankenhaus", tipps: ["Gebäude", "Menschen", "Pflege", "Arzt", "Operation und Notaufnahme"] },
+{ wort: "Schmetterling", tipps: ["Tier", "Fliegen", "Leicht", "Bunt", "Flügel mit Muster"] },
+{ wort: "Pyramide", tipps: ["Bauwerk", "Alt", "Stein", "Ägypten", "Grabstätte mit Spitze"] },
+{ wort: "Fernseher", tipps: ["Technik", "Bild", "Sender", "Fernbedienung", "Gerät zum Serien schauen"] },
+{ wort: "Eule", tipps: ["Tier", "Fliegen", "Nacht", "Augen", "Schuhu im Baum"] },
+{ wort: "Schloss", tipps: ["Ort", "Alt", "Mauern", "König", "Prinzessin wohnt dort"] },
+{ wort: "Spaghetti", tipps: ["Essen", "Lang", "Teig", "Kochen", "Nudeln mit Soße"] },
+{ wort: "Wald", tipps: ["Natur", "Grün", "Bäume", "Tiere", "Pfad durch das Dickicht"] },
+{ wort: "Feuer", tipps: ["Element", "Heiß", "Rot", "Flamme", "Brennt Holz"] },
+{ wort: "Stadt", tipps: ["Ort", "Menschen", "Gebäude", "Verkehr", "Lichter und Straßen"] },
+{ wort: "Büro", tipps: ["Raum", "Arbeit", "Papier", "Computer", "Schreibtisch mit Chef"] },
+{ wort: "Erdbeere", tipps: ["Frucht", "Rot", "Sommer", "Süß", "Klein mit Punkten"] },
+{ wort: "Astronaut", tipps: ["Beruf", "Anzug", "Fliegen", "Rakete", "Im Weltall unterwegs"] },
+{ wort: "Zirkus", tipps: ["Ort", "Show", "Tiere", "Akrobat", "Clown in der Manege"] },
+{ wort: "Küche", tipps: ["Raum", "Innen", "Zubereitung", "Herd", "Ort zum Kochen"] },
+{ wort: "Telefon", tipps: ["Technik", "Kommunikation", "Klingeln", "Nummer", "Gerät zum Anrufen"] },
+{ wort: "Fahrrad", tipps: ["Fortbewegung", "Zwei Räder", "Pedale", "Lenker", "Fährt ohne Motor"] },
+{ wort: "Eis", tipps: ["Kalt", "Süß", "Sommer", "Becher oder Waffel", "Gefrorene Leckerei"] },
+{ wort: "Spiegel", tipps: ["Objekt", "Glas", "Reflexion", "Gesicht", "Zeigt dein Bild"] },
+{ wort: "Bleistift", tipps: ["Werkzeug", "Schreiben", "Holz", "Spitze", "Radierbar"] },
+{ wort: "Tisch", tipps: ["Möbel", "Fläche", "Beine", "Essen", "Steht im Zimmer"] },
+{ wort: "Lampe", tipps: ["Gegenstand", "Licht", "Elektrisch", "Schalter", "Beleuchtet Räume"] },
+{ wort: "Schwimmbad", tipps: ["Ort", "Wasser", "Spaß", "Badehose", "Zum Schwimmen gedacht"] },
+{ wort: "Zahnbürste", tipps: ["Hygiene", "Bad", "Borsten", "Zähne", "Zum Putzen morgens und abends"] },
+{ wort: "Regenschirm", tipps: ["Wetter", "Hand", "Rund", "Schutz", "Gegen Tropfen von oben"] },
+{ wort: "Koffer", tipps: ["Reise", "Transport", "Gepäck", "Griff", "Zum Packen von Kleidung"] },
+{ wort: "Kerze", tipps: ["Licht", "Wachs", "Flamme", "Duft", "Brennt langsam"] },
+{ wort: "Schere", tipps: ["Werkzeug", "Schneiden", "Zwei Teile", "Papier", "Hat zwei Klingen"] },
+{ wort: "Mikrofon", tipps: ["Ton", "Sprechen", "Aufnahme", "Kabel", "Gerät für Stimme"] },
+{ wort: "Tasse", tipps: ["Behälter", "Trinken", "Henkel", "Kaffee", "Kleines Gefäß"] },
+{ wort: "Schlaf", tipps: ["Zustand", "Ruhe", "Nacht", "Träume", "Augen geschlossen"] },
+{ wort: "Kleidung", tipps: ["Textil", "Anziehen", "Stil", "Schrank", "Hose, Shirt, Jacke"] },
+{ wort: "Post", tipps: ["Kommunikation", "Brief", "Paket", "Zustellung", "Gelbes Auto"] },
+{ wort: "Uhr", tipps: ["Zeit", "Zeiger", "Tick", "Armband", "Zeigt Minuten und Stunden"] },
+{ wort: "Radio", tipps: ["Ton", "Gerät", "Sender", "Musik", "Läuft im Hintergrund"] },
+{ wort: "Schnee", tipps: ["Wetter", "Kalt", "Weiß", "Winter", "Fällt vom Himmel"] },
+{ wort: "Besen", tipps: ["Haushalt", "Stiel", "Sauberkeit", "Fegen", "Zum Kehren gedacht"] },
+{ wort: "Keks", tipps: ["Süß", "Klein", "Knusprig", "Backen", "Leckerei zum Kaffee"] },
+{ wort: "Brücke", tipps: ["Bauwerk", "Verbindung", "Überqueren", "Straße", "Über Wasser oder Tal"] },
+{ wort: "Schrank", tipps: ["Möbel", "Stauraum", "Holz", "Türen", "Zum Verstauen von Kleidung"] },
+{ wort: "Fisch", tipps: ["Tier", "Wasser", "Flossen", "Schwimmen", "Lebt im Meer oder See"] },
+{ wort: "Kuh", tipps: ["Tier", "Feld", "Groß", "Milch", "Macht Muh"] },
+{ wort: "Treppe", tipps: ["Bauwerk", "Höhe", "Stufen", "Gehen", "Verbindet Etagen"] },
+{ wort: "Löffel", tipps: ["Besteck", "Essen", "Rund", "Suppe", "Zum Schöpfen gedacht"] },
+{ wort: "Ball", tipps: ["Spiel", "Rund", "Werfen", "Fangen", "Zum Kicken oder Rollen"] },
+{ wort: "Kerze", tipps: ["Licht", "Wachs", "Flamme", "Duft", "Brennt langsam"] },
+{ wort: "Papier", tipps: ["Material", "Dünn", "Weiß", "Schreiben", "Seite im Buch"] },
+{ wort: "Gabel", tipps: ["Besteck", "Zinken", "Essen", "Aufspießen", "Liegt neben dem Messer"] },
+{ wort: "Kissen", tipps: ["Weich", "Bett", "Schlaf", "Kopf", "Zum Kuscheln gedacht"] },
+{ wort: "Tasche", tipps: ["Tragen", "Stoff", "Griff", "Gegenstände", "Für unterwegs"] },
+{ wort: "Fenster", tipps: ["Haus", "Glas", "Licht", "Ausblick", "Zum Öffnen und Schließen"] },
+{ wort: "Batterie", tipps: ["Strom", "Klein", "Gerät", "Energie", "Zum Betreiben von Technik"] },
+{ wort: "Schlüssel", tipps: ["Metall", "Klein", "Tür", "Öffnen", "Passt ins Schloss"] },
+{ wort: "Mütze", tipps: ["Kleidung", "Kopf", "Warm", "Winter", "Gestrickt oder genäht"] }
+
+  ];
+
+  let spieler = [];
+  let punkte = {};
+  let aktuelleRunde = 0;
+  let spielzeit = 0;
+  let laufendeZeit = 0;
+  let timer;
+  let tippTimer;
+  let spielPause = false;
+  let aktuellerBegriff = null;
+let verwendeteBegriffe = [];
+
+
+  function mischeBegriffe(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }
+
+  function generateSpielerInputs() {
+    const count = parseInt(document.getElementById("spieleranzahl").value);
+    const container = document.getElementById("spielerInputs");
+    container.innerHTML = "";
+    for (let i = 0; i < count; i++) {
+      const input = document.createElement("input");
+      input.placeholder = `Spieler ${i + 1} Name`;
+      input.id = `spieler${i}`;
+      container.appendChild(input);
+    }
+  }
+
+  function startGame() {
+    const count = parseInt(document.getElementById("spieleranzahl").value);
+    spieler = [];
+    for (let i = 0; i < count; i++) {
+      const name = document.getElementById(`spieler${i}`).value.trim();
+      if (name) {
+        spieler.push(name);
+        punkte[name] = { score: 0, richtig: [] };
+      }
+    }
+
+    spielzeit = parseInt(document.getElementById("spielzeit").value) * 60;
+    if (spieler.length < 2) return alert("Bitte Namen eingeben!");
+
+    document.getElementById("setup").classList.add("hidden");
+    document.getElementById("game").classList.remove("hidden");
+    startCountdown(3, beginRunde);
+  }
+
+  function startCountdown(sekunden, callback) {
+    let count = sekunden;
+    const display = document.getElementById("countdownDisplay");
+    display.textContent = count;
+
+    clearInterval(timer);
+    timer = setInterval(() => {
+      if (spielPause) return;
+
+      count--;
+      display.textContent = count;
+      if (count <= 0) {
+        clearInterval(timer);
+        display.textContent = "";
+        callback();
+      }
+    }, 1000);
+  }
+
+ function beginRunde() {
+  if (laufendeZeit >= spielzeit) {
+    return beenden();
+  }
+
+  // Wähle einen neuen Begriff, der noch nicht verwendet wurde
+  let verbleibende = begriffe.filter(b => !verwendeteBegriffe.includes(b.wort));
+  if (verbleibende.length === 0) return beenden(); // Alle Begriffe verbraucht
+
+  aktuellerBegriff = verbleibende[Math.floor(Math.random() * verbleibende.length)];
+  verwendeteBegriffe.push(aktuellerBegriff.wort);
+  cardArea.innerHTML = "";
+  document.getElementById("lösenBtn").classList.remove("hidden");
+
+  // Erster Hinweis sofort
+  const firstCard = document.createElement("div");
+  firstCard.className = "card";
+  firstCard.textContent = aktuellerBegriff.tipps[0];
+  cardArea.appendChild(firstCard);
+
+  let tippIndex = 1;
+  let sekundenVergangen = 2;
+
+
+  clearInterval(tippTimer);
+  tippTimer = setInterval(() => {
+    if (tippIndex < aktuellerBegriff.tipps.length) {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.textContent = aktuellerBegriff.tipps[tippIndex];
+      cardArea.appendChild(card);
+      tippIndex++;
+    }
+    sekundenVergangen += 2;
+
+    if (sekundenVergangen >= 10) {
+      clearInterval(tippTimer);
+      startCountdown(10, () => {
+        laufendeZeit += 20;
+        spielPause = false;
+        beginRunde();
+      });
+    }
+  }, 2000);
+}
+
+
+  function lösen() {
+    clearInterval(timer);
+    clearInterval(tippTimer);
+    spielPause = true;
+
+    const cardArea = document.getElementById("cardArea");
+    cardArea.innerHTML = `<div class="card"><strong>Gesuchtes Wort:</strong> ${aktuellerBegriff.wort}</div>`;
+    const btnArea = document.createElement("div");
+    btnArea.className = "options";
+
+    spieler.forEach(name => {
+      const btn = document.createElement("button");
+      btn.textContent = name;
+      btn.onclick = () => {
+        punkte[name].score++;
+        punkte[name].richtig.push(aktuellerBegriff.wort);
+        laufendeZeit += 20;
+        spielPause = false;
+        beginRunde();
+      };
+      btnArea.appendChild(btn);
+    });
+
+    // Falsch-Button
+    const falschBtn = document.createElement("button");
+    falschBtn.textContent = "Falsch";
+    falschBtn.style.backgroundColor = "#f44336";
+    falschBtn.onclick = () => {
+      laufendeZeit += 20;
+      spielPause = false;
+      beginRunde();
+    };
+    btnArea.appendChild(falschBtn);
+
+    cardArea.appendChild(btnArea);
+    document.getElementById("lösenBtn").classList.add("hidden");
+  }
+
+  function beenden() {
+    document.getElementById("game").classList.add("hidden");
+    document.getElementById("auswertung").classList.remove("hidden");
+    const board = document.getElementById("scoreboard");
+    board.innerHTML = "";
+
+    spieler.forEach(name => {
+      const div = document.createElement("div");
+      div.innerHTML = `<strong>${name}</strong>: ${punkte[name].score} Punkte<br>Richtig: ${punkte[name].richtig.join(", ") || "Keine"}`;
+      board.appendChild(div);
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lüge oder Wahrheit 🤥</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-image: url('liste.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    color: #fff;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    margin-top: 40px;
+    animation: fadeIn 1s ease;
+  }
+
+  h1, h2 {
+    text-align: center;
+    text-shadow: 2px 2px 6px #000;
+  }
+
+  select, input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+  }
+
+  button {
+    background-color: #ff4081;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #e91e63;
+  }
+
+  .menu-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+
+  .menu-button:hover {
+    background-color: #45a049;
+  }
+
+  .card {
+    background: #fff;
+    color: #000;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    animation: slideUp 0.8s ease;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .fx-icons {
+    font-size: 40px;
+    text-align: center;
+    margin-top: 10px;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .confetti {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 999;
+  }
+
+  .confetti-piece {
+    position: absolute;
+    width: 8px;
+    height: 16px;
+    background: linear-gradient(135deg, #ff4081, #4CAF50);
+    animation: confetti-fall 2.5s linear forwards;
+  }
+
+  @keyframes confetti-fall {
+    0% { transform: translateY(-20px) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- STARTSCREEN -->
+<div class="container" id="start-screen">
+  <h1>Lüge oder Wahrheit 🤥</h1>
+
+  <label>Spieleranzahl:</label>
+  <select id="player-count">
+    <option value="2">2 Spieler</option>
+    <option value="3">3 Spieler</option>
+    <option value="4">4 Spieler</option>
+    <option value="5">5 Spieler</option>
+  </select>
+
+  <label>Runden (jeder 3× pro Runde):</label>
+  <select id="round-count">
+    <option value="1">1 Runde</option>
+    <option value="2">2 Runden</option>
+    <option value="3">3 Runden</option>
+  </select>
+
+  <div id="player-names"></div>
+
+  <label>Kategorie:</label>
+  <select id="category"></select>
+
+  <button id="start-game" class="menu-button">Spiel starten</button>
+  <button onclick="location.href='startseite.html'" class="menu-button">Zurück zur Startseite</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div class="container hidden" id="game-screen">
+  <h2 id="game-title">Fact or Fake</h2>
+  <p id="current-player"></p>
+
+  <div id="statement-card" class="card"></div>
+
+  <button id="btn-true">Wahr</button>
+  <button id="btn-false">Falsch</button>
+
+  <div id="result-banner" class="card hidden"></div>
+  <div id="fx-icons" class="fx-icons"></div>
+
+  <div id="scoreboard" class="card"></div>
+
+  <button id="end-game" class="menu-button">Spiel beenden</button>
+</div>
+
+<!-- END SCREEN -->
+<div class="container hidden" id="end-screen">
+  <h2>Spiel beendet!</h2>
+
+  <div id="final-winner" class="card"></div>
+  <div id="final-scoreboard" class="card"></div>
+
+  <button id="restart-game" class="menu-button">Erneut spielen</button>
+  <button onclick="location.href='startseite.html'" class="menu-button">Zurück zur Startseite</button>
+</div>
+
+<div id="confetti" class="confetti"></div>
+
+<script>
+/* ============================
+   PREMIUM CHECK
+============================ */
+
+const hasPremium = localStorage.getItem("premium") === "true";
+
+/* ============================
+   CATEGORY SETUP
+============================ */
+
+const categorySelect = document.getElementById("category");
+
+function loadCategories() {
+  categorySelect.innerHTML = "";
+
+  const free = document.createElement("option");
+  free.value = "zufall";
+  free.textContent = "Zufall";
+  categorySelect.appendChild(free);
+
+  const premiumCats = ["sport", "politik", "wirtschaft", "musik", "geschichte", "filme und serien"];
+
+  premiumCats.forEach(cat => {
+    const opt = document.createElement("option");
+    opt.value = cat;
+
+    if (hasPremium) {
+      opt.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+      opt.disabled = false;
+    } else {
+      opt.textContent = cat.charAt(0).toUpperCase() + cat.slice(1) + " (Premium 💎)";
+      opt.disabled = true;
+    }
+
+    categorySelect.appendChild(opt);
+  });
+}
+
+loadCategories();
+
+/* ============================
+   STATEMENTS
+============================ */
+
+const statements = [
+
+  { text: "Im Jahr 1823 wurde in Bayern ein Huhn zum Bürgermeister gewählt.", correct: false, cat: "geschichte" },
+  { text: "Napoleon wurde einmal von einem Schwarm Kaninchen angegriffen.", correct: true, cat: "geschichte" },
+  { text: "Im Mittelalter glaubte man, dass Brot sprechen kann, wenn es frisch genug ist.", correct: false, cat: "geschichte" },
+  { text: "Die erste Brille der Welt bestand aus dünn geschnittenen Kartoffeln.", correct: false, cat: "geschichte" },
+  { text: "Im alten Rom gab es eine Steuer auf übermäßiges Lachen in öffentlichen Bädern.", correct: false, cat: "geschichte" },
+  { text: "Ein König im 14. Jahrhundert verbot Regen, weil er seine Haare nicht ruinieren wollte.", correct: false, cat: "geschichte" },
+  { text: "Im Jahr 1902 wurde ein Pferd zum Ehrenbürger einer Kleinstadt ernannt.", correct: true, cat: "geschichte" },
+  { text: "Im 18. Jahrhundert glaubte man, dass Kaffee Pflanzen zum Weinen bringt.", correct: false, cat: "geschichte" },
+  { text: "Im Jahr 1601 wurde ein Mann verhaftet, weil er zu laut gegähnt hat.", correct: false, cat: "geschichte" },
+  { text: "Die Wikinger benutzten Katzen als Kompass, weil sie angeblich nach Norden schauen.", correct: false, cat: "geschichte" },
+
+  { text: "Im Mittelalter gab es Wettbewerbe im schnellen Kerzenanzünden.", correct: false, cat: "geschichte" },
+  { text: "Ein Dorf in Frankreich feierte jährlich ein Fest zu Ehren eines besonders hässlichen Baumes.", correct: true, cat: "geschichte" },
+  { text: "Im Jahr 1703 wurde ein Mann bestraft, weil er zu laut mit seinem Schatten sprach.", correct: false, cat: "geschichte" },
+  { text: "Die Römer glaubten, dass Regenwürmer heilige Botschafter der Götter sind.", correct: false, cat: "geschichte" },
+  { text: "Im 19. Jahrhundert gab es eine Mode, Hüte mit echten lebenden Mäusen zu tragen.", correct: false, cat: "geschichte" },
+  { text: "Ein König ließ seine Soldaten rosa Uniformen tragen, um Feinde zu verwirren.", correct: false, cat: "geschichte" },
+  { text: "Im Jahr 1888 wurde ein Mann ausgezeichnet, weil er 24 Stunden ununterbrochen lächelte.", correct: false, cat: "geschichte" },
+  { text: "Im alten China glaubte man, dass Drachen Regen machen, wenn man ihnen Tee anbietet.", correct: false, cat: "geschichte" },
+  { text: "Ein mittelalterlicher Arzt verschrieb einmal 'mehr fröhliche Gedanken' als Medizin.", correct: true, cat: "geschichte" },
+  { text: "Im Jahr 1720 wurde ein Schwein zum Ritter geschlagen.", correct: false, cat: "geschichte" },
+
+  { text: "Im alten Ägypten gab es eine Gottheit, die nur für verlorene Socken zuständig war.", correct: false, cat: "geschichte" },
+  { text: "Ein König im 15. Jahrhundert verbot das Wort 'Kartoffel', weil es ihn nervte.", correct: false, cat: "geschichte" },
+  { text: "Im Jahr 1811 wurde ein Mann berühmt, weil er angeblich mit Bäumen sprechen konnte.", correct: true, cat: "geschichte" },
+  { text: "Im Mittelalter glaubte man, dass Regen aus den Tränen von Wolken entsteht.", correct: false, cat: "geschichte" },
+  { text: "Ein Dorf in England wählte einmal einen Hund zum offiziellen Postboten.", correct: true, cat: "geschichte" },
+  { text: "Im Jahr 1699 wurde ein Mann bestraft, weil er zu fröhlich war.", correct: false, cat: "geschichte" },
+  { text: "Die Römer glaubten, dass Spinat magische Kräfte verleiht.", correct: false, cat: "geschichte" },
+  { text: "Ein König ließ seine Burg pink streichen, um Gäste zu beeindrucken.", correct: false, cat: "geschichte" },
+  { text: "Im Jahr 1780 wurde ein Papagei als Zeuge vor Gericht zugelassen.", correct: true, cat: "geschichte" },
+  { text: "Im Mittelalter gab es ein Gesetz, das verbot, zu laut zu denken.", correct: false, cat: "geschichte" },
+
+  { text: "Ein Mann im 17. Jahrhundert behauptete, er könne mit seinem Bart Wetter vorhersagen.", correct: true, cat: "geschichte" },
+  { text: "Im alten Rom gab es eine Strafe für zu langsames Gehen.", correct: false, cat: "geschichte" },
+  { text: "Ein König ließ seine Krone aus Brot backen, um bescheidener zu wirken.", correct: false, cat: "geschichte" },
+  { text: "Im Jahr 1804 wurde ein Schaf zum offiziellen Dorfwächter ernannt.", correct: true, cat: "geschichte" },
+  { text: "Im Mittelalter glaubte man, dass Regenbogen aus Engelshaar bestehen.", correct: false, cat: "geschichte" },
+  { text: "Ein Dorf feierte jährlich ein Fest für den 'Tag der verlorenen Hüte'.", correct: true, cat: "geschichte" },
+  { text: "Im Jahr 1750 wurde ein Mann bestraft, weil er zu höflich war.", correct: false, cat: "geschichte" },
+  { text: "Die Wikinger glaubten, dass lautes Singen Wale anlockt.", correct: false, cat: "geschichte" },
+  { text: "Ein König im 13. Jahrhundert verbot das Wort 'Mond', weil es ihn traurig machte.", correct: false, cat: "geschichte" },
+  { text: "Im Jahr 1833 wurde ein Hahn als offizieller Dorfwecker angestellt.", correct: true, cat: "geschichte" },
+
+  { text: "Im alten Griechenland glaubte man, dass Schnecken Glück bringen, wenn man sie küsst.", correct: false, cat: "geschichte" },
+  { text: "Ein Mann im 18. Jahrhundert behauptete, er könne mit seinem Hut fliegen.", correct: false, cat: "geschichte" },
+  { text: "Im Jahr 1900 wurde ein Esel zum offiziellen Maskottchen einer Stadt gewählt.", correct: true, cat: "geschichte" },
+  { text: "Im Mittelalter glaubte man, dass Wolken aus Zucker bestehen.", correct: false, cat: "geschichte" },
+  { text: "Ein König ließ seine Soldaten tanzen, bevor sie in den Krieg zogen.", correct: true, cat: "geschichte" },
+  { text: "Im Jahr 1766 wurde ein Mann ausgezeichnet, weil er besonders schön nieste.", correct: false, cat: "geschichte" },
+  { text: "Die Römer glaubten, dass Regen aus den Tränen von Göttern stammt.", correct: false, cat: "geschichte" },
+  { text: "Ein Dorf in Spanien wählte einmal einen Baum zum Bürgermeister.", correct: false, cat: "geschichte" },
+  { text: "Im Jahr 1819 wurde ein Schwein zum offiziellen Glücksbringer eines Königs ernannt.", correct: true, cat: "geschichte" },
+  { text: "Im Mittelalter glaubte man, dass Katzen die Zukunft sehen können.", correct: false, cat: "geschichte" },
+
+  /* ======== RICHTIG (25) ======== */
+
+  { text: "Der erste Basketballkorb war ein geschlossener Obstkorb.", correct: true, cat: "sport" },
+  { text: "Ein Fußballspiel in Peru wurde abgebrochen, weil ein Lama den Ball stahl.", correct: true, cat: "sport" },
+  { text: "Ein Marathonläufer gewann ein Rennen, weil er aus Versehen eine Abkürzung nahm.", correct: true, cat: "sport" },
+  { text: "Ein Formel‑1 Auto wurde einmal von einer Ente aufgehalten.", correct: true, cat: "sport" },
+  { text: "In Japan gibt es Meisterschaften im extrem langsamen Joggen.", correct: true, cat: "sport" },
+  { text: "Ein Schiedsrichter wurde einmal von einem Papagei beleidigt, der auf der Tribüne saß.", correct: true, cat: "sport" },
+  { text: "Ein Fußballtorwart wurde berühmt, weil er während des Spiels ein Buch las.", correct: true, cat: "sport" },
+  { text: "Ein Eishockeyspieler verlor einen Zahn, fand ihn wieder und spielte weiter.", correct: true, cat: "sport" },
+  { text: "Ein Boxer gewann einen Kampf, weil sein Gegner über seine eigenen Schnürsenkel stolperte.", correct: true, cat: "sport" },
+  { text: "Ein Tennisspiel wurde unterbrochen, weil ein Vogel den Ball wegtrug.", correct: true, cat: "sport" },
+  { text: "Ein Fußballverein stellte einmal einen Hund als Maskottchen ein, der bei jedem Tor bellte.", correct: true, cat: "sport" },
+  { text: "Ein Schachspieler wurde verwarnt, weil er zu laut mit sich selbst redete.", correct: true, cat: "sport" },
+  { text: "Ein Radfahrer gewann ein Rennen, weil der Favorit anhielt, um ein Selfie zu machen.", correct: true, cat: "sport" },
+  { text: "Ein Schwimmer wurde disqualifiziert, weil er zu früh ins Wasser sprang, um es zu testen.", correct: true, cat: "sport" },
+  { text: "Ein Fußballspieler wurde gefeiert, weil er ein Tor mit dem Rücken erzielte.", correct: true, cat: "sport" },
+  { text: "Ein Läufer gewann ein 100‑Meter‑Rennen, obwohl er beim Start stolperte.", correct: true, cat: "sport" },
+  { text: "Ein Rugbyspieler wurde berühmt, weil er einen Gegner versehentlich umarmte.", correct: true, cat: "sport" },
+  { text: "Ein Volleyballspiel wurde unterbrochen, weil ein Ballon aufs Feld flog.", correct: true, cat: "sport" },
+  { text: "Ein Fußballtrainer wurde verwarnt, weil er während des Spiels tanzte.", correct: true, cat: "sport" },
+  { text: "Ein Skifahrer gewann ein Rennen, obwohl er kurz stehen blieb, um seine Brille zu richten.", correct: true, cat: "sport" },
+  { text: "Ein Basketballspieler traf einen Korb, während er rückwärts lief.", correct: true, cat: "sport" },
+  { text: "Ein Tennisspieler gewann einen Punkt, weil der Gegner über die eigene Schnur stolperte.", correct: true, cat: "sport" },
+  { text: "Ein Fußballspiel wurde unterbrochen, weil ein Fan als Schiedsrichter verkleidet aufs Feld lief.", correct: true, cat: "sport" },
+  { text: "Ein Golfer traf einen Ball so schlecht, dass er trotzdem ein Hole‑in‑One erzielte.", correct: true, cat: "sport" },
+  { text: "Ein Boxer gewann einen Kampf, weil der Gegner seinen Handschuh verlor.", correct: true, cat: "sport" },
+
+  /* ======== FALSCH (25) ======== */
+
+  { text: "Der schnellste Tennisschlag der Welt wurde von einem Pferd ausgeführt.", correct: false, cat: "sport" },
+  { text: "Ein Fußballtorwart wurde ausgewechselt, weil er zu freundlich zu den Gegnern war.", correct: false, cat: "sport" },
+  { text: "Ein Eishockeyteam verlor ein Spiel, weil alle Spieler gleichzeitig einschliefen.", correct: false, cat: "sport" },
+  { text: "Ein Marathon wurde einmal rückwärts gelaufen, weil die Strecke falsch markiert war.", correct: false, cat: "sport" },
+  { text: "Ein Schiedsrichter pfiff ein Spiel ab, weil er Angst vor dem Ball hatte.", correct: false, cat: "sport" },
+  { text: "Ein Fußballspieler wurde verwarnt, weil er zu laut jubelte.", correct: false, cat: "sport" },
+  { text: "Ein Basketballspiel wurde abgesagt, weil der Ball zu rund war.", correct: false, cat: "sport" },
+  { text: "Ein Boxer verlor einen Kampf, weil er seinen Gegner aus Versehen umarmte.", correct: false, cat: "sport" },
+  { text: "Ein Tennisspiel wurde abgebrochen, weil der Schiedsrichter seinen Stuhl verlor.", correct: false, cat: "sport" },
+  { text: "Ein Fußballtrainer wurde entlassen, weil er zu oft lächelte.", correct: false, cat: "sport" },
+  { text: "Ein Schwimmer wurde disqualifiziert, weil er zu schnell war.", correct: false, cat: "sport" },
+  { text: "Ein Radfahrer wurde verwarnt, weil sein Fahrrad zu glücklich aussah.", correct: false, cat: "sport" },
+  { text: "Ein Rugbyspiel wurde abgesagt, weil der Rasen zu weich war.", correct: false, cat: "sport" },
+  { text: "Ein Volleyballteam verlor, weil die Spieler zu synchron sprangen.", correct: false, cat: "sport" },
+  { text: "Ein Fußballspiel wurde unterbrochen, weil der Ball sich weigerte zu rollen.", correct: false, cat: "sport" },
+  { text: "Ein Skifahrer wurde disqualifiziert, weil er zu elegant fuhr.", correct: false, cat: "sport" },
+  { text: "Ein Basketballspieler wurde verwarnt, weil er zu schön dribbelte.", correct: false, cat: "sport" },
+  { text: "Ein Tennisspieler verlor, weil sein Schläger zu höflich war.", correct: false, cat: "sport" },
+  { text: "Ein Golfer wurde bestraft, weil er den Ball zu freundlich anschaute.", correct: false, cat: "sport" },
+  { text: "Ein Boxer wurde disqualifiziert, weil er zu rhythmisch atmete.", correct: false, cat: "sport" },
+  { text: "Ein Fußballspieler wurde verwarnt, weil seine Schuhe zu laut waren.", correct: false, cat: "sport" },
+  { text: "Ein Eishockeyspieler wurde bestraft, weil sein Helm zu glänzend war.", correct: false, cat: "sport" },
+  { text: "Ein Läufer verlor ein Rennen, weil seine Socken zu bunt waren.", correct: false, cat: "sport" },
+  { text: "Ein Schiedsrichter wurde ersetzt, weil er zu gut pfeifen konnte.", correct: false, cat: "sport" },
+  { text: "Ein Fußballspiel wurde abgesagt, weil der Rasen zu grün war.", correct: false, cat: "sport" },
+
+
+  /* ============================
+     RICHTIG (25)
+  ============================ */
+
+  { text: "In Schweden gab es eine Partei, die nur für mehr Feiertage kämpfte.", correct: true, cat: "politik" },
+  { text: "Ein Dorf in Italien wählte eine Katze zum offiziellen Sicherheitschef.", correct: true, cat: "politik" },
+  { text: "Ein Politiker gewann eine Wahl, weil er ein Lama als Wahlkampfmaskottchen hatte.", correct: true, cat: "politik" },
+  { text: "Ein Bürgermeister in Kanada führte eine Woche lang nur Emoji-Kommunikation ein.", correct: true, cat: "politik" },
+  { text: "Ein Stadtrat in den USA beschloss, dass Bürger einmal pro Woche tanzen sollen.", correct: true, cat: "politik" },
+  { text: "Ein Politiker wurde berühmt, weil er jede Rede mit einem Zaubertrick beendete.", correct: true, cat: "politik" },
+  { text: "Ein Dorf in England ernannte einen Hund zum offiziellen Postboten.", correct: true, cat: "politik" },
+  { text: "Ein Bürgermeister führte eine Pflicht ein, jeden Freitag mindestens einmal zu lächeln.", correct: true, cat: "politik" },
+  { text: "Ein Politiker hielt eine Rede, die komplett aus Essensmetaphern bestand.", correct: true, cat: "politik" },
+  { text: "Ein Stadtrat in Australien diskutierte ernsthaft über ein Gesetz gegen langweilige Straßennamen.", correct: true, cat: "politik" },
+  { text: "Ein Bürgermeister in Brasilien versprach, jeden Bürger einmal persönlich zu umarmen.", correct: true, cat: "politik" },
+  { text: "Ein Politiker gewann eine Wahl, weil er jeden Tag ein anderes Kostüm trug.", correct: true, cat: "politik" },
+  { text: "Ein Dorf in Norwegen hat einen offiziellen 'Tag des Nichtstuns'.", correct: true, cat: "politik" },
+  { text: "Ein Bürgermeister führte ein Gesetz ein, das das Pfeifen nach 20 Uhr verbietet.", correct: true, cat: "politik" },
+  { text: "Ein Politiker versprach, alle Ampeln durch Disco-Lichter zu ersetzen.", correct: true, cat: "politik" },
+  { text: "Ein Stadtrat in Kanada diskutierte über eine Steuer auf schlechte Witze.", correct: true, cat: "politik" },
+  { text: "Ein Bürgermeister führte eine tägliche 5‑Minuten‑Pause zum gemeinsamen Singen ein.", correct: true, cat: "politik" },
+  { text: "Ein Politiker versprach, jeden Montag als 'Tag der Überraschung' einzuführen.", correct: true, cat: "politik" },
+  { text: "Ein Dorf in Spanien hat ein Gesetz, das das Werfen von Brot verbietet.", correct: true, cat: "politik" },
+  { text: "Ein Bürgermeister in Finnland führte eine Pflicht ein, jeden Morgen einen Witz zu erzählen.", correct: true, cat: "politik" },
+  { text: "Ein Politiker wurde berühmt, weil er jede Rede mit einem Gedicht über Kartoffeln begann.", correct: true, cat: "politik" },
+  { text: "Ein Stadtrat in Frankreich diskutierte über ein Gesetz gegen zu lautes Kauen.", correct: true, cat: "politik" },
+  { text: "Ein Bürgermeister versprach, alle Parkbänke mit Kissen auszustatten.", correct: true, cat: "politik" },
+  { text: "Ein Politiker führte eine Regel ein, dass alle Sitzungen mit Applaus beginnen müssen.", correct: true, cat: "politik" },
+  { text: "Ein Dorf in Österreich hat einen offiziellen 'Tag der verlorenen Socken'.", correct: true, cat: "politik" },
+
+  /* ============================
+     FALSCH (25)
+  ============================ */
+
+  { text: "Ein Politiker wurde gewählt, weil sein Name identisch mit einer beliebten Pizza war.", correct: false, cat: "politik" },
+  { text: "Ein Land plante eine Steuer auf Wolken, die zu langsam ziehen.", correct: false, cat: "politik" },
+  { text: "Ein Bürgermeister verbot Regen, weil er seine Frisur schützen wollte.", correct: false, cat: "politik" },
+  { text: "Ein Stadtrat beschloss, dass alle Ampeln montags blau leuchten sollen.", correct: false, cat: "politik" },
+  { text: "Ein Politiker hielt eine Rede, die komplett aus Tiergeräuschen bestand.", correct: false, cat: "politik" },
+  { text: "Ein Dorf verbot das Wort 'Kartoffel', weil es den Bürgermeister nervte.", correct: false, cat: "politik" },
+  { text: "Ein Land führte eine Pflicht ein, jeden Tag mindestens einmal zu schreien.", correct: false, cat: "politik" },
+  { text: "Ein Politiker wurde entlassen, weil er zu oft lächelte.", correct: false, cat: "politik" },
+  { text: "Ein Bürgermeister führte ein Gesetz ein, das das Atmen im Rathaus einschränkt.", correct: false, cat: "politik" },
+  { text: "Ein Stadtrat verbot das Tragen von Schuhen an Dienstagen.", correct: false, cat: "politik" },
+  { text: "Ein Politiker versprach, alle Straßen nach Obstsorten zu benennen.", correct: false, cat: "politik" },
+  { text: "Ein Dorf führte eine Steuer auf zu lautes Denken ein.", correct: false, cat: "politik" },
+  { text: "Ein Bürgermeister verbot das Wort 'Hallo', weil es zu freundlich sei.", correct: false, cat: "politik" },
+  { text: "Ein Land führte eine Pflicht ein, jeden Morgen ein Gedicht zu schreien.", correct: false, cat: "politik" },
+  { text: "Ein Politiker versprach, alle Gebäude pink zu streichen.", correct: false, cat: "politik" },
+  { text: "Ein Stadtrat verbot das Sitzen auf Stühlen, die älter als 5 Jahre sind.", correct: false, cat: "politik" },
+  { text: "Ein Bürgermeister führte ein Gesetz ein, das das Lächeln nach 18 Uhr verbietet.", correct: false, cat: "politik" },
+  { text: "Ein Politiker versprach, alle Bürger mit einem eigenen Pony auszustatten.", correct: false, cat: "politik" },
+  { text: "Ein Dorf verbot das Tragen von Hüten an windigen Tagen.", correct: false, cat: "politik" },
+  { text: "Ein Bürgermeister führte eine Pflicht ein, jeden Mittwoch rückwärts zu gehen.", correct: false, cat: "politik" },
+  { text: "Ein Politiker versprach, alle Ampeln durch Duftlampen zu ersetzen.", correct: false, cat: "politik" },
+  { text: "Ein Stadtrat verbot das Essen von Nudeln ohne Genehmigung.", correct: false, cat: "politik" },
+  { text: "Ein Bürgermeister führte ein Gesetz ein, das das Singen im Schlaf verbietet.", correct: false, cat: "politik" },
+  { text: "Ein Politiker versprach, alle Bürger mit einem persönlichen Regenbogen auszustatten.", correct: false, cat: "politik" },
+  { text: "Ein Dorf verbot das Wort 'Wolke', weil es zu traurig klingt.", correct: false, cat: "politik" },
+
+  /* ============================
+     RICHTIG (25)
+  ============================ */
+
+  { text: "Ein Unternehmen verkaufte Luft aus den Alpen in Dosen für 20€.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Start‑up wollte 2015 Stille als Download verkaufen.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Restaurant verkaufte Wasser, das angeblich aus einer Wolke stammt.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Café in Korea berechnet extra, wenn man zu lange am Handy ist.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Unternehmen verkaufte unsichtbare Kunstwerke für über 10.000€.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Laden bot Rabatte an, wenn man beim Bezahlen ein Lied singt.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Supermarkt führte eine Schlange ein, die nur für Leute mit guter Laune gedacht war.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Hersteller verkaufte Schuhe, die angeblich die Stimmung verbessern.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Unternehmen bot ein Abo für täglich motivierende Sprachnachrichten an.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Start‑up verkaufte Eiswürfel mit eingebauten LEDs.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Geschäft bot eine Garantie auf Glück für 30 Tage an.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Unternehmen verkaufte Kissen, die angeblich gegen schlechte Laune helfen.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Laden bot eine 'Schrei‑Kabine' für gestresste Kunden an.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Start‑up verkaufte Pflanzen, die Musik spielen, wenn man sie berührt.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Unternehmen bot ein Abo für täglich neue Ausreden an.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Café verkaufte Kaffee, der nach verschiedenen Emotionen schmeckt.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Unternehmen bot eine Versicherung gegen Peinlichkeiten an.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Laden verkaufte T-Shirts, die ihre Farbe je nach Stimmung ändern.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Start‑up bot ein Abo für wöchentliche Komplimente an.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Unternehmen verkaufte 'Premium-Luft' aus berühmten Städten.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Restaurant bot ein Menü an, das komplett aus unsichtbaren Gerichten bestand.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Geschäft verkaufte Steine mit angeblich beruhigender Energie.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Unternehmen bot eine App an, die zufällige Lobeshymnen generiert.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Start‑up verkaufte 'Anti-Stress-Luftballons', die nie platzen.", correct: true, cat: "wirtschaft" },
+  { text: "Ein Laden bot eine Mitgliedschaft an, die nur aus exklusiven Grüßen besteht.", correct: true, cat: "wirtschaft" },
+
+
+  /* ============================
+     RICHTIG (25)
+  ============================ */
+
+  { text: "Ein Musiker veröffentlichte ein Album, das komplett aus Stille besteht.", correct: true, cat: "musik" },
+  { text: "Ein DJ legte einmal 3 Stunden lang nur Vogelgeräusche auf.", correct: true, cat: "musik" },
+  { text: "Eine Band spielte ein Konzert, bei dem alle Instrumente aus Gemüse bestanden.", correct: true, cat: "musik" },
+  { text: "Ein Song wurde berühmt, obwohl er nur aus einem einzigen Ton bestand.", correct: true, cat: "musik" },
+  { text: "Ein Musiker trat auf, ohne ein einziges Instrument – er spielte nur imaginäre Musik.", correct: true, cat: "musik" },
+  { text: "Ein Rapper veröffentlichte einen Track, der nur aus Tiernamen besteht.", correct: true, cat: "musik" },
+  { text: "Ein Orchester spielte ein Stück, bei dem die Musiker nur schlafen sollten.", correct: true, cat: "musik" },
+  { text: "Ein Sänger wurde berühmt, weil er jedes Konzert mit einem Schrei begann.", correct: true, cat: "musik" },
+  { text: "Ein Musiker trat auf, während er die ganze Zeit rückwärts ging.", correct: true, cat: "musik" },
+  { text: "Ein Song wurde viral, obwohl er nur aus einem einzigen Wort bestand.", correct: true, cat: "musik" },
+  { text: "Ein DJ spielte ein Set, bei dem jeder Track exakt 10 Sekunden lang war.", correct: true, cat: "musik" },
+  { text: "Eine Band trat auf, während sie komplett in Schlafsäcken steckte.", correct: true, cat: "musik" },
+  { text: "Ein Sänger performte ein Lied, während er auf einem Einrad fuhr.", correct: true, cat: "musik" },
+  { text: "Ein Musiker spielte ein Konzert nur mit Alltagsgegenständen wie Töpfen und Besen.", correct: true, cat: "musik" },
+  { text: "Ein Song wurde berühmt, obwohl er komplett aus Tiergeräuschen bestand.", correct: true, cat: "musik" },
+  { text: "Ein Orchester spielte ein Stück, das nur aus Pausen bestand.", correct: true, cat: "musik" },
+  { text: "Ein Musiker trat auf, während er die ganze Zeit im Kreis lief.", correct: true, cat: "musik" },
+  { text: "Ein DJ spielte ein Set, das ausschließlich aus Klingeltönen bestand.", correct: true, cat: "musik" },
+  { text: "Ein Sänger performte ein Lied, während er die ganze Zeit flüsterte.", correct: true, cat: "musik" },
+  { text: "Ein Song wurde berühmt, obwohl er nur aus einem Countdown bestand.", correct: true, cat: "musik" },
+  { text: "Eine Band trat auf, während sie komplett in Pappkartons steckte.", correct: true, cat: "musik" },
+  { text: "Ein Musiker spielte ein Konzert nur mit Wasserflaschen als Instrumenten.", correct: true, cat: "musik" },
+  { text: "Ein DJ legte ein Set auf, das nur aus rückwärts abgespielten Songs bestand.", correct: true, cat: "musik" },
+  { text: "Ein Sänger performte ein Lied, während er die ganze Zeit auf einem Bein stand.", correct: true, cat: "musik" },
+  { text: "Ein Song wurde berühmt, obwohl er komplett aus zufälligen Geräuschen bestand.", correct: true, cat: "musik" },
+
+  /* ============================
+     FALSCH (25)
+  ============================ */
+
+  { text: "Ein Musiker veröffentlichte ein Album, das nur aus dem Geräusch eines Toasters besteht.", correct: false, cat: "musik" },
+  { text: "Ein DJ spielte ein Set, das ausschließlich aus Stille bestand.", correct: false, cat: "musik" },
+  { text: "Eine Band trat auf, während sie komplett unsichtbar war.", correct: false, cat: "musik" },
+  { text: "Ein Sänger performte ein Lied, das nur aus dem Wort 'Kartoffel' besteht.", correct: false, cat: "musik" },
+  { text: "Ein Orchester spielte ein Stück, bei dem alle Musiker gleichzeitig schliefen.", correct: false, cat: "musik" },
+  { text: "Ein Song wurde verboten, weil er zu sehr nach einem Staubsauger klang.", correct: false, cat: "musik" },
+  { text: "Ein DJ legte ein Set auf, das nur aus dem Geräusch von fallenden Federn bestand.", correct: false, cat: "musik" },
+  { text: "Ein Musiker trat auf, während er die ganze Zeit schwebte.", correct: false, cat: "musik" },
+  { text: "Eine Band spielte ein Konzert, bei dem alle Instrumente aus Eis bestanden.", correct: false, cat: "musik" },
+  { text: "Ein Sänger performte ein Lied, das komplett aus Zahlen besteht.", correct: false, cat: "musik" },
+  { text: "Ein Song wurde berühmt, obwohl er nur aus dem Geräusch eines Kühlschranks bestand.", correct: false, cat: "musik" },
+  { text: "Ein DJ spielte ein Set, das nur aus dem Geräusch von fallenden Blättern bestand.", correct: false, cat: "musik" },
+  { text: "Ein Musiker trat auf, während er die ganze Zeit rückwärts sprach.", correct: false, cat: "musik" },
+  { text: "Eine Band spielte ein Konzert, bei dem alle Mitglieder Helium atmeten.", correct: false, cat: "musik" },
+  { text: "Ein Sänger performte ein Lied, das nur aus dem Wort 'Nein' besteht.", correct: false, cat: "musik" },
+  { text: "Ein Song wurde verboten, weil er zu sehr nach einem Wasserkocher klang.", correct: false, cat: "musik" },
+  { text: "Ein DJ legte ein Set auf, das nur aus dem Geräusch von fallenden Steinen bestand.", correct: false, cat: "musik" },
+  { text: "Ein Musiker trat auf, während er die ganze Zeit im Dunkeln stand.", correct: false, cat: "musik" },
+  { text: "Eine Band spielte ein Konzert, bei dem alle Instrumente aus Papier bestanden.", correct: false, cat: "musik" },
+  { text: "Ein Sänger performte ein Lied, das nur aus dem Wort 'Vielleicht' besteht.", correct: false, cat: "musik" },
+  { text: "Ein Song wurde berühmt, obwohl er nur aus dem Geräusch eines Autos besteht.", correct: false, cat: "musik" },
+  { text: "Ein DJ spielte ein Set, das nur aus dem Geräusch von fallenden Münzen bestand.", correct: false, cat: "musik" },
+  { text: "Ein Musiker trat auf, während er die ganze Zeit auf einem Tisch stand.", correct: false, cat: "musik" },
+  { text: "Eine Band spielte ein Konzert, bei dem alle Mitglieder nur flüsterten.", correct: false, cat: "musik" },
+  { text: "Ein Sänger performte ein Lied, das nur aus dem Wort 'Okay' besteht.", correct: false, cat: "musik" },
+
+  /* ============================
+     FALSCH (25)
+  ============================ */
+
+  { text: "Ein Konzern verlor Millionen, weil ein Praktikant alle Preise auf 1€ setzte.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Unternehmen stellte Schuhe her, die nur funktionieren, wenn man laut 'Los!' ruft.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Hersteller brachte eine Tastatur mit nur der Taste 'LOL' heraus.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Café verlangte Gebühren für zu lautes Atmen.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Unternehmen verkaufte Wasser, das angeblich aus einem Regenbogen stammt.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Laden bot Rabatte an, wenn man beim Bezahlen rückwärts spricht.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Start‑up verkaufte Lampen, die nur funktionieren, wenn man sie anschreit.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Unternehmen bot eine Versicherung gegen schlechte Frisuren an.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Restaurant verkaufte Pizza, die nur sichtbar ist, wenn man glücklich ist.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Geschäft verkaufte unsichtbare Schuhe für 500€.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Unternehmen bot ein Abo für tägliche Beleidigungen an.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Start‑up verkaufte Pflanzen, die nur wachsen, wenn man sie ignoriert.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Laden bot eine Mitgliedschaft an, die nur aus monatlichen Entschuldigungen besteht.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Unternehmen verkaufte Stifte, die nur auf montags funktionieren.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Café bot Kaffee an, der nur schmeckt, wenn man ihn nicht trinkt.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Start‑up verkaufte Kaugummi, der angeblich die Zukunft vorhersagt.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Unternehmen bot eine App an, die zufällige Steuererhöhungen simuliert.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Laden verkaufte Socken, die nur passen, wenn man rennt.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Restaurant bot ein Menü an, das nur aus Geräuschen besteht.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Unternehmen verkaufte 'Premium-Stille', die man nicht hören darf.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Geschäft bot Rabatte an, wenn man beim Bezahlen weint.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Start‑up verkaufte Luftballons, die nur schweben, wenn man sie lobt.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Unternehmen bot eine Versicherung gegen schlechte Laune an.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Laden verkaufte T-Shirts, die nur sichtbar sind, wenn man schläft.", correct: false, cat: "wirtschaft" },
+  { text: "Ein Restaurant bot unsichtbare Bestecke für 100€ an.", correct: false, cat: "wirtschaft" },
+
+
+  /* ============================
+     RICHTIG (25)
+  ============================ */
+
+  { text: "In einer frühen Fassung von Star Wars sollte Yoda eigentlich ein Affe mit Maske sein.", correct: true, cat: "filme und serien" },
+  { text: "Der Schauspieler von Mr. Bean spricht im echten Leben fließend mehrere Sprachen.", correct: true, cat: "filme und serien" },
+  { text: "In einer Simpsons-Folge wurde ein echter mathematischer Fehler entdeckt, der später korrigiert wurde.", correct: true, cat: "filme und serien" },
+  { text: "Der erste Horrorfilm der Welt dauerte nur drei Minuten.", correct: true, cat: "filme und serien" },
+  { text: "In einer Szene von Harry Potter sieht man im Hintergrund einen Crew-Mitglied mit Jeans.", correct: true, cat: "filme und serien" },
+  { text: "Der Schauspieler von Darth Vader und die Stimme von Darth Vader sind zwei verschiedene Personen.", correct: true, cat: "filme und serien" },
+  { text: "In einer Episode von Friends wurde ein echter Lachanfall der Schauspieler nicht herausgeschnitten.", correct: true, cat: "filme und serien" },
+  { text: "Der erste Animationsfilm der Welt wurde 1908 veröffentlicht.", correct: true, cat: "filme und serien" },
+  { text: "In Titanic sieht man kurz einen Mann, der eigentlich gar nicht im Drehbuch stand.", correct: true, cat: "filme und serien" },
+  { text: "In Breaking Bad wurden echte Chemiker konsultiert, um die Labor-Szenen realistischer zu machen.", correct: true, cat: "filme und serien" },
+  { text: "Der Schauspieler von Gollum musste für Motion Capture über 200 Stunden in einem engen Anzug verbringen.", correct: true, cat: "filme und serien" },
+  { text: "In Stranger Things wurden echte 80er-Jahre Spielzeuge verwendet.", correct: true, cat: "filme und serien" },
+  { text: "Der erste James-Bond-Darsteller war nicht Sean Connery, sondern ein Schauspieler in einer TV-Produktion.", correct: true, cat: "filme und serien" },
+  { text: "In einer Szene von Avengers sieht man einen Crew-Mitarbeiter im Spiegel.", correct: true, cat: "filme und serien" },
+  { text: "Der Schauspieler von Wolverine musste sich für die Rolle extrem dehydrieren, um definierter auszusehen.", correct: true, cat: "filme und serien" },
+  { text: "In einer Episode von Game of Thrones sieht man eine moderne Wasserflasche im Hintergrund.", correct: true, cat: "filme und serien" },
+  { text: "Der erste Film mit Ton wurde 1927 veröffentlicht.", correct: true, cat: "filme und serien" },
+  { text: "In einer Szene von Jurassic Park sieht man einen Crew-Mitarbeiter, der den Dinosaurier animiert.", correct: true, cat: "filme und serien" },
+  { text: "Der Schauspieler von Gandalf stieß sich während der Dreharbeiten mehrmals den Kopf an der Hobbit-Dekoration.", correct: true, cat: "filme und serien" },
+  { text: "In einer Episode von The Office wurde ein echter Feueralarm ausgelöst.", correct: true, cat: "filme und serien" },
+  { text: "Der Schauspieler von Thanos trug am Set einen riesigen Pappkopf als Orientierung für andere Schauspieler.", correct: true, cat: "filme und serien" },
+  { text: "In einer Szene von Pirates of the Caribbean sieht man Johnny Depp mit einer Sonnenbrille.", correct: true, cat: "filme und serien" },
+  { text: "Der erste Film, der über 1 Milliarde Dollar einspielte, war Titanic.", correct: true, cat: "filme und serien" },
+  { text: "In Stranger Things wurde ein Monster ursprünglich als Pappmodell gebaut.", correct: true, cat: "filme und serien" },
+  { text: "In einer Episode von SpongeBob wurde ein echter Delfin als Soundeffekt verwendet.", correct: true, cat: "filme und serien" },
+
+  /* ============================
+     FALSCH (25)
+  ============================ */
+
+  { text: "In Harry Potter sollte Hagrid ursprünglich ein sprechender Baum sein.", correct: false, cat: "filme und serien" },
+  { text: "In Star Wars war geplant, dass Darth Vader ein rosa Lichtschwert bekommt.", correct: false, cat: "filme und serien" },
+  { text: "In Titanic sollte das Schiff ursprünglich fliegen können.", correct: false, cat: "filme und serien" },
+  { text: "In Breaking Bad war geplant, dass Walter White ein Superheld wird.", correct: false, cat: "filme und serien" },
+  { text: "In Stranger Things sollte Eleven ursprünglich ein sprechender Hund sein.", correct: false, cat: "filme und serien" },
+  { text: "In Game of Thrones war geplant, dass Drachen sprechen können.", correct: false, cat: "filme und serien" },
+  { text: "In Avengers sollte Iron Man ursprünglich ein Kind sein.", correct: false, cat: "filme und serien" },
+  { text: "In The Office war geplant, dass alle Charaktere Aliens sind.", correct: false, cat: "filme und serien" },
+  { text: "In Jurassic Park sollten die Dinosaurier eigentlich tanzen.", correct: false, cat: "filme und serien" },
+  { text: "In SpongeBob sollte Patrick ein echter Seestern sein, der nicht spricht.", correct: false, cat: "filme und serien" },
+  { text: "In Lord of the Rings sollte Frodo ursprünglich fliegen können.", correct: false, cat: "filme und serien" },
+  { text: "In Pirates of the Caribbean sollte Jack Sparrow ein Roboter sein.", correct: false, cat: "filme und serien" },
+  { text: "In Star Wars sollte Chewbacca ursprünglich ein sprechender Fisch sein.", correct: false, cat: "filme und serien" },
+  { text: "In Stranger Things sollte das Monster ein riesiger Pudding sein.", correct: false, cat: "filme und serien" },
+  { text: "In Harry Potter sollte Voldemort ursprünglich ein sprechender Hut sein.", correct: false, cat: "filme und serien" },
+  { text: "In Breaking Bad sollte Jesse Pinkman ein Cyborg sein.", correct: false, cat: "filme und serien" },
+  { text: "In The Office sollte Dwight ein echter Ninja sein.", correct: false, cat: "filme und serien" },
+  { text: "In Game of Thrones sollte Jon Snow ein Zeitreisender sein.", correct: false, cat: "filme und serien" },
+  { text: "In Avengers sollte Hulk ursprünglich blau sein.", correct: false, cat: "filme und serien" },
+  { text: "In Jurassic Park sollte der T‑Rex ein Haustier werden.", correct: false, cat: "filme und serien" },
+  { text: "In SpongeBob sollte Thaddäus ein echter Oktopus sein, der Geige spielt.", correct: false, cat: "filme und serien" },
+  { text: "In Lord of the Rings sollte Gandalf ein DJ sein.", correct: false, cat: "filme und serien" },
+  { text: "In Star Wars sollte Yoda ursprünglich ein sprechender Stein sein.", correct: false, cat: "filme und serien" },
+  { text: "In Stranger Things sollte die ganze Serie in einem Kühlschrank spielen.", correct: false, cat: "filme und serien" },
+  { text: "In Titanic sollte das Schiff am Ende wieder auftauchen und winken.", correct: false, cat: "filme und serien" }
+
+];
+
+/* ============================
+   SOUNDS
+============================ */
+
+const soundCorrect = new Audio("yay.mp3");
+const soundWrong = new Audio("oh.mp3");
+const soundWin = new Audio("sieg.mp3");
+
+/* ============================
+   GAME STATE
+============================ */
+
+let players = [];
+let scores = [];
+let turnOrder = [];
+let currentTurn = 0;
+let availableStatements = [];
+
+/* ============================
+   PLAYER INPUTS
+============================ */
+
+const playerNamesDiv = document.getElementById("player-names");
+const playerCountSelect = document.getElementById("player-count");
+
+function renderPlayerInputs() {
+  playerNamesDiv.innerHTML = "";
+  const count = parseInt(playerCountSelect.value);
+
+  for (let i = 0; i < count; i++) {
+    const input = document.createElement("input");
+    input.placeholder = `Spieler ${i+1}`;
+    playerNamesDiv.appendChild(input);
+  }
+}
+
+renderPlayerInputs();
+playerCountSelect.addEventListener("change", renderPlayerInputs);
+
+/* ============================
+   START GAME
+============================ */
+
+document.getElementById("start-game").addEventListener("click", () => {
+  const count = parseInt(playerCountSelect.value);
+  const rounds = parseInt(document.getElementById("round-count").value);
+  const selectedCat = categorySelect.value;
+
+  players = [];
+  scores = [];
+
+  document.querySelectorAll("#player-names input").forEach((inp, i) => {
+    players.push(inp.value || `Spieler ${i+1}`);
+    scores.push(0);
+  });
+
+  turnOrder = [];
+  for (let r = 0; r < rounds; r++) {
+    for (let t = 0; t < 3; t++) {
+      for (let p = 0; p < count; p++) {
+        turnOrder.push(p);
+      }
+    }
+  }
+
+  if (selectedCat === "zufall") {
+    availableStatements = [...statements];
+  } else {
+    availableStatements = statements.filter(s => s.cat === selectedCat);
+  }
+
+  shuffle(availableStatements);
+
+  if (availableStatements.length < turnOrder.length) {
+    alert("Nicht genug Thesen für diese Kategorie.");
+    return;
+  }
+
+  document.getElementById("start-screen").classList.add("hidden");
+  document.getElementById("game-screen").classList.remove("hidden");
+
+  nextTurn();
+});
+
+/* ============================
+   SHUFFLE
+============================ */
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+/* ============================
+   NEXT TURN
+============================ */
+
+function nextTurn() {
+  if (currentTurn >= turnOrder.length) {
+    endGame();
+    return;
+  }
+
+  const playerIndex = turnOrder[currentTurn];
+  const playerName = players[playerIndex];
+
+  document.getElementById("current-player").textContent = "Spieler: " + playerName;
+
+  const st = availableStatements[currentTurn];
+  document.getElementById("statement-card").textContent = st.text;
+
+  document.getElementById("result-banner").classList.add("hidden");
+  document.getElementById("fx-icons").innerHTML = "";
+
+  document.getElementById("btn-true").onclick = () => answer(true, playerIndex, st);
+  document.getElementById("btn-false").onclick = () => answer(false, playerIndex, st);
+
+  renderScoreboard();
+}
+
+/* ============================
+   ANSWER
+============================ */
+
+function answer(ans, playerIndex, st) {
+  const correct = ans === st.correct;
+
+  const banner = document.getElementById("result-banner");
+  const fx = document.getElementById("fx-icons");
+
+  banner.classList.remove("hidden");
+
+  if (correct) {
+    scores[playerIndex]++;
+    banner.textContent = "Richtig!";
+    fx.innerHTML = "✔️✔️✔️";
+    soundCorrect.play();
+  } else {
+    banner.textContent = "Falsch!";
+    fx.innerHTML = "❌❌❌";
+    soundWrong.play();
+  }
+
+  renderScoreboard();
+
+  setTimeout(() => {
+    currentTurn++;
+    nextTurn();
+  }, 1200);
+}
+
+/* ============================
+   SCOREBOARD
+============================ */
+
+function renderScoreboard() {
+  let html = "<h3>Punkte:</h3>";
+  html += "<ul>";
+
+  players.forEach((p, i) => {
+    html += `<li>${p}: ${scores[i]} Punkte</li>`;
+  });
+
+  html += "</ul>";
+  document.getElementById("scoreboard").innerHTML = html;
+}
+
+/* ============================
+   END GAME
+============================ */
+
+document.getElementById("end-game").addEventListener("click", endGame);
+
+function endGame() {
+  const max = Math.max(...scores);
+  const winners = players.filter((p, i) => scores[i] === max);
+
+  document.getElementById("game-screen").classList.add("hidden");
+  document.getElementById("end-screen").classList.remove("hidden");
+
+  document.getElementById("final-winner").textContent =
+    winners.length === 1
+      ? `Gewinner: ${winners[0]} (${max} Punkte)`
+      : `Unentschieden: ${winners.join(", ")} (${max} Punkte)`;
+
+  let html = "<h3>Endstand:</h3><ul>";
+  players.forEach((p, i) => {
+    html += `<li>${p}: ${scores[i]} Punkte</li>`;
+  });
+  html += "</ul>";
+
+  document.getElementById("final-scoreboard").innerHTML = html;
+
+  soundWin.play();
+  spawnConfetti(80);
+}
+
+/* ============================
+   CONFETTI
+============================ */
+
+function spawnConfetti(count) {
+  const container = document.getElementById("confetti");
+  container.innerHTML = "";
+
+  for (let i = 0; i < count; i++) {
+    const piece = document.createElement("div");
+    piece.className = "confetti-piece";
+    piece.style.left = Math.random()*100 + "vw";
+    piece.style.animationDelay = Math.random()*1 + "s";
+    container.appendChild(piece);
+  }
+
+  setTimeout(() => container.innerHTML = "", 3000);
+}
+
+/* ============================
+   RESTART
+============================ */
+
+document.getElementById("restart-game").addEventListener("click", () => {
+  scores = scores.map(() => 0);
+  currentTurn = 0;
+
+  shuffle(availableStatements);
+
+  document.getElementById("end-screen").classList.add("hidden");
+  document.getElementById("game-screen").classList.remove("hidden");
+
+  nextTurn();
+});
+</script>
+
+</body>
+<footer>
+  <a href="agb.html">AGB</a> |
+  <a href="datenschutz.html">Datenschutz</a> |
+  <a href="cookies.html">Cookies</a>
+</footer>
+</html>
