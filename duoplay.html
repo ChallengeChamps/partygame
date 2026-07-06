@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Spielrunde</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('10von10.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+  margin-top: 40px;
+  animation: fadeIn 1s ease;
+}
+
+h1, h2 {
+  text-align: center;
+  text-shadow: 2px 2px 6px #000;
+  font-size: 2rem;
+}
+
+select, input, button {
+  width: 100%;
+  padding: 16px;
+  margin: 14px 0;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.2rem;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #ff4081;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #e91e63;
+}
+
+.card {
+  background: #fff;
+  color: #000;
+  border-radius: 20px;
+  padding: 24px;
+  margin: 24px 0;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  animation: slideUp 0.8s ease;
+  font-size: 1.2rem;
+}
+
+.options button {
+  margin: 10px 5px;
+  background-color: #673ab7;
+  font-size: 1.1rem;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.menu-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 28px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.menu-button:hover {
+  background-color: #45a049;
+}
+
+/* 📱 Mobile Optimierung */
+@media (max-width: 600px) {
+  .container {
+    margin: 12px;
+    padding: 24px;
+  }
+
+  h1, h2 {
+    font-size: 2.4rem;
+  }
+
+  select, input, button, .menu-button {
+    padding: 22px;
+    font-size: 1.6rem;
+  }
+
+  .card {
+    padding: 28px;
+    font-size: 1.5rem;
+  }
+
+  .options button {
+    font-size: 1.5rem;
+    padding: 20px;
+  }
+}
+  </style>
+</head>
+<body>
+
+  <!-- Startscreen -->
+  <div class="container" id="startScreen">
+    <h1>Spiel starten</h1>
+
+    <label for="playerCount">Anzahl der Spieler (3–10):</label>
+    <select id="playerCount">
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+
+    <!-- Premium Kategorien -->
+    <label>Kategorie:</label>
+    <select id="themeSelect"></select>
+
+    <div id="premiumWarning" style="color:#ff8080; display:none;">
+      🔒 Premium Kategorie – Bitte Premium aktivieren!
+    </div>
+
+    <div id="nameInputs"></div>
+
+    <button onclick="generateInputs()">Namen eingeben</button>
+    <button onclick="startGame()">Spiel starten</button>
+    <a href="startseite.html"><button class="menu-button">Zurück zum Hauptmenü</button></a>
+  </div>
+
+  <!-- Spielbereich -->
+  <div class="container hidden" id="gameArea">
+
+    <!-- Wer mit wem -->
+    <div id="pairingCard" class="card hidden"></div>
+
+    <!-- Kartencontainer -->
+    <div id="cardContainer" class="card hidden">
+      <button onclick="revealCard()" id="revealBtn">Karte aufdecken</button>
+      <div id="scenarioText" class="hidden"></div>
+    </div>
+
+    <!-- Optionen -->
+    <div class="options">
+      <button onclick="nextRound()">Nächste Runde</button>
+      <button onclick="endGame()">Spiel beenden</button>
+    </div>
+  </div>
+
+<script>
+  let playerNames = [];
+  let usedScenarios = [];
+  let selectedTheme = "random";
+
+  const hasPremium = localStorage.getItem("premium") === "true";
+
+  const themeSelect = document.getElementById("themeSelect");
+
+  function loadThemes() {
+    themeSelect.innerHTML = "";
+
+    const free = document.createElement("option");
+    free.value = "random";
+    free.textContent = "Zufall";
+    themeSelect.appendChild(free);
+
+    const premiumCats = ["sport", "politik", "wirtschaft", "musik", "geschichte", "filme"];
+
+    premiumCats.forEach(cat => {
+      const opt = document.createElement("option");
+      opt.value = cat;
+
+      if (hasPremium) {
+        opt.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        opt.disabled = false;
+      } else {
+        opt.textContent = cat.charAt(0).toUpperCase() + cat.slice(1) + " (Premium 💎)";
+        opt.disabled = true;
+      }
+
+      themeSelect.appendChild(opt);
+    });
+  }
+
+  loadThemes();
+
+  themeSelect.addEventListener("change", () => {
+    selectedTheme = themeSelect.value;
+
+    if (!hasPremium && selectedTheme !== "random") {
+      document.getElementById("premiumWarning").style.display = "block";
+    } else {
+      document.getElementById("premiumWarning").style.display = "none";
+    }
+  });
+
+  const themes = {
+    random: [
+"Ein Basketballer versucht einem Tennisspieler das Dribbeln beizubringen.",
+"Ein Läufer und ein Gewichtheber vergleichen ihre Schuhe.",
+"Ein Golfer zeigt einem Schwimmer seinen Golfschwung.",
+"Ein Boxer und ein Radfahrer testen ihre Handschuhe.",
+"Ein Eishockeyspieler erklärt einem Fußballer seine Schutzkleidung.",
+"Ein Surfer und ein Skifahrer reden über Balance.",
+"Ein Tischtennisspieler zeigt einem Turner seinen Schläger.",
+"Ein Volleyballer und ein Fechter tauschen ihre Ausrüstung.",
+"Ein Badmintonspieler erklärt einem Ringer den Federball.",
+"Ein Skateboarder zeigt einem Basketballer sein Board.",
+"Ein Reiter und ein Läufer vergleichen ihre Haltung.",
+"Ein Rugbyspieler erklärt einem Tennisspieler seinen Ball.",
+"Ein Karateka und ein Schwimmer üben eine einfache Pose.",
+"Ein Handballer zeigt einem Golfer seinen Wurf.",
+"Ein Bogenschütze und ein Boxer testen ihre Standposition.",
+"Ein Marathonläufer erklärt einem Skater seine Trinkflasche.",
+"Ein Snowboarder zeigt einem Fußballer seine Bindungen.",
+"Ein Tischkicker-Spieler erklärt einem echten Fußballer seine Taktik.",
+"Ein Dartspieler und ein Basketballer vergleichen ihre Würfe.",
+"Ein Schiedsrichter zeigt einem Boxer seine gelbe Karte.",
+"Ein Politiker hält einem Polizisten eine große Karte hin.",
+"Ein Bürgermeister zeigt einem Bauarbeiter ein Megafon.",
+"Ein Diplomat gibt einem Reporter einen übergroßen Stempel.",
+"Ein Redner zeigt einem Kellner ein Mikrofon.",
+"Ein Wahlhelfer reicht einem Feuerwehrmann einen Umschlag.",
+"Ein Politiker zeigt einem Fotografen eine Flagge.",
+"Ein Richter hält einem Musiker seine Robe hin.",
+"Ein Stadtrat zeigt einem Taxifahrer einen Stadtplan.",
+"Ein Sprecher gibt einem Sportler eine Notizkarte.",
+"Ein Botschafter zeigt einem Lehrer einen kleinen Globus.",
+"Ein Politiker hält einem Clown eine Wahlurne hin.",
+"Ein Diplomat zeigt einem Bäcker eine Mappe.",
+"Ein Bürgermeister gibt einem Turner ein Namensschild.",
+"Ein Wahlleiter zeigt einem Mechaniker einen Stimmzettel.",
+"Ein Sprecher hält einem Tänzer ein Mikrofon ohne Kabel hin.",
+"Ein Politiker zeigt einem Postboten einen großen Stempel.",
+"Ein Richter gibt einem Schwimmer eine Karte der Stadt.",
+"Ein Diplomat zeigt einem Golfer eine Mini‑Flagge.",
+"Ein Bürgermeister hält einem Künstler eine leere Mappe hin.",
+"Ein Wahlhelfer zeigt einem Radfahrer einen Umschlag.",
+"Ein Banker zeigt einem Bäcker einen großen Geldschein.",
+"Ein Verkäufer hält einem Mechaniker eine Einkaufstasche hin.",
+"Ein Chef zeigt einem Kellner eine To‑Do‑Liste.",
+"Ein Händler gibt einem Bauarbeiter eine Kiste.",
+"Ein Kassierer zeigt einem Lehrer eine Quittung.",
+"Ein Unternehmer hält einem Sportler einen Laptop hin.",
+"Ein Buchhalter zeigt einem Koch einen Taschenrechner.",
+"Ein Lieferant gibt einem Musiker ein Paket.",
+"Ein Marktstand‑Besitzer zeigt einem Polizisten einen Apfel.",
+"Ein Büroangestellter hält einem Gärtner eine Mappe hin.",
+"Ein Verkäufer zeigt einem Taxifahrer ein Preisschild.",
+"Ein Banker gibt einem Feuerwehrmann eine Münze.",
+"Ein Chef zeigt einem Tänzer eine Uhr.",
+"Ein Händler hält einem Schwimmer eine Einkaufsliste hin.",
+"Ein Kassierer zeigt einem Künstler eine Kasse.",
+"Ein Unternehmer gibt einem Turner einen Vertrag.",
+"Ein Buchhalter zeigt einem Clown eine Tabelle.",
+"Ein Lieferant hält einem Golfer ein Paket hin.",
+"Ein Büroangestellter zeigt einem Reiter einen Stift.",
+"Ein Verkäufer gibt einem Radfahrer eine Tüte.",
+"Ein Sänger hält einem Gitarristen ein Mikrofon wie eine Banane hin.",
+"Ein DJ versucht einem Trommler Kopfhörer aufzusetzen, die viel zu groß sind.",
+"Ein Pianist zeigt einem Tänzer eine Taste, die er wie ein Knopf drückt.",
+"Ein Rapper gibt einem Geiger einen Beat vor, den er mit den Armen übertreibt.",
+"Ein Schlagzeuger zeigt einem Sänger seine Sticks wie Zauberstäbe.",
+"Ein Gitarrist hält einem Saxophonisten seine Gitarre wie ein Baby hin.",
+"Ein DJ zeigt einem Trompeter seinen Mixer, der ausgeschaltet ist.",
+"Ein Musiker gibt einem Fotografen eine CD, die er wie eine Frisbee wirft.",
+"Ein Sänger zeigt einem Sportler eine Notenkarte, die er falsch herum hält.",
+"Ein Pianist hält einem Kellner eine Klangschale wie ein Suppenteller hin.",
+"Ein Trommler zeigt einem Clown seinen Trommelwirbel mit übertriebenen Bewegungen.",
+"Ein Gitarrist gibt einem Bauarbeiter ein winziges Plektrum.",
+"Ein DJ zeigt einem Lehrer eine Playlist, die nur aus einem Lied besteht.",
+"Ein Rapper hält einem Polizisten ein Mikrofon wie ein Walkie‑Talkie hin.",
+"Ein Sänger zeigt einem Mechaniker eine Stimmgabel, die er wie einen Schraubenschlüssel benutzt.",
+"Ein Trompeter gibt einem Tänzer seinen Hut, der viel zu groß ist.",
+"Ein Pianist zeigt einem Gärtner eine Taste, die er wie eine Pflanze streichelt.",
+"Ein Schlagzeuger hält einem Schwimmer eine Trommel, die er wie einen Rettungsring präsentiert.",
+"Ein DJ zeigt einem Taxifahrer einen Beat‑Zettel, den er wie eine Fahrkarte überreicht.",
+"Ein Gitarrist gibt einem Radfahrer eine Gitarrensaite, die er wie eine Fahrradkette prüft.",
+"Ein Ritter zeigt einem Piraten sein Holzschwert wie ein Spielzeug.",
+"Ein Pharao hält einem Römer eine übergroße Schriftrolle hin.",
+"Ein Wikinger gibt einem Samurai einen viel zu kleinen Helm.",
+"Ein Höhlenmensch zeigt einem König einen Stein wie ein Handy.",
+"Ein Gladiator hält einem Cowboy einen Schild wie eine Tür hin.",
+"Ein Ritter zeigt einem Ninja seine Rüstung, die quietscht.",
+"Ein Pharao gibt einem Forscher eine Sandhandvoll wie ein Geschenk.",
+"Ein Samurai zeigt einem Wikinger sein Schwert, das er wie eine Geige hält.",
+"Ein Römer hält einem Ritter eine Mini‑Fahne hin.",
+"Ein Cowboy zeigt einem Gladiator seinen Hut wie eine Krone.",
+"Ein König gibt einem Piraten ein Zepter, das wie ein Besen aussieht.",
+"Ein Höhlenmensch zeigt einem Samurai eine Keule wie eine Blume.",
+"Ein Wikinger hält einem Pharao ein Schild wie einen Teller hin.",
+"Ein Ninja zeigt einem Römer eine Rauchbombe, die nicht zündet.",
+"Ein Ritter gibt einem Forscher eine Karte, die auf dem Kopf steht.",
+"Ein Gladiator zeigt einem König seinen Helm wie eine Schüssel.",
+"Ein Samurai hält einem Piraten sein Katana wie eine Angel hin.",
+"Ein Pharao zeigt einem Cowboy eine goldene Maske wie eine Sonnenbrille.",
+"Ein Römer gibt einem Höhlenmenschen einen Speer, den er wie einen Besen benutzt.",
+"Ein König zeigt einem Wikinger eine Krone, die viel zu groß ist.",
+"Ein Superheld zeigt einem Piraten seine Maske wie eine Schlafbrille.",
+"Ein Zauberer hält einem Cowboy seinen Zauberstab wie eine Fernbedienung hin.",
+"Ein Ritter aus einer Serie gibt einem Detektiv ein Schwert, das wie Plastik aussieht.",
+"Ein Weltraumheld zeigt einem Vampir seinen Laser, der nicht funktioniert.",
+"Ein Dinosaurier aus einem Film hält einem Polizisten ein Ei wie ein Geschenk hin.",
+"Ein Zauberlehrling zeigt einem Ninja einen Hut, der viel zu groß ist.",
+"Ein Roboter gibt einem Ritter eine Batterie wie ein Schatz.",
+"Ein Pirat zeigt einem Superhelden seine Schatzkarte, die falsch herum ist.",
+"Ein Detektiv hält einem Monster eine Lupe wie ein Donut hin.",
+"Ein Prinzessin‑Charakter zeigt einem Cowboy ihre Krone wie ein Hut.",
+"Ein Alien gibt einem Feuerwehrmann eine leuchtende Kugel wie einen Ball.",
+"Ein Vampir zeigt einem Koch einen Knoblauchkopf und rennt weg.",
+"Ein Superheld hält einem Clown seinen Umhang wie eine Tischdecke hin.",
+"Ein Zauberer zeigt einem Sportler einen Zaubertrick, der nicht klappt.",
+"Ein Roboter gibt einem Tänzer ein Zahnrad wie ein Schmuckstück.",
+"Ein Ritter zeigt einem Fotografen sein Schild wie einen Spiegel.",
+"Ein Monster hält einem Musiker ein Mikrofon wie eine Keule hin.",
+"Ein Cowboy zeigt einem Astronauten seinen Hut wie einen Helm.",
+"Ein Prinzessin‑Charakter gibt einem Mechaniker ein Diadem wie ein Werkzeug.",
+"Ein Alien zeigt einem Bauarbeiter eine Mini‑UFO‑Scheibe wie eine Münze."
+
+
+    ],
+
+    sport: [
+"Ein Basketballer versucht einem Tennisspieler das Dribbeln beizubringen.",
+"Ein Läufer und ein Gewichtheber vergleichen ihre Schuhe.",
+"Ein Golfer zeigt einem Schwimmer seinen Golfschwung.",
+"Ein Boxer und ein Radfahrer testen ihre Handschuhe.",
+"Ein Eishockeyspieler erklärt einem Fußballer seine Schutzkleidung.",
+"Ein Surfer und ein Skifahrer reden über Balance.",
+"Ein Tischtennisspieler zeigt einem Turner seinen Schläger.",
+"Ein Volleyballer und ein Fechter tauschen ihre Ausrüstung.",
+"Ein Badmintonspieler erklärt einem Ringer den Federball.",
+"Ein Skateboarder zeigt einem Basketballer sein Board.",
+"Ein Reiter und ein Läufer vergleichen ihre Haltung.",
+"Ein Rugbyspieler erklärt einem Tennisspieler seinen Ball.",
+"Ein Karateka und ein Schwimmer üben eine einfache Pose.",
+"Ein Handballer zeigt einem Golfer seinen Wurf.",
+"Ein Bogenschütze und ein Boxer testen ihre Standposition.",
+"Ein Marathonläufer erklärt einem Skater seine Trinkflasche.",
+"Ein Snowboarder zeigt einem Fußballer seine Bindungen.",
+"Ein Tischkicker-Spieler erklärt einem echten Fußballer seine Taktik.",
+"Ein Dartspieler und ein Basketballer vergleichen ihre Würfe.",
+"Ein Schiedsrichter zeigt einem Boxer seine gelbe Karte."
+
+
+    ],
+
+    politik: [
+"Ein Politiker hält einem Polizisten eine große Karte hin.",
+"Ein Bürgermeister zeigt einem Bauarbeiter ein Megafon.",
+"Ein Diplomat gibt einem Reporter einen übergroßen Stempel.",
+"Ein Redner zeigt einem Kellner ein Mikrofon.",
+"Ein Wahlhelfer reicht einem Feuerwehrmann einen Umschlag.",
+"Ein Politiker zeigt einem Fotografen eine Flagge.",
+"Ein Richter hält einem Musiker seine Robe hin.",
+"Ein Stadtrat zeigt einem Taxifahrer einen Stadtplan.",
+"Ein Sprecher gibt einem Sportler eine Notizkarte.",
+"Ein Botschafter zeigt einem Lehrer einen kleinen Globus.",
+"Ein Politiker hält einem Clown eine Wahlurne hin.",
+"Ein Diplomat zeigt einem Bäcker eine Mappe.",
+"Ein Bürgermeister gibt einem Turner ein Namensschild.",
+"Ein Wahlleiter zeigt einem Mechaniker einen Stimmzettel.",
+"Ein Sprecher hält einem Tänzer ein Mikrofon ohne Kabel hin.",
+"Ein Politiker zeigt einem Postboten einen großen Stempel.",
+"Ein Richter gibt einem Schwimmer eine Karte der Stadt.",
+"Ein Diplomat zeigt einem Golfer eine Mini‑Flagge.",
+"Ein Bürgermeister hält einem Künstler eine leere Mappe hin.",
+"Ein Wahlhelfer zeigt einem Radfahrer einen Umschlag."
+
+    ],
+
+    wirtschaft: [
+"Ein Banker zeigt einem Bäcker einen großen Geldschein.",
+"Ein Verkäufer hält einem Mechaniker eine Einkaufstasche hin.",
+"Ein Chef zeigt einem Kellner eine To‑Do‑Liste.",
+"Ein Händler gibt einem Bauarbeiter eine Kiste.",
+"Ein Kassierer zeigt einem Lehrer eine Quittung.",
+"Ein Unternehmer hält einem Sportler einen Laptop hin.",
+"Ein Buchhalter zeigt einem Koch einen Taschenrechner.",
+"Ein Lieferant gibt einem Musiker ein Paket.",
+"Ein Marktstand‑Besitzer zeigt einem Polizisten einen Apfel.",
+"Ein Büroangestellter hält einem Gärtner eine Mappe hin.",
+"Ein Verkäufer zeigt einem Taxifahrer ein Preisschild.",
+"Ein Banker gibt einem Feuerwehrmann eine Münze.",
+"Ein Chef zeigt einem Tänzer eine Uhr.",
+"Ein Händler hält einem Schwimmer eine Einkaufsliste hin.",
+"Ein Kassierer zeigt einem Künstler eine Kasse.",
+"Ein Unternehmer gibt einem Turner einen Vertrag.",
+"Ein Buchhalter zeigt einem Clown eine Tabelle.",
+"Ein Lieferant hält einem Golfer ein Paket hin.",
+"Ein Büroangestellter zeigt einem Reiter einen Stift.",
+"Ein Verkäufer gibt einem Radfahrer eine Tüte."
+
+    ],
+
+    musik: [
+"Ein Sänger hält einem Gitarristen ein Mikrofon wie eine Banane hin.",
+"Ein DJ versucht einem Trommler Kopfhörer aufzusetzen, die viel zu groß sind.",
+"Ein Pianist zeigt einem Tänzer eine Taste, die er wie ein Knopf drückt.",
+"Ein Rapper gibt einem Geiger einen Beat vor, den er mit den Armen übertreibt.",
+"Ein Schlagzeuger zeigt einem Sänger seine Sticks wie Zauberstäbe.",
+"Ein Gitarrist hält einem Saxophonisten seine Gitarre wie ein Baby hin.",
+"Ein DJ zeigt einem Trompeter seinen Mixer, der ausgeschaltet ist.",
+"Ein Musiker gibt einem Fotografen eine CD, die er wie eine Frisbee wirft.",
+"Ein Sänger zeigt einem Sportler eine Notenkarte, die er falsch herum hält.",
+"Ein Pianist hält einem Kellner eine Klangschale wie ein Suppenteller hin.",
+"Ein Trommler zeigt einem Clown seinen Trommelwirbel mit übertriebenen Bewegungen.",
+"Ein Gitarrist gibt einem Bauarbeiter ein winziges Plektrum.",
+"Ein DJ zeigt einem Lehrer eine Playlist, die nur aus einem Lied besteht.",
+"Ein Rapper hält einem Polizisten ein Mikrofon wie ein Walkie‑Talkie hin.",
+"Ein Sänger zeigt einem Mechaniker eine Stimmgabel, die er wie einen Schraubenschlüssel benutzt.",
+"Ein Trompeter gibt einem Tänzer seinen Hut, der viel zu groß ist.",
+"Ein Pianist zeigt einem Gärtner eine Taste, die er wie eine Pflanze streichelt.",
+"Ein Schlagzeuger hält einem Schwimmer eine Trommel, die er wie einen Rettungsring präsentiert.",
+"Ein DJ zeigt einem Taxifahrer einen Beat‑Zettel, den er wie eine Fahrkarte überreicht.",
+"Ein Gitarrist gibt einem Radfahrer eine Gitarrensaite, die er wie eine Fahrradkette prüft."
+    ],
+
+    geschichte: [
+"Ein Ritter zeigt einem Piraten sein Holzschwert wie ein Spielzeug.",
+"Ein Pharao hält einem Römer eine übergroße Schriftrolle hin.",
+"Ein Wikinger gibt einem Samurai einen viel zu kleinen Helm.",
+"Ein Höhlenmensch zeigt einem König einen Stein wie ein Handy.",
+"Ein Gladiator hält einem Cowboy einen Schild wie eine Tür hin.",
+"Ein Ritter zeigt einem Ninja seine Rüstung, die quietscht.",
+"Ein Pharao gibt einem Forscher eine Sandhandvoll wie ein Geschenk.",
+"Ein Samurai zeigt einem Wikinger sein Schwert, das er wie eine Geige hält.",
+"Ein Römer hält einem Ritter eine Mini‑Fahne hin.",
+"Ein Cowboy zeigt einem Gladiator seinen Hut wie eine Krone.",
+"Ein König gibt einem Piraten ein Zepter, das wie ein Besen aussieht.",
+"Ein Höhlenmensch zeigt einem Samurai eine Keule wie eine Blume.",
+"Ein Wikinger hält einem Pharao ein Schild wie einen Teller hin.",
+"Ein Ninja zeigt einem Römer eine Rauchbombe, die nicht zündet.",
+"Ein Ritter gibt einem Forscher eine Karte, die auf dem Kopf steht.",
+"Ein Gladiator zeigt einem König seinen Helm wie eine Schüssel.",
+"Ein Samurai hält einem Piraten sein Katana wie eine Angel hin.",
+"Ein Pharao zeigt einem Cowboy eine goldene Maske wie eine Sonnenbrille.",
+"Ein Römer gibt einem Höhlenmenschen einen Speer, den er wie einen Besen benutzt.",
+"Ein König zeigt einem Wikinger eine Krone, die viel zu groß ist."
+
+    ],
+
+    filme: [
+      "Batman und Harry Potter diskutieren über Mathe.",
+"Ein Superheld zeigt einem Piraten seine Maske wie eine Schlafbrille.",
+"Ein Zauberer hält einem Cowboy seinen Zauberstab wie eine Fernbedienung hin.",
+"Ein Ritter aus einer Serie gibt einem Detektiv ein Schwert, das wie Plastik aussieht.",
+"Ein Weltraumheld zeigt einem Vampir seinen Laser, der nicht funktioniert.",
+"Ein Dinosaurier aus einem Film hält einem Polizisten ein Ei wie ein Geschenk hin.",
+"Ein Zauberlehrling zeigt einem Ninja einen Hut, der viel zu groß ist.",
+"Ein Roboter gibt einem Ritter eine Batterie wie ein Schatz.",
+"Ein Pirat zeigt einem Superhelden seine Schatzkarte, die falsch herum ist.",
+"Ein Detektiv hält einem Monster eine Lupe wie ein Donut hin.",
+"Ein Prinzessin‑Charakter zeigt einem Cowboy ihre Krone wie ein Hut.",
+"Ein Alien gibt einem Feuerwehrmann eine leuchtende Kugel wie einen Ball.",
+"Ein Vampir zeigt einem Koch einen Knoblauchkopf und rennt weg.",
+"Ein Superheld hält einem Clown seinen Umhang wie eine Tischdecke hin.",
+"Ein Zauberer zeigt einem Sportler einen Zaubertrick, der nicht klappt.",
+"Ein Roboter gibt einem Tänzer ein Zahnrad wie ein Schmuckstück.",
+"Ein Ritter zeigt einem Fotografen sein Schild wie einen Spiegel.",
+"Ein Monster hält einem Musiker ein Mikrofon wie eine Keule hin.",
+"Ein Cowboy zeigt einem Astronauten seinen Hut wie einen Helm.",
+"Ein Prinzessin‑Charakter gibt einem Mechaniker ein Diadem wie ein Werkzeug.",
+"Ein Alien zeigt einem Bauarbeiter eine Mini‑UFO‑Scheibe wie eine Münze."
+
+    ]
+  };
+
+  function generateInputs() {
+    const count = parseInt(document.getElementById("playerCount").value);
+    const container = document.getElementById("nameInputs");
+    container.innerHTML = "";
+    for (let i = 0; i < count; i++) {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = `Spieler ${i + 1} Name`;
+      input.id = `player${i}`;
+      container.appendChild(input);
+    }
+  }
+
+  function startGame() {
+    if (!hasPremium && selectedTheme !== "random") {
+      alert("Premium Kategorie – Bitte Premium aktivieren!");
+      return;
+    }
+
+    playerNames = [];
+    const count = parseInt(document.getElementById("playerCount").value);
+
+    for (let i = 0; i < count; i++) {
+      const name = document.getElementById(`player${i}`).value.trim();
+      if (name === "") {
+        alert("Bitte alle Spielernamen eingeben.");
+        return;
+      }
+      playerNames.push(name);
+    }
+
+    document.getElementById("startScreen").classList.add("hidden");
+    document.getElementById("gameArea").classList.remove("hidden");
+
+    nextRound();
+  }
+
+  function nextRound() {
+    document.getElementById("scenarioText").classList.add("hidden");
+    document.getElementById("revealBtn").classList.remove("hidden");
+
+    if (usedScenarios.length === themes[selectedTheme].length) {
+      alert("Alle Szenarien wurden verwendet!");
+      return;
+    }
+
+    let p1, p2;
+    do {
+      p1 = playerNames[Math.floor(Math.random() * playerNames.length)];
+      p2 = playerNames[Math.floor(Math.random() * playerNames.length)];
+    } while (p1 === p2);
+
+    let scenario;
+    do {
+      scenario = themes[selectedTheme][Math.floor(Math.random() * themes[selectedTheme].length)];
+    } while (usedScenarios.includes(scenario));
+
+    usedScenarios.push(scenario);
+
+    document.getElementById("pairingCard").classList.remove("hidden");
+    document.getElementById("pairingCard").innerHTML = `
+      <h2>${p1} & ${p2}</h2>
+      <p>Bereit? Deckt die Karte auf!</p>
+    `;
+
+    document.getElementById("scenarioText").innerHTML = `
+      <p>${scenario}</p>
+    `;
+
+    document.getElementById("cardContainer").classList.remove("hidden");
+  }
+
+  function revealCard() {
+    document.getElementById("scenarioText").classList.remove("hidden");
+    document.getElementById("revealBtn").classList.add("hidden");
+  }
+
+  function endGame() {
+    location.reload();
+  }
+</script>
+
+</body>
+</html>
