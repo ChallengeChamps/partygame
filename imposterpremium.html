@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Wer lügt am Besten </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('10von10.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      margin-top: 40px;
+      animation: fadeIn 1s ease;
+    }
+
+    h1, h2 {
+      text-align: center;
+      text-shadow: 2px 2px 6px #000;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    .card {
+      background: #fff;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: slideUp 0.8s ease;
+    }
+
+    .menu-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .menu-button:hover {
+      background-color: #45a049;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+</style>
+</head>
+<body>
+
+<div class="container" id="app"></div>
+
+<script>
+const app = document.getElementById("app");
+
+const categories = {
+    "buntegemischt": [
+{
+  normal: "Welche Branche wird deiner Meinung nach in Zukunft am stärksten wachsen?",
+  imposter: "Welche Branche findest du aktuell am spannendsten?"
+},
+{
+  normal: "Welches Unternehmen hat deiner Meinung nach die interessanteste Zukunftsstrategie?",
+  imposter: "Welches Unternehmen hat aktuell die stärkste Marktpräsenz?"
+},
+{
+  normal: "Welcher CEO hat deiner Meinung nach die beeindruckendste Karriere gemacht?",
+  imposter: "Welcher CEO hat aktuell den größten Einfluss auf sein Unternehmen?"
+},
+{
+  normal: "Welches Produkt könnte deiner Meinung nach die nächste große Innovation werden?",
+  imposter: "Welches Produkt ist aktuell das meistdiskutierte?"
+},
+{
+  normal: "Welche Technologie wird deiner Meinung nach die Wirtschaft stark verändern?",
+  imposter: "Welche Technologie sorgt aktuell für die meisten Diskussionen?"
+},
+{
+  normal: "Welches Start‑up hat deiner Meinung nach das größte Potenzial?",
+  imposter: "Welches Start‑up ist aktuell am bekanntesten?"
+},
+{
+  normal: "Welcher Markt wird deiner Meinung nach in Zukunft besonders wichtig?",
+  imposter: "Welcher Markt ist aktuell besonders aktiv?"
+},
+{
+  normal: "Welches Unternehmen könnte in Zukunft stark expandieren?",
+  imposter: "Welches Unternehmen expandiert aktuell am schnellsten?"
+},
+{
+  normal: "Welche wirtschaftliche Entwicklung wird deiner Meinung nach viele Menschen betreffen?",
+  imposter: "Welche wirtschaftliche Entwicklung betrifft dich persönlich am meisten?"
+},
+{
+  normal: "Welches Land hat deiner Meinung nach die spannendste wirtschaftliche Zukunft?",
+  imposter: "Welches Land hat aktuell die interessanteste wirtschaftliche Situation?"
+},
+{
+  normal: "Welcher Unternehmer hat deiner Meinung nach die kreativste Vision?",
+  imposter: "Welcher Unternehmer hat aktuell die größte öffentliche Aufmerksamkeit?"
+},
+{
+  normal: "Welches Geschäftsmodell könnte in Zukunft sehr erfolgreich werden?",
+  imposter: "Welches Geschäftsmodell ist aktuell besonders beliebt?"
+},
+{
+  normal: "Welches Unternehmen könnte in Zukunft neue Märkte erschließen?",
+  imposter: "Welches Unternehmen erschließt aktuell neue Märkte?"
+},
+{
+  normal: "Welche wirtschaftliche Idee findest du besonders innovativ?",
+  imposter: "Welche wirtschaftliche Idee wird aktuell am meisten diskutiert?"
+},
+{
+  normal: "Welcher Wirtschaftsbereich wird deiner Meinung nach stark unterschätzt?",
+  imposter: "Welcher Wirtschaftsbereich wird deiner Meinung nach stark übersehen?"
+},
+{
+  normal: "Welches Unternehmen könnte in Zukunft eine wichtige Rolle in der Weltwirtschaft spielen?",
+  imposter: "Welches Unternehmen spielt aktuell eine wichtige Rolle in der Weltwirtschaft?"
+},
+{
+  normal: "Welcher Trend könnte die Wirtschaft langfristig verändern?",
+  imposter: "Welcher Trend beeinflusst aktuell die meisten Unternehmen?"
+},
+{
+  normal: "Welches Produkt könnte in Zukunft sehr gefragt sein?",
+  imposter: "Welches Produkt ist aktuell besonders gefragt?"
+},
+{
+  normal: "Welcher Wirtschaftsbereich könnte in Zukunft viele neue Arbeitsplätze schaffen?",
+  imposter: "Welcher Wirtschaftsbereich schafft aktuell besonders viele Arbeitsplätze?"
+},
+{
+  normal: "Welches Unternehmen könnte in Zukunft eine führende Position einnehmen?",
+  imposter: "Welches Unternehmen hat aktuell eine führende Position?"
+},
+{
+  normal: "Welcher Spieler hat deiner Meinung nach die beste Entwicklung in dieser Saison gemacht?",
+  imposter: "Welcher Spieler ist deiner Meinung nach der wichtigste Leistungsträger seines Teams?"
+},
+{
+  normal: "Was war das Beste Fußballspiel was du je gesehen hast?",
+  imposter: "Bei welchem Fußballspiel musstest du Weinen?"
+},
+{
+  normal: "Welcher Verein hat die spannendsten Talente im Kader?",
+  imposter: "Welcher Verein hat aktuell die stärkste Mannschaft?"
+},
+{
+  normal: "Welcher Spieler könnte in Zukunft eine große internationale Karriere starten?",
+  imposter: "Welcher Spieler ist aktuell der größte internationale Star?"
+},
+{
+  normal: "Welcher Trainer arbeitet am besten mit jungen Spielern?",
+  imposter: "Welcher Trainer hat aktuell den größten Einfluss auf seine Mannschaft?"
+},
+{
+  normal: "Welcher Stürmer hat das größte Zukunftspotenzial?",
+  imposter: "Welcher Stürmer ist aktuell der gefährlichste Torjäger?"
+},
+{
+  normal: "Welcher Mittelfeldspieler könnte bald eine Führungsrolle übernehmen?",
+  imposter: "Welcher Mittelfeldspieler führt sein Team aktuell am besten?"
+},
+{
+  normal: "Welcher Verteidiger könnte in Zukunft einer der besten werden?",
+  imposter: "Welcher Verteidiger ist aktuell der stabilste Abwehrspieler?"
+},
+{
+  normal: "Welcher Torwart ist aktuell der Beste?",
+  imposter: "Welcher Torwart ist überbewrtet?"
+},
+{
+  normal: "Welcher Spieler wird der nächste Kapitän der Deutschen Nationalmannschaft?",
+  imposter: "Welcher Spieler ist aktuell der wichtigste Deutsche Nationalspieler?"
+},
+{
+  normal: "Welcher Land wird die nächste WM gewinnen?",
+  imposter: "Welches Land ist das Symphatischste?"
+},
+{
+  normal: "Wer ist der am Meisten gehasste Spieler der Welt?",
+  imposter: "Welchen Spieler findest du am unsymphatischsten?"
+},
+{
+  normal: "Welcher Trainer könnte in den nächsten Jahren richtig durchstarten?",
+  imposter: "Wer ist aktuell der beste Nationaltrainer?"
+},
+{
+  normal: "Welcher Spieler wird der nächste Rekordtransfer?",
+  imposter: "Welcher Spieler wird der nächste Rekordverdiener?"
+},
+{
+  normal: "Welcher Spieler könnte als nächstes WM Redkordtorschütze werden?",
+  imposter: "Welcher Spieler kommt die nächsten 10 Jahren am häufigtsen den Ballon d'Or gewinnen?"
+},
+{
+  normal: "Welcher Trainer war der Beste der Deutschen Nationalmannschaft?",
+  imposter: "Welcher Trainer der Deutschen Nationalmannschaft wäre als Spieler der Beste ?"
+},
+{
+  normal: "Welcher Spieler war der Beste vom FC Bayern München?",
+  imposter: "Welcher Spieler ist aktuell der Beste vom FC Bayern München?"
+},
+
+{
+  normal: "Welcher Verein ist stark Unterbewertet?",
+  imposter: "Welcher Verein hat aktuell die besten Fans?"
+},
+{
+  normal: "Welcher Spieler hat die beeindruckendste Entwicklung im letzten Jahr gemacht?",
+  imposter: "Welcher Spieler war im letzten Jahr der beste Spieler der Bundesliga?"
+},
+{
+  normal: "Wer war der beste Vereinstrainer jemals?",
+  imposter: "Welcher Trainer wurde einmal zu Unrecht entlassen?"
+},
+{
+  normal: "Was ist das Beste an der WM?",
+  imposter: "Was ist die coolste Aktivität beim WM schauen?"
+},
+{
+  normal: "Wann wird Deutschland das nächsre mal Weltmeister?",
+  imposter: "Wann scheidet Deutschland das nächste Mal in der Gruppenphase einer WM aus?"
+},
+ { normal: "Welches Lied kannst du immer hören?", imposter: "Welches Lied nervt dich am meisten?" },
+{
+  normal: "Welcher Künstler hat deiner Meinung nach das beste neue Album veröffentlicht?",
+  imposter: "Welcher Künstler hat aktuell die spannendste Bühnenpräsenz?"
+},
+{
+  normal: "Welcher Song hat deiner Meinung nach das beste Songwriting?",
+  imposter: "Welcher Song hat aktuell den größten Wiedererkennungswert?"
+},
+{
+  normal: "Welcher Sänger könnte bald einen großen internationalen Durchbruch schaffen?",
+  imposter: "Welcher Sänger ist aktuell der meistgebuchte Live‑Act?"
+},
+{
+  normal: "Welche Band hat deiner Meinung nach die kreativste musikalische Richtung?",
+  imposter: "Welche Band hat aktuell die treuesten Fans?"
+},
+{
+  normal: "Welcher Künstler hat die beste Stimme?",
+  imposter: "Welcher Künstler hat die interessanteste Stimme?"
+},
+{
+  normal: "Welcher Song hat deiner Meinung nach die beste Melodie?",
+  imposter: "Welcher Song hat aktuell den stärksten Ohrwurm‑Faktor?"
+},
+{
+  normal: "Welcher Musiker könnte bald ein neues Genre beeinflussen?",
+  imposter: "Welcher Musiker beeinflusst aktuell die meisten Trends?"
+},
+{
+  normal: "Welcher Künstler hat die beste Live‑Performance?",
+  imposter: "Welcher Künstler hat die coolste Bühnenoptik?"
+},
+{
+  normal: "Welcher Song könnte deiner Meinung nach ein Klassiker werden?",
+  imposter: "Welcher Song wird aktuell am meisten gecovert?"
+},
+{
+  normal: "Welcher Künstler hat die beste musikalische Entwicklung gemacht?",
+  imposter: "Welcher Künstler hat aktuell die meisten Streams?"
+},
+{
+  normal: "Welcher DJ hat deiner Meinung nach die beste Track‑Auswahl?",
+  imposter: "Welcher DJ hat aktuell die meisten Festival‑Bookings?"
+},
+{
+  normal: "Welcher Künstler könnte bald ein legendäres Album veröffentlichen?",
+  imposter: "Welches Album wird aktuell am meisten diskutiert?"
+},
+{
+  normal: "Welcher Sänger hat die emotionalste Stimme?",
+  imposter: "Welcher Sänger hat die stärkste Bühnenenergie?"
+},
+{
+  normal: "Welcher Künstler könnte bald eine große Fanbase aufbauen?",
+  imposter: "Welcher Künstler hat aktuell die aktivste Community?"
+},
+{
+  normal: "Welcher Song hat deiner Meinung nach die beste Produktion?",
+  imposter: "Welcher Song hat aktuell die auffälligste Bassline?"
+},
+{
+  normal: "Welcher Künstler könnte bald einen neuen Musiktrend starten?",
+  imposter: "Welcher Künstler setzt aktuell die meisten Trends?"
+},
+{
+  normal: "Welcher Musiker hat die beste musikalische Handschrift?",
+  imposter: "Welcher Musiker hat aktuell die auffälligste Optik?"
+},
+{
+  normal: "Welcher Künstler könnte bald ein großes Comeback feiern?",
+  imposter: "Welcher Künstler hatte zuletzt das überraschendste Comeback?"
+},
+{
+  normal: "Welcher Song hat deiner Meinung nach die beste Hook?",
+  imposter: "Welcher Song hat aktuell die längste Chart‑Platzierung?"
+},
+{
+  normal: "Welcher Künstler könnte bald ein wichtiges Feature bekommen?",
+  imposter: "Welcher Künstler macht aktuell die meisten Features?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal perfekt kochen können?",
+  imposter: "Welches Gericht würdest du gerne einmal in einer völlig übertriebenen Luxusversion essen?"
+},
+{
+  normal: "Welches Essen hat dich in deiner Kindheit am meisten geprägt?",
+  imposter: "Welches Essen würdest du heute niemals freiwillig essen?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal in einem anderen Land probieren?",
+  imposter: "Welches Gericht würdest du gerne einmal in einer völlig neuen Geschmacksrichtung probieren?"
+},
+{
+  normal: "Welches Dessert ist deiner Meinung nach das beste?",
+  imposter: "Welches Dessert würdest du gerne einmal in XXL‑Version essen?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal für Freunde kochen?",
+  imposter: "Welches Gericht würdest du gerne einmal alleine komplett aufessen?"
+},
+{
+  normal: "Welches Essen würdest du gerne jeden Tag essen können?",
+  imposter: "Welches Essen willst du nie wieder essen?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal in einer veganen Variante probieren?",
+  imposter: "Welches Flieschgericht schmeckt deiner Meinung nach am Besten?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal frisch vom Straßenmarkt essen?",
+  imposter: "Welches Essen würdest du gerne einmal in einem Sternerestaurant essen?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal selbst herstellen?",
+  imposter: "Welches Gericht kaufst du immer fertig, weil es dir egal ist?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal in einer extrem scharfen Version probieren?",
+  imposter: "Welches Essen würdest du gerne einmal in einer extrem süßen Version probieren?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal mit jemand Besonderem teilen?",
+  imposter: "Welches Gericht würdest du niemals mit jemandem teilen?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal in einer völlig neuen Kombination probieren?",
+  imposter: "Welches Essen sollte deiner Meinung nach niemals kombiniert werden?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal in einer traditionellen Version essen?",
+  imposter: "Welches Gericht würdest du gerne einmal in einer komplett modernen Version essen?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal auf einer Reise probieren?",
+  imposter: "Welches Essen würdest du gerne einmal auf einem Festival essen?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal in einer riesigen Portion probieren?",
+  imposter: "Welches Gericht würdest du gerne einmal in einer Mini‑Version probieren?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal frisch aus dem Ofen essen?",
+  imposter: "Welches Essen schmeckt deiner Meinung nach nur kalt richtig gut?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal in einer teuren Version essen?",
+  imposter: "Welches Gericht schmeckt deiner Meinung nach nur billig gut?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal in einer völlig neuen Optik sehen?",
+  imposter: "Welches Essen sollte deiner Meinung nach immer gleich aussehen?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal in einer anderen Kultur probieren?",
+  imposter: "Welches Gericht sollte deiner Meinung nach niemals verändert werden?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal in einer extrem knusprigen Version probieren?",
+  imposter: "Welches Essen schmeckt deiner Meinung nach nur weich richtig gut?"
+}
+
+
+    ],
+
+    "fußball": [
+{
+  normal: "Welcher Spieler hat deiner Meinung nach die beste Entwicklung in dieser Saison gemacht?",
+  imposter: "Welcher Spieler ist deiner Meinung nach der wichtigste Leistungsträger seines Teams?"
+},
+{
+  normal: "Was war das Beste Fußballspiel was du je gesehen hast?",
+  imposter: "Bei welchem Fußballspiel musstest du Weinen?"
+},
+{
+  normal: "Welcher Verein hat die spannendsten Talente im Kader?",
+  imposter: "Welcher Verein hat aktuell die stärkste Mannschaft?"
+},
+{
+  normal: "Welcher Spieler könnte in Zukunft eine große internationale Karriere starten?",
+  imposter: "Welcher Spieler ist aktuell der größte internationale Star?"
+},
+{
+  normal: "Welcher Trainer arbeitet am besten mit jungen Spielern?",
+  imposter: "Welcher Trainer hat aktuell den größten Einfluss auf seine Mannschaft?"
+},
+{
+  normal: "Welcher Stürmer hat das größte Zukunftspotenzial?",
+  imposter: "Welcher Stürmer ist aktuell der gefährlichste Torjäger?"
+},
+{
+  normal: "Welcher Mittelfeldspieler könnte bald eine Führungsrolle übernehmen?",
+  imposter: "Welcher Mittelfeldspieler führt sein Team aktuell am besten?"
+},
+{
+  normal: "Welcher Verteidiger könnte in Zukunft einer der besten werden?",
+  imposter: "Welcher Verteidiger ist aktuell der stabilste Abwehrspieler?"
+},
+{
+  normal: "Welcher Torwart ist aktuell der Beste?",
+  imposter: "Welcher Torwart ist überbewrtet?"
+},
+{
+  normal: "Welcher Spieler wird der nächste Kapitän der Deutschen Nationalmannschaft?",
+  imposter: "Welcher Spieler ist aktuell der wichtigste Deutsche Nationalspieler?"
+},
+{
+  normal: "Welcher Land wird die nächste WM gewinnen?",
+  imposter: "Welches Land ist das Symphatischste?"
+},
+{
+  normal: "Wer ist der am Meisten gehasste Spieler der Welt?",
+  imposter: "Welchen Spieler findest du am unsymphatischsten?"
+},
+{
+  normal: "Welcher Trainer könnte in den nächsten Jahren richtig durchstarten?",
+  imposter: "Wer ist aktuell der beste Nationaltrainer?"
+},
+{
+  normal: "Welcher Spieler wird der nächste Rekordtransfer?",
+  imposter: "Welcher Spieler wird der nächste Rekordverdiener?"
+},
+{
+  normal: "Welcher Spieler könnte als nächstes WM Redkordtorschütze werden?",
+  imposter: "Welcher Spieler kommt die nächsten 10 Jahren am häufigtsen den Ballon d'Or gewinnen?"
+},
+{
+  normal: "Welcher Trainer war der Beste der Deutschen Nationalmannschaft?",
+  imposter: "Welcher Trainer der Deutschen Nationalmannschaft wäre als Spieler der Beste ?"
+},
+{
+  normal: "Welcher Spieler war der Beste vom FC Bayern München?",
+  imposter: "Welcher Spieler ist aktuell der Beste vom FC Bayern München?"
+},
+
+{
+  normal: "Welcher Verein ist stark Unterbewertet?",
+  imposter: "Welcher Verein hat aktuell die besten Fans?"
+},
+{
+  normal: "Welcher Spieler hat die beeindruckendste Entwicklung im letzten Jahr gemacht?",
+  imposter: "Welcher Spieler war im letzten Jahr der beste Spieler der Bundesliga?"
+},
+{
+  normal: "Wer war der beste Vereinstrainer jemals?",
+  imposter: "Welcher Trainer wurde einmal zu Unrecht entlassen?"
+},
+{
+  normal: "Was ist das Beste an der WM?",
+  imposter: "Was ist die coolste Aktivität beim WM schauen?"
+},
+{
+  normal: "Wann wird Deutschland das nächsre mal Weltmeister?",
+  imposter: "Wann scheidet Deutschland das nächste Mal in der Gruppenphase einer WM aus?"
+}
+
+
+    ],
+    "musik": [
+        { normal: "Welches Lied kannst du immer hören?", imposter: "Welches Lied nervt dich am meisten?" },
+{
+  normal: "Welcher Künstler hat deiner Meinung nach das beste neue Album veröffentlicht?",
+  imposter: "Welcher Künstler hat aktuell die spannendste Bühnenpräsenz?"
+},
+{
+  normal: "Welcher Song hat deiner Meinung nach das beste Songwriting?",
+  imposter: "Welcher Song hat aktuell den größten Wiedererkennungswert?"
+},
+{
+  normal: "Welcher Sänger könnte bald einen großen internationalen Durchbruch schaffen?",
+  imposter: "Welcher Sänger ist aktuell der meistgebuchte Live‑Act?"
+},
+{
+  normal: "Welche Band hat deiner Meinung nach die kreativste musikalische Richtung?",
+  imposter: "Welche Band hat aktuell die treuesten Fans?"
+},
+{
+  normal: "Welcher Künstler hat die beste Stimme?",
+  imposter: "Welcher Künstler hat die interessanteste Stimme?"
+},
+{
+  normal: "Welcher Song hat deiner Meinung nach die beste Melodie?",
+  imposter: "Welcher Song hat aktuell den stärksten Ohrwurm‑Faktor?"
+},
+{
+  normal: "Welcher Musiker könnte bald ein neues Genre beeinflussen?",
+  imposter: "Welcher Musiker beeinflusst aktuell die meisten Trends?"
+},
+{
+  normal: "Welcher Künstler hat die beste Live‑Performance?",
+  imposter: "Welcher Künstler hat die coolste Bühnenoptik?"
+},
+{
+  normal: "Welcher Song könnte deiner Meinung nach ein Klassiker werden?",
+  imposter: "Welcher Song wird aktuell am meisten gecovert?"
+},
+{
+  normal: "Welcher Künstler hat die beste musikalische Entwicklung gemacht?",
+  imposter: "Welcher Künstler hat aktuell die meisten Streams?"
+},
+{
+  normal: "Welcher DJ hat deiner Meinung nach die beste Track‑Auswahl?",
+  imposter: "Welcher DJ hat aktuell die meisten Festival‑Bookings?"
+},
+{
+  normal: "Welcher Künstler könnte bald ein legendäres Album veröffentlichen?",
+  imposter: "Welches Album wird aktuell am meisten diskutiert?"
+},
+{
+  normal: "Welcher Sänger hat die emotionalste Stimme?",
+  imposter: "Welcher Sänger hat die stärkste Bühnenenergie?"
+},
+{
+  normal: "Welcher Künstler könnte bald eine große Fanbase aufbauen?",
+  imposter: "Welcher Künstler hat aktuell die aktivste Community?"
+},
+{
+  normal: "Welcher Song hat deiner Meinung nach die beste Produktion?",
+  imposter: "Welcher Song hat aktuell die auffälligste Bassline?"
+},
+{
+  normal: "Welcher Künstler könnte bald einen neuen Musiktrend starten?",
+  imposter: "Welcher Künstler setzt aktuell die meisten Trends?"
+},
+{
+  normal: "Welcher Musiker hat die beste musikalische Handschrift?",
+  imposter: "Welcher Musiker hat aktuell die auffälligste Optik?"
+},
+{
+  normal: "Welcher Künstler könnte bald ein großes Comeback feiern?",
+  imposter: "Welcher Künstler hatte zuletzt das überraschendste Comeback?"
+},
+{
+  normal: "Welcher Song hat deiner Meinung nach die beste Hook?",
+  imposter: "Welcher Song hat aktuell die längste Chart‑Platzierung?"
+},
+{
+  normal: "Welcher Künstler könnte bald ein wichtiges Feature bekommen?",
+  imposter: "Welcher Künstler macht aktuell die meisten Features?"
+},
+        { normal: "Welches Lied kannst du immer hören?", imposter: "Welches Lied nervt dich am meisten?" },
+{
+  normal: "Welcher Künstler hat deiner Meinung nach das beste neue Album veröffentlicht?",
+  imposter: "Welcher Künstler hat aktuell die spannendste Bühnenpräsenz?"
+},
+{
+  normal: "Welcher Song hat deiner Meinung nach das beste Songwriting?",
+  imposter: "Welcher Song hat aktuell den größten Wiedererkennungswert?"
+},
+{
+  normal: "Welcher Sänger könnte bald einen großen internationalen Durchbruch schaffen?",
+  imposter: "Welcher Sänger ist aktuell der meistgebuchte Live‑Act?"
+},
+{
+  normal: "Welche Band hat deiner Meinung nach die kreativste musikalische Richtung?",
+  imposter: "Welche Band hat aktuell die treuesten Fans?"
+},
+{
+  normal: "Welcher Künstler hat die beste Stimme?",
+  imposter: "Welcher Künstler hat die interessanteste Stimme?"
+},
+{
+  normal: "Welcher Song hat deiner Meinung nach die beste Melodie?",
+  imposter: "Welcher Song hat aktuell den stärksten Ohrwurm‑Faktor?"
+},
+{
+  normal: "Welcher Musiker könnte bald ein neues Genre beeinflussen?",
+  imposter: "Welcher Musiker beeinflusst aktuell die meisten Trends?"
+},
+{
+  normal: "Welcher Künstler hat die beste Live‑Performance?",
+  imposter: "Welcher Künstler hat die coolste Bühnenoptik?"
+},
+{
+  normal: "Welcher Song könnte deiner Meinung nach ein Klassiker werden?",
+  imposter: "Welcher Song wird aktuell am meisten gecovert?"
+},
+{
+  normal: "Welcher Künstler hat die beste musikalische Entwicklung gemacht?",
+  imposter: "Welcher Künstler hat aktuell die meisten Streams?"
+},
+{
+  normal: "Welcher DJ hat deiner Meinung nach die beste Track‑Auswahl?",
+  imposter: "Welcher DJ hat aktuell die meisten Festival‑Bookings?"
+},
+{
+  normal: "Welcher Künstler könnte bald ein legendäres Album veröffentlichen?",
+  imposter: "Welches Album wird aktuell am meisten diskutiert?"
+},
+{
+  normal: "Welcher Sänger hat die emotionalste Stimme?",
+  imposter: "Welcher Sänger hat die stärkste Bühnenenergie?"
+},
+{
+  normal: "Welcher Künstler könnte bald eine große Fanbase aufbauen?",
+  imposter: "Welcher Künstler hat aktuell die aktivste Community?"
+},
+{
+  normal: "Welcher Song hat deiner Meinung nach die beste Produktion?",
+  imposter: "Welcher Song hat aktuell die auffälligste Bassline?"
+},
+{
+  normal: "Welcher Künstler könnte bald einen neuen Musiktrend starten?",
+  imposter: "Welcher Künstler setzt aktuell die meisten Trends?"
+},
+{
+  normal: "Welcher Musiker hat die beste musikalische Handschrift?",
+  imposter: "Welcher Musiker hat aktuell die auffälligste Optik?"
+},
+{
+  normal: "Welcher Künstler könnte bald ein großes Comeback feiern?",
+  imposter: "Welcher Künstler hatte zuletzt das überraschendste Comeback?"
+},
+{
+  normal: "Welcher Song hat deiner Meinung nach die beste Hook?",
+  imposter: "Welcher Song hat aktuell die längste Chart‑Platzierung?"
+}
+
+    ],
+    "politik": [
+{
+  normal: "Welche Branche wird deiner Meinung nach in Zukunft am stärksten wachsen?",
+  imposter: "Welche Branche findest du aktuell am spannendsten?"
+},
+{
+  normal: "Welches Unternehmen hat deiner Meinung nach die interessanteste Zukunftsstrategie?",
+  imposter: "Welches Unternehmen hat aktuell die stärkste Marktpräsenz?"
+},
+{
+  normal: "Welcher CEO hat deiner Meinung nach die beeindruckendste Karriere gemacht?",
+  imposter: "Welcher CEO hat aktuell den größten Einfluss auf sein Unternehmen?"
+},
+{
+  normal: "Welches Produkt könnte deiner Meinung nach die nächste große Innovation werden?",
+  imposter: "Welches Produkt ist aktuell das meistdiskutierte?"
+},
+{
+  normal: "Welche Technologie wird deiner Meinung nach die Wirtschaft stark verändern?",
+  imposter: "Welche Technologie sorgt aktuell für die meisten Diskussionen?"
+},
+{
+  normal: "Welches Start‑up hat deiner Meinung nach das größte Potenzial?",
+  imposter: "Welches Start‑up ist aktuell am bekanntesten?"
+},
+{
+  normal: "Welcher Markt wird deiner Meinung nach in Zukunft besonders wichtig?",
+  imposter: "Welcher Markt ist aktuell besonders aktiv?"
+},
+{
+  normal: "Welches Unternehmen könnte in Zukunft stark expandieren?",
+  imposter: "Welches Unternehmen expandiert aktuell am schnellsten?"
+},
+{
+  normal: "Welche wirtschaftliche Entwicklung wird deiner Meinung nach viele Menschen betreffen?",
+  imposter: "Welche wirtschaftliche Entwicklung betrifft dich persönlich am meisten?"
+},
+{
+  normal: "Welches Land hat deiner Meinung nach die spannendste wirtschaftliche Zukunft?",
+  imposter: "Welches Land hat aktuell die interessanteste wirtschaftliche Situation?"
+},
+{
+  normal: "Welcher Unternehmer hat deiner Meinung nach die kreativste Vision?",
+  imposter: "Welcher Unternehmer hat aktuell die größte öffentliche Aufmerksamkeit?"
+},
+{
+  normal: "Welches Geschäftsmodell könnte in Zukunft sehr erfolgreich werden?",
+  imposter: "Welches Geschäftsmodell ist aktuell besonders beliebt?"
+},
+{
+  normal: "Welches Unternehmen könnte in Zukunft neue Märkte erschließen?",
+  imposter: "Welches Unternehmen erschließt aktuell neue Märkte?"
+},
+{
+  normal: "Welche wirtschaftliche Idee findest du besonders innovativ?",
+  imposter: "Welche wirtschaftliche Idee wird aktuell am meisten diskutiert?"
+},
+{
+  normal: "Welcher Wirtschaftsbereich wird deiner Meinung nach stark unterschätzt?",
+  imposter: "Welcher Wirtschaftsbereich wird deiner Meinung nach stark übersehen?"
+},
+{
+  normal: "Welches Unternehmen könnte in Zukunft eine wichtige Rolle in der Weltwirtschaft spielen?",
+  imposter: "Welches Unternehmen spielt aktuell eine wichtige Rolle in der Weltwirtschaft?"
+},
+{
+  normal: "Welcher Trend könnte die Wirtschaft langfristig verändern?",
+  imposter: "Welcher Trend beeinflusst aktuell die meisten Unternehmen?"
+},
+{
+  normal: "Welches Produkt könnte in Zukunft sehr gefragt sein?",
+  imposter: "Welches Produkt ist aktuell besonders gefragt?"
+},
+{
+  normal: "Welcher Wirtschaftsbereich könnte in Zukunft viele neue Arbeitsplätze schaffen?",
+  imposter: "Welcher Wirtschaftsbereich schafft aktuell besonders viele Arbeitsplätze?"
+},
+{
+  normal: "Welches Unternehmen könnte in Zukunft eine führende Position einnehmen?",
+  imposter: "Welches Unternehmen hat aktuell eine führende Position?"
+}
+],
+    "essen": [
+{
+  normal: "Welches Gericht würdest du gerne einmal perfekt kochen können?",
+  imposter: "Welches Gericht würdest du gerne einmal in einer völlig übertriebenen Luxusversion essen?"
+},
+{
+  normal: "Welches Essen hat dich in deiner Kindheit am meisten geprägt?",
+  imposter: "Welches Essen würdest du heute niemals freiwillig essen?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal in einem anderen Land probieren?",
+  imposter: "Welches Gericht würdest du gerne einmal in einer völlig neuen Geschmacksrichtung probieren?"
+},
+{
+  normal: "Welches Dessert ist deiner Meinung nach das beste?",
+  imposter: "Welches Dessert würdest du gerne einmal in XXL‑Version essen?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal für Freunde kochen?",
+  imposter: "Welches Gericht würdest du gerne einmal alleine komplett aufessen?"
+},
+{
+  normal: "Welches Essen würdest du gerne jeden Tag essen können?",
+  imposter: "Welches Essen willst du nie wieder essen?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal in einer veganen Variante probieren?",
+  imposter: "Welches Flieschgericht schmeckt deiner Meinung nach am Besten?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal frisch vom Straßenmarkt essen?",
+  imposter: "Welches Essen würdest du gerne einmal in einem Sternerestaurant essen?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal selbst herstellen?",
+  imposter: "Welches Gericht kaufst du immer fertig, weil es dir egal ist?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal in einer extrem scharfen Version probieren?",
+  imposter: "Welches Essen würdest du gerne einmal in einer extrem süßen Version probieren?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal mit jemand Besonderem teilen?",
+  imposter: "Welches Gericht würdest du niemals mit jemandem teilen?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal in einer völlig neuen Kombination probieren?",
+  imposter: "Welches Essen sollte deiner Meinung nach niemals kombiniert werden?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal in einer traditionellen Version essen?",
+  imposter: "Welches Gericht würdest du gerne einmal in einer komplett modernen Version essen?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal auf einer Reise probieren?",
+  imposter: "Welches Essen würdest du gerne einmal auf einem Festival essen?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal in einer riesigen Portion probieren?",
+  imposter: "Welches Gericht würdest du gerne einmal in einer Mini‑Version probieren?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal frisch aus dem Ofen essen?",
+  imposter: "Welches Essen schmeckt deiner Meinung nach nur kalt richtig gut?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal in einer teuren Version essen?",
+  imposter: "Welches Gericht schmeckt deiner Meinung nach nur billig gut?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal in einer völlig neuen Optik sehen?",
+  imposter: "Welches Essen sollte deiner Meinung nach immer gleich aussehen?"
+},
+{
+  normal: "Welches Gericht würdest du gerne einmal in einer anderen Kultur probieren?",
+  imposter: "Welches Gericht sollte deiner Meinung nach niemals verändert werden?"
+},
+{
+  normal: "Welches Essen würdest du gerne einmal in einer extrem knusprigen Version probieren?",
+  imposter: "Welches Essen schmeckt deiner Meinung nach nur weich richtig gut?"
+}
+],
+
+
+};
+
+let state = {
+    players: [],
+    imposters: [],
+    category: "buntegemischt",
+    questions: [],
+    answers: [],
+    currentIndex: 0,
+    roundQuestion: null
+};
+
+function renderStart() {
+    app.innerHTML = `
+        <h1>Wer lügt am Besten 🔍</h1>
+
+        <label>Spieleranzahl (min. 3):</label>
+        <select id="playerCount">
+            ${Array.from({length: 12}, (_,i)=>`<option value="${i+1}">${i+1}</option>`).join("")}
+        </select>
+
+        <label>Imposter Anzahl (min. 1):</label>
+        <select id="imposterCount"></select>
+
+        <label>Kategorie:</label>
+        <select id="category">
+            <option value="buntegemischt">Zufall 🎲</option>
+            <option value="fußball">Fußball ⚽</option>
+            <option value="musik">Musik 🎵</option>
+            <option value="politik">Wirtschaft 🏦</option>
+            <option value="essen">Essen 🍕</option>
+        </select>
+
+        <div id="nameInputs"></div>
+
+        <button onclick="generateNames()">Namen eingeben</button>
+        <button onclick="startGame()">Starten</button>
+        <button class="menu-button" onclick="window.location.href='startseite.html'">Zurück zum Hauptmenü</button>
+    `;
+
+    updateImposterOptions();
+}
+
+function updateImposterOptions() {
+    const count = parseInt(document.getElementById("playerCount").value);
+    const imposterSelect = document.getElementById("imposterCount");
+    imposterSelect.innerHTML = "";
+
+    if (count < 3) {
+        imposterSelect.innerHTML = `<option value="0">0</option>`;
+        return;
+    }
+
+    const maxImposters = count - 2;
+
+    for (let i = 1; i <= maxImposters; i++) {
+        imposterSelect.innerHTML += `<option value="${i}">${i}</option>`;
+    }
+}
+
+document.addEventListener("change", e => {
+    if (e.target.id === "playerCount") updateImposterOptions();
+});
+
+function generateNames() {
+    const count = parseInt(document.getElementById("playerCount").value);
+    const container = document.getElementById("nameInputs");
+    container.innerHTML = "";
+
+    for (let i = 0; i < count; i++) {
+        container.innerHTML += `<input id="player${i}" placeholder="Spieler ${i+1} Name">`;
+    }
+}
+
+function startGame() {
+    const count = parseInt(document.getElementById("playerCount").value);
+    const impCount = parseInt(document.getElementById("imposterCount").value);
+    const cat = document.getElementById("category").value;
+
+    if (count < 3) return alert("Mindestens 3 Spieler!");
+    if (impCount < 1) return alert("Mindestens 1 Imposter!");
+
+    let names = [];
+    for (let i = 0; i < count; i++) {
+        const name = document.getElementById(`player${i}`).value.trim();
+        if (!name) return alert("Bitte alle Namen eingeben!");
+        names.push(name);
+    }
+
+    state.players = names;
+    state.category = cat;
+    state.questions = categories[cat];
+    state.answers = [];
+    state.currentIndex = 0;
+
+    let shuffled = [...names].sort(() => Math.random() - 0.5);
+    state.imposters = shuffled.slice(0, impCount);
+
+    state.roundQuestion = state.questions[Math.floor(Math.random() * state.questions.length)];
+
+    renderCard();
+}
+
+function renderCard() {
+    const player = state.players[state.currentIndex];
+
+    app.innerHTML = `
+        <h2>${player}</h2>
+        <div class="card">Aufdecken</div>
+        <button onclick="renderQuestion()">Aufdecken</button>
+    `;
+}
+
+function renderQuestion() {
+    const player = state.players[state.currentIndex];
+    const isImposter = state.imposters.includes(player);
+
+    const questionText = isImposter
+        ? state.roundQuestion.imposter
+        : state.roundQuestion.normal;
+
+    app.innerHTML = `
+        <h2>${player}</h2>
+        <div class="card">${questionText}</div>
+        <input id="answer" placeholder="Deine Antwort">
+        <button onclick="saveAnswer()">Weiter</button>
+    `;
+}
+
+function saveAnswer() {
+    const answer = document.getElementById("answer").value.trim();
+    if (!answer) return alert("Bitte eine Antwort eingeben!");
+
+    state.answers.push({
+        player: state.players[state.currentIndex],
+        answer: answer
+    });
+
+    state.currentIndex++;
+
+    if (state.currentIndex >= state.players.length) {
+        renderResults();
+    } else {
+        renderCard();
+    }
+}
+
+function renderResults() {
+    const q = state.roundQuestion.normal;
+
+    app.innerHTML = `
+        <h2>Richtige Frage:</h2>
+        <div class="card">${q}</div>
+
+        <h2>Antworten:</h2>
+        ${state.answers.map(a => `
+            <div class="card"><b>${a.player}:</b> ${a.answer}</div>
+        `).join("")}
+
+        <button onclick="showImposters()">Wer ist der Imposter?</button>
+    `;
+}
+
+function showImposters() {
+    app.innerHTML = `
+        <h2>Imposter:</h2>
+        ${state.imposters.map(i => `<div class="card">${i}</div>`).join("")}
+        <button onclick="renderStart()">Zurück</button>
+    `;
+}
+
+renderStart();
+</script>
+
+</body>
+<footer>
+  <a href="agb.html">AGB</a> |
+  <a href="datenschutz.html">Datenschutz</a> |
+  <a href="cookies.html">Cookies</a> |
+  <a href="hilfe.html">Hilfe</a>
+</footer>
+
+</html>
