@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>TeamMaster 👨</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* -------------------- GLOBAL -------------------- */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('wm.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+.container {
+  width: 92%;
+  margin: auto;
+  padding: 16px;
+  background: rgba(0,0,0,0.65);
+  border-radius: 18px;
+  margin-top: 20px;
+}
+
+h1, h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  text-shadow: 2px 2px 6px #000;
+}
+
+select, button {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.1rem;
+}
+
+button {
+  background-color: #ff4081;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e91e63;
+}
+
+.card {
+  background: #fff;
+  color: #000;
+  border-radius: 18px;
+  padding: 18px;
+  margin: 18px 0;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  font-size: 1.1rem;
+}
+
+/* -------------------- SLOT ANIMATION -------------------- */
+.slot {
+  animation: slotSpin 0.6s ease-out;
+}
+
+@keyframes slotSpin {
+  0% { transform: translateY(-60px) rotateX(90deg); opacity: 0; }
+  40% { transform: translateY(20px) rotateX(20deg); opacity: 1; }
+  100% { transform: translateY(0) rotateX(0deg); opacity: 1; }
+}
+
+.hidden { display: none; }
+
+/* Kategorie Buttons */
+.choice-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.choice-buttons button {
+  padding: 16px;
+  font-size: 1.2rem;
+  border-radius: 14px;
+}
+
+/* Bewertung */
+#ratingBox {
+  position: relative;
+  background: #fff;
+  color: #000;
+  border-radius: 18px;
+  padding: 18px;
+  margin-top: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+#closeRating {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #000;
+}
+
+/* Premium Popup */
+#premiumPopup {
+  position: relative;
+}
+
+#closePremium {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #000;
+}
+
+/* End-Duell */
+.duel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  font-size: 1rem;
+  border-left: 6px solid transparent;
+}
+
+.duel-left, .duel-right {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.score-line {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 1.2rem;
+}
+</style>
+</head>
+<body>
+
+<audio id="bg-sound" src="wm.mp3" autoplay loop></audio>
+
+<!-- STARTSCREEN -->
+<div class="container" id="startScreen">
+  <h1>TeamMaster 👨</h1>
+
+  <label>Kategorie:</label>
+  <select id="categorySelect">
+    <option value="fussball">⚽ Fußball</option>
+    <option value="tiere">🐾 Tiere</option>
+    <option value="geografie">🌍 Geografie</option>
+  </select>
+
+  <div id="premiumPopup" class="card hidden">
+    <div id="closePremium" onclick="closePremiumPopup()">✖</div>
+    <h3>Premium Kategorie 🔒</h3>
+    <p>Diese Kategorie ist nur mit Premium spielbar.</p>
+  </div>
+
+  <button id="startGameBtn">Spiel starten</button>
+  <button onclick="location.href='startseite.html'">Zur Startseite</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div class="container hidden" id="gameScreen">
+  <h2 id="roundTitle">Stelle dein Team zusammen</h2>
+
+  <div id="playerCard" class="card slot">
+    <div id="playerName"></div>
+
+    <div id="ratingBox" class="hidden"></div>
+
+    <div class="choice-buttons" id="categoryButtons"></div>
+  </div>
+</div>
+
+<!-- END SCREEN -->
+<div class="container hidden" id="endScreen">
+  <h2 id="endScreenTitle">Duell gegen FC Bayern</h2>
+  <div id="summaryCard" class="card"></div>
+  <div id="scoreLine" class="score-line"></div>
+  <button onclick="location.href='wmtop.html'">Erneut spielen</button>
+  <button onclick="location.href='startseite.html'">Zur Startseite</button>
+</div>
+
+<script src="scripttop.js"></script>
+
+<footer style="margin-top:20px;">
+  <a href="agb.html">AGB</a> |
+  <a href="datenschutz.html">Datenschutz</a> |
+  <a href="cookies.html">Cookies</a> |
+  <a href="hilfe.html">Hilfe</a>
+</footer>
+</body>
+</html>
