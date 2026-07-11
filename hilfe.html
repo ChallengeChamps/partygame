@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Hilfe 💬</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('dein-bild-url-hier.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+.container {
+  width: 92%;
+  margin: auto;
+  padding: 16px;
+  background: rgba(0,0,0,0.65);
+  border-radius: 18px;
+  margin-top: 20px;
+  animation: fadeIn 0.8s ease;
+}
+
+h1, h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  text-shadow: 2px 2px 6px #000;
+}
+
+select, input, textarea, button {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.1rem;
+}
+
+button {
+  background-color: #ff4081;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #e91e63;
+}
+
+.card {
+  background: #fff;
+  color: #000;
+  border-radius: 18px;
+  padding: 18px;
+  margin: 18px 0;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  animation: slideUp 0.8s ease;
+  font-size: 1.1rem;
+}
+
+.hidden { display: none; }
+
+.qa-question {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.qa-answer {
+  font-size: 1.1rem;
+  background: #fff;
+  color: #000;
+  padding: 14px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<div class="container" id="helpSelect">
+  <h1>Hilfe 💬</h1>
+
+  <label>Was benötigst du?</label>
+  <select id="helpType">
+    <option value="">Bitte auswählen</option>
+    <option value="kontakt">📧 Kontakt</option>
+    <option value="qa">❓ Q&A</option>
+  </select>
+
+  <button onclick="openHelp()">Weiter</button>
+  <button onclick="location.href='startseite.html'">Zur Startseite</button>
+
+  <p id="errorMsg" style="color:#ff8080; text-align:center; display:none;">
+    Bitte wähle eine Option aus.
+  </p>
+</div>
+
+<!-- KONTAKT -->
+<div class="container hidden" id="contactSection">
+  <h2>Kontaktformular 📧</h2>
+
+  <form action="https://formsubmit.co/mordmitvunda@gmail.com" method="POST">
+    <input type="hidden" name="_captcha" value="false">
+
+    <label>Grund:</label>
+    <select name="Grund" required>
+      <option value="Premium">Premium</option>
+      <option value="PIN">Premium-Code vergessen</option>
+      <option value="Andere">Neue Kategorien oder Spiele</option>
+      <option value="Spielfehler">Spielfehler</option>
+      <option value="Inhalte melden">Inhalte melden</option>
+      <option value="Andere">Andere</option>
+    </select>
+
+    <label>E-Mail-Adresse:</label>
+    <input type="email" name="Email" required placeholder="Deine E‑Mail">
+
+    <label>Nachricht (max. 1000 Zeichen):</label>
+    <textarea name="Nachricht" maxlength="1000" required placeholder="Beschreibe dein Anliegen..." rows="6"></textarea>
+
+    <button type="submit">Absenden</button>
+  </form>
+
+  <button onclick="location.href='hilfe.html'">Zurück</button>
+</div>
+
+<!-- Q&A -->
+<div class="container hidden" id="qaSection">
+  <h2>Fragen & Antworten ❓</h2>
+
+  <label>Kategorie:</label>
+  <select id="qaSelect" onchange="loadQA()">
+    <option value="">Bitte auswählen</option>
+    <option value="premium">Premium</option>
+    <option value="updates">Updates / Neuigkeiten</option>
+    <option value="spiel">Spiel</option>
+    <option value="andere">Andere</option>
+  </select>
+
+  <div id="qaContent"></div>
+
+  <button onclick="location.href='hilfe.html'">Zurück</button>
+</div>
+
+<script>
+function openHelp() {
+  const type = document.getElementById("helpType").value;
+  const error = document.getElementById("errorMsg");
+
+  if (!type) {
+    error.style.display = "block";
+    return;
+  }
+
+  error.style.display = "none";
+  document.getElementById("helpSelect").classList.add("hidden");
+
+  if (type === "kontakt") {
+    document.getElementById("contactSection").classList.remove("hidden");
+  } else if (type === "qa") {
+    document.getElementById("qaSection").classList.remove("hidden");
+  }
+}
+
+function loadQA() {
+  const qa = document.getElementById("qaSelect").value;
+  const box = document.getElementById("qaContent");
+
+  let html = "";
+
+  if (qa === "premium") {
+    html = `
+
+<div class="qa-question">Wie erhalte ich Premium?</div>
+<div class="qa-answer">
+  <p>Premium ist komplett kostenlos und kann nicht gekauft werden. Du erhältst es ausschließlich über die ChallengeChamp‑Social‑Media‑Challenge. Hier ist die vollständige Schrittfolge:</p>
+
+  <h3>🔹 Schritt 1: Plattform auswählen</h3>
+  <p>Wähle eine der unterstützten Plattformen:</p>
+  <ul>
+    <li>🎵 TikTok</li>
+    <li>📸 Instagram (Bild oder Reel)</li>
+    <li>▶️ YouTube (Video oder Short)</li>
+  </ul>
+
+  <h3>🔹 Schritt 2: Beitrag erstellen</h3>
+  <p>Erstelle einen Beitrag, in dem du ChallengeChamp zeigst, spielst oder empfiehlst. Der Beitrag muss den offiziellen Link enthalten:</p>
+  <p><strong>https://challengechamps.github.io <p>/partygame/startseite.html</strong></p> </p>
+  <h3>🔹 Schritt 3: Mindestwerte erreichen</h3>
+  <p>Dein Beitrag muss mindestens einen der folgenden Werte erreichen:</p>
+
+  <ul style="margin-top:10px;">
+    <li>🎵 <strong>TikTok:</strong> 2.000 Views oder 150 Likes</li>
+    <li>📸 <strong>Instagram Bild:</strong> 100 Likes</li>
+    <li>🎬 <strong>Instagram Reel:</strong> 1.000 Views oder 100 Likes</li>
+    <li>▶️ <strong>YouTube Video:</strong> 100 Views oder 15 Likes</li>
+    <li>🎮 <strong>YouTube Short:</strong> 500 Views oder 50 Likes</li>
+  </ul>
+
+  <h3>🔹 Schritt 4: Beitrag verifizieren</h3>
+  <p>Nach Erreichen der Mindestwerte gehst du auf die Premium‑Erhalten‑Seite:</p>
+  <p><a href="premium.html"><strong>Premium erhalten 💎</strong></a></p>
+
+  <p>Dort trägst du ein:</p>
+  <ul>
+    <li>Plattform</li>
+    <li>Username</li>
+    <li>Deine E‑Mail‑Adresse</li>
+  </ul>
+
+  <h3>🔹 Schritt 5: Prüfung & Freischaltung</h3>
+  <p>Dein Beitrag wird manuell geprüft. Wenn alles korrekt ist, erhältst du deinen Premium‑Code per E‑Mail.</p>
+</div>
+
+
+      <div class="qa-question">Ist Premium kostenlos?</div>
+      <div class="qa-answer"><strong>Ja!</strong> Premium kann nicht gekauft werden. Es ist komplett kostenlos und nur über die Challenge erhältlich.</div>
+
+      <div class="qa-question">Wie lange erhalte Premium?</div>
+      <div class="qa-answer">  <p>Premium ist dauerhaft gültig und der Premium-Code bleibt für immer freigeschaltet.</p></div>
+
+<div class="qa-question">Darf ich meinen Premium-Code mit meinen Freunden teilen?</div>
+<div class="qa-answer">
+  <p><strong>Nein!</strong> Dein Premium-Code ist ausschließlich für dich persönlich bestimmt und kann nur einmal verwendet werden.</p>
+
+  <p>Bei einer Weitergabe, Manipulation oder mehrfachen Nutzung wird der Premium-Zugang dauerhaft gesperrt. Premium ist ein persönlicher Bonus, der nur durch die Challenge verdient werden kann.</p>
+</div>
+
+<div class="qa-question">Welche Vorteile bringt Premium?</div>
+<div class="qa-answer">
+  <p>Premium schaltet eine große Menge exklusiver Inhalte frei und erweitert ChallengeChamp deutlich:</p>
+
+  <ul>
+    <li>🎮 <strong>2 neue exklusive Spiele</strong></li>
+    <li>📂 <strong>Über 50 neue Premium-Kategorien</strong></li>
+    <li>❓ <strong>Über 2.500 zusätzliche Fragen</strong></li>
+    <li>🖼️ <strong>Neue Premium-Hintergrundbilder</strong></li>
+    <li>🔊 <strong>Premium-Sounds & Effekte</strong></li>
+    <li>✨ <strong>Zukünftig viele weitere Premium-Vorteile</strong></li>
+  </ul>
+</div>
+
+<!-- WIE LANGE DAUERT DIE PREMIUM-PRÜFUNG -->
+<div class="qa-question">Wie lange dauert die Premium-Prüfung?</div>
+<div class="qa-answer">
+  <p>Die Premium-Prüfung dauert in der Regel <strong>zwischen 5 Minuten und 24 Stunden</strong>. Meist geht es deutlich schneller.</p>
+
+  <p>Jeder Beitrag wird manuell überprüft, um sicherzustellen, dass:</p>
+  <ul>
+    <li>die Mindestwerte erreicht wurden</li>
+    <li>der Beitrag echt ist</li>
+    <li>der offizielle ChallengeChamp-Link enthalten ist</li>
+    <li>keine Manipulation oder Fake-Views vorliegen</li>
+  </ul>
+
+  <p>Sobald alles bestätigt ist, erhältst du deinen Premium-Code per E-Mail.</p>
+</div>
+
+<!-- KANN PREMIUM ENTZOGEN WERDEN -->
+<div class="qa-question">Kann Premium entzogen werden?</div>
+<div class="qa-answer">
+  <p><strong>Ja.</strong> Premium kann entzogen werden, wenn ein Verstoß festgestellt wird.</p>
+
+  <p>Gründe für eine Sperre:</p>
+  <ul>
+    <li>Weitergabe des Premium-Codes</li>
+    <li>Mehrfachnutzung des Codes</li>
+    <li>Manipulierte Beiträge oder Fake-Views</li>
+    <li>Falsche Angaben im Premium-Formular</li>
+  </ul>
+
+  <p>Bei einem Verstoß wird der Premium-Zugang dauerhaft gesperrt.</p>
+</div>
+
+<!-- PREMIUM AUF MEHREREN GERÄTEN -->
+<div class="qa-question">Kann ich Premium auf mehreren Geräten nutzen?</div>
+<div class="qa-answer">
+  <p>Ja! Dein Premium-Zugang ist nicht an ein bestimmtes Gerät gebunden.</p>
+
+  <p>Du kannst Premium auf mehreren Geräten nutzen, z. B.:</p>
+  <ul>
+    <li>📱 Smartphone</li>
+    <li>💻 Laptop</li>
+    <li>🖥️ PC</li>
+    <li>📟 Tablet</li>
+  </ul>
+
+  <p>Damit Premium auf einem neuen Gerät funktioniert, musst du dort einfach erneut deinen Premium-Code eingeben. Danach bleibt Premium dauerhaft aktiv.</p>
+
+  <p><strong>Wichtig:</strong> Der Code funktioniert nur einmal pro Gerät. Weitergabe führt zur Sperre.</p>
+</div>
+
+<!-- WAS PASSIERT WENN MEIN BEITRAG GELÖSCHT WIRD -->
+<div class="qa-question">Was passiert, wenn mein Beitrag gelöscht wird?</div>
+<div class="qa-answer">
+  <p>Wenn dein Beitrag nach der Premium-Freischaltung gelöscht wird, bleibt dein Premium-Zugang weiterhin aktiv.</p>
+
+  <p>ABER:</p>
+  <ul>
+    <li>Wenn der Beitrag <strong>vor der Prüfung</strong> gelöscht wird, kann Premium nicht freigeschaltet werden.</li>
+    <li>Wenn der Beitrag <strong>absichtlich gelöscht</strong> wird, um die Challenge zu umgehen, kann Premium gesperrt werden.</li>
+  </ul>
+
+  <p>Am besten lässt du den Beitrag einfach online.</p>
+</div>
+
+<!-- WAS BRINGT PREMIUM IN ZUKUNFT -->
+<div class="qa-question">Was bringt Premium in Zukunft?</div>
+<div class="qa-answer">
+  <p>Premium wird ständig erweitert.
+
+  <p>Zukünftig geplant:</p>
+  <ul>
+    <li>✨ Neue exklusive Spiele</li>
+    <li>📂 Weitere Premium-Kategorien</li>
+    <li>🎵 Neue Soundpacks</li>
+    <li>🖼️ Neue Premium-Designs</li>
+    <li>🎯 Spezielle Premium-Events</li>
+  </ul>
+
+  <p>Premium wird langfristig immer weiter ausgebaut.</p>
+</div>
+
+</div>
+
+    `;
+  }
+
+  if (qa === "updates") {
+    html = `
+<!-- WIE OFT KOMMEN UPDATES -->
+<div class="qa-question">Wie oft kommen Updates?</div>
+<div class="qa-answer">
+  <p>Wir arbeiten dauerhaft daran, ChallengeChamp zu erweitern und neue Inhalte hinzuzufügen.</p>
+
+  <p>Bitte beachte jedoch, dass ChallengeChamp ein <strong>privates Hobbyprojekt</strong> ist, das von einer einzelnen Person entwickelt wird, die zusätzlich berufstätig ist.</p>
+
+  <p>Updates erscheinen daher regelmäßig, aber nicht nach einem festen Zeitplan.</p>
+</div>
+
+<!-- GIBT ES GEPLANTE EVENTS ODER CHALLENGES -->
+<div class="qa-question">Gibt es geplante Events oder Challenges?</div>
+<div class="qa-answer">
+  <p>Ja! Zu großen realen Events erscheinen spezielle ChallengeChamp‑Events.</p>
+
+  <p>Aktuell gibt es das <strong>WM 2026 Special</strong> mit exklusiven Kategorien und Spielmechaniken.</p>
+</div>
+
+<!-- WERDEN DIE SPECIAL EVENTS WIEDER ENTFERNT -->
+<div class="qa-question">Werden die Special-Events nach den Events wieder entfernt?</div>
+<div class="qa-answer">
+  <p>Das hängt vom jeweiligen Spiel und der Nutzung ab.</p>
+
+  <ul>
+    <li>Wenn ein Special-Spiel sehr beliebt ist, steigt die Chance, dass es dauerhaft übernommen wird.</li>
+    <li>Wenn ein Spiel ausschließlich auf ein bestimmtes Event (z. B. WM) ausgelegt ist, wird es nach dem Event meist entfernt.</li>
+  </ul>
+
+  <p>ChallengeChamp soll eine <strong>neutrale Spieleplattform</strong> bleiben und keine festen Event-Spiele dauerhaft behalten.</p>
+
+  <p>Eine Möglichkeit ist jedoch, ein Event-Spiel später in eine <strong>allgemeine Kategorie</strong> umzuschreiben.</p>
+</div>
+
+<!-- WO SEHE ICH NEUE INHALTE ZUERST -->
+<div class="qa-question">Wo sehe ich neue Inhalte zuerst?</div>
+<div class="qa-answer">
+  <p>Jedes Update wird direkt beim Start der Seite in einem <strong>Popup</strong> angezeigt.</p>
+  <p>Dort findest du alle neuen Spiele, Kategorien und Funktionen.</p>
+</div>
+
+<!-- WERDEN PREMIUM-INHALTE ERWEITERT -->
+<div class="qa-question">Werden Premium-Inhalte erweitert?</div>
+<div class="qa-answer">
+  <p><strong>Ja!</strong> Premium wird dauerhaft erweitert.</p>
+
+  <p>Regelmäßig kommen neue Kategorien, Fragen, Sounds, Hintergründe und exklusive Spielmechaniken hinzu.</p>
+</div>
+
+<!-- WELCHE NEUEN KATEGORIEN WERDEN HINZUGEFÜGT -->
+<div class="qa-question">Welche neuen Kategorien werden hinzugefügt?</div>
+<div class="qa-answer">
+  <p>Aktuell in Planung sind unter anderem:</p>
+
+  <ul>
+    <li>📚 Geschichte (einheitlich für alle Spiele, aktuell Testversion)</li>
+    <li>📱 Social Media</li>
+    <li>🏠 Haushalt (einheitlich für alle Spiele, aktuell Testversion)</li>
+    <li>✨ Weitere Kategorien sind geplant</li>
+  </ul>
+
+  <p><strong>Wichtig:</strong> Dies ist keine Garantie, dass diese Kategorien sicher erscheinen. Es sind nur aktuelle Planungen.</p>
+</div>
+
+<!-- KANN ICH NEUE SPIELE ODER KATEGORIEN VORSCHLAGEN -->
+<div class="qa-question">Kann ich neue Spiele oder Kategorien vorschlagen?</div>
+<div class="qa-answer">
+  <p><strong>Ja!</strong> Du kannst jederzeit neue Spiele oder Kategorien vorschlagen.</p>
+
+  <p>So geht’s:</p>
+  <ul>
+    <li>Gehe zu <strong>Hilfe</strong></li>
+    <li>Wähle <strong>Kontakt</strong></li>
+    <li>Wähle den Grund <strong>Neue Kategorien oder Spiele</strong></li>
+    <li>Gib deine E-Mail-Adresse ein</li>
+    <li>Beschreibe deine Idee im Nachrichtenfeld</li>
+  </ul>
+
+  <p>Alle Vorschläge werden gelesen und geprüft.</p>
+</div>
+
+<div class="qa-question">Was wurde zuletzt aktualisiert?</div>
+<div class="qa-answer">
+  <p><strong>ChallengeChamp Version 1.01</strong></p>
+
+  <p><b>Neue Spiele:</b></p>
+  <ul>
+    <li>BattleBid 📈</li>
+    <li>Wer lügt am Besten 🔍</li>
+    <li>Lüge oder Wahrheit 🤥</li>
+    <li>MatchMaster ⚽ – <i>WM 2026 Special</i></li>
+    <li>PlayMaster ⭐ – <i>WM 2026 Special</i></li>
+    <li>Guess the Hype 📱 – <i>WM 2026 Special</i></li>
+  </ul>
+
+  <p><b>Premium – neues Feature:</b></p>
+  <ul>
+    <li>Premium kann kostenlos über die Social‑Media‑Challenge freigeschaltet werden</li>
+    <li>Premium‑Code‑System hinzugefügt</li>
+    <li>Premium‑Verifizierungsseite hinzugefügt</li>
+  </ul>
+
+  <p><b>Premium Features:</b></p>
+  <ul>
+    <li>Neue Premium Kategorien 💎</li>
+    <li>Neue Premium Spiele 🎉</li>
+    <li>Neue Mechaniken</li>
+    <li>Bessere Animationen</li>
+    <li>Neue Premium‑Hintergrundbilder</li>
+  </ul>
+
+  <p><b>Über 150 neue Kategorien ➕</b></p>
+  <ul>
+    <li>📚 Geschichte – z. B. in Duo Pantomime (Testversion)</li>
+    <li>🏠 Haushalt – Testversion in mehreren Spielen</li>
+  </ul>
+
+  <p><b>Über 2500 neue Fragen ❓</b></p>
+  <ul>
+    <li>➕ Über 25 neue Fragen bei TopSort</li>
+    <li>➕ Über 550 neue Fragen bei Duo Pantomime</li>
+    <li>➕ Viele neue Fragen in MatchMaster, PlayMaster und Guess the Hype</li>
+  </ul>
+
+  <p><b>Neuigkeiten:</b></p>
+  <ul>
+    <li>Spielsuche 🔍 – Spiele jetzt schnell auffindbar</li>
+    <li>Neue Hilfe‑Seite 💬</li>
+    <li>Neues Kontaktformular 📧</li>
+    <li>Überarbeitete Datenschutz‑Seite 🔐</li>
+    <li>Überarbeitete Cookie‑Seite 🍪</li>
+    <li>Überarbeitete AGB 📄</li>
+    <li>News‑Popup auf der Startseite 📰</li>
+  </ul>
+
+  <p><b>Bugfixes 🔧</b></p>
+  <ul>
+    <li>Duo Pantomime – Fehler bei der Kategorieanzeige behoben</li>
+    <li>Spielername beim Kartenziehen vor dem Aufdecken korrigiert</li>
+    <li>Handy‑Bildschirm‑Optimierung für mehrere Spiele verbessert</li>
+    <li>Allgemeine Stabilitätsverbesserungen</li>
+  </ul>
+
+  <p><b>Neue Sounds & Hintergründe 🎶🖼️</b></p>
+  <ul>
+    <li>Neue WM‑Special‑Sounds</li>
+    <li>Neue Premium‑Hintergrundwahl</li>
+    <li>Verbesserte Soundeffekte in mehreren Spielen</li>
+  </ul>
+</div>
+
+
+    `;
+  }
+
+  if (qa === "spiel") {
+    html = `
+<!-- EIN SPIEL LÄDT NICHT -->
+<div class="qa-question">Ein Spiel lädt nicht – was tun?</div>
+<div class="qa-answer">
+  <p>Meist hilft ein Browser-Reload oder das Löschen des Cache. Falls es weiterhin nicht funktioniert, nutze das Kontaktformular.</p>
+</div>
+
+<!-- WARUM SIND MANCH KATEGORIEN PREMIUM -->
+<div class="qa-question">Warum sind manche Kategorien Premium?</div>
+<div class="qa-answer">
+  <p>Premium-Kategorien sind exklusive Inhalte, die nur durch die kostenlose Social-Media-Challenge freigeschaltet werden können.</p>
+</div>
+
+<!-- WARUM LÄDT EIN SPIEL MANCHMAL LANGSAM -->
+<div class="qa-question">Warum lädt ein Spiel manchmal langsam?</div>
+<div class="qa-answer">
+  <p>Manchmal kann es zu längeren Ladezeiten kommen, wenn dein Browser viele Daten zwischengespeichert hat oder die Internetverbindung schwankt.</p>
+
+  <p>Tipps:</p>
+  <ul>
+    <li>Browser neu starten</li>
+    <li>Cache löschen</li>
+    <li>Seite neu laden</li>
+    <li>Handy im Hochformat nutzen</li>
+  </ul>
+</div>
+
+<!-- WARUM WIRD EIN SPIELERNAME FALSCH ANGEZEIGT -->
+<div class="qa-question">Warum wird ein Spielername nicht richtig angezeigt?</div>
+<div class="qa-answer">
+  <p>In seltenen Fällen kann es passieren, dass ein Spielername beim Kartenziehen oder Rundenstart falsch angezeigt wird.</p>
+
+  <p>Dies wurde bereits in mehreren Spielen behoben, z. B.:</p>
+  <ul>
+    <li>Duo Pantomime</li>
+    <li>MatchMaster</li>
+    <li>PlayMaster</li>
+  </ul>
+
+  <p>Wenn der Fehler erneut auftritt, melde ihn bitte über das Kontaktformular.</p>
+</div>
+
+<!-- WARUM FUNKTIONIERT EIN BUTTON NICHT -->
+<div class="qa-question">Warum funktioniert ein Button nicht?</div>
+<div class="qa-answer">
+  <p>Wenn ein Button nicht reagiert, liegt das meist an einer Browser‑Blockierung oder einem fehlerhaften Cache.</p>
+
+  <p>Versuche:</p>
+  <ul>
+    <li>Seite neu laden</li>
+    <li>Browser wechseln (Chrome, Safari, Firefox)</li>
+    <li>Cache löschen</li>
+  </ul>
+</div>
+
+<!-- WARUM STARTET EIN PREMIUM-SPIEL NICHT -->
+<div class="qa-question">Warum startet ein Premium-Spiel nicht?</div>
+<div class="qa-answer">
+  <p>Premium-Spiele starten nur, wenn Premium aktiviert ist. Wenn du eine Premium-Kategorie auswählst, ohne Premium zu besitzen, erscheint ein Hinweis-Popup.</p>
+
+  <p>Premium kannst du kostenlos über die Social-Media-Challenge freischalten.</p>
+</div>
+
+<!-- WARUM WIRD EINE KATEGORIE NICHT ANGEZEIGT -->
+<div class="qa-question">Warum wird eine Kategorie nicht angezeigt?</div>
+<div class="qa-answer">
+  <p>Einige Kategorien befinden sich noch in der Testphase und sind nur in bestimmten Spielen verfügbar.</p>
+
+  <p>Beispiele:</p>
+  <ul>
+    <li>📚 Geschichte – Testversion in Duo Pantomime</li>
+    <li>🏠 Haushalt – Testversion in mehreren Spielen</li>
+  </ul>
+</div>
+
+<!-- WARUM IST DIE DARSTELLUNG AUF MEINEM HANDY VERZERRT -->
+<div class="qa-question">Warum ist die Darstellung auf meinem Handy verzerrt?</div>
+<div class="qa-answer">
+  <p>Manche Browser zoomen Inhalte automatisch oder skalieren falsch.</p>
+
+  <p>Tipps:</p>
+  <ul>
+    <li>Handy im Hochformat nutzen</li>
+    <li>Browser-Zoom auf 100 % stellen</li>
+    <li>Cache löschen</li>
+  </ul>
+
+  <p>Viele Darstellungsfehler wurden bereits behoben, weitere folgen.</p>
+</div>
+
+<!-- WARUM WIEDERHOLT SICH EINE KARTE -->
+<div class="qa-question">Warum wiederholt sich eine Karte?</div>
+<div class="qa-answer">
+  <p>In manchen Spielen werden Karten zufällig ausgewählt. Dadurch kann es vorkommen, dass dieselbe Karte mehrfach erscheint.</p>
+
+  <p>In neueren Spielen wurde ein System eingebaut, das Wiederholungen reduziert oder verhindert.</p>
+</div>
+
+<!-- KANN ICH MEINE SPIELSTÄNDE SPEICHERN -->
+<div class="qa-question">Kann ich meine Spielstände speichern?</div>
+<div class="qa-answer">
+  <p>Aktuell können Spielstände nicht gespeichert werden. ChallengeChamp ist ein schnelles Partyspiel-System, bei dem jede Runde neu beginnt.</p>
+
+  <p>In Zukunft könnten Speicherfunktionen für bestimmte Spiele hinzugefügt werden.</p>
+</div>
+
+<!-- ZU SCHNELLES DRÜCKEN -->
+<div class="qa-question">Warum reagiert das Spiel manchmal nicht richtig?</div>
+<div class="qa-answer">
+  <p>Wenn zu schnell hintereinander gedrückt wird, kann das Spiel überlastet werden. Dadurch reagieren Buttons verzögert oder Aktionen werden doppelt ausgeführt.</p>
+
+  <p>Tipps:</p>
+  <ul>
+    <li>Zwischen Klicks kurz warten</li>
+    <li>Browser neu laden, wenn das Spiel hängt</li>
+    <li>Handy im Hochformat nutzen</li>
+  </ul>
+
+  <p>In mehreren Spielen wurden bereits Optimierungen vorgenommen, um dieses Problem zu reduzieren.</p>
+</div>
+
+    `;
+  }
+
+  if (qa === "andere") {
+    html = `
+<!-- KANN ICH EIGENE IDEEN EINREICHEN -->
+<div class="qa-question">Kann ich eigene Ideen einreichen?</div>
+<div class="qa-answer">
+  <p><strong>Ja!</strong> Du kannst jederzeit neue Spielideen, Kategorien oder Funktionen vorschlagen.</p>
+
+  <p>So geht’s:</p>
+  <ul>
+    <li>Gehe zu <strong>Hilfe</strong></li>
+    <li>Wähle <strong>Kontakt</strong></li>
+    <li>Wähle den Grund <strong>Neue Kategorien oder Spiele</strong></li>
+    <li>Gib deine E-Mail-Adresse ein</li>
+    <li>Beschreibe deine Idee im Nachrichtenfeld</li>
+  </ul>
+
+  <p>Alle Vorschläge werden gelesen und geprüft.</p>
+</div>
+
+<!-- WIE KANN ICH FEHLER MELDEN -->
+<div class="qa-question">Wie kann ich Fehler melden?</div>
+<div class="qa-answer">
+  <p>Fehler kannst du direkt über das Kontaktformular melden.</p>
+
+  <p>Wähle dort den Grund:</p>
+  <ul>
+    <li><strong>Spielfehler</strong></li>
+    <li><strong>Inhalte melden</strong></li>
+  </ul>
+
+  <p>Beschreibe den Fehler möglichst genau, damit er schnell behoben werden kann.</p>
+</div>
+
+<!-- WIE KANN ICH INHALTE MELDEN -->
+<div class="qa-question">Wie kann ich Inhalte melden?</div>
+<div class="qa-answer">
+  <p>Wenn eine Frage, Kategorie oder ein Inhalt unpassend oder falsch ist, kannst du ihn über das Kontaktformular melden.</p>
+
+  <p>Wähle dort den Grund <strong>Inhalte melden</strong> und beschreibe das Problem.</p>
+</div>
+
+<!-- WARUM GIBT ES KEINE APP -->
+<div class="qa-question">Warum gibt es keine App?</div>
+<div class="qa-answer">
+  <p>ChallengeChamp ist aktuell eine reine Webplattform, damit sie auf allen Geräten ohne Installation funktioniert.</p>
+
+  <p>Eine App ist in Zukunft möglich, aber derzeit nicht geplant.</p>
+</div>
+
+<!-- WARUM IST CHALLENGECHAMP KOSTENLOS -->
+<div class="qa-question">Warum ist ChallengeChamp kostenlos?</div>
+<div class="qa-answer">
+  <p>ChallengeChamp ist ein Hobbyprojekt einer einzelnen Person und soll für alle kostenlos zugänglich sein.</p>
+
+  <p>Premium ist ebenfalls kostenlos und kann nicht gekauft werden.</p>
+</div>
+
+<!-- WER ENTWICKELT CHALLENGECHAMP -->
+<div class="qa-question">Wer entwickelt ChallengeChamp?</div>
+<div class="qa-answer">
+  <p>ChallengeChamp wird von einer einzelnen Privatperson entwickelt, die nebenbei berufstätig ist.</p>
+
+  <p>Alle Spiele, Kategorien, Sounds und Designs werden in der Freizeit erstellt.</p>
+</div>
+
+<!-- WARUM GIBT ES MANCHMAL FEHLER -->
+<div class="qa-question">Warum gibt es manchmal Fehler?</div>
+<div class="qa-answer">
+  <p>Da ChallengeChamp ein Hobbyprojekt ist und ständig erweitert wird, können gelegentlich Fehler auftreten.</p>
+
+  <p>Diese werden regelmäßig behoben — du kannst sie jederzeit über das Kontaktformular melden.</p>
+</div>
+
+<!-- WIE KANN ICH CHALLENGECHAMP UNTERSTÜTZEN -->
+<div class="qa-question">Wie kann ich ChallengeChamp unterstützen?</div>
+<div class="qa-answer">
+  <p>Du kannst ChallengeChamp unterstützen, indem du:</p>
+  <ul>
+    <li>die Seite mit Freunden teilst</li>
+    <li>Premium über die Social-Media-Challenge freischaltest</li>
+    <li>neue Ideen einreichst</li>
+    <li>Fehler meldest</li>
+  </ul>
+
+  <p>ChallengeChamp bleibt dauerhaft kostenlos.</p>
+</div>
+
+<!-- WARUM GIBT ES KEINE WERBUNG -->
+<div class="qa-question">Warum gibt es keine Werbung?</div>
+<div class="qa-answer">
+  <p>ChallengeChamp soll ein angenehmes Spielerlebnis bieten — ohne Werbung, Popups oder Tracking.</p>
+
+  <p>Die Seite bleibt bewusst werbefrei.</p>
+</div>
+
+<!-- WARUM GIBT ES KEINE REGISTRIERUNG -->
+<div class="qa-question">Warum muss ich mich nicht registrieren?</div>
+<div class="qa-answer">
+  <p>ChallengeChamp soll schnell und unkompliziert sein. Deshalb gibt es keine Accounts, Logins oder Passwörter.</p>
+
+  <p>Premium wird über einen Code aktiviert, der dauerhaft im Browser gespeichert wird.</p>
+</div>
+
+<!-- WIE WERDEN MEINE DATEN VERWENDET -->
+<div class="qa-question">Wie werden meine Daten verwendet?</div>
+<div class="qa-answer">
+  <p>ChallengeChamp speichert keine persönlichen Daten. Nur Premium-Codes werden lokal im Browser gespeichert.</p>
+
+  <p>Weitere Informationen findest du in der überarbeiteten Datenschutz-Seite.</p>
+</div>
+
+<!-- WARUM GIBT ES SO VIELE SPIELE -->
+<div class="qa-question">Warum gibt es so viele Spiele?</div>
+<div class="qa-answer">
+  <p>ChallengeChamp soll eine große, neutrale Partyspiel-Plattform sein, die für jede Gruppe und jeden Anlass passende Spiele bietet.</p>
+
+  <p>Deshalb werden ständig neue Spiele entwickelt.</p>
+</div>
+
+<!-- WIE WERDEN KATEGORIEN AUSGEWÄHLT -->
+<div class="qa-question">Wie werden Kategorien ausgewählt?</div>
+<div class="qa-answer">
+  <p>Kategorien werden nach Beliebtheit, Vorschlägen und aktuellen Trends ausgewählt.</p>
+
+  <p>Du kannst jederzeit neue Kategorien vorschlagen.</p>
+</div>
+
+    `;
+  }
+
+  box.innerHTML = html;
+}
+</script>
+
+<footer style="margin-top:20px; text-align:center;">
+  <a href="agb.html">AGB</a> |
+  <a href="datenschutz.html">Datenschutz</a> |
+  <a href="cookies.html">Cookies</a> |
+  <a href="hilfe.html">Hilfe</a>
+</footer>
+
+</body>
+</html>
