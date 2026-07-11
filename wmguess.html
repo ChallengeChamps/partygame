@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Guess the Hype 📱</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* -------------------- MOBILE GLOBAL -------------------- */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('wm.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+.container {
+  width: 92%;
+  margin: auto;
+  padding: 16px;
+  background: rgba(0,0,0,0.65);
+  border-radius: 18px;
+  margin-top: 20px;
+  animation: fadeIn 0.8s ease;
+}
+
+h1, h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  text-shadow: 2px 2px 6px #000;
+}
+
+select, input, button {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.1rem;
+}
+
+button {
+  background-color: #ff4081;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #e91e63;
+}
+
+.card {
+  background: #fff;
+  color: #000;
+  border-radius: 18px;
+  padding: 18px;
+  margin: 18px 0;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  animation: slideUp 0.8s ease;
+  font-size: 1.1rem;
+}
+
+.hidden { display: none; }
+
+.choice-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.choice-buttons button {
+  padding: 16px;
+  font-size: 1.2rem;
+  border-radius: 14px;
+}
+
+.score {
+  text-align: center;
+  font-size: 1.3rem;
+  margin-top: 10px;
+}
+
+.correct {
+  color: #4CAF50;
+  font-size: 1.6rem;
+  text-align: center;
+  animation: pop 0.4s ease;
+}
+
+.wrong {
+  color: #ff2a2a;
+  font-size: 1.6rem;
+  text-align: center;
+  animation: pop 0.4s ease;
+}
+
+.value-box {
+  margin-top: 12px;
+  padding: 12px;
+  background: #f2f2f2;
+  border-radius: 12px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pop {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.records-box {
+  margin-top: 15px;
+  padding: 16px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 14px;
+  font-size: 1.1rem;
+  backdrop-filter: blur(6px);
+}
+
+.records-title {
+  text-align: center;
+  margin-bottom: 14px;
+  font-size: 1.4rem;
+}
+
+.records-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.record-item {
+  background: rgba(0,0,0,0.35);
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(4px);
+}
+
+/* Handy: alles untereinander */
+@media (max-width: 600px) {
+  .records-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<audio id="bg-sound" src="wm.mp3" autoplay loop></audio>
+<audio id="yay-sound" src="yay.mp3"></audio>
+
+<!-- STARTSCREEN -->
+<div class="container" id="startScreen">
+  <h1>Guess the Hype 📱</h1>
+
+  <label>Spieleranzahl:</label>
+  <select id="playerCountSelect">
+    <option value="1">1 Spieler</option>
+    <option value="2">2 Spieler</option>
+    <option value="3">3 Spieler</option>
+    <option value="4">4 Spieler</option>
+    <option value="5">5 Spieler</option>
+    <option value="6">6 Spieler</option>
+    <option value="7">7 Spieler</option>
+    <option value="8">8 Spieler</option>
+  </select>
+
+  <div id="playersWrapper"></div
+
+  <label>Kategorie:</label>
+  <select id="categorySelect">
+    <option value="fussball">⚽ Fußball</option>
+    <option value="alter">👵 Alter</option>
+    <option value="geografie">🌍 Geografie</option>
+    <option value="wirtschaft">🏦 Wirtschaft (Premium 💎)</option>
+    <option value="tiere">🐾 Tiere (Premium 💎)</option>
+    <option value="musik">🎶 Musik (Premium 💎)</option>
+    <option value="filme">🎥 Filme (Premium 💎)</option>
+    <option value="socialmedia">📱 Social Media (Premium 💎)</option>
+    <option value="berufe">👷 Berufe (Premium 💎)</option>
+    <option value="preise">💰 Preise (Premium 💎)</option>
+  </select>
+
+  <div id="premiumPopup" class="card hidden">
+    <h3>Premium Kategorie 🔒</h3>
+    <p>Diese Kategorie ist nur mit Premium spielbar.</p>
+    <button onclick="closePremiumPopup()">OK</button>
+  </div>
+
+  <button id="startGameBtn">Spiel starten</button>
+  <button onclick="location.href='startseite.html'">Zur Startseite</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div class="container hidden" id="gameScreen">
+  <h2 id="roundTitle"></h2>
+
+  <div id="questionCard" class="card">
+    <div id="questionText"></div>
+
+    <div class="choice-buttons">
+      <button id="choiceA"></button>
+      <button id="choiceB"></button>
+    </div>
+
+    <div id="feedback"></div>
+
+    <div id="valueBox" class="value-box hidden"></div>
+
+    <div class="score">Punkte: <span id="scoreValue">0</span></div>
+  </div>
+</div>
+
+<!-- END SCREEN -->
+<div class="container hidden" id="endScreen">
+  <h2>Serie beendet!</h2>
+  <div id="summaryCard" class="card"></div>
+  <button id="restartBtn">Erneut spielen</button>
+  <button onclick="location.href='startseite.html'">Zur Startseite</button>
+</div>
+
+  <script src="scriptguess.js"></script>
+</body>
+<footer style="margin-top:20px;">
+  <a href="agb.html">AGB</a> |
+  <a href="datenschutz.html">Datenschutz</a> |
+  <a href="cookies.html">Cookies</a> |
+  <a href="hilfe.html">Hilfe</a>
+</footer>
+</html>
