@@ -158,7 +158,7 @@
 <audio id="werwolf-erwachen-audio" src="Werwölfeerwachen.mp3"></audio>
 <audio id="werwolf-schlafen-audio" src="Werwölfeschlafen.mp3"></audio>
 
-<audio id="hexenerwachen-audio" src="Hexenerwachen.mp3"></audio>
+<audio id="hexenerwachen-audio" src="Hexenerwachen1.mp3"></audio>
 <audio id="hexenschlafen-audio" src="Hexenschlafen.mp3"></audio>
 
 <audio id="heilerwachen-audio" src="Heilererwachen.mp3"></audio>
@@ -843,7 +843,10 @@ function showNightResults() {
 startDiscussionBtn.addEventListener("click", () => {
   resultScreen.classList.add("hidden");
   startDayPhase();
+
+
 });
+
 
 /* ============================================================
    DAY PHASE
@@ -895,14 +898,45 @@ function startVotingPhase() {
   });
 
   votingInfo.appendChild(listDiv);
+
+  // ⭐ NEU: Skip‑Button (ohne setTimeout, ohne weitere Logik)
+  const skipBtn = document.createElement("button");
+  skipBtn.className = "invest-btn";
+  skipBtn.textContent = "Niemand wird gewählt";
+
+  skipBtn.onclick = () => {
+    votingScreen.classList.add("hidden");
+    checkWinConditions();
+  };
+
+  votingInfo.appendChild(skipBtn);
 }
 
 /* ============================================================
    WIN CONDITIONS
    ============================================================ */
 function checkWinConditions() {
+
+  // Sonderfall: Nur noch 1 Spieler lebt
+  const alivePlayers = players.filter(p => p.alive).length;
+
+  if (alivePlayers === 1) {
+    const last = players.find(p => p.alive);
+
+    if (last.team === "gut" || last.role === "Hexe") {
+      showEndScreen("Das Dorf gewinnt! Der letzte Überlebende ist ein Dorfbewohner.");
+    } else {
+      showEndScreen("Die Werwölfe gewinnen! Der letzte Überlebende ist ein Werwolf.");
+    }
+    return;
+  }
+
   const aliveWolves = players.filter(p => p.alive && p.role === "Werwolf").length;
-  const aliveVillagers = players.filter(p => p.alive && p.team === "gut").length;
+
+  // Hexen zählen jetzt als gut
+  const aliveVillagers = players.filter(p =>
+    p.alive && (p.team === "gut" || p.role === "Hexe")
+  ).length;
 
   if (aliveWolves === 0) {
     showEndScreen("Das Dorf gewinnt! Alle Werwölfe sind besiegt.");
