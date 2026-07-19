@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nightfall Village 🌙</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-image: url('wolf.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    color: #fff;
+  }
+
+  .container {
+    max-width: 95%;
+    margin: auto;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    margin-top: 20px;
+    animation: fadeIn 1s ease;
+    box-shadow: 0 0 25px rgba(0,0,0,0.7);
+  }
+
+  h1, h2 {
+    text-align: center;
+    text-shadow: 2px 2px 6px #000;
+  }
+
+  select, input, button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: none;
+    font-size: 1.1rem;
+  }
+
+  button {
+    background-color: #ff4081;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  button:hover {
+    background-color: #e91e63;
+    transform: translateY(-2px);
+  }
+
+  .menu-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 26px;
+    font-size: 1.2rem;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.2s;
+  }
+
+  .menu-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+  }
+
+  .card {
+    background: #fff;
+    color: #000;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    animation: slideUp 0.8s ease;
+  }
+
+  .hidden { display: none; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .invest-btn {
+    background: rgba(255,255,255,0.9);
+    color: #000;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 12px;
+    margin: 8px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+
+  .narration {
+    font-style: italic;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 85%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    color: #000;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    z-index: 9998;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .result-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+  }
+
+  .tag {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: bold;
+    color: #fff;
+    font-size: 0.9rem;
+  }
+
+  .tag-dead { background: #ff1744; }
+  .tag-healed { background: #00e676; }
+  .tag-protected { background: #2979ff; }
+  .tag-poisoned { background: #d500f9; }
+
+</style>
+</head>
+<body>
+
+<!-- ===== AUDIO SYSTEM ===== -->
+<audio id="startseite-audio" src="startseitewolf2.mp3" loop></audio>
+<audio id="spielstart-audio" src="spielstart.mp3" loop></audio>
+
+<audio id="nacht-audio" src="nacht.mp3" loop></audio>
+
+<audio id="nachtbeginn-audio" src="Nachtbeginnt.mp3"></audio>
+<audio id="werwolf-erwachen-audio" src="Werwölfeerwachen.mp3"></audio>
+<audio id="werwolf-schlafen-audio" src="Werwölfeschlafen.mp3"></audio>
+
+<audio id="hexenerwachen-audio" src="Hexenerwachen.mp3"></audio>
+<audio id="hexenschlafen-audio" src="Hexenschlafen.mp3"></audio>
+
+<audio id="heilerwachen-audio" src="Heilererwachen.mp3"></audio>
+<audio id="heilerschlafen-audio" src="Heilerschlafen.mp3"></audio>
+
+<audio id="nachtvorbei-audio" src="Nachtende.mp3"></audio>
+
+<audio id="siegdorf-audio" src="siegdorf.mp3"></audio>
+<audio id="siegwolf-audio" src="siegwolf.mp3"></audio>
+
+<script>
+// ===== SOUND CONTROLLER =====
+function stopAllSounds() {
+  document.querySelectorAll("audio").forEach(a => {
+    a.pause();
+    a.currentTime = 0;
+  });
+}
+
+function playOnce(id, volume = 2.0) {
+  const a = document.getElementById(id);
+  if (!a) return;
+  a.volume = volume;
+  a.currentTime = 0;
+  a.play().catch(()=>{});
+}
+
+function playLoop(id, volume = 1.5) {
+  stopAllSounds();
+  const a = document.getElementById(id);
+  if (!a) return;
+  a.loop = true;
+  a.volume = volume;
+  a.currentTime = 0;
+  a.play().catch(()=>{});
+}
+
+// Startseite Sound sofort starten
+playLoop("startseite-audio", 0.4);
+</script>
+
+<!-- STARTSCREEN -->
+<div class="container" id="start-screen">
+  <h1>Nightfall Village 🌙</h1>
+
+  <label>Spieleranzahl:</label>
+  <select id="player-count">
+    <option value="4">4 Spieler</option>
+    <option value="5">5 Spieler</option>
+    <option value="6">6 Spieler</option>
+    <option value="7">7 Spieler</option>
+    <option value="8">8 Spieler</option>
+    <option value="9">9 Spieler</option>
+    <option value="10">10 Spieler</option>
+    <option value="11">11 Spieler</option>
+    <option value="12">12 Spieler</option>
+    <option value="13">13 Spieler</option>
+    <option value="14">14 Spieler</option>
+    <option value="15">15 Spieler</option>
+  </select>
+
+  <div id="player-names"></div>
+
+  <h3>Rollenwahl</h3>
+  <label>Anzahl Hexen:</label>
+  <select id="witch-count">
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+  </select>
+
+  <label>Anzahl Heiler:</label>
+  <select id="healer-count">
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+  </select>
+
+  <label>Anzahl Seher:</label>
+  <select id="seer-count">
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+  </select>
+
+  <button id="start-game" class="menu-button">Spiel starten</button>
+  <button onclick="location.href='startseite.html'" class="menu-button">Zurück zur Startseite</button>
+</div>
+
+<!-- ROLE REVEAL SCREEN -->
+<div class="container hidden" id="role-screen">
+  <h2 id="role-title">Rollenaufdeckung</h2>
+  <div id="role-card" class="card"></div>
+  <div id="seer-action" class="card hidden"></div>
+  <button id="next-role-btn" class="menu-button">Weitergeben an nächsten Spieler</button>
+</div>
+
+<!-- NIGHT SCREEN -->
+<div class="container hidden" id="night-screen">
+  <h2>Nachtphase</h2>
+  <div id="night-info" class="card"></div>
+  <div id="night-actions" class="card hidden"></div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div class="container hidden" id="result-screen">
+  <h2>Nacht-Ergebnisse</h2>
+  <div id="result-info" class="card"></div>
+  <button id="start-discussion-btn" class="menu-button">Diskussion starten</button>
+</div>
+
+<!-- DAY / VOTING SCREEN -->
+<div class="container hidden" id="day-screen">
+  <h2>Tagphase</h2>
+  <div id="day-info" class="card"></div>
+  <button id="start-voting-btn" class="menu-button">Zur Abstimmung</button>
+</div>
+
+<div class="container hidden" id="voting-screen">
+  <h2>Abstimmung</h2>
+  <div id="voting-info" class="card"></div>
+</div>
+
+<!-- END SCREEN -->
+<div class="container hidden" id="end-screen">
+  <h2>Spiel beendet!</h2>
+  <div id="final-winner" class="card"></div>
+  <div id="final-roles" class="card"></div>
+  <button onclick="location.reload()" class="menu-button">Erneut spielen</button>
+  <button onclick="location.href='startseite.html'" class="menu-button">Zurück zur Startseite</button>
+</div>
+
+<!-- POPUP -->
+<div id="popup" class="popup hidden"></div>
+
+<script>
+/* ============================================================
+   GLOBAL STATE
+   ============================================================ */
+let players = [];
+let currentRoleIndex = 0;
+let roundNumber = 1;
+
+let witchCount = 0;
+let healerCount = 0;
+let seerCount = 0;
+let wolvesCount = 0;
+
+let nightVictim = null;
+let healedPlayer = null;
+let poisonedPlayer = null;
+let protectedPlayer = null;
+
+let seerUsed = {};
+
+const startScreen = document.getElementById("start-screen");
+const roleScreen = document.getElementById("role-screen");
+const nightScreen = document.getElementById("night-screen");
+const resultScreen = document.getElementById("result-screen");
+const dayScreen = document.getElementById("day-screen");
+const votingScreen = document.getElementById("voting-screen");
+const endScreen = document.getElementById("end-screen");
+const popup = document.getElementById("popup");
+
+const playerCountSelect = document.getElementById("player-count");
+const playerNamesDiv = document.getElementById("player-names");
+const witchSelect = document.getElementById("witch-count");
+const healerSelect = document.getElementById("healer-count");
+const seerSelect = document.getElementById("seer-count");
+const startGameBtn = document.getElementById("start-game");
+
+const roleCard = document.getElementById("role-card");
+const seerActionCard = document.getElementById("seer-action");
+const nextRoleBtn = document.getElementById("next-role-btn");
+
+const nightInfo = document.getElementById("night-info");
+const nightActions = document.getElementById("night-actions");
+
+const resultInfo = document.getElementById("result-info");
+const startDiscussionBtn = document.getElementById("start-discussion-btn");
+
+const dayInfo = document.getElementById("day-info");
+const startVotingBtn = document.getElementById("start-voting-btn");
+
+const votingInfo = document.getElementById("voting-info");
+
+const finalWinnerCard = document.getElementById("final-winner");
+const finalRolesCard = document.getElementById("final-roles");
+
+/* ============================================================
+   PLAYER NAME INPUTS
+   ============================================================ */
+function renderPlayerNameInputs() {
+  playerNamesDiv.innerHTML = "";
+  const count = parseInt(playerCountSelect.value);
+  for (let i = 0; i < count; i++) {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = `Name Spieler ${i + 1}`;
+    input.id = `player-name-${i}`;
+    playerNamesDiv.appendChild(input);
+  }
+}
+playerCountSelect.addEventListener("change", renderPlayerNameInputs);
+renderPlayerNameInputs();
+
+/* ============================================================
+   ROLE LIMIT CHECK
+   ============================================================ */
+function checkRoleLimits() {
+  const count = parseInt(playerCountSelect.value);
+  witchCount = parseInt(witchSelect.value);
+  healerCount = parseInt(healerSelect.value);
+  seerCount = parseInt(seerSelect.value);
+
+  const totalSpecial = witchCount + healerCount + seerCount;
+
+  let maxSpecial;
+  if (count === 4) maxSpecial = 1;
+  else if (count === 5) maxSpecial = 2;
+  else {
+    maxSpecial = Math.floor(count * 0.25);
+    if (maxSpecial < 2) maxSpecial = 2;
+  }
+
+  if (totalSpecial > maxSpecial) {
+    showPopup(`
+      <h3>Zu viele Spezialrollen</h3>
+      <p>Für ${count} Spieler sind maximal ${maxSpecial} Spezialrollen erlaubt.</p>
+      <button onclick="hidePopup()">OK</button>
+    `);
+    return false;
+  }
+  return true;
+}
+
+/* ============================================================
+   POPUP
+   ============================================================ */
+function showPopup(html) {
+  popup.innerHTML = html;
+  popup.classList.remove("hidden");
+}
+function hidePopup() {
+  popup.classList.add("hidden");
+}
+
+/* ============================================================
+   START GAME
+   ============================================================ */
+startGameBtn.addEventListener("click", () => {
+  if (!checkRoleLimits()) return;
+
+  playLoop("spielstart-audio", 0.4);
+
+  const count = parseInt(playerCountSelect.value);
+  players = [];
+  seerUsed = {};
+
+  for (let i = 0; i < count; i++) {
+    const nameInput = document.getElementById(`player-name-${i}`);
+    const name = nameInput.value.trim() || `Spieler ${i + 1}`;
+    players.push({
+      id: i,
+      name,
+      role: null,
+      alive: true,
+      team: null
+    });
+  }
+
+  assignRoles();
+  currentRoleIndex = 0;
+  roundNumber = 1;
+
+  startScreen.classList.add("hidden");
+  roleScreen.classList.remove("hidden");
+  showCurrentRoleIntro();
+});
+
+/* ============================================================
+   ASSIGN ROLES
+   ============================================================ */
+function assignRoles() {
+  const count = players.length;
+
+  wolvesCount = Math.max(1, Math.floor(count * 0.25));
+
+  let rolesPool = [];
+
+  for (let i = 0; i < wolvesCount; i++) rolesPool.push("Werwolf");
+  for (let i = 0; i < witchCount; i++) rolesPool.push("Hexe");
+  for (let i = 0; i < healerCount; i++) rolesPool.push("Heiler");
+  for (let i = 0; i < seerCount; i++) rolesPool.push("Seher");
+
+  while (rolesPool.length < count) rolesPool.push("Dorfbewohner");
+
+  for (let i = rolesPool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [rolesPool[i], rolesPool[j]] = [rolesPool[j], rolesPool[i]];
+  }
+
+  players.forEach((p, idx) => {
+    p.role = rolesPool[idx];
+    if (p.role === "Werwolf") p.team = "böse";
+    else if (p.role === "Hexe") p.team = "neutral";
+    else p.team = "gut";
+  });
+}
+
+/* ============================================================
+   ROLE REVEAL FLOW
+   ============================================================ */
+function showCurrentRoleIntro() {
+  const p = players[currentRoleIndex];
+  roleCard.innerHTML = `
+    <div class="role-header">
+      <div class="role-name">${p.name}</div>
+      <div class="role-team">Karte verdeckt – tippe zum Aufdecken</div>
+    </div>
+    <button id="reveal-btn" class="menu-button reveal-btn">Karte aufdecken</button>
+  `;
+  seerActionCard.classList.add("hidden");
+
+  const revealBtn = document.getElementById("reveal-btn");
+  revealBtn.onclick = () => showCurrentRole();
+}
+
+function showCurrentRole() {
+  const p = players[currentRoleIndex];
+  roleCard.innerHTML = `
+    <h3>${p.name}</h3>
+    <p>Deine Rolle: <strong>${p.role}</strong></p>
+    <p>Team: ${p.team.toUpperCase()}</p>
+    <p class="narration">${getRoleDescription(p.role)}</p>
+  `;
+  seerActionCard.classList.add("hidden");
+
+  if (p.role === "Seher" && !seerUsed[p.id]) {
+    showSeerAction(p);
+  }
+}
+
+function getRoleDescription(role) {
+  switch (role) {
+    case "Werwolf":
+      return "Du bist ein Werwolf. In der Nacht wählt ihr gemeinsam ein Opfer.";
+    case "Hexe":
+      return "Du bist die Hexe. Du kannst einmal heilen und einmal vergiften.";
+    case "Heiler":
+      return "Du bist der Heiler. Du kannst jede Nacht einen Spieler schützen.";
+    case "Seher":
+      return "Du bist der Seher. Du darfst jetzt einmal das Team eines Spielers sehen.";
+    default:
+      return "Du bist ein Dorfbewohner. Du hast keine Spezialfähigkeit.";
+  }
+}
+
+function showSeerAction(seerPlayer) {
+  seerActionCard.classList.remove("hidden");
+  seerActionCard.innerHTML = `<h3>Seher-Aktion</h3><p>Wähle einen Spieler, dessen Team du sehen möchtest:</p>`;
+  const listDiv = document.createElement("div");
+
+  players.forEach(target => {
+    if (target.id === seerPlayer.id || !target.alive) return;
+    const btn = document.createElement("button");
+    btn.className = "invest-btn";
+    btn.textContent = target.name;
+    btn.onclick = () => {
+      const teamLabel =
+        target.team === "gut" ? "GUT" :
+        target.team === "böse" ? "BÖSE" :
+        "NEUTRAL";
+
+      seerActionCard.innerHTML = `
+        <h3>Seher-Aktion</h3>
+        <p>${target.name} ist: <strong>${teamLabel}</strong></p>
+      `;
+      seerUsed[seerPlayer.id] = true;
+    };
+    listDiv.appendChild(btn);
+  });
+
+  seerActionCard.appendChild(listDiv);
+}
+
+nextRoleBtn.addEventListener("click", () => {
+  currentRoleIndex++;
+  if (currentRoleIndex >= players.length) {
+    roleScreen.classList.add("hidden");
+    startNightPhase();
+  } else {
+    showCurrentRoleIntro();
+  }
+});
+
+/* ============================================================
+   NIGHT PHASE
+   ============================================================ */
+function startNightPhase() {
+  nightScreen.classList.remove("hidden");
+  nightActions.classList.add("hidden");
+
+  nightVictim = null;
+  healedPlayer = null;
+  poisonedPlayer = null;
+  protectedPlayer = null;
+
+  playLoop("nacht-audio", 0.8);
+  playOnce("nachtbeginn-audio", 1.0);
+
+  nightInfo.innerHTML = `
+    <h3>Runde ${roundNumber} – Nacht beginnt</h3>
+    <p class="narration">Die Nacht beginnt. Alle Spieler schließen ihre Augen.</p>
+  `;
+
+  setTimeout(() => {
+    startWerewolfPhase();
+  }, 7000);
+}
+
+function startWerewolfPhase() {
+  playOnce("werwolf-erwachen-audio", 1.0);
+
+  nightInfo.innerHTML = `
+    <h3>Werwölfe erwachen</h3>
+    <p class="narration">Die Werwölfe erwachen und wählen ein Opfer.</p>
+  `;
+
+  nightActions.classList.remove("hidden");
+  nightActions.innerHTML = `<h3>Opfer wählen</h3>`;
+
+  const listDiv = document.createElement("div");
+  players.forEach(p => {
+    if (!p.alive) return;
+    const btn = document.createElement("button");
+    btn.className = "invest-btn";
+    btn.textContent = p.name;
+    btn.onclick = () => {
+      nightVictim = p;
+      nightActions.classList.add("hidden");
+
+      playOnce("werwolf-schlafen-audio", 1.0);
+
+      nightInfo.innerHTML = `
+        <h3>Werwölfe schlafen wieder ein</h3>
+        <p class="narration">Die Werwölfe haben gewählt und schlafen wieder ein.</p>
+      `;
+
+      setTimeout(() => {
+        startWitchPhase();
+      }, 7000);
+    };
+    listDiv.appendChild(btn);
+  });
+  nightActions.appendChild(listDiv);
+}
+
+function startWitchPhase() {
+  const hasWitch = players.some(p => p.role === "Hexe" && p.alive);
+  if (!hasWitch) {
+    startHealerPhase();
+    return;
+  }
+
+  playOnce("hexenerwachen-audio", 1.0);
+
+  nightInfo.innerHTML = `
+    <h3>Hexe erwacht</h3>
+    <p class="narration">Die Hexe erwacht.</p>
+  `;
+
+  nightActions.classList.remove("hidden");
+  nightActions.innerHTML = `<h3>Hexen-Aktion</h3><p>Du kannst heilen oder vergiften.</p>`;
+
+  const healDiv = document.createElement("div");
+  const poisonDiv = document.createElement("div");
+
+  healDiv.innerHTML = `<p>Heilen:</p>`;
+  poisonDiv.innerHTML = `<p>Vergiften:</p>`;
+
+  players.forEach(p => {
+    if (!p.alive) return;
+
+    // HEILEN BUTTON
+    const healBtn = document.createElement("button");
+    healBtn.className = "invest-btn";
+    healBtn.textContent = p.name;
+    healBtn.onclick = () => {
+      healedPlayer = p;
+      nightActions.classList.add("hidden");
+
+      playOnce("hexenschlafen-audio", 1.0);
+
+      nightInfo.innerHTML = `
+        <h3>Hexe schläft wieder ein</h3>
+        <p class="narration">Die Hexe hat geheilt und schläft wieder ein.</p>
+      `;
+
+      setTimeout(() => startHealerPhase(), 7000);
+    };
+    healDiv.appendChild(healBtn);
+
+    // VERGIFTEN BUTTON
+    const poisonBtn = document.createElement("button");
+    poisonBtn.className = "invest-btn";
+    poisonBtn.textContent = p.name;
+    poisonBtn.onclick = () => {
+      poisonedPlayer = p;
+      nightActions.classList.add("hidden");
+
+      playOnce("hexenschlafen-audio", 1.0);
+
+      nightInfo.innerHTML = `
+        <h3>Hexe schläft wieder ein</h3>
+        <p class="narration">Die Hexe hat vergiftet und schläft wieder ein.</p>
+      `;
+
+      setTimeout(() => startHealerPhase(), 7000);
+    };
+    poisonDiv.appendChild(poisonBtn);
+  });
+
+  const noneBtn = document.createElement("button");
+  noneBtn.className = "menu-button";
+  noneBtn.textContent = "Nichts tun";
+  noneBtn.onclick = () => {
+    nightActions.classList.add("hidden");
+
+    playOnce("hexenschlafen-audio", 1.0);
+
+    nightInfo.innerHTML = `
+      <h3>Hexe schläft wieder ein</h3>
+      <p class="narration">Die Hexe tut nichts und schläft wieder ein.</p>
+    `;
+
+    setTimeout(() => startHealerPhase(), 7000);
+  };
+
+  nightActions.appendChild(healDiv);
+  nightActions.appendChild(poisonDiv);
+  nightActions.appendChild(noneBtn);
+}
+
+function startHealerPhase() {
+  const hasHealer = players.some(p => p.role === "Heiler" && p.alive);
+  if (!hasHealer) {
+    endNightPhase();
+    return;
+  }
+
+  playOnce("heilerwachen-audio", 1.0);
+
+  nightInfo.innerHTML = `
+    <h3>Heiler erwacht</h3>
+    <p class="narration">Der Heiler erwacht.</p>
+  `;
+
+  nightActions.classList.remove("hidden");
+  nightActions.innerHTML = `<h3>Heiler-Aktion</h3><p>Wähle einen Spieler zum Schutz.</p>`;
+
+  const listDiv = document.createElement("div");
+  players.forEach(p => {
+    if (!p.alive) return;
+
+    const btn = document.createElement("button");
+    btn.className = "invest-btn";
+    btn.textContent = p.name;
+    btn.onclick = () => {
+      protectedPlayer = p;
+      nightActions.classList.add("hidden");
+
+      playOnce("heilerschlafen-audio", 1.0);
+
+      nightInfo.innerHTML = `
+        <h3>Heiler schläft wieder ein</h3>
+        <p class="narration">Der Heiler hat geschützt und schläft wieder ein.</p>
+      `;
+
+      setTimeout(() => endNightPhase(), 7000);
+    };
+    listDiv.appendChild(btn);
+  });
+
+  nightActions.appendChild(listDiv);
+}
+
+function endNightPhase() {
+  nightInfo.innerHTML = `
+    <h3>Nacht endet</h3>
+    <p class="narration">Alle Spieler öffnen ihre Augen.</p>
+  `;
+
+  // Sound: Nacht ist vorbei
+  playOnce("nachtvorbei-audio", 1.0);
+
+  setTimeout(() => {
+    nightScreen.classList.add("hidden");
+
+    // Hintergrundsound zurück zum Spielstart
+    playLoop("spielstart-audio", 0.4);
+
+    showNightResults();
+  }, 6000);
+}
+
+
+/* ============================================================
+   NIGHT RESULTS
+   ============================================================ */
+function showNightResults() {
+  resultScreen.classList.remove("hidden");
+  let html = `<h3>Ergebnisse der Nacht</h3>`;
+  let victimDies = false;
+  let poisonKills = false;
+
+  if (nightVictim && nightVictim.alive) {
+    victimDies = true;
+
+    if (healedPlayer && healedPlayer.id === nightVictim.id) {
+      victimDies = false;
+      html += `
+        <div class="result-row">
+          <span class="tag tag-dead">ANGRIFF</span>
+          <span>${nightVictim.name} wurde angegriffen.</span>
+        </div>
+        <div class="result-row">
+          <span class="tag tag-healed">GEHEILT</span>
+          <span>Die Hexe hat ${nightVictim.name} gerettet.</span>
+        </div>
+      `;
+    } else if (protectedPlayer && protectedPlayer.id === nightVictim.id) {
+      victimDies = false;
+      html += `
+        <div class="result-row">
+          <span class="tag tag-dead">ANGRIFF</span>
+          <span>${nightVictim.name} wurde angegriffen.</span>
+        </div>
+        <div class="result-row">
+          <span class="tag tag-protected">GESCHÜTZT</span>
+          <span>Der Heiler hat ${nightVictim.name} geschützt.</span>
+        </div>
+      `;
+    } else {
+      html += `
+        <div class="result-row">
+          <span class="tag tag-dead">TOT</span>
+          <span>${nightVictim.name} wurde getötet.</span>
+        </div>
+      `;
+    }
+  }
+
+  if (poisonedPlayer && poisonedPlayer.alive) {
+    poisonKills = true;
+    html += `
+      <div class="result-row">
+        <span class="tag tag-poisoned">VERGIFTET</span>
+        <span>${poisonedPlayer.name} wurde vergiftet.</span>
+      </div>
+    `;
+  }
+
+  if (!victimDies && !poisonKills) {
+    html += `
+      <div class="result-row">
+        <span class="tag tag-protected">RUHIG</span>
+        <span>Kein Spieler ist gestorben.</span>
+      </div>
+    `;
+  }
+
+  if (victimDies) nightVictim.alive = false;
+  if (poisonKills) poisonedPlayer.alive = false;
+
+  resultInfo.innerHTML = html;
+}
+
+startDiscussionBtn.addEventListener("click", () => {
+  resultScreen.classList.add("hidden");
+  startDayPhase();
+});
+
+/* ============================================================
+   DAY PHASE
+   ============================================================ */
+function startDayPhase() {
+  dayScreen.classList.remove("hidden");
+  dayInfo.innerHTML = `
+    <h3>Tagphase</h3>
+    <p class="narration">Diskussion beginnt – wer ist verdächtig?</p>
+  `;
+}
+
+startVotingBtn.addEventListener("click", () => {
+  dayScreen.classList.add("hidden");
+  startVotingPhase();
+});
+
+/* ============================================================
+   VOTING PHASE
+   ============================================================ */
+function startVotingPhase() {
+  votingScreen.classList.remove("hidden");
+  votingInfo.innerHTML = `<h3>Abstimmung</h3><p>Wählt einen Spieler.</p>`;
+  const listDiv = document.createElement("div");
+
+  players.forEach(p => {
+    if (!p.alive) return;
+
+    const btn = document.createElement("button");
+    btn.className = "invest-btn";
+    btn.textContent = p.name;
+    btn.onclick = () => {
+      p.alive = false;
+
+      votingInfo.innerHTML = `
+        <h3>Abstimmung</h3>
+        <div class="result-row">
+          <span class="tag tag-dead">HINGERICHTET</span>
+          <span>${p.name} wurde hingerichtet.</span>
+        </div>
+      `;
+
+      setTimeout(() => {
+        votingScreen.classList.add("hidden");
+        checkWinConditions();
+      }, 2500);
+    };
+    listDiv.appendChild(btn);
+  });
+
+  votingInfo.appendChild(listDiv);
+}
+
+/* ============================================================
+   WIN CONDITIONS
+   ============================================================ */
+function checkWinConditions() {
+  const aliveWolves = players.filter(p => p.alive && p.role === "Werwolf").length;
+  const aliveVillagers = players.filter(p => p.alive && p.team === "gut").length;
+
+  if (aliveWolves === 0) {
+    showEndScreen("Das Dorf gewinnt! Alle Werwölfe sind besiegt.");
+    return;
+  }
+
+  if (aliveWolves >= aliveVillagers) {
+    showEndScreen("Die Werwölfe gewinnen! Sie sind mindestens so viele wie das Dorf.");
+    return;
+  }
+
+  roundNumber++;
+  startNightPhase();
+}
+
+/* ============================================================
+   END SCREEN
+   ============================================================ */
+function showEndScreen(message) {
+  endScreen.classList.remove("hidden");
+
+  stopAllSounds();
+
+  if (message.includes("Das Dorf gewinnt")) {
+    playOnce("siegdorf-audio", 1.0);
+  } else {
+    playOnce("siegwolf-audio", 1.0);
+  }
+
+  finalWinnerCard.innerHTML = `<h3>Ergebnis</h3><p>${message}</p>`;
+
+  let html = `<h3>Rollenübersicht</h3><ul>`;
+  players.forEach(p => {
+    html += `<li>${p.name}: ${p.role} (${p.team.toUpperCase()}) – ${p.alive ? "lebt" : "tot"}</li>`;
+  });
+  html += `</ul>`;
+  finalRolesCard.innerHTML = html;
+}
+</script>
+
+<footer style="margin-top:20px;">
+  <a href="agb.html">AGB</a> |
+  <a href="datenschutz.html">Datenschutz</a> |
+  <a href="cookies.html">Cookies</a> |
+  <a href="hilfe.html">Hilfe</a>
+</footer>
+
+</body>
+</html>
+
