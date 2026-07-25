@@ -2313,8 +2313,7 @@ musik: {
     { "q": "Welches Land ist für die Anden‑Kosmologie bekannt?", "a": "Bolivien" },
     { "q": "Welches Land ist für die afrokaribische Kultur bekannt?", "a": "Jamaika" },
     { "q": "Welches Land ist für die Levante‑Region bekannt?", "a": "Syrien" },
-    { "q": "Welches Land ist für die tibetische Medizin bekannt?", "a": "Nepal" },
-    { "q": "Welches Land ist für die polynesische Tattoo‑Kultur bekannt?", "a": "Tahiti" }
+    { "q": "Welches Land ist für die tibetische Medizin bekannt?", "a": "Nepal" }
   ],
 
   "500": [
@@ -2455,7 +2454,279 @@ musik: {
     { "q": "Wie nennt man die Region, in der die größten Gletscher liegen?", "a": "Antarktis" },
     { "q": "Welches Tier hat die stärkste Giftwirkung im Meer?", "a": "Würfelqualle" }
   ]
-}
+},
+  "technik": {
+    "100": [
+      { "q": "Warum wird ein Handy warm, wenn man es lange benutzt?", "a": "Weil der Prozessor viel arbeitet." },
+      { "q": "Wie erkennt man, ob ein Kabel beschädigt ist?", "a": "Wenn es Risse hat oder wackelt." },
+      { "q": "Warum lädt ein Smartphone schneller mit einem starken Netzteil?", "a": "Weil mehr Strom fließt." },
+      { "q": "Wie funktioniert die Lautstärkeregelung bei Kopfhörern?", "a": "Das Signal wird stärker oder schwächer gemacht." },
+      { "q": "Warum braucht ein Gerät eine SIM‑Karte?", "a": "Damit es ins Handynetz kommt." },
+      { "q": "Wie erkennt man, ob WLAN eingeschaltet ist?", "a": "Am WLAN‑Symbol." },
+      { "q": "Warum blinkt eine LED?", "a": "Weil sie schnell ein‑ und ausgeschaltet wird." },
+      { "q": "Wie funktioniert ein Lichtschalter?", "a": "Er trennt oder verbindet den Strom." },
+      { "q": "Warum muss man Batterien richtig herum einlegen?", "a": "Wegen Plus und Minus." },
+      { "q": "Wie funktioniert ein Fahrraddynamo?", "a": "Er erzeugt Strom beim Drehen." },
+      { "q": "Warum wird ein Laptop laut, wenn er heiß wird?", "a": "Der Lüfter dreht schneller." },
+      { "q": "Wie erkennt man, ob Bluetooth verbunden ist?", "a": "Am Symbol oder einer Meldung." },
+      { "q": "Warum braucht ein Fernseher eine Fernbedienung?", "a": "Zum Steuern aus der Entfernung." },
+      { "q": "Wie funktioniert ein USB‑Ladeanschluss?", "a": "Er gibt Strom ab." },
+      { "q": "Warum geht ein Gerät aus, wenn der Akku leer ist?", "a": "Weil kein Strom mehr da ist." },
+      { "q": "Wie funktioniert ein Bewegungsmelder?", "a": "Er merkt, wenn sich etwas bewegt." },
+      { "q": "Warum hat ein Auto einen Rückspiegel?", "a": "Damit man hinten sieht." },
+      { "q": "Wie funktioniert ein Wasserkocher technisch?", "a": "Ein Heizstab wird heiß." },
+      { "q": "Warum braucht ein PC einen Lüfter?", "a": "Damit er nicht überhitzt." },
+      { "q": "Wie funktioniert ein Fahrradschloss?", "a": "Es blockiert den Mechanismus." },
+      { "q": "Warum hat ein Auto Scheinwerfer?", "a": "Damit man nachts sieht." },
+      { "q": "Wie funktioniert ein Rauchmelder?", "a": "Er erkennt Rauch in der Luft." },
+      { "q": "Warum hat ein Smartphone mehrere Kameras?", "a": "Für verschiedene Fotoarten." },
+      { "q": "Wie funktioniert ein Touchpad am Laptop?", "a": "Es merkt Berührungen." },
+      { "q": "Warum braucht ein Gerät ein Update?", "a": "Damit Fehler behoben werden." }
+    ],
+
+    "200": [
+      { "q": "Wie misst ein Thermometer die Temperatur?", "a": "Es reagiert auf Wärme." },
+      { "q": "Wie erkennt ein Auto, dass der Airbag ausgelöst werden muss?", "a": "Ein Sensor merkt den Aufprall." },
+      { "q": "Wie funktioniert die Helligkeitsautomatik eines Smartphones?", "a": "Ein Sensor misst Licht." },
+      { "q": "Wie misst ein Multimeter Spannung?", "a": "Es vergleicht die elektrische Energie." },
+      { "q": "Wie funktioniert ein Elektromotor im E‑Scooter?", "a": "Magnete drehen den Motor." },
+      { "q": "Wie erkennt ein Roboter Hindernisse?", "a": "Mit Sensoren oder Kameras." },
+      { "q": "Wie funktioniert ein Induktionskochfeld?", "a": "Es erhitzt den Topf direkt." },
+      { "q": "Wie misst ein Auto die Geschwindigkeit?", "a": "Über die Raddrehung." },
+      { "q": "Wie funktioniert ein Lautsprecher technisch?", "a": "Eine Membran bewegt Luft." },
+      { "q": "Wie erkennt ein Smartphone seine Lage?", "a": "Durch Bewegungssensoren." },
+      { "q": "Wie funktioniert ein Barcode‑Scanner?", "a": "Er liest schwarze und weiße Linien." },
+      { "q": "Wie misst ein Stromzähler den Verbrauch?", "a": "Er zählt den Stromfluss." },
+      { "q": "Wie funktioniert ein Elektroschloss?", "a": "Ein Magnet zieht den Riegel." },
+      { "q": "Wie erkennt ein Auto den Reifendruck?", "a": "Ein Sensor misst den Druck." },
+      { "q": "Wie funktioniert ein Mikrofon technisch?", "a": "Es wandelt Schall in Strom." },
+      { "q": "Wie misst ein Laser‑Entfernungsmesser Distanz?", "a": "Er misst die Zeit des Lichtes." },
+      { "q": "Wie funktioniert ein WLAN‑Router intern?", "a": "Er sendet Daten per Funk." },
+      { "q": "Wie erkennt ein PC eine neue Maus?", "a": "Er merkt das USB‑Signal." },
+      { "q": "Wie funktioniert ein 3D‑Drucker mechanisch?", "a": "Er baut Schichten übereinander." },
+      { "q": "Wie misst ein Auto den Kraftstoffverbrauch?", "a": "Es berechnet die Einspritzmenge." },
+      { "q": "Wie funktioniert ein Elektromagnet?", "a": "Strom erzeugt Magnetkraft." },
+      { "q": "Wie erkennt ein Smartphone Fingerabdrücke?", "a": "Es scannt das Muster." },
+      { "q": "Wie funktioniert ein Kühlschrank als Wärmepumpe?", "a": "Er leitet Wärme nach außen." },
+      { "q": "Wie misst ein GPS‑Empfänger Position?", "a": "Er vergleicht Satellitensignale." },
+      { "q": "Wie funktioniert ein Modellbau‑Servo?", "a": "Ein kleiner Motor bewegt den Arm." }
+    ],
+
+    "300": [
+      { "q": "Wie regelt ein PID‑Controller die Drehzahl eines Motors?", "a": "Er passt die Leistung an." },
+      { "q": "Wie funktioniert Sensorfusion in einem Roboter?", "a": "Er kombiniert mehrere Messwerte." },
+      { "q": "Wie erkennt ein Computer defekte Festplattensektoren?", "a": "Wenn Daten nicht lesbar sind." },
+      { "q": "Wie funktioniert ein Frequenzumrichter?", "a": "Er ändert die Motorfrequenz." },
+      { "q": "Wie misst ein Auto Abstand per Radar?", "a": "Es misst die Rückkehr des Signals." },
+      { "q": "Wie funktioniert ein Lithium‑Ionen‑Akku beim Laden?", "a": "Ionen bewegen sich im Akku." },
+      { "q": "Wie erkennt ein Mikrocontroller analoge Spannungen?", "a": "Er wandelt sie digital um." },
+      { "q": "Wie funktioniert ein Glasfaser‑Empfänger?", "a": "Er macht Licht zu Strom." },
+      { "q": "Wie erkennt ein Roboter seine Position (SLAM)?", "a": "Er baut eine Karte und vergleicht sie." },
+      { "q": "Wie funktioniert ein Wärmetauscher im Auto?", "a": "Er überträgt Wärme." },
+      { "q": "Wie misst ein Oszilloskop Signale?", "a": "Es zeigt Spannungsverläufe." },
+      { "q": "Wie funktioniert ein Digital‑Analog‑Wandler?", "a": "Er erzeugt eine Spannung aus Zahlen." },
+      { "q": "Wie erkennt ein Computer Tastendrücke?", "a": "Er prüft, welche Taste Kontakt hat." },
+      { "q": "Wie funktioniert ein Ultraschallsensor?", "a": "Er misst Echozeiten." },
+      { "q": "Wie misst ein Auto Motortemperatur?", "a": "Ein Sensor misst die Wärme." },
+      { "q": "Wie funktioniert ein Relais?", "a": "Ein Magnet schaltet einen Kontakt." },
+      { "q": "Wie erkennt ein KI‑System Objekte?", "a": "Durch Muster in Bildern." },
+      { "q": "Wie funktioniert ein Wechselstrommotor?", "a": "Ein Drehfeld bewegt den Rotor." },
+      { "q": "Wie misst ein Stromsensor Stromfluss?", "a": "Er misst Magnetfelder." },
+      { "q": "Wie funktioniert ein RFID‑Leser?", "a": "Er liest Funkchips." },
+      { "q": "Wie erkennt ein Auto Motordrehzahl?", "a": "Ein Sensor zählt Umdrehungen." },
+      { "q": "Wie funktioniert ein Klimaanlagen‑Kompressor?", "a": "Er drückt das Kältemittel zusammen." },
+      { "q": "Wie misst ein Laserscanner Oberflächen?", "a": "Er misst reflektiertes Licht." },
+      { "q": "Wie funktioniert ein Mikrocontroller‑Timer?", "a": "Er zählt Takte." },
+      { "q": "Wie erkennt ein PC CPU‑Temperatur?", "a": "Ein Sensor misst die Hitze." }
+    ],
+
+    "400": [
+      { "q": "Wie steuert ein autonomes Fahrzeug seine Lenkung?", "a": "Ein Motor bewegt die Lenkung." },
+      { "q": "Wie funktioniert Echtzeit‑Kommunikation zwischen Robotern?", "a": "Sie tauschen Daten sehr schnell aus." },
+      { "q": "Wie erkennt ein neuronales Netz Produktionsfehler?", "a": "Durch ungewöhnliche Muster." },
+      { "q": "Wie funktioniert ein Lidar‑System zur 3D‑Kartierung?", "a": "Es misst Entfernungen mit Laser." },
+      { "q": "Wie steuert ein Frequenzumrichter Motoren unter Last?", "a": "Er passt Strom und Frequenz an." },
+      { "q": "Wie funktioniert eine Wasserstoff‑Brennstoffzelle?", "a": "Sie erzeugt Strom aus Wasserstoff." },
+      { "q": "Wie erkennt KI Bewegungen in Videos?", "a": "Durch Bildvergleich." },
+      { "q": "Wie funktioniert ein HGÜ‑Netz?", "a": "Es überträgt Strom weit per Gleichspannung." },
+      { "q": "Wie steuert ein Roboterarm Gelenke?", "a": "Er berechnet die Bewegungen." },
+      { "q": "Wie funktioniert ein supraleitender Magnet?", "a": "Er hat keinen elektrischen Widerstand." },
+      { "q": "Wie erkennt ein Auto Straßenmarkierungen?", "a": "Durch Kameras." },
+      { "q": "Wie funktioniert ein Transformer‑Modell?", "a": "Es achtet auf wichtige Wörter." },
+      { "q": "Wie misst ein Quantencomputer Qubits?", "a": "Durch eine Messung des Zustands." },
+      { "q": "Wie funktioniert ein Interferometer?", "a": "Es vergleicht Lichtwellen." },
+      { "q": "Wie erkennt ein Roboter Kollisionen?", "a": "Wenn Kräfte zu hoch werden." },
+      { "q": "Wie funktioniert ein Plasmaantrieb?", "a": "Er beschleunigt Gas elektrisch." },
+      { "q": "Wie steuert ein Echtzeit‑Scheduler Prozesse?", "a": "Er entscheidet, was zuerst läuft." },
+      { "q": "Wie funktioniert ein Autoencoder?", "a": "Er komprimiert Daten." },
+      { "q": "Wie erkennt ein Drohnenschwarm seine Formation?", "a": "Durch Positionsdaten." },
+      { "q": "Wie funktioniert ein Compiler‑Backend?", "a": "Es macht aus Code Maschinencode." },
+      { "q": "Wie misst ein Laser‑Interferometer Gravitationswellen?", "a": "Durch winzige Längenänderungen." },
+      { "q": "Wie funktioniert ein Graph‑Neural‑Network?", "a": "Es verarbeitet Daten als Netz." },
+      { "q": "Wie erkennt ein Auto Fußgänger?", "a": "Durch KI‑Analyse." },
+      { "q": "Wie funktioniert Kryokühlung für Qubits?", "a": "Durch extrem kalte Temperaturen." },
+      { "q": "Wie steuert ein Roboter Bahnplanung?", "a": "Er berechnet den besten Weg." }
+    ],
+
+    "500": [
+      { "q": "Wie funktioniert Quantenfehlerkorrektur?", "a": "Durch zusätzliche Qubits." },
+      { "q": "Wie berechnet ein autonomes Fahrzeug Trajektorien?", "a": "Es sucht den besten Weg." },
+      { "q": "Wie funktioniert Tokamak‑Plasmaeinschluss?", "a": "Mit starken Magneten." },
+      { "q": "Wie erkennt ein Diffusionsmodell Rauschen?", "a": "Es entfernt es Schritt für Schritt." },
+      { "q": "Wie funktioniert Grovers Algorithmus praktisch?", "a": "Er findet Dinge schneller." },
+      { "q": "Wie optimiert ein Compiler Register?", "a": "Er verteilt sie sinnvoll." },
+      { "q": "Wie arbeitet ein Flux‑Qubit?", "a": "Es nutzt Magnetfelder." },
+      { "q": "Wie funktioniert Echtzeit‑Objektverfolgung?", "a": "Es verfolgt Bewegungen im Bild." },
+      { "q": "Wie berechnet ein Roboterarm inverse Dynamik?", "a": "Er berechnet Kräfte." },
+      { "q": "Wie funktioniert ein Ionentriebwerk?", "a": "Es schießt Ionen nach hinten." },
+      { "q": "Wie erkennt KI komplexe Gesten?", "a": "Durch Körperpunkte." },
+      { "q": "Wie funktioniert ein Quantenlaser?", "a": "Er nutzt Quantenübergänge." },
+      { "q": "Wie berechnet ein Drohnenschwarm Flugbahnen?", "a": "Sie stimmen sich ab." },
+      { "q": "Wie funktioniert neuronale Sprachsynthese?", "a": "Sie erzeugt Sprache aus Text." },
+      { "q": "Wie erkennt ein Auto komplexe Verkehrssituationen?", "a": "Durch viele Sensorsignale." },
+      { "q": "Wie funktioniert ein Quanteninterferometer?", "a": "Es vergleicht Quantenphasen." },
+      { "q": "Wie berechnet KI semantische Zusammenhänge?", "a": "Durch Wortbeziehungen." },
+      { "q": "Wie arbeitet ein Josephson‑Qubit?", "a": "Es nutzt supraleitende Übergänge." },
+      { "q": "Wie erkennt ein Roboter Materialspannungen?", "a": "Durch Messsensoren." },
+      { "q": "Wie funktioniert Lock‑Free‑Multithreading?", "a": "Ohne Blockieren von Threads." }
+    ]
+  },
+  "haushalt": {
+    "100": [
+      { "q": "Mit welchem Mittel bekommt man Fett am besten weg?", "a": "Mit Spülmittel." },
+      { "q": "Wie entfernt man Staub am einfachsten?", "a": "Mit einem Staubtuch." },
+      { "q": "Wie bekommt man Krümel vom Tisch?", "a": "Mit einem Lappen oder Handfeger." },
+      { "q": "Wie reinigt man eine verschmutzte Pfanne?", "a": "Mit warmem Wasser und Spülmittel." },
+      { "q": "Wie bekommt man Fingerabdrücke vom Glas?", "a": "Mit Glasreiniger." },
+      { "q": "Wie entfernt man leichte Flecken aus Kleidung?", "a": "Mit Wasser und etwas Waschmittel." },
+      { "q": "Wie bekommt man Kalk vom Wasserhahn?", "a": "Mit Essig." },
+      { "q": "Wie reinigt man den Esstisch nach dem Essen?", "a": "Mit einem feuchten Lappen." },
+      { "q": "Wie entfernt man Brotkrümel vom Boden?", "a": "Mit dem Staubsauger." },
+      { "q": "Wie bekommt man Schmutz aus dem Waschbecken?", "a": "Mit Badreiniger." },
+      { "q": "Wie reinigt man eine Mikrowelle innen?", "a": "Mit warmem Wasser und einem Lappen." },
+      { "q": "Wie bekommt man Fett vom Herd?", "a": "Mit Fettlöser." },
+      { "q": "Wie entfernt man Flecken vom Küchentisch?", "a": "Mit Allzweckreiniger." },
+      { "q": "Wie reinigt man eine verschmutzte Tasse?", "a": "Mit heißem Wasser und Spülmittel." },
+      { "q": "Wie bekommt man Staub von Regalen?", "a": "Mit einem Mikrofasertuch." },
+      { "q": "Wie reinigt man eine klebrige Stelle?", "a": "Mit warmem Wasser und Spülmittel." },
+      { "q": "Wie bekommt man Schmutz vom Fußboden?", "a": "Mit einem Wischmopp." },
+      { "q": "Wie reinigt man eine schmutzige Türklinke?", "a": "Mit Desinfektionsmittel." },
+      { "q": "Wie bekommt man Flecken vom Spiegel?", "a": "Mit Glasreiniger." },
+      { "q": "Wie entfernt man Krümel aus dem Bett?", "a": "Mit einem Handstaubsauger." },
+      { "q": "Wie reinigt man eine klebrige Tischkante?", "a": "Mit warmem Wasser." },
+      { "q": "Wie bekommt man Schmutz aus der Spüle?", "a": "Mit Spülmittel und einem Schwamm." },
+      { "q": "Wie entfernt man leichte Fettflecken von Kleidung?", "a": "Mit etwas Spülmittel vor dem Waschen." },
+      { "q": "Wie reinigt man eine verschmutzte Herdplatte?", "a": "Mit Ceranfeldreiniger." },
+      { "q": "Wie bekommt man Staub aus Ecken?", "a": "Mit einem kleinen Bürstenaufsatz." }
+    ],
+
+    "200": [
+      { "q": "Wie entfernt man hartnäckiges Fett in der Küche?", "a": "Mit starkem Fettlöser." },
+      { "q": "Wie bekommt man Kalk aus der Dusche?", "a": "Mit Essig oder Entkalker." },
+      { "q": "Wie reinigt man Backbleche?", "a": "Mit heißem Wasser und Spülmittel einweichen." },
+      { "q": "Wie entfernt man Schmutz aus Fugen?", "a": "Mit einer kleinen Bürste." },
+      { "q": "Wie bekommt man Eingebranntes aus Töpfen?", "a": "Mit Backpulver und heißem Wasser." },
+      { "q": "Wie reinigt man eine stark verschmutzte Arbeitsplatte?", "a": "Mit Allzweckreiniger." },
+      { "q": "Wie entfernt man Fett vom Backofen?", "a": "Mit Backofenreiniger." },
+      { "q": "Wie bekommt man Kalk vom Duschkopf?", "a": "In Essig einlegen." },
+      { "q": "Wie reinigt man eine klebrige Kühlschranktür?", "a": "Mit warmem Wasser und Spülmittel." },
+      { "q": "Wie entfernt man Schmutz aus dem Abfluss?", "a": "Mit Abflussreiniger." },
+      { "q": "Wie bekommt man Flecken aus Teppichen?", "a": "Mit Teppichreiniger." },
+      { "q": "Wie reinigt man eine fettige Pfanne?", "a": "Mit heißem Wasser und Spülmittel." },
+      { "q": "Wie entfernt man Schimmel im Bad?", "a": "Mit Schimmelentferner." },
+      { "q": "Wie bekommt man Kalk vom Wasserkocher?", "a": "Mit Entkalker." },
+      { "q": "Wie reinigt man eine klebrige Schublade?", "a": "Mit warmem Wasser." },
+      { "q": "Wie entfernt man Fett von Küchenschränken?", "a": "Mit Fettlöser." },
+      { "q": "Wie bekommt man Flecken aus Polstermöbeln?", "a": "Mit Polsterreiniger." },
+      { "q": "Wie reinigt man eine schmutzige Waschmaschine?", "a": "Mit Maschinenreiniger." },
+      { "q": "Wie entfernt man Kalk vom Waschbecken?", "a": "Mit Essigreiniger." },
+      { "q": "Wie bekommt man Schmutz aus dem Kühlschrank?", "a": "Mit warmem Wasser und Spülmittel." },
+      { "q": "Wie reinigt man eine fettige Dunstabzugshaube?", "a": "Mit Fettlöser." },
+      { "q": "Wie entfernt man Flecken von Fliesen?", "a": "Mit Fliesenreiniger." },
+      { "q": "Wie bekommt man Schmutz aus dem Backofenboden?", "a": "Mit Backofenreiniger." },
+      { "q": "Wie reinigt man eine klebrige Herdknopf-Leiste?", "a": "Mit warmem Wasser." },
+      { "q": "Wie entfernt man Kalk aus der Toilette?", "a": "Mit WC‑Reiniger." }
+    ],
+
+    "300": [
+      { "q": "Wie entfernt man eingebranntes Fett im Backofen?", "a": "Mit starkem Backofenreiniger." },
+      { "q": "Wie bekommt man Kalk aus Fliesenfugen?", "a": "Mit Essig und Bürste." },
+      { "q": "Wie reinigt man stark verschmutzte Pfannen?", "a": "Mit Einweichlösung und Spülmittel." },
+      { "q": "Wie entfernt man hartnäckige Flecken aus Kleidung?", "a": "Mit Fleckentferner." },
+      { "q": "Wie bekommt man Fett von der Dunstabzugshaube?", "a": "Mit heißem Wasser und Fettlöser." },
+      { "q": "Wie reinigt man eine stark verkalkte Dusche?", "a": "Mit Entkalker und Bürste." },
+      { "q": "Wie entfernt man Schmutz aus Heizkörpern?", "a": "Mit einer Heizkörperbürste." },
+      { "q": "Wie bekommt man Gerüche aus dem Kühlschrank?", "a": "Mit Natron." },
+      { "q": "Wie reinigt man eine stark verschmutzte Spüle?", "a": "Mit Scheuermilch." },
+      { "q": "Wie entfernt man Fett von Küchenfliesen?", "a": "Mit Fettlöser." },
+      { "q": "Wie bekommt man Kalk aus dem Wasserhahn?", "a": "Mit Essig einwirken lassen." },
+      { "q": "Wie reinigt man eine stark verschmutzte Waschmaschine?", "a": "Mit Maschinenreiniger bei 60°C." },
+      { "q": "Wie entfernt man Schmutz aus Teppichfasern?", "a": "Mit Teppichbürste und Reiniger." },
+      { "q": "Wie bekommt man Fett von Backblechen?", "a": "Mit Einweichen und Spülmittel." },
+      { "q": "Wie reinigt man eine klebrige Kühlschrankdichtung?", "a": "Mit warmem Wasser." },
+      { "q": "Wie entfernt man Kalk aus dem Duschkopf?", "a": "In Essig einlegen." },
+      { "q": "Wie bekommt man Schmutz aus dem Abfluss?", "a": "Mit Abflussreiniger." },
+      { "q": "Wie reinigt man eine stark verschmutzte Herdplatte?", "a": "Mit Ceranfeldreiniger." },
+      { "q": "Wie entfernt man Fett von Küchengeräten?", "a": "Mit Fettlöser." },
+      { "q": "Wie bekommt man Kalk aus dem WC?", "a": "Mit starkem WC‑Reiniger." },
+      { "q": "Wie reinigt man eine klebrige Mikrowelle?", "a": "Mit warmem Wasser und Spülmittel." },
+      { "q": "Wie entfernt man Schmutz aus Fensterrahmen?", "a": "Mit Bürste und Reiniger." },
+      { "q": "Wie bekommt man Fett aus Kleidung?", "a": "Mit Spülmittel vor dem Waschen." },
+      { "q": "Wie reinigt man eine stark verschmutzte Arbeitsplatte?", "a": "Mit Allzweckreiniger." },
+      { "q": "Wie entfernt man Kalk aus dem Wasserkocher?", "a": "Mit Entkalker." }
+    ],
+
+    "400": [
+      { "q": "Wie entfernt man extrem hartnäckiges Fett im Backofen?", "a": "Mit Backofenreiniger über Nacht." },
+      { "q": "Wie bekommt man Kalk aus stark verschmutzten Fliesen?", "a": "Mit Entkalker und Bürste." },
+      { "q": "Wie reinigt man eine stark verkalkte Toilette?", "a": "Mit starkem WC‑Reiniger und Bürste." },
+      { "q": "Wie entfernt man Fett von Küchenschränken?", "a": "Mit heißem Wasser und Fettlöser." },
+      { "q": "Wie bekommt man Schimmel aus der Dusche?", "a": "Mit Schimmelentferner." },
+      { "q": "Wie reinigt man eine stark verschmutzte Dunstabzugshaube?", "a": "Mit Fettlöser und heißem Wasser." },
+      { "q": "Wie entfernt man Kalk aus dem Duschglas?", "a": "Mit Essigreiniger und Abzieher." },
+      { "q": "Wie bekommt man Gerüche aus Polstermöbeln?", "a": "Mit Natron einreiben." },
+      { "q": "Wie reinigt man eine stark verschmutzte Spülmaschine?", "a": "Mit Maschinenreiniger." },
+      { "q": "Wie entfernt man Fett aus dem Backofenboden?", "a": "Mit Backofenreiniger." },
+      { "q": "Wie bekommt man Kalk aus dem Wasserhahn innen?", "a": "Perlator abschrauben und einlegen." },
+      { "q": "Wie reinigt man eine stark verschmutzte Herdplatte?", "a": "Mit Ceranfeldschaber." },
+      { "q": "Wie entfernt man Schmutz aus Heizkörperlamellen?", "a": "Mit Heizkörperbürste." },
+      { "q": "Wie bekommt man Fett aus Küchengeräten?", "a": "Mit starkem Fettlöser." },
+      { "q": "Wie reinigt man eine stark verschmutzte Mikrowelle?", "a": "Mit Dampf und Spülmittel." },
+      { "q": "Wie entfernt man Kalk aus dem Wasserkocher stark?", "a": "Mit starkem Entkalker." },
+      { "q": "Wie bekommt man Schmutz aus Fensterrahmen tief?", "a": "Mit Bürste und Reiniger." },
+      { "q": "Wie reinigt man eine stark verschmutzte Arbeitsplatte?", "a": "Mit Scheuermilch." },
+      { "q": "Wie entfernt man Fett aus Kleidung stark?", "a": "Mit Fleckentferner." },
+      { "q": "Wie bekommt man Kalk aus der Toilette unten?", "a": "Mit WC‑Reiniger über Nacht." },
+      { "q": "Wie reinigt man eine stark verschmutzte Dusche?", "a": "Mit Entkalker und Bürste." },
+      { "q": "Wie entfernt man Fett aus Backblechen stark?", "a": "Mit Einweichen und Reiniger." },
+      { "q": "Wie bekommt man Schmutz aus Teppichen tief?", "a": "Mit Teppichmaschine." },
+      { "q": "Wie reinigt man eine stark verschmutzte Küche?", "a": "Mit Fettlöser und heißem Wasser." },
+      { "q": "Wie entfernt man Kalk aus Fliesen stark?", "a": "Mit Entkalker." }
+    ],
+
+    "500": [
+      { "q": "Wie entfernt man extrem eingebranntes Fett im Backofen?", "a": "Mit Backofenreiniger und langer Einwirkzeit." },
+      { "q": "Wie bekommt man Kalk aus stark verkalkten Armaturen?", "a": "Mit starkem Entkalker." },
+      { "q": "Wie reinigt man eine komplett verkalkte Dusche?", "a": "Mit Entkalker und intensiver Bürste." },
+      { "q": "Wie entfernt man extrem hartnäckige Flecken aus Kleidung?", "a": "Mit Spezialfleckentferner." },
+      { "q": "Wie bekommt man Schimmel aus Fugen?", "a": "Mit Schimmelentferner und Bürste." },
+      { "q": "Wie reinigt man eine stark verschmutzte Dunstabzugshaube innen?", "a": "Mit Fettlöser und heißem Wasser." },
+      { "q": "Wie entfernt man Kalk aus dem Wasserkocher komplett?", "a": "Mit starkem Entkalker und Einweichen." },
+      { "q": "Wie bekommt man Gerüche aus Teppichen?", "a": "Mit Teppichreiniger und Natron." },
+      { "q": "Wie reinigt man eine stark verschmutzte Waschmaschine?", "a": "Mit Maschinenreiniger bei hoher Temperatur." },
+      { "q": "Wie entfernt man Fett aus Küchenschränken stark?", "a": "Mit heißem Wasser und Fettlöser." },
+      { "q": "Wie bekommt man Kalk aus der Toilette komplett?", "a": "Mit starkem WC‑Reiniger über Nacht." },
+      { "q": "Wie reinigt man eine stark verschmutzte Mikrowelle komplett?", "a": "Mit Dampf und Reiniger." },
+      { "q": "Wie entfernt man Schmutz aus Heizkörpern tief?", "a": "Mit Heizkörperbürste und Staubsauger." },
+      { "q": "Wie bekommt man Fett aus Backblechen komplett?", "a": "Mit Einweichen und Scheuermilch." },
+      { "q": "Wie reinigt man eine stark verschmutzte Küche komplett?", "a": "Mit Fettlöser und heißem Wasser." },
+      { "q": "Wie entfernt man Kalk aus Fliesen komplett?", "a": "Mit starkem Entkalker." },
+      { "q": "Wie bekommt man Schmutz aus Teppichen komplett?", "a": "Mit Teppichmaschine." },
+      { "q": "Wie reinigt man eine stark verschmutzte Arbeitsplatte komplett?", "a": "Mit Scheuermilch und Bürste." },
+      { "q": "Wie entfernt man Fett aus Kleidung komplett?", "a": "Mit starkem Fleckentferner." },
+      { "q": "Wie bekommt man Kalk aus dem Duschkopf komplett?", "a": "Mit Entkalker über Nacht." }
+    ]
+  }
 };
 
 /* ============================
@@ -2478,7 +2749,7 @@ function loadCategories() {
   free.textContent = "Zufall";
   categorySelect.appendChild(free);
 
-  const premiumCats = ["sport", "wirtschaft", "tiere", "geografie", "unützes Wissen", "musik", "filme & Serien", "geschichte", "social Media", "wissenschaft", "essen & Trinken", "gaming", "kunst & Kultur", "auto & Verkehr", "mode & Lifestyle", "Reise & Kulturen", "natur"];
+  const premiumCats = ["sport", "wirtschaft", "tiere", "geografie", "unützes Wissen", "musik", "filme & Serien", "geschichte", "social Media", "wissenschaft", "essen & Trinken", "gaming", "kunst & Kultur", "auto & Verkehr", "mode & Lifestyle", "Reise & Kulturen", "natur", "technik", "haushalt"];
 
   premiumCats.forEach(cat => {
     const opt = document.createElement("option");
@@ -2562,7 +2833,7 @@ function createBoard() {
   let categories;
 
   if (currentCategory === "zufall") {
-    const all = ["sport", "wirtschaft", "tiere", "geografie", "unützes Wissen", "musik", "filme & Serien", "geschichte", "social Media", "wissenschaft", "essen & Trinken", "gaming", "kunst & Kultur", "auto & Verkehr", "mode & Lifestyle", "Reise & Kulturen", "natur"];
+    const all = ["sport", "wirtschaft", "tiere", "geografie", "unützes Wissen", "musik", "filme & Serien", "geschichte", "social Media", "wissenschaft", "essen & Trinken", "gaming", "kunst & Kultur", "auto & Verkehr", "mode & Lifestyle", "Reise & Kulturen", "natur", "technik", "haushalt"];
     categories = all.sort(() => Math.random() - 0.5).slice(0, 4);
   } else {
     categories = [currentCategory, currentCategory, currentCategory, currentCategory];
