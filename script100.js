@@ -4,251 +4,262 @@
 
 const questions = {
   sport: {
-    100: [
-  { q: "Fußball: Wie viele Spieler stehen pro Team gleichzeitig auf dem Platz?", a: "11" },
+100: [
+  // ⚽ Fußball
+  { q: "Fußball: Wie viele Spieler stehen pro Team gleichzeitig auf dem Spielfeld?", a: "11" },
   { q: "Fußball: Wie lange dauert eine Halbzeit im Profifußball?", a: "45 Minuten" },
-{ q: "Fußball: Wie viele Punkte gibt ein Unentschieden in der Liga?", a: "1 Punkt" },
-{ q: "Fußball: Wie viele Spieler darf ein Team maximal auswechseln?", a: "5 Spieler" },
-{ q: "Fußball: Wie viele Meter beträgt die Entfernung bei einem Abstoß vom Torraum?", a: "Der Ball muss innerhalb des Torraums liegen (5,5-Meter-Raum)" },
-{ q: "Fußball: Wie viele Schiedsrichterassistenten stehen normalerweise an der Seitenlinie?", a: "2" },
-{ q: "Fußball: Wie viele Minuten dauert die Verlängerung insgesamt?", a: "30 Minuten" },
+  { q: "Fußball: Wie viele Punkte erhält ein Team für ein Unentschieden?", a: "1 Punkt" },
+  { q: "Fußball: Wie viele Auswechslungen sind nach den aktuellen FIFA-Regeln in den meisten Wettbewerben während der regulären Spielzeit erlaubt?", a: "5" },
+  { q: "Fußball: Wie groß ist der Torraum?", a: "5,5 Meter" },
+  { q: "Fußball: Wie viele Schiedsrichterassistenten stehen normalerweise an den Seitenlinien?", a: "2" },
+  { q: "Fußball: Wie lange dauert eine Verlängerung insgesamt?", a: "30 Minuten" },
 
-  { q: "Basketball: Wie viele Spieler stehen pro Team gleichzeitig auf dem Feld?", a: "5" },
-  { q: "Basketball: Wie viele Punkte gibt ein Wurf hinter der Dreierlinie?", a: "3 Punkte" },
+  // 🏀 Basketball
+  { q: "Basketball: Wie viele Spieler stehen pro Team gleichzeitig auf dem Spielfeld?", a: "5" },
+  { q: "Basketball: Wie viele Punkte gibt ein Wurf hinter der Dreipunktlinie?", a: "3 Punkte" },
   { q: "Basketball: Wie viele Viertel hat ein Basketballspiel?", a: "4" },
-  { q: "Basketball: Wie lange dauert ein Viertel im Profi-Basketball?", a: "12 Minuten" },
-  { q: "Basketball: Wie viele Punkte gibt ein normaler Korb innerhalb der Zone?", a: "2 Punkte" },
+  { q: "Basketball: Wie lange dauert ein Viertel in der NBA?", a: "12 Minuten" },
+  { q: "Basketball: Wie viele Punkte zählt ein Korb innerhalb der Dreipunktlinie?", a: "2 Punkte" },
 
-  { q: "Volleyball: Wie viele Spieler stehen pro Team auf dem Feld?", a: "6" },
-  { q: "Volleyball: Wie viele Berührungen sind pro Team erlaubt, bevor der Ball über das Netz muss?", a: "3" },
-  { q: "Volleyball: Wie viele Punkte braucht man normalerweise, um einen Satz zu gewinnen?", a: "25" },
-  { q: "Volleyball: Wie viele Sätze muss man gewinnen, um das Spiel zu gewinnen?", a: "3" },
-  { q: "Volleyball: Wie viele Libero-Spieler darf ein Team haben?", a: "1" },
+  // 🏐 Volleyball
+  { q: "Volleyball: Wie viele Spieler stehen pro Team gleichzeitig auf dem Feld?", a: "6" },
+  { q: "Volleyball: Wie viele Ballberührungen sind pro Team erlaubt, bevor der Ball über das Netz gespielt werden muss?", a: "3" },
+  { q: "Volleyball: Wie viele Punkte benötigt ein Team normalerweise, um einen Satz zu gewinnen?", a: "25 Punkte" },
+  { q: "Volleyball: Wie viele Sätze muss ein Team gewinnen, um ein Best-of-Five-Spiel zu gewinnen?", a: "3 Sätze" },
+  { q: "Volleyball: Wie viele Liberos dürfen in internationalen Wettbewerben auf dem Spielbericht stehen?", a: "2" },
 
+  // 🎾 Tennis
   { q: "Tennis: Wie viele Spieler stehen bei einem Einzel auf dem Platz?", a: "2" },
-  { q: "Tennis: Wie viele Aufschläge hat man pro Punkt?", a: "2 Versuche" },
-  { q: "Tennis: Wie viele Gewinnsätze braucht man bei vielen Turnieren?", a: "2" },
-  { q: "Tennis: Wie viele Punkte braucht man mindestens, um ein Spiel zu gewinnen?", a: "4 Punkte" },
-  { q: "Tennis: Wie viele Spieler stehen beim Doppel auf dem Platz?", a: "4" },
+  { q: "Tennis: Wie viele Aufschlagversuche hat ein Spieler pro Punkt?", a: "2" },
+  { q: "Tennis: Wie viele Gewinnsätze sind bei den meisten Turnieren erforderlich, um ein Match zu gewinnen?", a: "2" },
+  { q: "Tennis: Wie viele Punkte muss ein Spieler mindestens gewinnen, um ein Spiel (Game) zu gewinnen?", a: "4 Punkte" },
+  { q: "Tennis: Wie viele Spieler stehen bei einem Doppel auf dem Platz?", a: "4" },
 
+  // 🏒 Eishockey
   { q: "Eishockey: Wie viele Spieler stehen pro Team gleichzeitig auf dem Eis?", a: "6" },
   { q: "Eishockey: Wie viele Drittel hat ein Eishockeyspiel?", a: "3" },
   { q: "Eishockey: Wie lange dauert ein Drittel?", a: "20 Minuten" },
   { q: "Eishockey: Wie lange dauert eine kleine Zeitstrafe?", a: "2 Minuten" },
-  { q: "Eishockey: Wie viele Tore zählt ein Penalty?", a: "1" },
+  { q: "Eishockey: Wie viele Tore zählt ein erfolgreich verwandelter Penalty?", a: "1" },
 
-  { q: "Handball: Wie viele Spieler stehen pro Team gleichzeitig auf dem Feld?", a: "7" },
+  // 🤾 Handball
+  { q: "Handball: Wie viele Spieler stehen pro Team gleichzeitig auf dem Spielfeld?", a: "7" },
   { q: "Handball: Wie lange dauert eine Halbzeit?", a: "30 Minuten" },
-  { q: "Handball: Wie viele Schritte darf man ohne Dribbling machen?", a: "3 Schritte" },
-  { q: "Handball: Wie viele Auszeiten pro Team sind erlaubt?", a: "3 Auszeiten" },
-  { q: "Handball: Wie viele Tore zählt ein normaler Wurf?", a: "1" },
+  { q: "Handball: Wie viele Schritte darf ein Feldspieler ohne Dribbling machen?", a: "3 Schritte" },
+  { q: "Handball: Wie viele Team-Timeouts sind pro Spiel erlaubt?", a: "3" },
+  { q: "Handball: Wie viele Tore zählt ein regulärer Treffer?", a: "1" },
 
+  // 🏸 Badminton
   { q: "Badminton: Wie viele Spieler stehen bei einem Einzel auf dem Feld?", a: "2" },
-  { q: "Badminton: Wie viele Punkte braucht man, um einen Satz zu gewinnen?", a: "21 Punkte" },
-  { q: "Badminton: Wie viele Gewinnsätze braucht man, um das Match zu gewinnen?", a: "2" },
-  { q: "Badminton: Wie viele Spieler stehen beim Doppel auf dem Feld?", a: "4" }
-    ],
-    200: [
-  // ⚽ Fußball (5)
-  { q: "Fußball: Welches Land gewann die WM 2014?", a: "Deutschland" },
-  { q: "Fußball: Welcher Spieler hält den Rekord für die meisten WM-Tore?", a: "Miroslav Klose" },
-  { q: "Fußball: Wie viele Teams nehmen an einer EM-Endrunde seit 2016 teil?", a: "24 Teams" },
-  { q: "Fußball: Wie viele Punkte benötigt man mindestens, um eine Gruppenphase mit 4 Teams sicher zu überstehen?", a: "6 Punkte" },
-  { q: "Fußball: Wie viele Spieler dürfen im Elfmeterschießen pro Team antreten, bevor es in die Verlängerung geht?", a: "5 Spieler" },
+  { q: "Badminton: Wie viele Punkte benötigt man, um einen Satz zu gewinnen?", a: "21 Punkte" },
+  { q: "Badminton: Wie viele Gewinnsätze sind erforderlich, um ein Match zu gewinnen?", a: "2" },
+  { q: "Badminton: Wie viele Spieler stehen bei einem Doppel auf dem Feld?", a: "4" }
+],
 
-  // 🏀 Basketball (5)
-  { q: "Basketball: Wie viele Sekunden hat ein Team für einen Angriff (Shot Clock)?", a: "24 Sekunden" },
-  { q: "Basketball: Wie viele Fouls führen zum Ausschluss eines Spielers in der NBA?", a: "6 Fouls" },
-  { q: "Basketball: Wie viele Punkte erzielte ein Spieler maximal in einem NBA-Spiel?", a: "100 Punkte (Wilt Chamberlain)" },
-  { q: "Basketball: Wie viele Spieler stehen bei einem Sprungball im Mittelkreis?", a: "2 Spieler" },
-  { q: "Basketball: Wie viele Auszeiten hat ein Team in der NBA pro Spiel?", a: "7 Auszeiten" },
+200: [
+  // ⚽ Fußball
+  { q: "Fußball: Welches Land gewann die FIFA-Weltmeisterschaft 2014?", a: "Deutschland" },
+  { q: "Fußball: Welcher Spieler hält den Rekord für die meisten Tore bei FIFA-Weltmeisterschaften?", a: "Miroslav Klose" },
+  { q: "Fußball: Wie viele Mannschaften nehmen seit 2016 an einer EM-Endrunde teil?", a: "24" },
+  { q: "Fußball: Mit wie vielen Punkten qualifiziert sich ein Team in einer WM-Gruppenphase häufig für das Achtelfinale?", a: "6 Punkte" },
+  { q: "Fußball: Wie viele Schützen treten pro Team zunächst in einem Elfmeterschießen an?", a: "5" },
 
-  // 🏐 Volleyball (5)
-  { q: "Volleyball: Wie viele Punkte muss ein Team Vorsprung haben, um einen Satz zu gewinnen?", a: "Mindestens 2 Punkte" },
-  { q: "Volleyball: Wie viele Spieler rotieren nach jedem gewonnenen Aufschlag?", a: "Alle 6 Spieler rotieren eine Position weiter" },
-  { q: "Volleyball: Wie viele Sätze kann ein Spiel maximal dauern?", a: "5 Sätze" },
-  { q: "Volleyball: Wie viele Punkte braucht man im Entscheidungssatz (Tiebreak)?", a: "15 Punkte" },
-  { q: "Volleyball: Wie viele Liberos dürfen in internationalen Wettbewerben gemeldet werden?", a: "2 Liberos" },
+  // 🏀 Basketball
+  { q: "Basketball: Wie viele Sekunden hat ein Team in der NBA und nach FIBA-Regeln für einen Angriff?", a: "24 Sekunden" },
+  { q: "Basketball: Nach wie vielen persönlichen Fouls wird ein Spieler in der NBA ausgeschlossen?", a: "6 Fouls" },
+  { q: "Basketball: Wie viele Punkte erzielte Wilt Chamberlain im punktreichsten NBA-Spiel eines Spielers?", a: "100 Punkte" },
+  { q: "Basketball: Wie viele Spieler nehmen an einem Sprungball zu Spielbeginn im Mittelkreis teil?", a: "2" },
+  { q: "Basketball: Wie viele reguläre Auszeiten hat ein NBA-Team pro Spiel?", a: "7" },
 
-  // 🎾 Tennis (5)
-  { q: "Tennis: Wie viele Grand-Slam-Turniere gibt es pro Jahr?", a: "4" },
-  { q: "Tennis: Wie viele Spiele muss man mindestens gewinnen, um einen Satz im Tiebreak-Modus zu holen?", a: "6 Spiele" },
-  { q: "Tennis: Wie viele Punkte braucht man im Tiebreak, um zu gewinnen?", a: "7 Punkte (mit 2 Punkten Vorsprung)" },
-  { q: "Tennis: Wie viele Challenges pro Satz hat ein Spieler bei vielen Turnieren?", a: "3 Challenges" },
-  { q: "Tennis: Wie viele Spieler stehen beim Mixed-Doppel auf dem Platz?", a: "4 Spieler" },
+  // 🏐 Volleyball
+  { q: "Volleyball: Mit wie vielen Punkten Vorsprung muss ein Satz gewonnen werden?", a: "2 Punkte" },
+  { q: "Volleyball: Wie viele Spieler rotieren nach dem Rückgewinn des Aufschlagrechts jeweils eine Position weiter?", a: "6" },
+  { q: "Volleyball: Wie viele Sätze kann ein Best-of-Five-Spiel maximal dauern?", a: "5" },
+  { q: "Volleyball: Wie viele Punkte werden im Entscheidungssatz (Tiebreak) zum Sieg benötigt?", a: "15 Punkte" },
+  { q: "Volleyball: Wie viele Liberos dürfen in internationalen Wettbewerben auf dem Spielbericht stehen?", a: "2" },
 
-  // 🏒 Eishockey (5)
-  { q: "Eishockey: Wie viele Spieler sitzen bei einer 5-Minuten-Strafe auf der Strafbank?", a: "1 Spieler" },
-  { q: "Eishockey: Wie viele Schiedsrichter sind bei NHL-Spielen auf dem Eis?", a: "4 Schiedsrichter" },
-  { q: "Eishockey: Wie viele Spiele umfasst eine reguläre NHL-Saison pro Team?", a: "82 Spiele" },
-  { q: "Eishockey: Wie viele Spieler dürfen maximal gleichzeitig im Powerplay auf dem Eis stehen?", a: "5 Spieler" },
-  { q: "Eishockey: Wie viele Drittel werden gespielt, bevor es in die Overtime geht?", a: "3 Drittel" },
+  // 🎾 Tennis
+  { q: "Tennis: Wie viele Grand-Slam-Turniere finden pro Jahr statt?", a: "4" },
+  { q: "Tennis: Wie viele Spiele muss ein Spieler mindestens gewinnen, um einen Satz mit Tiebreak zu gewinnen?", a: "6 Spiele" },
+  { q: "Tennis: Wie viele Punkte sind mindestens nötig, um einen Tiebreak zu gewinnen?", a: "7 Punkte mit 2 Punkten Vorsprung" },
+  { q: "Tennis: Wie viele Challenges pro Satz stehen einem Spieler bei vielen Turnieren zunächst zur Verfügung?", a: "3" },
+  { q: "Tennis: Wie viele Spieler stehen bei einem Mixed-Doppel auf dem Platz?", a: "4" },
 
-  // 🤾 Handball (5)
-  { q: "Handball: Wie viele Spieler dürfen gleichzeitig im Angriff stehen?", a: "6 Feldspieler + Torwart" },
-  { q: "Handball: Wie viele Minuten dauert eine Zeitstrafe?", a: "2 Minuten" },
-  { q: "Handball: Wie viele Schritte darf ein Spieler maximal ohne Dribbling machen?", a: "3 Schritte" },
-  { q: "Handball: Wie viele Spieler stehen insgesamt bei einem Anwurf im Mittelkreis?", a: "1 Spieler" },
-  { q: "Handball: Wie viele Tore erzielte der höchste Torschütze in einem WM-Spiel?", a: "13 Tore (Kiril Lazarov)" },
+  // 🏒 Eishockey
+  { q: "Eishockey: Wie viele Spieler sitzen bei einer 5-Minuten-Strafe auf der Strafbank?", a: "1" },
+  { q: "Eishockey: Wie viele Schiedsrichter befinden sich bei NHL-Spielen auf dem Eis?", a: "4" },
+  { q: "Eishockey: Wie viele Spiele umfasst eine reguläre NHL-Saison pro Team?", a: "82" },
+  { q: "Eishockey: Wie viele Feldspieler darf ein Team bei einem Powerplay maximal gleichzeitig auf dem Eis haben?", a: "5" },
+  { q: "Eishockey: Wie viele Drittel werden vor einer möglichen Overtime gespielt?", a: "3" },
 
-  // 🏸 Badminton (5)
-  { q: "Badminton: Wie viele Punkte kann ein Satz maximal erreichen, bevor er entschieden wird?", a: "30 Punkte" },
-  { q: "Badminton: Wie viele Gewinnsätze braucht man, um ein Match zu gewinnen?", a: "2 Gewinnsätze" },
-  { q: "Badminton: Wie viele Spieler stehen beim Mixed-Doppel auf dem Feld?", a: "4 Spieler" },
-  { q: "Badminton: Wie viele Punkte Vorsprung braucht man, um einen Satz zu gewinnen?", a: "2 Punkte Vorsprung" },
-  { q: "Badminton: Wie viele Schläge darf ein Team maximal ausführen, bevor der Ball über das Netz muss?", a: "1 Schlag" }
-    ],
-    300: [
-  // ⚽ Fußball (5)
-  { q: "Fußball: Welches Team gewann die Champions League im Jahr 2020?", a: "Bayern München" },
-  { q: "Fußball: Wie viele Tore erzielte Lionel Messi in seiner Rekordsaison 2011/12 in La Liga?", a: "50 Tore" },
-  { q: "Fußball: Wie viele Teams spielen in der Bundesliga seit der Saison 1991/92?", a: "18 Teams" },
-  { q: "Fußball: Wie viele Weltmeistertitel gewann Brasilien bis 2022?", a: "5 Titel" },
-  { q: "Fußball: Wie viele Spiele umfasst eine WM-Gruppenphase pro Team?", a: "3 Spiele" },
+  // 🤾 Handball
+  { q: "Handball: Aus wie vielen Feldspielern und Torwart besteht eine Mannschaft auf dem Spielfeld?", a: "6 Feldspieler und 1 Torwart" },
+  { q: "Handball: Wie lange dauert eine Zeitstrafe?", a: "2 Minuten" },
+  { q: "Handball: Wie viele Schritte darf ein Spieler ohne Dribbling machen?", a: "3 Schritte" },
+  { q: "Handball: Wie viele Spieler des anwerfenden Teams befinden sich beim Anwurf im Mittelkreis?", a: "1" },
+  { q: "Handball: Wie viele Tore erzielte Kiril Lazarov im Rekordspiel einer Handball-Weltmeisterschaft?", a: "13 Tore" },
 
-  // 🏀 Basketball (5)
-  { q: "Basketball: Wie viele Meisterschaften gewann Michael Jordan mit den Chicago Bulls?", a: "6 Meisterschaften" },
-  { q: "Basketball: Wie viele Teams spielen in der NBA?", a: "30 Teams" },
-  { q: "Basketball: Wie viele Minuten dauert ein NBA-Spiel inklusive aller Viertel?", a: "48 Minuten" },
-  { q: "Basketball: Wie viele Punkte benötigt ein Team mindestens, um ein Spiel in der Overtime zu gewinnen?", a: "Mindestens 1 Punkt mehr als der Gegner" },
-  { q: "Basketball: Wie viele persönliche Fouls führen im FIBA-Regelwerk zum Ausschluss?", a: "5 Fouls" },
+  // 🏸 Badminton
+  { q: "Badminton: Wie viele Punkte kann ein Satz maximal erreichen?", a: "30 Punkte" },
+  { q: "Badminton: Wie viele Gewinnsätze benötigt man zum Matchgewinn?", a: "2" },
+  { q: "Badminton: Wie viele Spieler stehen bei einem Mixed-Doppel auf dem Feld?", a: "4" },
+  { q: "Badminton: Mit wie vielen Punkten Vorsprung muss ein Satz gewonnen werden?", a: "2 Punkte (außer bei 30:29)" },
+  { q: "Badminton: Wie viele Schläge darf ein Team maximal ausführen, bevor der Ball über das Netz gespielt werden muss?", a: "1" }
+],
 
-  // 🏐 Volleyball (5)
-  { q: "Volleyball: Wie viele Spieler dürfen maximal gleichzeitig im Block stehen?", a: "3 Spieler" },
-  { q: "Volleyball: Wie viele Punkte benötigt man im Tiebreak, wenn beide Teams 14 Punkte haben?", a: "2 Punkte Vorsprung" },
-  { q: "Volleyball: Wie viele Spieler dürfen pro Satz eingewechselt werden?", a: "6 Einwechslungen" },
-  { q: "Volleyball: Wie viele Spieler stehen bei einem Doppelblock am Netz?", a: "2 Spieler" },
-  { q: "Volleyball: Wie viele Sätze gewann ein Team maximal in einem Best-of-Five-Spiel?", a: "3 Sätze" },
+300: [
+  // ⚽ Fußball
+  { q: "Fußball: Welcher Verein gewann die UEFA Champions League 2020?", a: "Bayern München" },
+  { q: "Fußball: Wie viele Tore erzielte Lionel Messi in der La-Liga-Saison 2011/12?", a: "50" },
+  { q: "Fußball: Wie viele Mannschaften spielen seit der Saison 1992/93 in der Bundesliga?", a: "18" },
+  { q: "Fußball: Wie viele Weltmeistertitel gewann Brasilien bis einschließlich 2022?", a: "5" },
+  { q: "Fußball: Wie viele Gruppenspiele bestreitet jede Mannschaft bei einer FIFA-Weltmeisterschaft?", a: "3" },
 
-  // 🎾 Tennis (5)
-  { q: "Tennis: Wie viele Grand-Slam-Titel gewann Roger Federer insgesamt?", a: "20 Titel" },
-  { q: "Tennis: Wie viele Spiele braucht man mindestens, um einen Satz ohne Tiebreak zu gewinnen?", a: "6 Spiele" },
-  { q: "Tennis: Wie viele Punkte muss man im Tiebreak Vorsprung haben, um ihn zu gewinnen?", a: "2 Punkte Vorsprung" },
-  { q: "Tennis: Wie viele Spieler stehen beim Mixed-Doppel auf dem Platz?", a: "4 Spieler" },
-  { q: "Tennis: Wie viele Challenges hat ein Spieler pro Satz, wenn alle erfolgreich sind?", a: "Unbegrenzt, da erfolgreiche Challenges nicht zählen" },
+  // 🏀 Basketball
+  { q: "Basketball: Wie viele NBA-Meisterschaften gewann Michael Jordan mit den Chicago Bulls?", a: "6" },
+  { q: "Basketball: Wie viele Teams spielen in der NBA?", a: "30" },
+  { q: "Basketball: Wie lange beträgt die reguläre Spielzeit eines NBA-Spiels?", a: "48 Minuten" },
+  { q: "Basketball: Wie viele persönliche Fouls führen nach FIBA-Regeln zum Ausschluss eines Spielers?", a: "5" },
+  { q: "Basketball: Wie lange dauert eine Verlängerung (Overtime) in der NBA?", a: "5 Minuten" },
 
-  // 🏒 Eishockey (5)
-  { q: "Eishockey: Wie viele Stanley-Cup-Titel gewann das Team Montreal Canadiens?", a: "24 Titel" },
-  { q: "Eishockey: Wie viele Spieler dürfen maximal gleichzeitig im Penalty-Killing auf dem Eis stehen?", a: "4 Spieler" },
-  { q: "Eishockey: Wie viele Minuten dauert eine große Strafe (Major Penalty)?", a: "5 Minuten" },
-  { q: "Eishockey: Wie viele Spiele umfasst eine Playoff-Serie im Best-of-Seven-Format?", a: "Bis zu 7 Spiele" },
-  { q: "Eishockey: Wie viele Schiedsrichterassistenten gibt es in der NHL zusätzlich zu den Hauptschiedsrichtern?", a: "2 Linienrichter" },
+  // 🏐 Volleyball
+  { q: "Volleyball: Wie viele Spieler dürfen gleichzeitig einen Block bilden?", a: "3" },
+  { q: "Volleyball: Mit welchem Mindestvorsprung muss ein Tiebreak gewonnen werden?", a: "2 Punkte" },
+  { q: "Volleyball: Wie viele Spieler können einen Doppelblock bilden?", a: "2" },
+  { q: "Volleyball: Wie viele Sätze gewinnt das Siegerteam in einem Best-of-Five-Spiel?", a: "3" },
+  { q: "Volleyball: Wie hoch ist das Netz bei den Herren?", a: "2,43 Meter" },
 
-  // 🤾 Handball (5)
-  { q: "Handball: Wie viele Spieler dürfen maximal gleichzeitig im Kreis stehen?", a: "1 Spieler pro Team" },
-  { q: "Handball: Wie viele Tore erzielte das deutsche Team im WM-Finale 2007?", a: "29 Tore" },
-  { q: "Handball: Wie viele Spieler umfasst ein kompletter Kader bei internationalen Turnieren?", a: "16 Spieler" },
-  { q: "Handball: Wie viele Minuten dauert die Verlängerung insgesamt?", a: "10 Minuten (2×5)" },
-  { q: "Handball: Wie viele Schritte darf ein Spieler nach einem Prellschlag machen?", a: "Beliebig viele" },
+  // 🎾 Tennis
+  { q: "Tennis: Wie viele Grand-Slam-Einzeltitel gewann Roger Federer?", a: "20" },
+  { q: "Tennis: Wie viele Spiele muss ein Spieler mindestens gewinnen, um einen Satz zu gewinnen?", a: "6" },
+  { q: "Tennis: Mit welchem Mindestvorsprung wird ein Tiebreak gewonnen?", a: "2 Punkte" },
+  { q: "Tennis: Wie viele Spieler stehen bei einem Mixed-Doppel auf dem Platz?", a: "4" },
+  { q: "Tennis: Was passiert mit Challenges, wenn sie erfolgreich sind?", a: "Sie werden nicht vom Kontingent abgezogen" },
 
-  // 🏸 Badminton (5)
-  { q: "Badminton: Wie viele Punkte kann ein Satz maximal erreichen, bevor er entschieden wird?", a: "30 Punkte" },
-  { q: "Badminton: Wie viele Spieler stehen beim Herren-Doppel auf dem Feld?", a: "4 Spieler" },
-  { q: "Badminton: Wie viele Punkte Vorsprung braucht man, um einen Satz zu gewinnen?", a: "2 Punkte Vorsprung" },
-  { q: "Badminton: Wie viele Schläge darf ein Team maximal ausführen, bevor der Ball über das Netz muss?", a: "1 Schlag" },
-  { q: "Badminton: Wie viele Gewinnsätze braucht man, um ein Match im internationalen Format zu gewinnen?", a: "2 Gewinnsätze" }
-    ],
-    400: [
-  // ⚽ Fußball (5)
-  { q: "Fußball: Wie viele Ballon-d’Or-Auszeichnungen gewann Lionel Messi bis 2023?", a: "8 Auszeichnungen" },
-  { q: "Fußball: Wie viele Champions-League-Titel gewann Real Madrid zwischen 2014 und 2022?", a: "5 Titel" },
-  { q: "Fußball: Wie viele Tore erzielte Cristiano Ronaldo in der Champions League insgesamt?", a: "140 Tore" },
-  { q: "Fußball: Wie viele Vereine spielen in der englischen Premier League pro Saison?", a: "20 Vereine" },
-  { q: "Fußball: Wie viele Weltmeistertitel gewann Italien bis 2022?", a: "4 Titel" },
+  // 🏒 Eishockey
+  { q: "Eishockey: Wie viele Stanley-Cup-Titel gewannen die Montreal Canadiens?", a: "24" },
+  { q: "Eishockey: Wie viele Feldspieler hat ein Team bei einer doppelten Unterzahl (5 gegen 3) auf dem Eis?", a: "3" },
+  { q: "Eishockey: Wie lange dauert eine Major-Strafe?", a: "5 Minuten" },
+  { q: "Eishockey: Wie viele Spiele kann eine Best-of-Seven-Serie maximal umfassen?", a: "7" },
+  { q: "Eishockey: Wie viele Linienrichter sind zusätzlich zu den Hauptschiedsrichtern auf dem Eis?", a: "2" },
 
-  // 🏀 Basketball (5)
-  { q: "Basketball: Wie viele MVP-Auszeichnungen gewann LeBron James bis 2023?", a: "4 MVPs" },
-  { q: "Basketball: Wie viele NBA-Meisterschaften gewann die Franchise Boston Celtics bis 2023?", a: "17 Meisterschaften" },
-  { q: "Basketball: Wie viele Punkte erzielte Kareem Abdul-Jabbar in seiner NBA-Karriere?", a: "38.387 Punkte" },
-  { q: "Basketball: Wie viele Teams qualifizieren sich pro Conference für die NBA-Playoffs?", a: "8 Teams" },
-  { q: "Basketball: Wie viele Spiele umfasst eine Best-of-Seven-Finalserie mindestens?", a: "4 Spiele" },
+  // 🤾 Handball
+  { q: "Handball: Wie viele Kreisspieler darf ein Team gleichzeitig auf dem Spielfeld haben?", a: "1" },
+  { q: "Handball: Wie viele Tore erzielte Deutschland im WM-Finale 2007?", a: "29" },
+  { q: "Handball: Wie viele Spieler umfasste ein Kader bei internationalen Turnieren vor der WM-Regeländerung 2021?", a: "16" },
+  { q: "Handball: Wie lange dauert eine Verlängerung im Handball insgesamt?", a: "10 Minuten" },
+  { q: "Handball: Wie viele Schritte darf ein Spieler nach erneutem Prellen machen?", a: "3 Schritte" },
 
-  // 🏐 Volleyball (5)
-  { q: "Volleyball: Wie viele Spieler dürfen maximal gleichzeitig als Blockspieler agieren?", a: "3 Spieler" },
-  { q: "Volleyball: Wie viele Punkte benötigt man, um einen Satz im Rally-Point-System zu gewinnen?", a: "25 Punkte (mit 2 Punkten Vorsprung)" },
-  { q: "Volleyball: Wie viele Spieler umfasst ein offizieller Kader bei internationalen Turnieren?", a: "14 Spieler" },
-  { q: "Volleyball: Wie viele Rotationspositionen gibt es auf dem Feld?", a: "6 Positionen" },
-  { q: "Volleyball: Wie viele Liberos dürfen in internationalen Wettbewerben eingesetzt werden?", a: "2 Liberos" },
+  // 🏸 Badminton
+  { q: "Badminton: Wie viele Punkte kann ein Satz maximal erreichen?", a: "30" },
+  { q: "Badminton: Wie viele Spieler stehen bei einem Herren-Doppel auf dem Feld?", a: "4" },
+  { q: "Badminton: Mit welchem Mindestvorsprung wird ein Satz gewonnen?", a: "2 Punkte (außer bei 30:29)" },
+  { q: "Badminton: Wie viele Schläge darf ein Doppelteam maximal ausführen, bevor der Ball zurückgespielt werden muss?", a: "1" },
+  { q: "Badminton: Wie viele Gewinnsätze sind im internationalen Wettkampf für den Matchgewinn erforderlich?", a: "2" }
+],
+400: [
+  // ⚽ Fußball
+  { q: "Fußball: Wie viele Ballon-d'Or-Auszeichnungen gewann Lionel Messi bis einschließlich 2023?", a: "8" },
+  { q: "Fußball: Wie viele UEFA-Champions-League-Titel gewann Real Madrid zwischen 2014 und 2022?", a: "5" },
+  { q: "Fußball: Wie viele Tore erzielte Cristiano Ronaldo in der UEFA Champions League?", a: "140" },
+  { q: "Fußball: Wie viele Vereine spielen in der Premier League?", a: "20" },
+  { q: "Fußball: Wie viele Weltmeistertitel gewann Italien bis einschließlich 2022?", a: "4" },
 
-  // 🎾 Tennis (5)
-  { q: "Tennis: Wie viele Grand-Slam-Titel gewann Novak Djokovic bis 2023?", a: "24 Titel" },
-  { q: "Tennis: Wie viele Spiele muss man mindestens gewinnen, um einen Satz ohne Tiebreak im Advantage-Set zu gewinnen?", a: "Mindestens 6 Spiele (mit 2 Spielen Vorsprung)" },
-  { q: "Tennis: Wie viele Punkte benötigt man, um einen Tiebreak im Grand-Slam-Format zu gewinnen?", a: "7 Punkte (mit 2 Punkten Vorsprung)" },
-  { q: "Tennis: Wie viele Spieler stehen beim Mixed-Doppel auf dem Platz?", a: "4 Spieler" },
-  { q: "Tennis: Wie viele Challenges hat ein Spieler pro Satz, wenn alle erfolglos sind?", a: "3 Challenges" },
+  // 🏀 Basketball
+  { q: "Basketball: Wie viele MVP-Auszeichnungen gewann LeBron James bis einschließlich 2023?", a: "4" },
+  { q: "Basketball: Wie viele NBA-Meisterschaften gewannen die Boston Celtics bis einschließlich 2024?", a: "18" },
+  { q: "Basketball: Wie viele Punkte erzielte Kareem Abdul-Jabbar in seiner NBA-Karriere?", a: "38387" },
+  { q: "Basketball: Wie viele Teams qualifizieren sich pro Conference direkt für die NBA-Playoffs?", a: "6" },
+  { q: "Basketball: Wie viele Siege benötigt ein Team mindestens, um eine Best-of-Seven-Serie zu gewinnen?", a: "4" },
 
-  // 🏒 Eishockey (5)
-  { q: "Eishockey: Wie viele Stanley-Cup-Titel gewann Wayne Gretzky in seiner Karriere?", a: "4 Titel" },
-  { q: "Eishockey: Wie viele Spiele umfasst eine komplette NHL-Playoff-Serie im Best-of-Seven-Modus maximal?", a: "7 Spiele" },
-  { q: "Eishockey: Wie viele Spieler stehen bei einer 5-gegen-3-Situation pro Team auf dem Eis?", a: "3 Spieler" },
-  { q: "Eishockey: Wie viele Minuten dauert eine doppelte kleine Strafe?", a: "4 Minuten" },
-  { q: "Eishockey: Wie viele Teams spielen in der NHL?", a: "32 Teams" },
+  // 🏐 Volleyball
+  { q: "Volleyball: Wie viele Spieler dürfen gleichzeitig einen Block bilden?", a: "3" },
+  { q: "Volleyball: Wie viele Punkte werden zum Gewinn eines Satzes im Rally-Point-System benötigt?", a: "25 Punkte mit 2 Punkten Vorsprung" },
+  { q: "Volleyball: Wie viele Spieler umfasst ein offizieller Kader bei internationalen Turnieren?", a: "14" },
+  { q: "Volleyball: Wie viele Rotationspositionen gibt es auf dem Spielfeld?", a: "6" },
+  { q: "Volleyball: Wie viele Liberos dürfen in internationalen Wettbewerben auf dem Spielbericht stehen?", a: "2" },
 
-  // 🤾 Handball (5)
-  { q: "Handball: Wie viele Tore erzielte Kiril Lazarov bei der WM 2009 insgesamt?", a: "92 Tore" },
-  { q: "Handball: Wie viele Spieler dürfen maximal gleichzeitig im Angriff stehen?", a: "6 Feldspieler + Torwart" },
-  { q: "Handball: Wie viele Minuten dauert eine komplette Verlängerung inklusive zweiter Verlängerung?", a: "20 Minuten (2×5 + 2×5)" },
-  { q: "Handball: Wie viele Spieler umfasst ein WM-Kader seit der Regeländerung 2021?", a: "20 Spieler" },
-  { q: "Handball: Wie viele Schritte darf ein Spieler nach einem Prellschlag machen?", a: "Beliebig viele" },
+  // 🎾 Tennis
+  { q: "Tennis: Wie viele Grand-Slam-Einzeltitel gewann Novak Djokovic bis einschließlich 2023?", a: "24" },
+  { q: "Tennis: Mit welchem Mindestvorsprung muss ein Advantage-Satz gewonnen werden?", a: "2 Spiele" },
+  { q: "Tennis: Wie viele Punkte sind mindestens nötig, um einen Tiebreak zu gewinnen?", a: "7 Punkte mit 2 Punkten Vorsprung" },
+  { q: "Tennis: Wie viele Spieler stehen bei einem Mixed-Doppel auf dem Platz?", a: "4" },
+  { q: "Tennis: Wie viele erfolglose Challenges stehen einem Spieler pro Satz bei vielen Turnieren zunächst zur Verfügung?", a: "3" },
 
-  // 🏸 Badminton (5)
-  { q: "Badminton: Wie viele Punkte erzielte Lin Dan im entscheidenden Satz des Olympiafinales 2008?", a: "21 Punkte" },
-  { q: "Badminton: Wie viele Punkte kann ein Satz maximal erreichen, bevor er zwingend entschieden wird?", a: "30 Punkte" },
-  { q: "Badminton: Wie viele Spieler stehen beim Damen-Doppel auf dem Feld?", a: "4 Spieler" },
-  { q: "Badminton: Wie viele Punkte Vorsprung braucht man, um einen Satz zu gewinnen?", a: "2 Punkte Vorsprung" },
-  { q: "Badminton: Wie viele Gewinnsätze braucht man im internationalen Format, um ein Match zu gewinnen?", a: "2 Gewinnsätze" }
-    ],
-    500: [
-  // ⚽ Fußball (5)
-  { q: "Fußball: Welches Team gewann die Champions League 2005 nach einem 3:0-Rückstand zur Halbzeit?", a: "Liverpool" },
-  { q: "Fußball: Welcher Spieler hält den Rekord für die meisten Einsätze in der Champions League?", a: "Iker Casillas" },
-  { q: "Fußball: Welches Land gewann die erste Fußball-WM der Geschichte 1930?", a: "Uruguay" },
-  { q: "Fußball: Welcher Verein wurde als erster deutscher Meister nach Einführung der Bundesliga 1963?", a: "1. FC Köln" },
-  { q: "Fußball: Welcher Spieler erzielte das 'Tor des Jahrhunderts' bei der WM 1986?", a: "Diego Maradona" },
+  // 🏒 Eishockey
+  { q: "Eishockey: Wie viele Stanley-Cup-Titel gewann Wayne Gretzky als Spieler?", a: "4" },
+  { q: "Eishockey: Wie viele Spiele kann eine Best-of-Seven-Serie maximal dauern?", a: "7" },
+  { q: "Eishockey: Wie viele Feldspieler hat ein Team bei einer 5-gegen-3-Unterzahl auf dem Eis?", a: "3" },
+  { q: "Eishockey: Wie lange dauert eine doppelte kleine Strafe?", a: "4 Minuten" },
+  { q: "Eishockey: Wie viele Teams spielen in der NHL?", a: "32" },
 
-  // 🏀 Basketball (5)
-  { q: "Basketball: Welches Team gewann den ersten NBA-Titel der Geschichte 1947?", a: "Philadelphia Warriors" },
-  { q: "Basketball: Welcher Spieler hält den Rekord für die meisten Karriere-Assists in der NBA?", a: "John Stockton" },
-  { q: "Basketball: Welches Team gewann 2016 die NBA Finals nach einem 1:3-Rückstand?", a: "Cleveland Cavaliers" },
-  { q: "Basketball: Welcher Spieler wurde als erster Europäer NBA-MVP?", a: "Dirk Nowitzki" },
-  { q: "Basketball: Welches College brachte die meisten späteren NBA-Spieler hervor?", a: "University of Kentucky" },
+  // 🤾 Handball
+  { q: "Handball: Wie viele Feldspieler dürfen gleichzeitig zusammen mit dem Torwart auf dem Spielfeld stehen?", a: "6" },
+  { q: "Handball: Wie viele Tore erzielte Kiril Lazarov bei der Handball-WM 2009 insgesamt?", a: "92" },
+  { q: "Handball: Wie lange dauert eine doppelte Verlängerung insgesamt?", a: "20 Minuten" },
+  { q: "Handball: Wie viele Spieler umfasst ein WM-Kader seit der Regeländerung 2021?", a: "20" },
+  { q: "Handball: Wie viele Schritte darf ein Spieler nach erneutem Prellen machen?", a: "3 Schritte" },
 
-  // 🏐 Volleyball (5)
-  { q: "Volleyball: Welches Land gewann die erste Volleyball-WM der Männer 1949?", a: "Sowjetunion" },
-  { q: "Volleyball: Welches Team dominiert traditionell die brasilianische Superliga der Männer?", a: "Sada Cruzeiro" },
-  { q: "Volleyball: Welches Land gewann Olympia-Gold der Männer 2012?", a: "Russland" },
-  { q: "Volleyball: Welches Land ist Rekordweltmeister bei den Frauen?", a: "Sowjetunion" },
-  { q: "Volleyball: Welches Team gewann die Nations League der Männer 2021?", a: "Brasilien" },
+  // 🏸 Badminton
+  { q: "Badminton: Wie viele Punkte erzielte Lin Dan im entscheidenden Satz des Olympiafinales 2008?", a: "21" },
+  { q: "Badminton: Wie viele Punkte kann ein Satz maximal erreichen?", a: "30" },
+  { q: "Badminton: Wie viele Spieler stehen bei einem Damen-Doppel auf dem Feld?", a: "4" },
+  { q: "Badminton: Mit welchem Mindestvorsprung wird ein Satz gewonnen?", a: "2 Punkte (außer bei 30:29)" },
+  { q: "Badminton: Wie viele Gewinnsätze sind für den Matchgewinn im internationalen Format erforderlich?", a: "2" }
+],
+500: [
+  // ⚽ Fußball
+  { q: "Fußball: Welcher Verein gewann die UEFA Champions League 2005 nach einem 0:3-Halbzeitrückstand?", a: "FC Liverpool" },
+  { q: "Fußball: Welcher Spieler hält den Rekord für die meisten Einsätze in der UEFA Champions League?", a: "Cristiano Ronaldo" },
+  { q: "Fußball: Welches Land gewann die erste FIFA-Weltmeisterschaft 1930?", a: "Uruguay" },
+  { q: "Fußball: Welcher Verein wurde erster Deutscher Meister der Bundesliga 1963/64?", a: "1. FC Köln" },
+  { q: "Fußball: Welcher Spieler erzielte das sogenannte 'Tor des Jahrhunderts' bei der WM 1986?", a: "Diego Maradona" },
 
-  // 🎾 Tennis (5)
-  { q: "Tennis: Welcher Spieler gewann als erster alle vier Grand Slams im selben Jahr (Calendar Slam)?", a: "Don Budge" },
-  { q: "Tennis: Welcher Spieler gewann die meisten French-Open-Titel der Geschichte?", a: "Rafael Nadal" },
-  { q: "Tennis: Welche Spielerin gewann als erste 23 Grand-Slam-Titel in der Open Era?", a: "Serena Williams" },
-  { q: "Tennis: Welcher Spieler gewann Wimbledon 2001 als Qualifikant?", a: "Goran Ivanišević" },
-  { q: "Tennis: Welcher Spieler gewann den längsten Davis-Cup-Einzelpunkt der Geschichte (6 Stunden 22 Minuten)?", a: "Leonardo Mayer" },
+  // 🏀 Basketball
+  { q: "Basketball: Welches Team gewann den ersten NBA-Titel (Saison 1946/47)?", a: "Philadelphia Warriors" },
+  { q: "Basketball: Welcher Spieler hält den NBA-Rekord für die meisten Karriere-Assists?", a: "John Stockton" },
+  { q: "Basketball: Welches Team gewann die NBA Finals 2016 nach einem 1:3-Serienrückstand?", a: "Cleveland Cavaliers" },
+  { q: "Basketball: Wer war der erste europäische NBA-MVP?", a: "Dirk Nowitzki" },
+  { q: "Basketball: Welcher Spieler erzielte die meisten Punkte in einem einzelnen NBA-Spiel?", a: "Wilt Chamberlain" },
 
-  // 🏒 Eishockey (5)
-  { q: "Eishockey: Welches Team gewann den ersten Stanley Cup der Geschichte 1893?", a: "Montreal Hockey Club" },
-  { q: "Eishockey: Welcher Spieler hält den Rekord für die meisten NHL-Karrierepunkte?", a: "Wayne Gretzky" },
-  { q: "Eishockey: Welches Land gewann die erste Eishockey-WM 1930?", a: "Kanada" },
-  { q: "Eishockey: Welches Team gewann die Stanley Cup Finals 2010 nach 49 Jahren ohne Titel?", a: "Chicago Blackhawks" },
-  { q: "Eishockey: Welcher Torwart hält den Rekord für die meisten NHL-Siege?", a: "Martin Brodeur" },
+  // 🏐 Volleyball
+  { q: "Volleyball: Welches Land gewann die erste Volleyball-Weltmeisterschaft der Männer 1949?", a: "Sowjetunion" },
+  { q: "Volleyball: Welches Land gewann das olympische Goldturnier der Männer 2012?", a: "Russland" },
+  { q: "Volleyball: Welches Land ist Rekordweltmeister bei den Volleyball-Weltmeisterschaften der Frauen?", a: "Sowjetunion" },
+  { q: "Volleyball: Welches Land gewann die Volleyball Nations League der Männer 2021?", a: "Brasilien" },
+  { q: "Volleyball: Wie hoch ist das Netz bei den Damen?", a: "2,24 Meter" },
 
-  // 🤾 Handball (5)
-  { q: "Handball: Welches Land gewann die erste Handball-WM der Männer 1938?", a: "Deutschland" },
-  { q: "Handball: Welcher Spieler hält den Rekord für die meisten Tore in einer einzigen WM?", a: "Kiril Lazarov" },
-  { q: "Handball: Welches Land gewann Olympia-Gold der Männer 2008?", a: "Frankreich" },
-  { q: "Handball: Welcher Verein gewann die meisten Champions-League-Titel im Handball?", a: "FC Barcelona" },
-  { q: "Handball: Welches Land gewann die EM 2016 überraschend als Außenseiter?", a: "Deutschland" },
+  // 🎾 Tennis
+  { q: "Tennis: Wer gewann als erster Spieler alle vier Grand-Slam-Turniere in einem Kalenderjahr?", a: "Don Budge" },
+  { q: "Tennis: Wer gewann die meisten French-Open-Einzeltitel?", a: "Rafael Nadal" },
+  { q: "Tennis: Welche Spielerin gewann als erste 23 Grand-Slam-Einzeltitel in der Open Era?", a: "Serena Williams" },
+  { q: "Tennis: Wer gewann Wimbledon 2001 als Qualifikant?", a: "Goran Ivanišević" },
+  { q: "Tennis: Welcher Spieler gewann den längsten Davis-Cup-Einzelpunkt der Geschichte?", a: "Leonardo Mayer" },
 
-  // 🏸 Badminton (5)
-  { q: "Badminton: Welches Land dominiert traditionell den Thomas Cup?", a: "Indonesien" },
-  { q: "Badminton: Welcher Spieler gilt als erster 'Superstar' des modernen Badmintons?", a: "Rudy Hartono" },
-  { q: "Badminton: Welches Land gewann Olympia-Gold im Herreneinzel 2021?", a: "Dänemark (Viktor Axelsen)" },
-  { q: "Badminton: Welches Land gewann die meisten All England Titel im Herreneinzel?", a: "Indonesien" },
-  { q: "Badminton: Welcher Spieler gewann als erster alle fünf großen Titel (Olympia, WM, All England, Thomas Cup, Sudirman Cup)?", a: "Lin Dan" },
-      { q: "Leichtathletik: Wie schnell lief Usain Bolt die 100m?", a: "9,58 Sekunden" }
-    ]
+  // 🏒 Eishockey
+  { q: "Eishockey: Welches Team gewann 1893 den ersten Stanley Cup?", a: "Montreal Hockey Club" },
+  { q: "Eishockey: Welcher Spieler hält den NHL-Rekord für die meisten Karrierepunkte?", a: "Wayne Gretzky" },
+  { q: "Eishockey: Welches Land gewann die erste Eishockey-Weltmeisterschaft 1930?", a: "Kanada" },
+  { q: "Eishockey: Welches Team beendete 2010 mit dem Stanley Cup eine 49-jährige Titeldurststrecke?", a: "Chicago Blackhawks" },
+  { q: "Eishockey: Welcher Torwart hält den NHL-Rekord für die meisten Siege?", a: "Martin Brodeur" },
+
+  // 🤾 Handball
+  { q: "Handball: Welches Land gewann die erste Handball-Weltmeisterschaft der Männer 1938?", a: "Deutschland" },
+  { q: "Handball: Welcher Spieler hält den Rekord für die meisten Tore bei einer einzelnen Handball-Weltmeisterschaft?", a: "Kiril Lazarov" },
+  { q: "Handball: Welches Land gewann das olympische Handballturnier der Männer 2008?", a: "Frankreich" },
+  { q: "Handball: Welcher Verein gewann die meisten EHF-Champions-League-Titel?", a: "FC Barcelona" },
+  { q: "Handball: Welches Land gewann überraschend die Handball-Europameisterschaft 2016?", a: "Deutschland" },
+
+  // 🏸 Badminton
+  { q: "Badminton: Welches Land gewann den Thomas Cup am häufigsten?", a: "Indonesien" },
+  { q: "Badminton: Welcher Spieler gewann als erster alle neun Super-Series-Turniere?", a: "Lee Chong Wei" },
+  { q: "Badminton: Welches Land gewann Olympia-Gold im Herreneinzel 2021?", a: "Dänemark" },
+  { q: "Badminton: Welcher Spieler gewann als erster den Karriere-Super-Grand-Slam (Olympia, WM, All England, Thomas Cup, Sudirman Cup und alle BWF-Superseries-Titel)?", a: "Lin Dan" },
+  { q: "Badminton: Welcher Spieler gilt als einer der erfolgreichsten Badmintonspieler aller Zeiten und gewann fünf All-England-Titel in Folge?", a: "Rudy Hartono" },
+
+  // 🏃 Leichtathletik
+  { q: "Leichtathletik: Wie lautet der Weltrekord über 100 Meter der Männer von Usain Bolt?", a: "9,58 Sekunden" }
+]
   },
 
   wirtschaft: {
