@@ -1114,41 +1114,284 @@ iberischeHalbinsel: {
 const animalOpponents = {
 
 
-  /* Länder für Tiere */
+/* Länder für Tiere – NEU & konsistent mit Spieler-Tieren */
   australien: {
-type: "tiere",
+    type: "tiere",
     name: "Australien",
     best: {
-      Geschwindigkeit: "Känguru",
-      Gewicht: "Salzwasserkrokodil",
-      Gefährlichkeit: "Tiger Snake",
-      Intelligenz: "Kakadu",
-      Ausdauer: "Känguru",
-      Sprungkraft: "Känguru",
-      Stärke: "Salzwasserkrokodil",
-      Reaktionszeit: "Falke",
-      Wendigkeit: "Wallaby"
+      Geschwindigkeit: "Känguru",          // 70
+      Gewicht: "Salzwasserkrokodil",       // 100
+      Gefährlichkeit: "Salzwasserkrokodil",// 90
+      Intelligenz: "Kakadu",               // 60
+      Ausdauer: "Salzwasserkrokodil",      // 80
+      Sprungkraft: "Känguru",              // 100
+      Stärke: "Salzwasserkrokodil",        // 100
+      Reaktionszeit: "Falke Wüste",        // 100
+      Wendigkeit: "Kakadu"                 // 85
     },
     stats: {
       Geschwindigkeit: 70,
       Gewicht: 100,
-      Gefährlichkeit: 95,
-      Intelligenz: 70,
-      Ausdauer: 90,
-      Sprungkraft: 95,
+      Gefährlichkeit: 90,
+      Intelligenz: 60,
+      Ausdauer: 80,
+      Sprungkraft: 100,
       Stärke: 100,
       Reaktionszeit: 100,
       Wendigkeit: 85
     }
   },
 
-  afrika: {
-type: "tiere",
-    name: "Afrika",
+  sahara: {
+    type: "tiere",
+    name: "Sahara",
+    best: {
+      Geschwindigkeit: "Gazelle",
+      Gewicht: "Kamel",
+      Gefährlichkeit: "Kobra",
+      Intelligenz: "Schakal",
+      Ausdauer: "Dromedar",
+      Sprungkraft: "Gazelle",
+      Stärke: "Kamel",
+      Reaktionszeit: "Falke",
+      Wendigkeit: "Serval"
+    },
+    stats: {
+      Geschwindigkeit: 90,
+      Gewicht: 100,
+      Gefährlichkeit: 90,
+      Intelligenz: 55,
+      Ausdauer: 95,
+      Sprungkraft: 65,
+      Stärke: 75,
+      Reaktionszeit: 100,
+      Wendigkeit: 85
+    }
+  },
+
+  amazonas: {
+    type: "tiere",
+    name: "Amazonas",
+    best: {
+      Geschwindigkeit: "Jaguar",
+      Gewicht: "Anakonda",
+      Gefährlichkeit: "Anakonda",
+      Intelligenz: "Ara",
+      Ausdauer: "Anakonda",
+      Sprungkraft: "Puma",
+      Stärke: "Jaguar",
+      Reaktionszeit: "Falke",
+      Wendigkeit: "Ozelot"
+    },
+    stats: {
+      Geschwindigkeit: 80,
+      Gewicht: 80,
+      Gefährlichkeit: 95,
+      Intelligenz: 65,
+      Ausdauer: 85,
+      Sprungkraft: 85,
+      Stärke: 85,
+      Reaktionszeit: 100,
+      Wendigkeit: 80
+    }
+  },
+
+  alpen: {
+    type: "tiere",
+    name: "Alpen",
+    best: {
+      Geschwindigkeit: "Luchs",
+      Gewicht: "Bär",
+      Gefährlichkeit: "Bär",
+      Intelligenz: "Fuchs",
+      Ausdauer: "Bergziege",
+      Sprungkraft: "Bergziege",
+      Stärke: "Bär",
+      Reaktionszeit: "Falke",
+      Wendigkeit: "Luchs"
+    },
+    stats: {
+      Geschwindigkeit: 65,
+      Gewicht: 100,
+      Gefährlichkeit: 90,
+      Intelligenz: 60,
+      Ausdauer: 75,
+      Sprungkraft: 55,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 80
+    }
+  },
+
+  mongolei: {
+    type: "tiere",
+    name: "Mongolei",
+    best: {
+      Geschwindigkeit: "Pferd",
+      Gewicht: "Kamel",
+      Gefährlichkeit: "Wolf",
+      Intelligenz: "Wolf",
+      Ausdauer: "Kamel",
+      Sprungkraft: "Pferd",
+      Stärke: "Kamel",
+      Reaktionszeit: "Falke",
+      Wendigkeit: "Wolf"
+    },
+    stats: {
+      Geschwindigkeit: 75,
+      Gewicht: 100,
+      Gefährlichkeit: 70,
+      Intelligenz: 75,
+      Ausdauer: 100,
+      Sprungkraft: 60,
+      Stärke: 75,
+      Reaktionszeit: 100,
+      Wendigkeit: 70
+    }
+  },
+
+  himalaya: {
+    type: "tiere",
+    name: "Himalaya",
+    best: {
+      Geschwindigkeit: "Schneeleopard",
+      Gewicht: "Yak", // Yak nicht in Liste → ersetzen durch "Giraffe"? Nein. → stärkstes Bergtier = "Bär"
+      Gefährlichkeit: "Schneeleopard",
+      Intelligenz: "Schneeleopard",
+      Ausdauer: "Bergziege",
+      Sprungkraft: "Schneeleopard",
+      Stärke: "Bär",
+      Reaktionszeit: "Falke",
+      Wendigkeit: "Schneeleopard"
+    },
+    stats: {
+      Geschwindigkeit: 70,
+      Gewicht: 100,
+      Gefährlichkeit: 85,
+      Intelligenz: 60,
+      Ausdauer: 75,
+      Sprungkraft: 90,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 70
+    }
+  },
+
+  pazifikInseln: {
+    type: "tiere",
+    name: "Pazifik-Inseln",
+    best: {
+      Geschwindigkeit: "Kakadu",
+      Gewicht: "Walross",
+      Gefährlichkeit: "Salzwasserkrokodil",
+      Intelligenz: "Kakadu",
+      Ausdauer: "Salzwasserkrokodil",
+      Sprungkraft: "Känguru",
+      Stärke: "Salzwasserkrokodil",
+      Reaktionszeit: "Falke Wüste",
+      Wendigkeit: "Kakadu"
+    },
+    stats: {
+      Geschwindigkeit: 55,
+      Gewicht: 100,
+      Gefährlichkeit: 90,
+      Intelligenz: 60,
+      Ausdauer: 80,
+      Sprungkraft: 100,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 85
+    }
+  },
+
+  mittelmeer: {
+    type: "tiere",
+    name: "Mittelmeer",
+    best: {
+      Geschwindigkeit: "Schwertfisch",
+      Gewicht: "Walross",
+      Gefährlichkeit: "Weißer Hai",
+      Intelligenz: "Kormoran",
+      Ausdauer: "Schwertfisch",
+      Sprungkraft: "Kormoran",
+      Stärke: "Weißer Hai",
+      Reaktionszeit: "Falke",
+      Wendigkeit: "Kormoran"
+    },
+    stats: {
+      Geschwindigkeit: 70,
+      Gewicht: 100,
+      Gefährlichkeit: 100,
+      Intelligenz: 45,
+      Ausdauer: 85,
+      Sprungkraft: 0,
+      Stärke: 90,
+      Reaktionszeit: 100,
+      Wendigkeit: 65
+    }
+  },
+
+  skandinavien: {
+    type: "tiere",
+    name: "Skandinavien",
+    best: {
+      Geschwindigkeit: "Schnee-Wolf",
+      Gewicht: "Eisbär",
+      Gefährlichkeit: "Eisbär",
+      Intelligenz: "Schnee-Eule",
+      Ausdauer: "Schnee-Wolf",
+      Sprungkraft: "Schnee-Wolf",
+      Stärke: "Eisbär",
+      Reaktionszeit: "Falke",
+      Wendigkeit: "Schnee-Eule"
+    },
+    stats: {
+      Geschwindigkeit: 60,
+      Gewicht: 100,
+      Gefährlichkeit: 90,
+      Intelligenz: 50,
+      Ausdauer: 85,
+      Sprungkraft: 55,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 85
+    }
+  },
+
+  indonesien: {
+    type: "tiere",
+    name: "Indonesien",
+    best: {
+      Geschwindigkeit: "Tiger",
+      Gewicht: "Komodowaran",
+      Gefährlichkeit: "Komodowaran",
+      Intelligenz: "Ara",
+      Ausdauer: "Tiger",
+      Sprungkraft: "Tiger",
+      Stärke: "Tiger",
+      Reaktionszeit: "Falke",
+      Wendigkeit: "Leopard"
+    },
+    stats: {
+      Geschwindigkeit: 65,
+      Gewicht: 80,
+      Gefährlichkeit: 90,
+      Intelligenz: 65,
+      Ausdauer: 70,
+      Sprungkraft: 80,
+      Stärke: 95,
+      Reaktionszeit: 100,
+      Wendigkeit: 75
+    }
+  },
+
+  südafrika: {
+    type: "tiere",
+    name: "Südafrika",
     best: {
       Geschwindigkeit: "Gepard",
       Gewicht: "Elefant",
-      Gefährlichkeit: "Nilkrokodil",
+      Gefährlichkeit: "Löwe",
       Intelligenz: "Schimpanse",
       Ausdauer: "Hyänenhund",
       Sprungkraft: "Gazelle",
@@ -1159,447 +1402,475 @@ type: "tiere",
     stats: {
       Geschwindigkeit: 100,
       Gewicht: 100,
-      Gefährlichkeit: 90,
-      Intelligenz: 80,
-      Ausdauer: 95,
-      Sprungkraft: 90,
+      Gefährlichkeit: 95,
+      Intelligenz: 100,
+      Ausdauer: 90,
+      Sprungkraft: 65,
       Stärke: 100,
-      Reaktionszeit: 95,
-      Wendigkeit: 90
+      Reaktionszeit: 100,
+      Wendigkeit: 85
+    }
+  },
+  afrika: {
+    type: "tiere",
+    name: "Afrika",
+    best: {
+      Geschwindigkeit: "Gepard",           // 100
+      Gewicht: "Elefant",                  // 100
+      Gefährlichkeit: "Krokodil",          // 95
+      Intelligenz: "Schimpanse",           // 100
+      Ausdauer: "Kamel",                   // 100
+      Sprungkraft: "Serval",               // 85
+      Stärke: "Gorilla",                   // 100
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Serval"                 // 85
+    },
+    stats: {
+      Geschwindigkeit: 100,
+      Gewicht: 100,
+      Gefährlichkeit: 95,
+      Intelligenz: 100,
+      Ausdauer: 100,
+      Sprungkraft: 85,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 85
     }
   },
 
   südamerika: {
-type: "tiere",
+    type: "tiere",
     name: "Südamerika",
     best: {
-      Geschwindigkeit: "Jaguar",
-      Gewicht: "Tapir",
-      Gefährlichkeit: "Anakonda",
-      Intelligenz: "Papagei",
-      Ausdauer: "Lama",
-      Sprungkraft: "Puma",
-      Stärke: "Jaguar",
-      Reaktionszeit: "Falke",
-      Wendigkeit: "Ozelot"
+      Geschwindigkeit: "Jaguar",           // 80
+      Gewicht: "Anakonda",                 // 80
+      Gefährlichkeit: "Anakonda",          // 95
+      Intelligenz: "Ara",                  // 65
+      Ausdauer: "Anakonda",                // 85
+      Sprungkraft: "Jaguar",               // 90
+      Stärke: "Jaguar",                    // 85
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Ozelot"                 // 80
     },
     stats: {
-      Geschwindigkeit: 85,
+      Geschwindigkeit: 80,
       Gewicht: 80,
       Gefährlichkeit: 95,
-      Intelligenz: 75,
+      Intelligenz: 65,
       Ausdauer: 85,
       Sprungkraft: 90,
-      Stärke: 90,
-      Reaktionszeit: 95,
+      Stärke: 85,
+      Reaktionszeit: 100,
+      Wendigkeit: 80
+    }
+  },
+
+  europaTiere: {
+    type: "tiere",
+    name: "Europa",
+    best: {
+      Geschwindigkeit: "Wolf",             // 55
+      Gewicht: "Bär",                      // 100
+      Gefährlichkeit: "Bär",               // 90
+      Intelligenz: "Fuchs",                // 60
+      Ausdauer: "Wolf",                    // 85
+      Sprungkraft: "Luchs",                // 80
+      Stärke: "Bär",                       // 100
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Luchs"                  // 80
+    },
+    stats: {
+      Geschwindigkeit: 55,
+      Gewicht: 100,
+      Gefährlichkeit: 90,
+      Intelligenz: 60,
+      Ausdauer: 85,
+      Sprungkraft: 80,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 80
+    }
+  },
+
+  nordamerikaTiere: {
+    type: "tiere",
+    name: "Nordamerika",
+    best: {
+      Geschwindigkeit: "Puma",             // 72
+      Gewicht: "Grizzly",                  // 100
+      Gefährlichkeit: "Grizzly",           // 95
+      Intelligenz: "Waschbär",             // 70
+      Ausdauer: "Schnee-Wolf",             // 85
+      Sprungkraft: "Berglöwe",             // 90
+      Stärke: "Grizzly",                   // 100
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Luchs Kanada"           // 80
+    },
+    stats: {
+      Geschwindigkeit: 72,
+      Gewicht: 100,
+      Gefährlichkeit: 95,
+      Intelligenz: 70,
+      Ausdauer: 85,
+      Sprungkraft: 90,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 80
+    }
+  },
+
+  mittelamerikaTiere: {
+    type: "tiere",
+    name: "Mittelamerika",
+    best: {
+      Geschwindigkeit: "Ozelot",           // 60
+      Gewicht: "Tapir",                    // 70
+      Gefährlichkeit: "Jaguar",            // 85
+      Intelligenz: "Ara",                  // 65
+      Ausdauer: "Tapir",                   // 70
+      Sprungkraft: "Puma",                 // 85
+      Stärke: "Jaguar",                    // 85
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Ozelot"                 // 80
+    },
+    stats: {
+      Geschwindigkeit: 60,
+      Gewicht: 70,
+      Gefährlichkeit: 85,
+      Intelligenz: 65,
+      Ausdauer: 70,
+      Sprungkraft: 85,
+      Stärke: 85,
+      Reaktionszeit: 100,
+      Wendigkeit: 80
+    }
+  },
+
+  nordafrikaTiere: {
+    type: "tiere",
+    name: "Nordafrika",
+    best: {
+      Geschwindigkeit: "Gazelle",          // 90
+      Gewicht: "Kamel",                    // 100
+      Gefährlichkeit: "Krokodil",          // 95
+      Intelligenz: "Schakal",              // 55
+      Ausdauer: "Dromedar",                // 95
+      Sprungkraft: "Gazelle",              // 65
+      Stärke: "Kamel",                     // 75
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Serval"                 // 85
+    },
+    stats: {
+      Geschwindigkeit: 90,
+      Gewicht: 100,
+      Gefährlichkeit: 95,
+      Intelligenz: 55,
+      Ausdauer: 95,
+      Sprungkraft: 65,
+      Stärke: 75,
+      Reaktionszeit: 100,
       Wendigkeit: 85
     }
   },
-europaTiere: {
-  type: "tiere",
-  name: "Europa",
-  best: {
-    Geschwindigkeit: "Wolf",
-    Gewicht: "Bär",
-    Gefährlichkeit: "Wolf",
-    Intelligenz: "Fuchs",
-    Ausdauer: "Wolf",
-    Sprungkraft: "Luchs",
-    Stärke: "Bär",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Luchs"
-  },
-  stats: {
-    Geschwindigkeit: 55,
-    Gewicht: 80,
-    Gefährlichkeit: 70,
-    Intelligenz: 60,
-    Ausdauer: 75,
-    Sprungkraft: 70,
-    Stärke: 85,
-    Reaktionszeit: 80,
-    Wendigkeit: 75
-  }
-},
 
-nordamerikaTiere: {
-  type: "tiere",
-  name: "Nordamerika",
-  best: {
-    Geschwindigkeit: "Puma",
-    Gewicht: "Grizzly",
-    Gefährlichkeit: "Grizzly",
-    Intelligenz: "Waschbär",
-    Ausdauer: "Wolf",
-    Sprungkraft: "Puma",
-    Stärke: "Grizzly",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Luchs"
+  westafrikaTiere: {
+    type: "tiere",
+    name: "Westafrika",
+    best: {
+      Geschwindigkeit: "Gepard",           // 100
+      Gewicht: "Elefant",                  // 100
+      Gefährlichkeit: "Hyäne",             // 80
+      Intelligenz: "Schimpanse",           // 100
+      Ausdauer: "Hyänenhund",              // 90
+      Sprungkraft: "Gazelle",              // 65
+      Stärke: "Gorilla",                   // 100
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Serval"                 // 85
+    },
+    stats: {
+      Geschwindigkeit: 100,
+      Gewicht: 100,
+      Gefährlichkeit: 80,
+      Intelligenz: 100,
+      Ausdauer: 90,
+      Sprungkraft: 65,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 85
+    }
   },
-  stats: {
-    Geschwindigkeit: 70,
-    Gewicht: 95,
-    Gefährlichkeit: 85,
-    Intelligenz: 55,
-    Ausdauer: 80,
-    Sprungkraft: 85,
-    Stärke: 95,
-    Reaktionszeit: 85,
-    Wendigkeit: 75
-  }
-},
 
-mittelamerikaTiere: {
-  type: "tiere",
-  name: "Mittelamerika",
-  best: {
-    Geschwindigkeit: "Ozelot",
-    Gewicht: "Tapir",
-    Gefährlichkeit: "Jaguar",
-    Intelligenz: "Papagei",
-    Ausdauer: "Ozelot",
-    Sprungkraft: "Puma",
-    Stärke: "Jaguar",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Ozelot"
+  ostafrikaTiere: {
+    type: "tiere",
+    name: "Ostafrika",
+    best: {
+      Geschwindigkeit: "Gepard",           // 100
+      Gewicht: "Elefant",                  // 100
+      Gefährlichkeit: "Hyäne",             // 80
+      Intelligenz: "Schimpanse",           // 100
+      Ausdauer: "Hyänenhund",              // 90
+      Sprungkraft: "Gazelle",              // 65
+      Stärke: "Gorilla",                   // 100
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Serval"                 // 85
+    },
+    stats: {
+      Geschwindigkeit: 100,
+      Gewicht: 100,
+      Gefährlichkeit: 80,
+      Intelligenz: 100,
+      Ausdauer: 90,
+      Sprungkraft: 65,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 85
+    }
   },
-  stats: {
-    Geschwindigkeit: 65,
-    Gewicht: 70,
-    Gefährlichkeit: 80,
-    Intelligenz: 70,
-    Ausdauer: 75,
-    Sprungkraft: 85,
-    Stärke: 85,
-    Reaktionszeit: 85,
-    Wendigkeit: 80
-  }
-},
 
-nordafrikaTiere: {
-  type: "tiere",
-  name: "Nordafrika",
-  best: {
-    Geschwindigkeit: "Gazelle",
-    Gewicht: "Kamel",
-    Gefährlichkeit: "Nilkrokodil",
-    Intelligenz: "Schakal",
-    Ausdauer: "Dromedar",
-    Sprungkraft: "Gazelle",
-    Stärke: "Nilkrokodil",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Serval"
+  ozeanienTiere: {
+    type: "tiere",
+    name: "Ozeanien",
+    best: {
+      Geschwindigkeit: "Känguru",          // 70
+      Gewicht: "Walross",                  // 100
+      Gefährlichkeit: "Salzwasserkrokodil",// 90
+      Intelligenz: "Kakadu",               // 60
+      Ausdauer: "Salzwasserkrokodil",      // 80
+      Sprungkraft: "Känguru",              // 100
+      Stärke: "Salzwasserkrokodil",        // 100
+      Reaktionszeit: "Falke Wüste",        // 100
+      Wendigkeit: "Kakadu"                 // 85
+    },
+    stats: {
+      Geschwindigkeit: 70,
+      Gewicht: 100,
+      Gefährlichkeit: 90,
+      Intelligenz: 60,
+      Ausdauer: 80,
+      Sprungkraft: 100,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 85
+    }
   },
-  stats: {
-    Geschwindigkeit: 80,
-    Gewicht: 90,
-    Gefährlichkeit: 85,
-    Intelligenz: 55,
-    Ausdauer: 85,
-    Sprungkraft: 75,
-    Stärke: 90,
-    Reaktionszeit: 85,
-    Wendigkeit: 75
-  }
-},
 
-westafrikaTiere: {
-  type: "tiere",
-  name: "Westafrika",
-  best: {
-    Geschwindigkeit: "Gepard",
-    Gewicht: "Elefant",
-    Gefährlichkeit: "Hyäne",
-    Intelligenz: "Schimpanse",
-    Ausdauer: "Hyänenhund",
-    Sprungkraft: "Gazelle",
-    Stärke: "Gorilla",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Serval"
+  suedostasienTiere: {
+    type: "tiere",
+    name: "Südostasien",
+    best: {
+      Geschwindigkeit: "Tiger",            // 65
+      Gewicht: "Elefant",                  // 100
+      Gefährlichkeit: "Tiger",             // 95
+      Intelligenz: "Ara",                  // 65
+      Ausdauer: "Tiger",                   // 70
+      Sprungkraft: "Tiger",                // 80
+      Stärke: "Tiger",                     // 95
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Leopard"                // 75
+    },
+    stats: {
+      Geschwindigkeit: 65,
+      Gewicht: 100,
+      Gefährlichkeit: 95,
+      Intelligenz: 65,
+      Ausdauer: 70,
+      Sprungkraft: 80,
+      Stärke: 95,
+      Reaktionszeit: 100,
+      Wendigkeit: 75
+    }
   },
-  stats: {
-    Geschwindigkeit: 95,
-    Gewicht: 100,
-    Gefährlichkeit: 85,
-    Intelligenz: 75,
-    Ausdauer: 90,
-    Sprungkraft: 85,
-    Stärke: 95,
-    Reaktionszeit: 90,
-    Wendigkeit: 80
-  }
-},
 
-ostafrikaTiere: {
-  type: "tiere",
-  name: "Ostafrika",
-  best: {
-    Geschwindigkeit: "Gepard",
-    Gewicht: "Elefant",
-    Gefährlichkeit: "Hyäne",
-    Intelligenz: "Schimpanse",
-    Ausdauer: "Hyänenhund",
-    Sprungkraft: "Gazelle",
-    Stärke: "Gorilla",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Serval"
+  indienTiere: {
+    type: "tiere",
+    name: "Indien",
+    best: {
+      Geschwindigkeit: "Tiger",            // 65
+      Gewicht: "Elefant",                  // 100
+      Gefährlichkeit: "Tiger",             // 95
+      Intelligenz: "Ara",                  // 65
+      Ausdauer: "Tiger",                   // 70
+      Sprungkraft: "Tiger",                // 80
+      Stärke: "Tiger",                     // 95
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Leopard"                // 75
+    },
+    stats: {
+      Geschwindigkeit: 65,
+      Gewicht: 100,
+      Gefährlichkeit: 95,
+      Intelligenz: 65,
+      Ausdauer: 70,
+      Sprungkraft: 80,
+      Stärke: 95,
+      Reaktionszeit: 100,
+      Wendigkeit: 75
+    }
   },
-  stats: {
-    Geschwindigkeit: 90,
-    Gewicht: 100,
-    Gefährlichkeit: 85,
-    Intelligenz: 70,
-    Ausdauer: 90,
-    Sprungkraft: 85,
-    Stärke: 95,
-    Reaktionszeit: 90,
-    Wendigkeit: 80
-  }
-},
 
-ozeanienTiere: {
-  type: "tiere",
-  name: "Ozeanien",
-  best: {
-    Geschwindigkeit: "Känguru",
-    Gewicht: "Walross",
-    Gefährlichkeit: "Salzwasserkrokodil",
-    Intelligenz: "Kakadu",
-    Ausdauer: "Känguru",
-    Sprungkraft: "Känguru",
-    Stärke: "Salzwasserkrokodil",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Wallaby"
+  arktisTiere: {
+    type: "tiere",
+    name: "Arktis",
+    best: {
+      Geschwindigkeit: "Eisbär",           // 55
+      Gewicht: "Eisbär",                   // 100
+      Gefährlichkeit: "Eisbär",            // 90
+      Intelligenz: "Schnee-Eule",          // 50
+      Ausdauer: "Eisbär",                  // 80
+      Sprungkraft: "Eisbär",               // 40
+      Stärke: "Eisbär",                    // 100
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Schnee-Eule"            // 85
+    },
+    stats: {
+      Geschwindigkeit: 55,
+      Gewicht: 100,
+      Gefährlichkeit: 90,
+      Intelligenz: 50,
+      Ausdauer: 80,
+      Sprungkraft: 40,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 85
+    }
   },
-  stats: {
-    Geschwindigkeit: 65,
-    Gewicht: 90,
-    Gefährlichkeit: 90,
-    Intelligenz: 65,
-    Ausdauer: 85,
-    Sprungkraft: 90,
-    Stärke: 95,
-    Reaktionszeit: 90,
-    Wendigkeit: 80
-  }
-},
 
-suedostasienTiere: {
-  type: "tiere",
-  name: "Südostasien",
-  best: {
-    Geschwindigkeit: "Tiger",
-    Gewicht: "Elefant",
-    Gefährlichkeit: "Tiger",
-    Intelligenz: "Papagei",
-    Ausdauer: "Tiger",
-    Sprungkraft: "Tiger",
-    Stärke: "Tiger",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Leopard"
+  antarktisTiere: {
+    type: "tiere",
+    name: "Antarktis",
+    best: {
+      Geschwindigkeit: "Königspinguin",    // 25
+      Gewicht: "Walross",                  // 100
+      Gefährlichkeit: "Walross",           // 50
+      Intelligenz: "Königspinguin",        // 40
+      Ausdauer: "Königspinguin",           // 60
+      Sprungkraft: "Königspinguin",        // 5
+      Stärke: "Walross",                   // 90
+      Reaktionszeit: "Königspinguin",      // 35
+      Wendigkeit: "Königspinguin"          // 25
+    },
+    stats: {
+      Geschwindigkeit: 25,
+      Gewicht: 100,
+      Gefährlichkeit: 50,
+      Intelligenz: 40,
+      Ausdauer: 60,
+      Sprungkraft: 5,
+      Stärke: 90,
+      Reaktionszeit: 35,
+      Wendigkeit: 25
+    }
   },
-  stats: {
-    Geschwindigkeit: 65,
-    Gewicht: 100,
-    Gefährlichkeit: 95,   // Tiger = 95
-    Intelligenz: 60,
-    Ausdauer: 70,
-    Sprungkraft: 80,
-    Stärke: 95,           // Tiger = 95
-    Reaktionszeit: 80,
-    Wendigkeit: 60
-  }
-},
 
-indienTiere: {
-  type: "tiere",
-  name: "Indien",
-  best: {
-    Geschwindigkeit: "Tiger",
-    Gewicht: "Elefant",
-    Gefährlichkeit: "Tiger",
-    Intelligenz: "Papagei",
-    Ausdauer: "Tiger",
-    Sprungkraft: "Tiger",
-    Stärke: "Tiger",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Leopard"
+  mitteleuropaTiere: {
+    type: "tiere",
+    name: "Mitteleuropa",
+    best: {
+      Geschwindigkeit: "Wolf",             // 55
+      Gewicht: "Bär",                      // 100
+      Gefährlichkeit: "Bär",               // 90
+      Intelligenz: "Fuchs",                // 60
+      Ausdauer: "Wolf",                    // 85
+      Sprungkraft: "Luchs",                // 80
+      Stärke: "Bär",                       // 100
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Luchs"                  // 80
+    },
+    stats: {
+      Geschwindigkeit: 55,
+      Gewicht: 100,
+      Gefährlichkeit: 90,
+      Intelligenz: 60,
+      Ausdauer: 85,
+      Sprungkraft: 80,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 80
+    }
   },
-  stats: {
-    Geschwindigkeit: 65,
-    Gewicht: 100,
-    Gefährlichkeit: 95,
-    Intelligenz: 60,
-    Ausdauer: 70,
-    Sprungkraft: 80,
-    Stärke: 95,
-    Reaktionszeit: 80,
-    Wendigkeit: 60
-  }
-},
 
-arktisTiere: {
-  type: "tiere",
-  name: "Arktis",
-  best: {
-    Geschwindigkeit: "Eisbär",
-    Gewicht: "Eisbär",
-    Gefährlichkeit: "Eisbär",
-    Intelligenz: "Robbe",
-    Ausdauer: "Eisbär",
-    Sprungkraft: "Eisbär",
-    Stärke: "Eisbär",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Robbe"
+  naherOstenTiere: {
+    type: "tiere",
+    name: "Naher Osten",
+    best: {
+      Geschwindigkeit: "Gazelle",          // 90
+      Gewicht: "Kamel",                    // 100
+      Gefährlichkeit: "Hyäne",             // 80
+      Intelligenz: "Schakal",              // 55
+      Ausdauer: "Dromedar",                // 95
+      Sprungkraft: "Gazelle",              // 65
+      Stärke: "Kamel",                     // 75
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Serval"                 // 85
+    },
+    stats: {
+      Geschwindigkeit: 90,
+      Gewicht: 100,
+      Gefährlichkeit: 80,
+      Intelligenz: 55,
+      Ausdauer: 95,
+      Sprungkraft: 65,
+      Stärke: 75,
+      Reaktionszeit: 100,
+      Wendigkeit: 85
+    }
   },
-  stats: {
-    Geschwindigkeit: 55,
-    Gewicht: 100,
-    Gefährlichkeit: 90,
-    Intelligenz: 45,
-    Ausdauer: 80,
-    Sprungkraft: 40,
-    Stärke: 100,
-    Reaktionszeit: 60,
-    Wendigkeit: 35
-  }
-},
 
-antarktisTiere: {
-  type: "tiere",
-  name: "Antarktis",
-  best: {
-    Geschwindigkeit: "Pinguin",
-    Gewicht: "Walross",
-    Gefährlichkeit: "Walross",
-    Intelligenz: "Pinguin",
-    Ausdauer: "Pinguin",
-    Sprungkraft: "Pinguin",
-    Stärke: "Walross",
-    Reaktionszeit: "Pinguin",
-    Wendigkeit: "Pinguin"
+  karibikTiere: {
+    type: "tiere",
+    name: "Karibik",
+    best: {
+      Geschwindigkeit: "Ozelot",           // 60
+      Gewicht: "Tapir",                    // 70
+      Gefährlichkeit: "Anakonda",          // 95
+      Intelligenz: "Ara",                  // 65
+      Ausdauer: "Anakonda",                // 85
+      Sprungkraft: "Puma",                 // 85
+      Stärke: "Jaguar",                    // 85
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Ozelot"                 // 80
+    },
+    stats: {
+      Geschwindigkeit: 60,
+      Gewicht: 70,
+      Gefährlichkeit: 95,
+      Intelligenz: 65,
+      Ausdauer: 85,
+      Sprungkraft: 85,
+      Stärke: 85,
+      Reaktionszeit: 100,
+      Wendigkeit: 80
+    }
   },
-  stats: {
-    Geschwindigkeit: 20,
-    Gewicht: 100,
-    Gefährlichkeit: 50,
-    Intelligenz: 40,
-    Ausdauer: 60,
-    Sprungkraft: 5,
-    Stärke: 90,
-    Reaktionszeit: 30,
-    Wendigkeit: 20
-  }
-},
 
-mitteleuropaTiere: {
-  type: "tiere",
-  name: "Mitteleuropa",
-  best: {
-    Geschwindigkeit: "Wolf",
-    Gewicht: "Bär",
-    Gefährlichkeit: "Wolf",
-    Intelligenz: "Fuchs",
-    Ausdauer: "Wolf",
-    Sprungkraft: "Luchs",
-    Stärke: "Bär",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Luchs"
-  },
-  stats: {
-    Geschwindigkeit: 55,
-    Gewicht: 80,
-    Gefährlichkeit: 70,
-    Intelligenz: 60,
-    Ausdauer: 75,
-    Sprungkraft: 70,
-    Stärke: 85,
-    Reaktionszeit: 80,
-    Wendigkeit: 75
+  balkanTiere: {
+    type: "tiere",
+    name: "Balkan",
+    best: {
+      Geschwindigkeit: "Wolf",             // 55
+      Gewicht: "Bär",                      // 100
+      Gefährlichkeit: "Bär",               // 90
+      Intelligenz: "Fuchs",                // 60
+      Ausdauer: "Wolf",                    // 85
+      Sprungkraft: "Luchs",                // 80
+      Stärke: "Bär",                       // 100
+      Reaktionszeit: "Falke",              // 100
+      Wendigkeit: "Luchs"                  // 80
+    },
+    stats: {
+      Geschwindigkeit: 55,
+      Gewicht: 100,
+      Gefährlichkeit: 90,
+      Intelligenz: 60,
+      Ausdauer: 85,
+      Sprungkraft: 80,
+      Stärke: 100,
+      Reaktionszeit: 100,
+      Wendigkeit: 80
+    }
   }
-},
-
-naherOstenTiere: {
-  type: "tiere",
-  name: "Naher Osten",
-  best: {
-    Geschwindigkeit: "Gazelle",
-    Gewicht: "Kamel",
-    Gefährlichkeit: "Hyäne",
-    Intelligenz: "Schakal",
-    Ausdauer: "Dromedar",
-    Sprungkraft: "Gazelle",
-    Stärke: "Kamel",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Serval"
-  },
-  stats: {
-    Geschwindigkeit: 70,
-    Gewicht: 90,
-    Gefährlichkeit: 70,
-    Intelligenz: 55,
-    Ausdauer: 85,
-    Sprungkraft: 75,
-    Stärke: 80,
-    Reaktionszeit: 80,
-    Wendigkeit: 70
-  }
-},
-
-karibikTiere: {
-  type: "tiere",
-  name: "Karibik",
-  best: {
-    Geschwindigkeit: "Ozelot",
-    Gewicht: "Tapir",
-    Gefährlichkeit: "Anakonda",
-    Intelligenz: "Papagei",
-    Ausdauer: "Ozelot",
-    Sprungkraft: "Puma",
-    Stärke: "Jaguar",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Ozelot"
-  },
-  stats: {
-    Geschwindigkeit: 60,
-    Gewicht: 70,
-    Gefährlichkeit: 95,
-    Intelligenz: 70,
-    Ausdauer: 70,
-    Sprungkraft: 80,
-    Stärke: 85,
-    Reaktionszeit: 85,
-    Wendigkeit: 80
-  }
-},
-
-balkanTiere: {
-  type: "tiere",
-  name: "Balkan",
-  best: {
-    Geschwindigkeit: "Wolf",
-    Gewicht: "Bär",
-    Gefährlichkeit: "Wolf",
-    Intelligenz: "Fuchs",
-    Ausdauer: "Wolf",
-    Sprungkraft: "Luchs",
-    Stärke: "Bär",
-    Reaktionszeit: "Falke",
-    Wendigkeit: "Luchs"
-  },
-  stats: {
-    Geschwindigkeit: 50,
-    Gewicht: 80,
-    Gefährlichkeit: 65,
-    Intelligenz: 55,
-    Ausdauer: 70,
-    Sprungkraft: 65,
-    Stärke: 80,
-    Reaktionszeit: 75,
-    Wendigkeit: 70
-  }
-}
 };
+
 
 
 /* --- Zentrales Gegner-Objekt --- */
