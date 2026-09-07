@@ -15,7 +15,7 @@ const categoriesFootball = [
 
 /* Tier-Kategorien (9 Werte, alle 1–100) */
 const categoriesAnimals = [
-  "Geschwindigkeit1",
+  "Geschwindigkeit",
   "Gewicht",
   "Gefährlichkeit",
   "Intelligenz",
