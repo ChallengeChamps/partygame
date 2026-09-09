@@ -28,7 +28,7 @@ const categoriesAnimals = [
 
 /* Geografie-Kategorien (9 Werte, alle 1–100) */
 const categoriesGeografie = [
-"Bruttoinlandsprodukt1",
+"Bruttoinlandsprodukt",
 "Bevölkerung",
 "Bildung",
 "Sicherheit",
@@ -37,6 +37,18 @@ const categoriesGeografie = [
 "Klima",
 "Natur",
 "Infrastruktur"
+];
+/* Berufs-Kategorien */
+const categoriesBerufe = [
+  "Gehalt",
+  "Stresslevel",
+  "Verantwortung",
+  "Risiko",
+  "Ausbildungslänge",
+  "Arbeitszeiten",
+  "Körperliche Belastung",
+  "Psychische Belastung",
+  "Gefahrenlevel"
 ];
 
 /* Fußball-Spieler */
@@ -514,6 +526,427 @@ type: "fussball",
   },
 
 };
+const berufePlayers = [
+{ name: "Polizist", stats: { Gehalt: 55, Stresslevel: 85, Verantwortung: 80, Risiko: 90, Ausbildungslänge: 60, "Körperliche Belastung": 75, "Psychische Belastung": 85, Arbeitszeiten: 70, Gefahrenlevel: 90 }},
+{ name: "Arzt", stats: { Gehalt: 90, Stresslevel: 95, Verantwortung: 100, Risiko: 70, Ausbildungslänge: 95, "Körperliche Belastung": 60, "Psychische Belastung": 95, Arbeitszeiten: 80, Gefahrenlevel: 70 }},
+{ name: "Lehrer", stats: { Gehalt: 60, Stresslevel: 70, Verantwortung: 75, Risiko: 20, Ausbildungslänge: 70, "Körperliche Belastung": 40, "Psychische Belastung": 65, Arbeitszeiten: 75, Gefahrenlevel: 20 }},
+{ name: "Pilot", stats: { Gehalt: 85, Stresslevel: 90, Verantwortung: 95, Risiko: 95, Ausbildungslänge: 90, "Körperliche Belastung": 50, "Psychische Belastung": 85, Arbeitszeiten: 70, Gefahrenlevel: 95 }},
+{ name: "Feuerwehrmann", stats: { Gehalt: 50, Stresslevel: 85, Verantwortung: 80, Risiko: 100, Ausbildungslänge: 55, "Körperliche Belastung": 95, "Psychische Belastung": 80, Arbeitszeiten: 65, Gefahrenlevel: 100 }},
+{ name: "Programmierer", stats: { Gehalt: 75, Stresslevel: 60, Verantwortung: 65, Risiko: 10, Ausbildungslänge: 70, "Körperliche Belastung": 20, "Psychische Belastung": 70, Arbeitszeiten: 60, Gefahrenlevel: 10 }},
+{ name: "Koch", stats: { Gehalt: 45, Stresslevel: 75, Verantwortung: 55, Risiko: 30, Ausbildungslänge: 50, "Körperliche Belastung": 80, "Psychische Belastung": 70, Arbeitszeiten: 85, Gefahrenlevel: 30 }},
+{ name: "Soldat", stats: { Gehalt: 55, Stresslevel: 90, Verantwortung: 85, Risiko: 100, Ausbildungslänge: 65, "Körperliche Belastung": 90, "Psychische Belastung": 85, Arbeitszeiten: 70, Gefahrenlevel: 100 }},
+{ name: "Krankenpfleger", stats: { Gehalt: 50, Stresslevel: 90, Verantwortung: 80, Risiko: 40, Ausbildungslänge: 60, "Körperliche Belastung": 85, "Psychische Belastung": 90, Arbeitszeiten: 80, Gefahrenlevel: 40 }},
+
+{ name: "Zahnarzt", stats: { Gehalt: 85, Stresslevel: 70, Verantwortung: 90, Risiko: 40, Ausbildungslänge: 90, "Körperliche Belastung": 40, "Psychische Belastung": 75, Arbeitszeiten: 70, Gefahrenlevel: 30 }},
+{ name: "Apotheker", stats: { Gehalt: 80, Stresslevel: 60, Verantwortung: 85, Risiko: 20, Ausbildungslänge: 85, "Körperliche Belastung": 20, "Psychische Belastung": 60, Arbeitszeiten: 65, Gefahrenlevel: 15 }},
+{ name: "Physiotherapeut", stats: { Gehalt: 55, Stresslevel: 65, Verantwortung: 70, Risiko: 20, Ausbildungslänge: 60, "Körperliche Belastung": 70, "Psychische Belastung": 65, Arbeitszeiten: 70, Gefahrenlevel: 20 }},
+{ name: "Psychologe", stats: { Gehalt: 65, Stresslevel: 80, Verantwortung: 85, Risiko: 10, Ausbildungslänge: 80, "Körperliche Belastung": 20, "Psychische Belastung": 95, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "Kriminalkommissar", stats: { Gehalt: 70, Stresslevel: 85, Verantwortung: 85, Risiko: 85, Ausbildungslänge: 70, "Körperliche Belastung": 60, "Psychische Belastung": 85, Arbeitszeiten: 75, Gefahrenlevel: 85 }},
+{ name: "Richter", stats: { Gehalt: 90, Stresslevel: 75, Verantwortung: 100, Risiko: 10, Ausbildungslänge: 95, "Körperliche Belastung": 10, "Psychische Belastung": 85, Arbeitszeiten: 70, Gefahrenlevel: 5 }},
+{ name: "Anwalt", stats: { Gehalt: 85, Stresslevel: 80, Verantwortung: 90, Risiko: 10, Ausbildungslänge: 90, "Körperliche Belastung": 10, "Psychische Belastung": 80, Arbeitszeiten: 85, Gefahrenlevel: 5 }},
+{ name: "Architekt", stats: { Gehalt: 75, Stresslevel: 70, Verantwortung: 80, Risiko: 15, Ausbildungslänge: 75, "Körperliche Belastung": 20, "Psychische Belastung": 70, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "Bauarbeiter", stats: { Gehalt: 45, Stresslevel: 65, Verantwortung: 50, Risiko: 70, Ausbildungslänge: 40, "Körperliche Belastung": 95, "Psychische Belastung": 60, Arbeitszeiten: 75, Gefahrenlevel: 70 }},
+{ name: "Elektriker", stats: { Gehalt: 55, Stresslevel: 60, Verantwortung: 65, Risiko: 60, Ausbildungslänge: 50, "Körperliche Belastung": 70, "Psychische Belastung": 55, Arbeitszeiten: 70, Gefahrenlevel: 60 }},
+
+{ name: "Mechaniker", stats: { Gehalt: 50, Stresslevel: 60, Verantwortung: 55, Risiko: 50, Ausbildungslänge: 45, "Körperliche Belastung": 80, "Psychische Belastung": 55, Arbeitszeiten: 70, Gefahrenlevel: 50 }},
+{ name: "Kfz-Mechatroniker", stats: { Gehalt: 55, Stresslevel: 65, Verantwortung: 60, Risiko: 55, Ausbildungslänge: 50, "Körperliche Belastung": 75, "Psychische Belastung": 60, Arbeitszeiten: 70, Gefahrenlevel: 55 }},
+{ name: "Lkw-Fahrer", stats: { Gehalt: 50, Stresslevel: 70, Verantwortung: 70, Risiko: 60, Ausbildungslänge: 40, "Körperliche Belastung": 70, "Psychische Belastung": 60, Arbeitszeiten: 85, Gefahrenlevel: 60 }},
+{ name: "Busfahrer", stats: { Gehalt: 45, Stresslevel: 65, Verantwortung: 65, Risiko: 40, Ausbildungslänge: 40, "Körperliche Belastung": 60, "Psychische Belastung": 55, Arbeitszeiten: 80, Gefahrenlevel: 40 }},
+{ name: "Taxifahrer", stats: { Gehalt: 40, Stresslevel: 60, Verantwortung: 50, Risiko: 35, Ausbildungslänge: 20, "Körperliche Belastung": 40, "Psychische Belastung": 50, Arbeitszeiten: 85, Gefahrenlevel: 35 }},
+{ name: "Lokführer", stats: { Gehalt: 60, Stresslevel: 65, Verantwortung: 80, Risiko: 30, Ausbildungslänge: 60, "Körperliche Belastung": 40, "Psychische Belastung": 60, Arbeitszeiten: 70, Gefahrenlevel: 30 }},
+{ name: "Pilot-Assistent", stats: { Gehalt: 55, Stresslevel: 70, Verantwortung: 70, Risiko: 50, Ausbildungslänge: 70, "Körperliche Belastung": 40, "Psychische Belastung": 65, Arbeitszeiten: 75, Gefahrenlevel: 50 }},
+{ name: "Flugbegleiter", stats: { Gehalt: 50, Stresslevel: 70, Verantwortung: 60, Risiko: 40, Ausbildungslänge: 40, "Körperliche Belastung": 60, "Psychische Belastung": 70, Arbeitszeiten: 85, Gefahrenlevel: 40 }},
+{ name: "Seemann", stats: { Gehalt: 55, Stresslevel: 75, Verantwortung: 60, Risiko: 70, Ausbildungslänge: 40, "Körperliche Belastung": 80, "Psychische Belastung": 70, Arbeitszeiten: 90, Gefahrenlevel: 70 }},
+
+{ name: "Landwirt", stats: { Gehalt: 45, Stresslevel: 70, Verantwortung: 60, Risiko: 50, Ausbildungslänge: 40, "Körperliche Belastung": 90, "Psychische Belastung": 60, Arbeitszeiten: 90, Gefahrenlevel: 50 }},
+{ name: "Gärtner", stats: { Gehalt: 40, Stresslevel: 55, Verantwortung: 45, Risiko: 20, Ausbildungslänge: 30, "Körperliche Belastung": 70, "Psychische Belastung": 50, Arbeitszeiten: 70, Gefahrenlevel: 20 }},
+{ name: "Tierpfleger", stats: { Gehalt: 45, Stresslevel: 60, Verantwortung: 55, Risiko: 30, Ausbildungslänge: 40, "Körperliche Belastung": 75, "Psychische Belastung": 60, Arbeitszeiten: 70, Gefahrenlevel: 30 }},
+{ name: "Forstwirt", stats: { Gehalt: 50, Stresslevel: 65, Verantwortung: 60, Risiko: 60, Ausbildungslänge: 40, "Körperliche Belastung": 85, "Psychische Belastung": 60, Arbeitszeiten: 75, Gefahrenlevel: 60 }},
+{ name: "Jäger", stats: { Gehalt: 55, Stresslevel: 60, Verantwortung: 55, Risiko: 70, Ausbildungslänge: 40, "Körperliche Belastung": 80, "Psychische Belastung": 55, Arbeitszeiten: 70, Gefahrenlevel: 70 }},
+{ name: "Biologe", stats: { Gehalt: 65, Stresslevel: 55, Verantwortung: 70, Risiko: 10, Ausbildungslänge: 80, "Körperliche Belastung": 30, "Psychische Belastung": 60, Arbeitszeiten: 65, Gefahrenlevel: 10 }},
+{ name: "Chemiker", stats: { Gehalt: 70, Stresslevel: 60, Verantwortung: 75, Risiko: 20, Ausbildungslänge: 85, "Körperliche Belastung": 30, "Psychische Belastung": 65, Arbeitszeiten: 65, Gefahrenlevel: 20 }},
+{ name: "Physiker", stats: { Gehalt: 75, Stresslevel: 55, Verantwortung: 80, Risiko: 10, Ausbildungslänge: 90, "Körperliche Belastung": 20, "Psychische Belastung": 70, Arbeitszeiten: 60, Gefahrenlevel: 10 }},
+{ name: "Astronom", stats: { Gehalt: 70, Stresslevel: 50, Verantwortung: 75, Risiko: 5, Ausbildungslänge: 90, "Körperliche Belastung": 10, "Psychische Belastung": 60, Arbeitszeiten: 60, Gefahrenlevel: 5 }},
+{ name: "Laborant", stats: { Gehalt: 50, Stresslevel: 55, Verantwortung: 55, Risiko: 20, Ausbildungslänge: 50, "Körperliche Belastung": 30, "Psychische Belastung": 55, Arbeitszeiten: 65, Gefahrenlevel: 20 }},
+
+{ name: "Bäcker", stats: { Gehalt: 40, Stresslevel: 60, Verantwortung: 50, Risiko: 20, Ausbildungslänge: 40, "Körperliche Belastung": 80, "Psychische Belastung": 55, Arbeitszeiten: 85, Gefahrenlevel: 20 }},
+{ name: "Metzger", stats: { Gehalt: 45, Stresslevel: 60, Verantwortung: 55, Risiko: 40, Ausbildungslänge: 40, "Körperliche Belastung": 85, "Psychische Belastung": 60, Arbeitszeiten: 75, Gefahrenlevel: 40 }},
+{ name: "Kellner", stats: { Gehalt: 35, Stresslevel: 70, Verantwortung: 40, Risiko: 10, Ausbildungslänge: 20, "Körperliche Belastung": 70, "Psychische Belastung": 60, Arbeitszeiten: 90, Gefahrenlevel: 10 }},
+{ name: "Hotelmanager", stats: { Gehalt: 70, Stresslevel: 75, Verantwortung: 80, Risiko: 20, Ausbildungslänge: 70, "Körperliche Belastung": 30, "Psychische Belastung": 70, Arbeitszeiten: 85, Gefahrenlevel: 20 }},
+{ name: "Rezeptionist", stats: { Gehalt: 35, Stresslevel: 55, Verantwortung: 40, Risiko: 10, Ausbildungslänge: 20, "Körperliche Belastung": 30, "Psychische Belastung": 50, Arbeitszeiten: 80, Gefahrenlevel: 10 }},
+{ name: "Eventmanager", stats: { Gehalt: 60, Stresslevel: 80, Verantwortung: 70, Risiko: 15, Ausbildungslänge: 60, "Körperliche Belastung": 40, "Psychische Belastung": 75, Arbeitszeiten: 90, Gefahrenlevel: 15 }},
+{ name: "Barista", stats: { Gehalt: 30, Stresslevel: 55, Verantwortung: 35, Risiko: 10, Ausbildungslänge: 20, "Körperliche Belastung": 50, "Psychische Belastung": 45, Arbeitszeiten: 75, Gefahrenlevel: 10 }},
+{ name: "Barkeeper", stats: { Gehalt: 35, Stresslevel: 70, Verantwortung: 40, Risiko: 20, Ausbildungslänge: 20, "Körperliche Belastung": 60, "Psychische Belastung": 60, Arbeitszeiten: 95, Gefahrenlevel: 20 }},
+{ name: "Sommelier", stats: { Gehalt: 55, Stresslevel: 50, Verantwortung: 60, Risiko: 10, Ausbildungslänge: 60, "Körperliche Belastung": 20, "Psychische Belastung": 55, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "Reiseleiter", stats: { Gehalt: 40, Stresslevel: 60, Verantwortung: 50, Risiko: 20, Ausbildungslänge: 30, "Körperliche Belastung": 60, "Psychische Belastung": 55, Arbeitszeiten: 85, Gefahrenlevel: 20 }},
+
+{ name: "Journalist", stats: { Gehalt: 55, Stresslevel: 80, Verantwortung: 70, Risiko: 20, Ausbildungslänge: 70, "Körperliche Belastung": 30, "Psychische Belastung": 75, Arbeitszeiten: 85, Gefahrenlevel: 20 }},
+{ name: "Fotograf", stats: { Gehalt: 45, Stresslevel: 55, Verantwortung: 50, Risiko: 15, Ausbildungslänge: 40, "Körperliche Belastung": 60, "Psychische Belastung": 55, Arbeitszeiten: 75, Gefahrenlevel: 15 }},
+{ name: "Designer", stats: { Gehalt: 60, Stresslevel: 65, Verantwortung: 60, Risiko: 10, Ausbildungslänge: 60, "Körperliche Belastung": 20, "Psychische Belastung": 70, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "Musiker", stats: { Gehalt: 50, Stresslevel: 70, Verantwortung: 50, Risiko: 20, Ausbildungslänge: 40, "Körperliche Belastung": 40, "Psychische Belastung": 75, Arbeitszeiten: 90, Gefahrenlevel: 20 }},
+{ name: "Schauspieler", stats: { Gehalt: 70, Stresslevel: 75, Verantwortung: 60, Risiko: 20, Ausbildungslänge: 40, "Körperliche Belastung": 40, "Psychische Belastung": 80, Arbeitszeiten: 90, Gefahrenlevel: 20 }},
+{ name: "Regisseur", stats: { Gehalt: 80, Stresslevel: 85, Verantwortung: 90, Risiko: 10, Ausbildungslänge: 70, "Körperliche Belastung": 20, "Psychische Belastung": 85, Arbeitszeiten: 85, Gefahrenlevel: 10 }},
+{ name: "Influencer", stats: { Gehalt: 60, Stresslevel: 75, Verantwortung: 40, Risiko: 20, Ausbildungslänge: 10, "Körperliche Belastung": 30, "Psychische Belastung": 80, Arbeitszeiten: 90, Gefahrenlevel: 15 }},
+{ name: "YouTuber", stats: { Gehalt: 55, Stresslevel: 70, Verantwortung: 40, Risiko: 15, Ausbildungslänge: 10, "Körperliche Belastung": 25, "Psychische Belastung": 75, Arbeitszeiten: 85, Gefahrenlevel: 10 }},
+{ name: "Streamer", stats: { Gehalt: 50, Stresslevel: 80, Verantwortung: 35, Risiko: 10, Ausbildungslänge: 10, "Körperliche Belastung": 20, "Psychische Belastung": 85, Arbeitszeiten: 95, Gefahrenlevel: 10 }},
+{ name: "Game-Designer", stats: { Gehalt: 65, Stresslevel: 70, Verantwortung: 60, Risiko: 10, Ausbildungslänge: 60, "Körperliche Belastung": 20, "Psychische Belastung": 70, Arbeitszeiten: 75, Gefahrenlevel: 10 }},
+{ name: "Softwareentwickler", stats: { Gehalt: 80, Stresslevel: 65, Verantwortung: 70, Risiko: 10, Ausbildungslänge: 70, "Körperliche Belastung": 20, "Psychische Belastung": 70, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "IT-Sicherheitsexperte", stats: { Gehalt: 85, Stresslevel: 75, Verantwortung: 85, Risiko: 20, Ausbildungslänge: 80, "Körperliche Belastung": 20, "Psychische Belastung": 80, Arbeitszeiten: 70, Gefahrenlevel: 20 }},
+{ name: "Datenanalyst", stats: { Gehalt: 70, Stresslevel: 60, Verantwortung: 65, Risiko: 10, Ausbildungslänge: 70, "Körperliche Belastung": 10, "Psychische Belastung": 65, Arbeitszeiten: 65, Gefahrenlevel: 10 }},
+{ name: "Systemadministrator", stats: { Gehalt: 65, Stresslevel: 70, Verantwortung: 60, Risiko: 15, Ausbildungslänge: 60, "Körperliche Belastung": 20, "Psychische Belastung": 70, Arbeitszeiten: 70, Gefahrenlevel: 15 }},
+{ name: "Webentwickler", stats: { Gehalt: 70, Stresslevel: 60, Verantwortung: 55, Risiko: 10, Ausbildungslänge: 60, "Körperliche Belastung": 15, "Psychische Belastung": 65, Arbeitszeiten: 65, Gefahrenlevel: 10 }},
+{ name: "KI-Forscher", stats: { Gehalt: 90, Stresslevel: 70, Verantwortung: 85, Risiko: 10, Ausbildungslänge: 95, "Körperliche Belastung": 10, "Psychische Belastung": 75, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+
+{ name: "Bankkaufmann", stats: { Gehalt: 65, Stresslevel: 60, Verantwortung: 70, Risiko: 10, Ausbildungslänge: 60, "Körperliche Belastung": 10, "Psychische Belastung": 60, Arbeitszeiten: 65, Gefahrenlevel: 10 }},
+{ name: "Investmentbanker", stats: { Gehalt: 95, Stresslevel: 95, Verantwortung: 90, Risiko: 20, Ausbildungslänge: 80, "Körperliche Belastung": 10, "Psychische Belastung": 95, Arbeitszeiten: 100, Gefahrenlevel: 20 }},
+{ name: "Buchhalter", stats: { Gehalt: 55, Stresslevel: 55, Verantwortung: 60, Risiko: 10, Ausbildungslänge: 50, "Körperliche Belastung": 10, "Psychische Belastung": 55, Arbeitszeiten: 60, Gefahrenlevel: 10 }},
+{ name: "Steuerberater", stats: { Gehalt: 75, Stresslevel: 70, Verantwortung: 80, Risiko: 10, Ausbildungslänge: 80, "Körperliche Belastung": 10, "Psychische Belastung": 70, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "Wirtschaftsprüfer", stats: { Gehalt: 85, Stresslevel: 80, Verantwortung: 90, Risiko: 15, Ausbildungslänge: 85, "Körperliche Belastung": 10, "Psychische Belastung": 80, Arbeitszeiten: 80, Gefahrenlevel: 15 }},
+{ name: "Versicherungskaufmann", stats: { Gehalt: 55, Stresslevel: 55, Verantwortung: 50, Risiko: 10, Ausbildungslänge: 50, "Körperliche Belastung": 10, "Psychische Belastung": 50, Arbeitszeiten: 60, Gefahrenlevel: 10 }},
+{ name: "Finanzberater", stats: { Gehalt: 70, Stresslevel: 65, Verantwortung: 70, Risiko: 10, Ausbildungslänge: 60, "Körperliche Belastung": 10, "Psychische Belastung": 65, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "Aktuar", stats: { Gehalt: 85, Stresslevel: 60, Verantwortung: 85, Risiko: 10, Ausbildungslänge: 90, "Körperliche Belastung": 10, "Psychische Belastung": 70, Arbeitszeiten: 60, Gefahrenlevel: 10 }},
+{ name: "Bankmanager", stats: { Gehalt: 90, Stresslevel: 85, Verantwortung: 95, Risiko: 15, Ausbildungslänge: 80, "Körperliche Belastung": 10, "Psychische Belastung": 85, Arbeitszeiten: 85, Gefahrenlevel: 15 }},
+{ name: "Kassierer", stats: { Gehalt: 30, Stresslevel: 50, Verantwortung: 40, Risiko: 10, Ausbildungslänge: 10, "Körperliche Belastung": 40, "Psychische Belastung": 45, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+
+{ name: "Einzelhandelskaufmann", stats: { Gehalt: 35, Stresslevel: 55, Verantwortung: 45, Risiko: 10, Ausbildungslänge: 20, "Körperliche Belastung": 50, "Psychische Belastung": 50, Arbeitszeiten: 75, Gefahrenlevel: 10 }},
+{ name: "Verkäufer", stats: { Gehalt: 30, Stresslevel: 50, Verantwortung: 40, Risiko: 10, Ausbildungslänge: 10, "Körperliche Belastung": 40, "Psychische Belastung": 45, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "Store-Manager", stats: { Gehalt: 55, Stresslevel: 70, Verantwortung: 70, Risiko: 10, Ausbildungslänge: 40, "Körperliche Belastung": 40, "Psychische Belastung": 60, Arbeitszeiten: 80, Gefahrenlevel: 10 }},
+{ name: "Logistiker", stats: { Gehalt: 45, Stresslevel: 60, Verantwortung: 55, Risiko: 20, Ausbildungslänge: 30, "Körperliche Belastung": 60, "Psychische Belastung": 55, Arbeitszeiten: 75, Gefahrenlevel: 20 }},
+{ name: "Lagerarbeiter", stats: { Gehalt: 35, Stresslevel: 55, Verantwortung: 40, Risiko: 20, Ausbildungslänge: 10, "Körperliche Belastung": 70, "Psychische Belastung": 50, Arbeitszeiten: 75, Gefahrenlevel: 20 }},
+{ name: "Postbote", stats: { Gehalt: 40, Stresslevel: 55, Verantwortung: 45, Risiko: 20, Ausbildungslänge: 20, "Körperliche Belastung": 70, "Psychische Belastung": 55, Arbeitszeiten: 70, Gefahrenlevel: 20 }},
+{ name: "Kurrierfahrer", stats: { Gehalt: 40, Stresslevel: 60, Verantwortung: 50, Risiko: 30, Ausbildungslänge: 10, "Körperliche Belastung": 60, "Psychische Belastung": 55, Arbeitszeiten: 80, Gefahrenlevel: 30 }},
+{ name: "E-Commerce-Manager", stats: { Gehalt: 70, Stresslevel: 65, Verantwortung: 70, Risiko: 10, Ausbildungslänge: 60, "Körperliche Belastung": 20, "Psychische Belastung": 65, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "Supply-Chain-Manager", stats: { Gehalt: 80, Stresslevel: 75, Verantwortung: 85, Risiko: 15, Ausbildungslänge: 70, "Körperliche Belastung": 20, "Psychische Belastung": 75, Arbeitszeiten: 75, Gefahrenlevel: 15 }},
+{ name: "Vertriebsleiter", stats: { Gehalt: 85, Stresslevel: 80, Verantwortung: 90, Risiko: 10, Ausbildungslänge: 70, "Körperliche Belastung": 20, "Psychische Belastung": 80, Arbeitszeiten: 85, Gefahrenlevel: 10 }},
+
+{ name: "Marketingmanager", stats: { Gehalt: 75, Stresslevel: 70, Verantwortung: 75, Risiko: 10, Ausbildungslänge: 60, "Körperliche Belastung": 20, "Psychische Belastung": 70, Arbeitszeiten: 75, Gefahrenlevel: 10 }},
+{ name: "Social-Media-Manager", stats: { Gehalt: 55, Stresslevel: 65, Verantwortung: 50, Risiko: 10, Ausbildungslänge: 40, "Körperliche Belastung": 20, "Psychische Belastung": 70, Arbeitszeiten: 75, Gefahrenlevel: 10 }},
+{ name: "PR-Manager", stats: { Gehalt: 70, Stresslevel: 75, Verantwortung: 70, Risiko: 10, Ausbildungslänge: 60, "Körperliche Belastung": 20, "Psychische Belastung": 75, Arbeitszeiten: 80, Gefahrenlevel: 10 }},
+{ name: "Grafiker", stats: { Gehalt: 50, Stresslevel: 55, Verantwortung: 45, Risiko: 10, Ausbildungslänge: 40, "Körperliche Belastung": 20, "Psychische Belastung": 60, Arbeitszeiten: 65, Gefahrenlevel: 10 }},
+{ name: "Animator", stats: { Gehalt: 55, Stresslevel: 60, Verantwortung: 50, Risiko: 10, Ausbildungslänge: 50, "Körperliche Belastung": 20, "Psychische Belastung": 65, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "Videoproduzent", stats: { Gehalt: 60, Stresslevel: 65, Verantwortung: 55, Risiko: 10, Ausbildungslänge: 50, "Körperliche Belastung": 30, "Psychische Belastung": 70, Arbeitszeiten: 75, Gefahrenlevel: 10 }},
+{ name: "Tonmeister", stats: { Gehalt: 55, Stresslevel: 60, Verantwortung: 50, Risiko: 10, Ausbildungslänge: 50, "Körperliche Belastung": 20, "Psychische Belastung": 60, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "Kameramann", stats: { Gehalt: 55, Stresslevel: 65, Verantwortung: 55, Risiko: 20, Ausbildungslänge: 40, "Körperliche Belastung": 60, "Psychische Belastung": 60, Arbeitszeiten: 75, Gefahrenlevel: 20 }},
+{ name: "Drehbuchautor", stats: { Gehalt: 65, Stresslevel: 60, Verantwortung: 60, Risiko: 10, Ausbildungslänge: 60, "Körperliche Belastung": 10, "Psychische Belastung": 70, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "Produzent", stats: { Gehalt: 85, Stresslevel: 85, Verantwortung: 95, Risiko: 15, Ausbildungslänge: 70, "Körperliche Belastung": 20, "Psychische Belastung": 85, Arbeitszeiten: 85, Gefahrenlevel: 15 }},
+
+{ name: "Politiker", stats: { Gehalt: 80, Stresslevel: 95, Verantwortung: 100, Risiko: 40, Ausbildungslänge: 70, "Körperliche Belastung": 20, "Psychische Belastung": 95, Arbeitszeiten: 100, Gefahrenlevel: 40 }},
+{ name: "Diplomat", stats: { Gehalt: 85, Stresslevel: 80, Verantwortung: 90, Risiko: 20, Ausbildungslänge: 80, "Körperliche Belastung": 20, "Psychische Belastung": 80, Arbeitszeiten: 80, Gefahrenlevel: 20 }},
+{ name: "Beamter", stats: { Gehalt: 55, Stresslevel: 40, Verantwortung: 50, Risiko: 5, Ausbildungslänge: 40, "Körperliche Belastung": 10, "Psychische Belastung": 40, Arbeitszeiten: 60, Gefahrenlevel: 5 }},
+{ name: "Stadtplaner", stats: { Gehalt: 70, Stresslevel: 60, Verantwortung: 70, Risiko: 10, Ausbildungslänge: 70, "Körperliche Belastung": 20, "Psychische Belastung": 60, Arbeitszeiten: 65, Gefahrenlevel: 10 }},
+{ name: "Sozialarbeiter", stats: { Gehalt: 45, Stresslevel: 80, Verantwortung: 70, Risiko: 20, Ausbildungslänge: 60, "Körperliche Belastung": 40, "Psychische Belastung": 85, Arbeitszeiten: 70, Gefahrenlevel: 20 }},
+{ name: "Erzieher", stats: { Gehalt: 40, Stresslevel: 65, Verantwortung: 60, Risiko: 10, Ausbildungslänge: 40, "Körperliche Belastung": 50, "Psychische Belastung": 60, Arbeitszeiten: 70, Gefahrenlevel: 10 }},
+{ name: "Pflegehelfer", stats: { Gehalt: 35, Stresslevel: 75, Verantwortung: 55, Risiko: 20, Ausbildungslänge: 30, "Körperliche Belastung": 70, "Psychische Belastung": 75, Arbeitszeiten: 75, Gefahrenlevel: 20 }},
+{ name: "Hebamme", stats: { Gehalt: 55, Stresslevel: 85, Verantwortung: 85, Risiko: 30, Ausbildungslänge: 70, "Körperliche Belastung": 70, "Psychische Belastung": 85, Arbeitszeiten: 80, Gefahrenlevel: 30 }},
+{ name: "Tierarzt", stats: { Gehalt: 70, Stresslevel: 75, Verantwortung: 80, Risiko: 40, Ausbildungslänge: 85, "Körperliche Belastung": 60, "Psychische Belastung": 75, Arbeitszeiten: 70, Gefahrenlevel: 40 }},
+{ name: "Pharmaforscher", stats: { Gehalt: 85, Stresslevel: 70, Verantwortung: 85, Risiko: 20, Ausbildungslänge: 90, "Körperliche Belastung": 20, "Psychische Belastung": 70, Arbeitszeiten: 65, Gefahrenlevel: 20 }}
+];
+
+const berufeOpponents = {
+berufeIT: {
+  type: "berufe",
+  name: "IT & Technologie",
+  players: {
+    Gehalt: { name: "Softwareentwickler", value: 80 },
+    Stresslevel: { name: "IT-Sicherheitsexperte", value: 75 },
+    Verantwortung: { name: "KI-Forscher", value: 85 },
+    Risiko: { name: "Systemadministrator", value: 15 },
+    Ausbildungslänge: { name: "KI-Forscher", value: 95 },
+    "Körperliche Belastung": { name: "Webentwickler", value: 15 },
+    "Psychische Belastung": { name: "IT-Sicherheitsexperte", value: 80 },
+    Arbeitszeiten: { name: "Streamer", value: 95 },
+    Gefahrenlevel: { name: "IT-Sicherheitsexperte", value: 20 }
+  }
+},
+
+berufeFinanzen: {
+  type: "berufe",
+  name: "Finanzen & Wirtschaft",
+  players: {
+    Gehalt: { name: "Investmentbanker", value: 95 },
+    Stresslevel: { name: "Investmentbanker", value: 95 },
+    Verantwortung: { name: "Wirtschaftsprüfer", value: 90 },
+    Risiko: { name: "Finanzberater", value: 10 },
+    Ausbildungslänge: { name: "Aktuar", value: 90 },
+    "Körperliche Belastung": { name: "Buchhalter", value: 10 },
+    "Psychische Belastung": { name: "Investmentbanker", value: 95 },
+    Arbeitszeiten: { name: "Investmentbanker", value: 100 },
+    Gefahrenlevel: { name: "Investmentbanker", value: 20 }
+  }
+},
+
+berufeHandwerk: {
+  type: "berufe",
+  name: "Handwerk",
+  players: {
+    Gehalt: { name: "Elektriker", value: 55 },
+    Stresslevel: { name: "Mechaniker", value: 60 },
+    Verantwortung: { name: "Elektriker", value: 65 },
+    Risiko: { name: "Kfz-Mechatroniker", value: 55 },
+    Ausbildungslänge: { name: "Elektriker", value: 50 },
+    "Körperliche Belastung": { name: "Bauarbeiter", value: 95 },
+    "Psychische Belastung": { name: "Mechaniker", value: 55 },
+    Arbeitszeiten: { name: "Lkw-Fahrer", value: 85 },
+    Gefahrenlevel: { name: "Bauarbeiter", value: 70 }
+  }
+},
+
+berufeTransport: {
+  type: "berufe",
+  name: "Transport & Verkehr",
+  players: {
+    Gehalt: { name: "Lokführer", value: 60 },
+    Stresslevel: { name: "Lkw-Fahrer", value: 70 },
+    Verantwortung: { name: "Pilot-Assistent", value: 70 },
+    Risiko: { name: "Seemann", value: 70 },
+    Ausbildungslänge: { name: "Pilot-Assistent", value: 70 },
+    "Körperliche Belastung": { name: "Seemann", value: 80 },
+    "Psychische Belastung": { name: "Flugbegleiter", value: 70 },
+    Arbeitszeiten: { name: "Flugbegleiter", value: 85 },
+    Gefahrenlevel: { name: "Seemann", value: 70 }
+  }
+},
+
+berufeLandwirtschaft: {
+  type: "berufe",
+  name: "Landwirtschaft",
+  players: {
+    Gehalt: { name: "Landwirt", value: 45 },
+    Stresslevel: { name: "Landwirt", value: 70 },
+    Verantwortung: { name: "Forstwirt", value: 60 },
+    Risiko: { name: "Jäger", value: 70 },
+    Ausbildungslänge: { name: "Biologe", value: 80 },
+    "Körperliche Belastung": { name: "Landwirt", value: 90 },
+    "Psychische Belastung": { name: "Tierpfleger", value: 60 },
+    Arbeitszeiten: { name: "Landwirt", value: 90 },
+    Gefahrenlevel: { name: "Jäger", value: 70 }
+  }
+},
+
+berufeWissenschaft: {
+  type: "berufe",
+  name: "Wissenschaft",
+  players: {
+    Gehalt: { name: "Physiker", value: 75 },
+    Stresslevel: { name: "Chemiker", value: 60 },
+    Verantwortung: { name: "Astronom", value: 75 },
+    Risiko: { name: "Laborant", value: 20 },
+    Ausbildungslänge: { name: "Physiker", value: 90 },
+    "Körperliche Belastung": { name: "Laborant", value: 30 },
+    "Psychische Belastung": { name: "Psychologe", value: 95 },
+    Arbeitszeiten: { name: "Chemiker", value: 65 },
+    Gefahrenlevel: { name: "Chemiker", value: 20 }
+  }
+},
+
+berufeGastronomie2: {
+  type: "berufe",
+  name: "Hotellerie & Gastronomie",
+  players: {
+    Gehalt: { name: "Hotelmanager", value: 70 },
+    Stresslevel: { name: "Eventmanager", value: 80 },
+    Verantwortung: { name: "Hotelmanager", value: 80 },
+    Risiko: { name: "Metzger", value: 40 },
+    Ausbildungslänge: { name: "Sommelier", value: 60 },
+    "Körperliche Belastung": { name: "Bäcker", value: 80 },
+    "Psychische Belastung": { name: "Kellner", value: 60 },
+    Arbeitszeiten: { name: "Barkeeper", value: 95 },
+    Gefahrenlevel: { name: "Metzger", value: 40 }
+  }
+},
+
+berufeMedien: {
+  type: "berufe",
+  name: "Medien & Kreativbranche",
+  players: {
+    Gehalt: { name: "Regisseur", value: 80 },
+    Stresslevel: { name: "Journalist", value: 80 },
+    Verantwortung: { name: "Produzent", value: 95 },
+    Risiko: { name: "Kameramann", value: 20 },
+    Ausbildungslänge: { name: "Regisseur", value: 70 },
+    "Körperliche Belastung": { name: "Kameramann", value: 60 },
+    "Psychische Belastung": { name: "Schauspieler", value: 80 },
+    Arbeitszeiten: { name: "Musiker", value: 90 },
+    Gefahrenlevel: { name: "Kameramann", value: 20 }
+  }
+},
+
+berufeMarketing: {
+  type: "berufe",
+  name: "Marketing & Kommunikation",
+  players: {
+    Gehalt: { name: "Marketingmanager", value: 75 },
+    Stresslevel: { name: "PR-Manager", value: 75 },
+    Verantwortung: { name: "Vertriebsleiter", value: 90 },
+    Risiko: { name: "Grafiker", value: 10 },
+    Ausbildungslänge: { name: "PR-Manager", value: 60 },
+    "Körperliche Belastung": { name: "Grafiker", value: 20 },
+    "Psychische Belastung": { name: "Social-Media-Manager", value: 70 },
+    Arbeitszeiten: { name: "Eventmanager", value: 90 },
+    Gefahrenlevel: { name: "Grafiker", value: 10 }
+  }
+},
+
+berufePolitik: {
+  type: "berufe",
+  name: "Politik & Verwaltung",
+  players: {
+    Gehalt: { name: "Politiker", value: 80 },
+    Stresslevel: { name: "Politiker", value: 95 },
+    Verantwortung: { name: "Politiker", value: 100 },
+    Risiko: { name: "Diplomat", value: 20 },
+    Ausbildungslänge: { name: "Diplomat", value: 80 },
+    "Körperliche Belastung": { name: "Beamter", value: 10 },
+    "Psychische Belastung": { name: "Politiker", value: 95 },
+    Arbeitszeiten: { name: "Politiker", value: 100 },
+    Gefahrenlevel: { name: "Politiker", value: 40 }
+  }
+},
+
+berufeSoziales: {
+  type: "berufe",
+  name: "Soziales & Betreuung",
+  players: {
+    Gehalt: { name: "Hebamme", value: 55 },
+    Stresslevel: { name: "Sozialarbeiter", value: 80 },
+    Verantwortung: { name: "Hebamme", value: 85 },
+    Risiko: { name: "Pflegehelfer", value: 20 },
+    Ausbildungslänge: { name: "Hebamme", value: 70 },
+    "Körperliche Belastung": { name: "Pflegehelfer", value: 70 },
+    "Psychische Belastung": { name: "Sozialarbeiter", value: 85 },
+    Arbeitszeiten: { name: "Pflegehelfer", value: 75 },
+    Gefahrenlevel: { name: "Pflegehelfer", value: 20 }
+  }
+},
+
+berufeTierwelt: {
+  type: "berufe",
+  name: "Tierwelt & Pflege",
+  players: {
+    Gehalt: { name: "Tierarzt", value: 70 },
+    Stresslevel: { name: "Tierpfleger", value: 60 },
+    Verantwortung: { name: "Tierarzt", value: 80 },
+    Risiko: { name: "Jäger", value: 70 },
+    Ausbildungslänge: { name: "Tierarzt", value: 85 },
+    "Körperliche Belastung": { name: "Tierpfleger", value: 75 },
+    "Psychische Belastung": { name: "Tierpfleger", value: 60 },
+    Arbeitszeiten: { name: "Tierpfleger", value: 70 },
+    Gefahrenlevel: { name: "Jäger", value: 70 }
+  }
+},
+
+berufeLogistik: {
+  type: "berufe",
+  name: "Logistik & Versand",
+  players: {
+    Gehalt: { name: "Supply-Chain-Manager", value: 80 },
+    Stresslevel: { name: "Logistiker", value: 60 },
+    Verantwortung: { name: "Supply-Chain-Manager", value: 85 },
+    Risiko: { name: "Kurrierfahrer", value: 30 },
+    Ausbildungslänge: { name: "E-Commerce-Manager", value: 60 },
+    "Körperliche Belastung": { name: "Lagerarbeiter", value: 70 },
+    "Psychische Belastung": { name: "Postbote", value: 55 },
+    Arbeitszeiten: { name: "Kurrierfahrer", value: 80 },
+    Gefahrenlevel: { name: "Kurrierfahrer", value: 30 }
+  }
+},
+
+berufeKunst: {
+  type: "berufe",
+  name: "Kunst & Kultur",
+  players: {
+    Gehalt: { name: "Schauspieler", value: 70 },
+    Stresslevel: { name: "Musiker", value: 70 },
+    Verantwortung: { name: "Regisseur", value: 90 },
+    Risiko: { name: "Kameramann", value: 20 },
+    Ausbildungslänge: { name: "Regisseur", value: 70 },
+    "Körperliche Belastung": { name: "Kameramann", value: 60 },
+    "Psychische Belastung": { name: "Musiker", value: 75 },
+    Arbeitszeiten: { name: "Musiker", value: 90 },
+    Gefahrenlevel: { name: "Kameramann", value: 20 }
+  }
+},
+
+berufeBildung: {
+  type: "berufe",
+  name: "Bildung",
+  players: {
+    Gehalt: { name: "Lehrer", value: 60 },
+    Stresslevel: { name: "Lehrer", value: 70 },
+    Verantwortung: { name: "Lehrer", value: 75 },
+    Risiko: { name: "Erzieher", value: 10 },
+    Ausbildungslänge: { name: "Lehrer", value: 70 },
+    "Körperliche Belastung": { name: "Erzieher", value: 50 },
+    "Psychische Belastung": { name: "Lehrer", value: 65 },
+    Arbeitszeiten: { name: "Lehrer", value: 75 },
+    Gefahrenlevel: { name: "Erzieher", value: 10 }
+  }
+},
+
+berufePharma: {
+  type: "berufe",
+  name: "Pharma & Forschung",
+  players: {
+    Gehalt: { name: "Pharmaforscher", value: 85 },
+    Stresslevel: { name: "Chemiker", value: 60 },
+    Verantwortung: { name: "Pharmaforscher", value: 85 },
+    Risiko: { name: "Laborant", value: 20 },
+    Ausbildungslänge: { name: "Pharmaforscher", value: 90 },
+    "Körperliche Belastung": { name: "Laborant", value: 30 },
+    "Psychische Belastung": { name: "Psychologe", value: 95 },
+    Arbeitszeiten: { name: "Chemiker", value: 65 },
+    Gefahrenlevel: { name: "Chemiker", value: 20 }
+  }
+},
+berufeMedizin: {
+  type: "berufe",
+  name: "Medizin",
+  players: {
+    Gehalt: { name: "Arzt", value: 90 },
+    Stresslevel: { name: "Krankenpfleger", value: 90 },
+    Verantwortung: { name: "Arzt", value: 100 },
+    Risiko: { name: "Notarzt", value: 85 },
+    Ausbildungslänge: { name: "Arzt", value: 95 },
+    "Körperliche Belastung": { name: "Krankenpfleger", value: 85 },
+    "Psychische Belastung": { name: "Psychologe", value: 95 },
+    Arbeitszeiten: { name: "Krankenpfleger", value: 80 },
+    Gefahrenlevel: { name: "Notarzt", value: 85 }
+  }
+},
+
+berufeSicherheit: {
+  type: "berufe",
+  name: "Sicherheitswesen",
+  players: {
+    Gehalt: { name: "Pilot", value: 85 },
+    Stresslevel: { name: "Polizist", value: 85 },
+    Verantwortung: { name: "Pilot", value: 95 },
+    Risiko: { name: "Soldat", value: 100 },
+    Ausbildungslänge: { name: "Pilot", value: 90 },
+    "Körperliche Belastung": { name: "Feuerwehrmann", value: 95 },
+    "Psychische Belastung": { name: "Polizist", value: 85 },
+    Arbeitszeiten: { name: "Feuerwehrmann", value: 65 },
+    Gefahrenlevel: { name: "Soldat", value: 100 }
+  }
+},
+
+berufeGastronomie: {
+  type: "berufe",
+  name: "Gastronomie",
+  players: {
+    Gehalt: { name: "Koch", value: 45 },
+    Stresslevel: { name: "Koch", value: 75 },
+    Verantwortung: { name: "Koch", value: 55 },
+    Risiko: { name: "Metzger", value: 40 },
+    Ausbildungslänge: { name: "Sommelier", value: 60 },
+    "Körperliche Belastung": { name: "Bäcker", value: 80 },
+    "Psychische Belastung": { name: "Kellner", value: 60 },
+    Arbeitszeiten: { name: "Barkeeper", value: 95 },
+    Gefahrenlevel: { name: "Metzger", value: 40 }
+  }
+}
+};
+
 
 const geografiePlayers = [
 
@@ -657,13 +1090,13 @@ type: "geografie",
     players: {
       Bruttoinlandsprodukt: { name: "Deutschland", value: 92 },
       Bevölkerung: { name: "Deutschland", value: 70 },
-      Bildung: { name: "Finnland", value: 95 },
+      Bildung: { name: "Finnland", value: 93 },
       Sicherheit: { name: "Schweiz", value: 98 },
       Gesundheitssystem: { name: "Schweiz", value: 97 },
       Technologie: { name: "Deutschland", value: 88 },
-      Klima: { name: "Portugal", value: 85 },
-      Natur: { name: "Norwegen", value: 95 },
-      Infrastruktur: { name: "Niederlande", value: 95 }
+      Klima: { name: "Portugal", value: 88 },
+      Natur: { name: "Norwegen", value: 92 },
+      Infrastruktur: { name: "Niederlande", value: 92 }
     }
   },
 
@@ -674,12 +1107,12 @@ type: "geografie",
       Bruttoinlandsprodukt: { name: "Deutschland", value: 92 },
       Bevölkerung: { name: "Deutschland", value: 70 },
       Bildung: { name: "Niederlande", value: 90 },
-      Sicherheit: { name: "Österreich", value: 85 },
+      Sicherheit: { name: "Österreich", value: 92 },
       Gesundheitssystem: { name: "Deutschland", value: 90 },
       Technologie: { name: "Deutschland", value: 88 },
-      Klima: { name: "Spanien", value: 80 },
-      Natur: { name: "Schweden", value: 90 },
-      Infrastruktur: { name: "Niederlande", value: 90 }
+      Klima: { name: "Spanien", value: 88 },
+      Natur: { name: "Schweden", value: 85 },
+      Infrastruktur: { name: "Niederlande", value: 92 }
     }
   },
 
@@ -689,13 +1122,13 @@ type: "geografie",
     players: {
       Bruttoinlandsprodukt: { name: "USA", value: 100 },
       Bevölkerung: { name: "USA", value: 95 },
-      Bildung: { name: "Kanada", value: 95 },
+      Bildung: { name: "Kanada", value: 90 },
       Sicherheit: { name: "Kanada", value: 95 },
-      Gesundheitssystem: { name: "Kanada", value: 95 },
+      Gesundheitssystem: { name: "Kanada", value: 90 },
       Technologie: { name: "USA", value: 95 },
-      Klima: { name: "Kanada", value: 85 },
+      Klima: { name: "Kanada", value: 70 },
       Natur: { name: "Kanada", value: 95 },
-      Infrastruktur: { name: "USA", value: 95 }
+      Infrastruktur: { name: "USA", value: 90 }
     }
   },
 
@@ -709,8 +1142,8 @@ type: "geografie",
       Sicherheit: { name: "Japan", value: 95 },
       Gesundheitssystem: { name: "Japan", value: 95 },
       Technologie: { name: "Japan", value: 98 },
-      Klima: { name: "Thailand", value: 80 },
-      Natur: { name: "Indonesien", value: 100 },
+      Klima: { name: "Thailand", value: 85 },
+      Natur: { name: "Indonesien", value: 90 },
       Infrastruktur: { name: "Japan", value: 95 }
     }
   },
@@ -721,17 +1154,16 @@ type: "geografie",
     players: {
       Bruttoinlandsprodukt: { name: "Brasilien", value: 75 },
       Bevölkerung: { name: "Brasilien", value: 85 },
-      Bildung: { name: "Chile", value: 75 },
-      Sicherheit: { name: "Uruguay", value: 60 },
-      Gesundheitssystem: { name: "Chile", value: 70 },
+      Bildung: { name: "Chile", value: 78 },
+      Sicherheit: { name: "Uruguay", value: 75 },
+      Gesundheitssystem: { name: "Chile", value: 75 },
       Technologie: { name: "Brasilien", value: 60 },
       Klima: { name: "Brasilien", value: 90 },
       Natur: { name: "Brasilien", value: 100 },
-      Infrastruktur: { name: "Chile", value: 70 }
+      Infrastruktur: { name: "Chile", value: 76 }
     }
   },
 
-  /* ⭐ NEU: Australien (Kontinent) */
   australienKontinent: {
 type: "geografie",
     name: "Australien (Kontinent)",
@@ -748,72 +1180,67 @@ type: "geografie",
     }
   },
 
-  /* ⭐ NEU: Afrika (Kontinent) */
   afrikaKontinent: {
 type: "geografie",
     name: "Afrika (Kontinent)",
     players: {
-      Bruttoinlandsprodukt: { name: "Südafrika", value: 75 },
-      Bevölkerung: { name: "Nigeria", value: 85 },
+      Bruttoinlandsprodukt: { name: "Südafrika", value: 78 },
+      Bevölkerung: { name: "Nigeria", value: 90 },
       Bildung: { name: "Südafrika", value: 70 },
-      Sicherheit: { name: "Botswana", value: 60 },
-      Gesundheitssystem: { name: "Südafrika", value: 65 },
-      Technologie: { name: "Südafrika", value: 60 },
-      Klima: { name: "Kenia", value: 90 },
-      Natur: { name: "Kongo", value: 100 },
-      Infrastruktur: { name: "Südafrika", value: 60 }
+      Sicherheit: { name: "Botswana", value: 65 },
+      Gesundheitssystem: { name: "Südafrika", value: 60 },
+      Technologie: { name: "Südafrika", value: 68 },
+      Klima: { name: "Kenia", value: 80 },
+      Natur: { name: "Kongo", value: 90 },
+      Infrastruktur: { name: "Südafrika", value: 70 }
     }
   },
 
-  /* ⭐ NEU: Nordamerika (Kontinent) */
   nordamerika: {
 type: "geografie",
     name: "Nordamerika",
     players: {
       Bruttoinlandsprodukt: { name: "USA", value: 100 },
       Bevölkerung: { name: "USA", value: 95 },
-      Bildung: { name: "Kanada", value: 95 },
+      Bildung: { name: "Kanada", value: 90 },
       Sicherheit: { name: "Kanada", value: 95 },
-      Gesundheitssystem: { name: "Kanada", value: 95 },
+      Gesundheitssystem: { name: "Kanada", value: 90 },
       Technologie: { name: "USA", value: 95 },
-      Klima: { name: "Kanada", value: 85 },
+      Klima: { name: "Kanada", value: 70 },
       Natur: { name: "Kanada", value: 95 },
-      Infrastruktur: { name: "USA", value: 95 }
+      Infrastruktur: { name: "USA", value: 90 }
     }
   },
 
-  /* ⭐ NEU: Inseln der Welt */
   inseln: {
 type: "geografie",
     name: "Inseln der Welt",
     players: {
-      Bruttoinlandsprodukt: { name: "Singapur", value: 90 },
-      Bevölkerung: { name: "Indonesien", value: 85 },
+      Bruttoinlandsprodukt: { name: "Singapur", value: 92 },
+      Bevölkerung: { name: "Indonesien", value: 90 },
       Bildung: { name: "Japan", value: 95 },
       Sicherheit: { name: "Japan", value: 95 },
       Gesundheitssystem: { name: "Japan", value: 95 },
       Technologie: { name: "Japan", value: 98 },
       Klima: { name: "Malediven", value: 90 },
-      Natur: { name: "Indonesien", value: 100 },
+      Natur: { name: "Indonesien", value: 90 },
       Infrastruktur: { name: "Singapur", value: 95 }
     }
   },
-
-/* ===================== NEUE GEOGRAFIE-GEGNER ===================== */
 
 skandinavien: {
   type: "geografie",
   name: "Skandinavien",
   players: {
-    Bruttoinlandsprodukt: { name: "Schweden", value: 88 },
-    Bevölkerung: { name: "Schweden", value: 40 },
-    Bildung: { name: "Finnland", value: 95 },
-    Sicherheit: { name: "Norwegen", value: 97 },
-    Gesundheitssystem: { name: "Norwegen", value: 94 },
-    Technologie: { name: "Schweden", value: 85 },
-    Klima: { name: "Norwegen", value: 70 },
-    Natur: { name: "Norwegen", value: 98 },
-    Infrastruktur: { name: "Dänemark", value: 92 }
+    Bruttoinlandsprodukt: { name: "Norwegen", value: 91 },
+    Bevölkerung: { name: "Schweden", value: 30 },
+    Bildung: { name: "Finnland", value: 93 },
+    Sicherheit: { name: "Norwegen", value: 96 },
+    Gesundheitssystem: { name: "Norwegen", value: 93 },
+    Technologie: { name: "Schweden", value: 88 },
+    Klima: { name: "Norwegen", value: 68 },
+    Natur: { name: "Norwegen", value: 92 },
+    Infrastruktur: { name: "Dänemark", value: 90 }
   }
 },
 
@@ -821,15 +1248,15 @@ arabischeHalbinsel: {
   type: "geografie",
   name: "Arabische Halbinsel",
   players: {
-    Bruttoinlandsprodukt: { name: "Saudi-Arabien", value: 90 },
-    Bevölkerung: { name: "Saudi-Arabien", value: 75 },
-    Bildung: { name: "VAE", value: 80 },
-    Sicherheit: { name: "Oman", value: 85 },
-    Gesundheitssystem: { name: "Katar", value: 88 },
-    Technologie: { name: "VAE", value: 90 },
-    Klima: { name: "Saudi-Arabien", value: 95 },
+    Bruttoinlandsprodukt: { name: "Saudi-Arabien", value: 88 },
+    Bevölkerung: { name: "Saudi-Arabien", value: 60 },
+    Bildung: { name: "VAE", value: 78 },
+    Sicherheit: { name: "Oman", value: 78 },
+    Gesundheitssystem: { name: "Katar", value: 82 },
+    Technologie: { name: "VAE", value: 85 },
+    Klima: { name: "Saudi-Arabien", value: 85 },
     Natur: { name: "Oman", value: 70 },
-    Infrastruktur: { name: "Katar", value: 92 }
+    Infrastruktur: { name: "Katar", value: 90 }
   }
 },
 
@@ -837,15 +1264,15 @@ balkan: {
   type: "geografie",
   name: "Balkan",
   players: {
-    Bruttoinlandsprodukt: { name: "Griechenland", value: 70 },
-    Bevölkerung: { name: "Rumänien", value: 65 },
-    Bildung: { name: "Slowenien", value: 85 },
+    Bruttoinlandsprodukt: { name: "Griechenland", value: 78 },
+    Bevölkerung: { name: "Rumänien", value: 45 },
+    Bildung: { name: "Slowenien", value: 82 },
     Sicherheit: { name: "Kroatien", value: 80 },
-    Gesundheitssystem: { name: "Slowenien", value: 88 },
-    Technologie: { name: "Serbien", value: 70 },
-    Klima: { name: "Griechenland", value: 90 },
+    Gesundheitssystem: { name: "Slowenien", value: 82 },
+    Technologie: { name: "Serbien", value: 68 },
+    Klima: { name: "Griechenland", value: 85 },
     Natur: { name: "Montenegro", value: 95 },
-    Infrastruktur: { name: "Kroatien", value: 82 }
+    Infrastruktur: { name: "Kroatien", value: 78 }
   }
 },
 
@@ -853,15 +1280,15 @@ benelux: {
   type: "geografie",
   name: "Benelux",
   players: {
-    Bruttoinlandsprodukt: { name: "Niederlande", value: 90 },
-    Bevölkerung: { name: "Belgien", value: 55 },
-    Bildung: { name: "Luxemburg", value: 92 },
+    Bruttoinlandsprodukt: { name: "Niederlande", value: 89 },
+    Bevölkerung: { name: "Belgien", value: 42 },
+    Bildung: { name: "Luxemburg", value: 90 },
     Sicherheit: { name: "Luxemburg", value: 95 },
-    Gesundheitssystem: { name: "Belgien", value: 90 },
-    Technologie: { name: "Niederlande", value: 88 },
-    Klima: { name: "Belgien", value: 75 },
-    Natur: { name: "Luxemburg", value: 85 },
-    Infrastruktur: { name: "Niederlande", value: 95 }
+    Gesundheitssystem: { name: "Belgien", value: 86 },
+    Technologie: { name: "Niederlande", value: 86 },
+    Klima: { name: "Belgien", value: 76 },
+    Natur: { name: "Luxemburg", value: 70 },
+    Infrastruktur: { name: "Niederlande", value: 92 }
   }
 },
 
@@ -869,15 +1296,15 @@ osteuropa: {
   type: "geografie",
   name: "Osteuropa",
   players: {
-    Bruttoinlandsprodukt: { name: "Polen", value: 80 },
-    Bevölkerung: { name: "Polen", value: 70 },
-    Bildung: { name: "Tschechien", value: 85 },
-    Sicherheit: { name: "Estland", value: 90 },
-    Gesundheitssystem: { name: "Tschechien", value: 88 },
-    Technologie: { name: "Estland", value: 92 },
+    Bruttoinlandsprodukt: { name: "Polen", value: 82 },
+    Bevölkerung: { name: "Polen", value: 55 },
+    Bildung: { name: "Tschechien", value: 82 },
+    Sicherheit: { name: "Estland", value: 82 },
+    Gesundheitssystem: { name: "Tschechien", value: 80 },
+    Technologie: { name: "Estland", value: 80 },
     Klima: { name: "Litauen", value: 70 },
-    Natur: { name: "Slowakei", value: 85 },
-    Infrastruktur: { name: "Polen", value: 80 }
+    Natur: { name: "Slowakei", value: 72 },
+    Infrastruktur: { name: "Polen", value: 78 }
   }
 },
 
@@ -885,15 +1312,15 @@ naherOsten: {
   type: "geografie",
   name: "Naher Osten",
   players: {
-    Bruttoinlandsprodukt: { name: "Saudi-Arabien", value: 90 },
-    Bevölkerung: { name: "Türkei", value: 85 },
-    Bildung: { name: "Israel", value: 92 },
-    Sicherheit: { name: "Israel", value: 90 },
-    Gesundheitssystem: { name: "Israel", value: 93 },
-    Technologie: { name: "Israel", value: 95 },
-    Klima: { name: "Jordanien", value: 85 },
-    Natur: { name: "Libanon", value: 80 },
-    Infrastruktur: { name: "VAE", value: 95 }
+    Bruttoinlandsprodukt: { name: "Saudi-Arabien", value: 88 },
+    Bevölkerung: { name: "Türkei", value: 80 },
+    Bildung: { name: "Israel", value: 90 },
+    Sicherheit: { name: "Israel", value: 80 },
+    Gesundheitssystem: { name: "Israel", value: 82 },
+    Technologie: { name: "Israel", value: 92 },
+    Klima: { name: "Jordanien", value: 80 },
+    Natur: { name: "Libanon", value: 70 },
+    Infrastruktur: { name: "VAE", value: 90 }
   }
 },
 
@@ -903,12 +1330,12 @@ indischerSubkontinent: {
   players: {
     Bruttoinlandsprodukt: { name: "Indien", value: 85 },
     Bevölkerung: { name: "Indien", value: 98 },
-    Bildung: { name: "Sri Lanka", value: 75 },
-    Sicherheit: { name: "Bhutan", value: 90 },
-    Gesundheitssystem: { name: "Sri Lanka", value: 70 },
+    Bildung: { name: "Sri Lanka", value: 70 },
+    Sicherheit: { name: "Bhutan", value: 70 },
+    Gesundheitssystem: { name: "Sri Lanka", value: 65 },
     Technologie: { name: "Indien", value: 75 },
-    Klima: { name: "Bangladesch", value: 85 },
-    Natur: { name: "Nepal", value: 95 },
+    Klima: { name: "Bangladesch", value: 80 },
+    Natur: { name: "Nepal", value: 90 },
     Infrastruktur: { name: "Indien", value: 60 }
   }
 },
@@ -918,13 +1345,13 @@ karibik: {
   name: "Karibik",
   players: {
     Bruttoinlandsprodukt: { name: "Puerto Rico", value: 80 },
-    Bevölkerung: { name: "Kuba", value: 70 },
-    Bildung: { name: "Kuba", value: 85 },
+    Bevölkerung: { name: "Kuba", value: 40 },
+    Bildung: { name: "Kuba", value: 80 },
     Sicherheit: { name: "Barbados", value: 90 },
-    Gesundheitssystem: { name: "Kuba", value: 88 },
+    Gesundheitssystem: { name: "Kuba", value: 75 },
     Technologie: { name: "Puerto Rico", value: 75 },
-    Klima: { name: "Dominikanische Republik", value: 95 },
-    Natur: { name: "Jamaika", value: 90 },
+    Klima: { name: "Dominikanische Republik", value: 85 },
+    Natur: { name: "Jamaika", value: 88 },
     Infrastruktur: { name: "Puerto Rico", value: 85 }
   }
 },
@@ -940,7 +1367,7 @@ ozeanien: {
     Gesundheitssystem: { name: "Neuseeland", value: 92 },
     Technologie: { name: "Australien", value: 80 },
     Klima: { name: "Fidschi", value: 85 },
-    Natur: { name: "Neuseeland", value: 98 },
+    Natur: { name: "Neuseeland", value: 95 },
     Infrastruktur: { name: "Australien", value: 88 }
   }
 },
@@ -950,14 +1377,14 @@ baltikum: {
   name: "Baltikum",
   players: {
     Bruttoinlandsprodukt: { name: "Estland", value: 80 },
-    Bevölkerung: { name: "Litauen", value: 40 },
-    Bildung: { name: "Estland", value: 92 },
-    Sicherheit: { name: "Estland", value: 95 },
-    Gesundheitssystem: { name: "Litauen", value: 85 },
-    Technologie: { name: "Estland", value: 95 },
+    Bevölkerung: { name: "Litauen", value: 25 },
+    Bildung: { name: "Estland", value: 84 },
+    Sicherheit: { name: "Estland", value: 82 },
+    Gesundheitssystem: { name: "Litauen", value: 78 },
+    Technologie: { name: "Estland", value: 80 },
     Klima: { name: "Lettland", value: 70 },
-    Natur: { name: "Lettland", value: 85 },
-    Infrastruktur: { name: "Estland", value: 90 }
+    Natur: { name: "Lettland", value: 76 },
+    Infrastruktur: { name: "Estland", value: 80 }
   }
 },
 
@@ -971,8 +1398,8 @@ mitteleuropa: {
     Sicherheit: { name: "Schweiz", value: 98 },
     Gesundheitssystem: { name: "Schweiz", value: 97 },
     Technologie: { name: "Deutschland", value: 88 },
-    Klima: { name: "Österreich", value: 80 },
-    Natur: { name: "Schweiz", value: 95 },
+    Klima: { name: "Österreich", value: 82 },
+    Natur: { name: "Schweiz", value: 90 },
     Infrastruktur: { name: "Deutschland", value: 90 }
   }
 },
@@ -981,15 +1408,15 @@ westafrika: {
   type: "geografie",
   name: "Westafrika",
   players: {
-    Bruttoinlandsprodukt: { name: "Nigeria", value: 70 },
-    Bevölkerung: { name: "Nigeria", value: 85 },
-    Bildung: { name: "Ghana", value: 65 },
-    Sicherheit: { name: "Ghana", value: 70 },
-    Gesundheitssystem: { name: "Senegal", value: 60 },
-    Technologie: { name: "Nigeria", value: 55 },
-    Klima: { name: "Ghana", value: 90 },
-    Natur: { name: "Sierra Leone", value: 85 },
-    Infrastruktur: { name: "Nigeria", value: 50 }
+    Bruttoinlandsprodukt: { name: "Nigeria", value: 72 },
+    Bevölkerung: { name: "Nigeria", value: 90 },
+    Bildung: { name: "Ghana", value: 60 },
+    Sicherheit: { name: "Ghana", value: 55 },
+    Gesundheitssystem: { name: "Senegal", value: 56 },
+    Technologie: { name: "Nigeria", value: 60 },
+    Klima: { name: "Ghana", value: 80 },
+    Natur: { name: "Sierra Leone", value: 80 },
+    Infrastruktur: { name: "Nigeria", value: 55 }
   }
 },
 
@@ -997,14 +1424,14 @@ ostafrika: {
   type: "geografie",
   name: "Ostafrika",
   players: {
-    Bruttoinlandsprodukt: { name: "Kenia", value: 65 },
+    Bruttoinlandsprodukt: { name: "Kenia", value: 68 },
     Bevölkerung: { name: "Äthiopien", value: 80 },
-    Bildung: { name: "Kenia", value: 70 },
-    Sicherheit: { name: "Tansania", value: 65 },
-    Gesundheitssystem: { name: "Kenia", value: 60 },
-    Technologie: { name: "Kenia", value: 65 },
+    Bildung: { name: "Kenia", value: 60 },
+    Sicherheit: { name: "Tansania", value: 50 },
+    Gesundheitssystem: { name: "Kenia", value: 55 },
+    Technologie: { name: "Kenia", value: 58 },
     Klima: { name: "Tansania", value: 85 },
-    Natur: { name: "Uganda", value: 90 },
+    Natur: { name: "Uganda", value: 85 },
     Infrastruktur: { name: "Kenia", value: 55 }
   }
 },
@@ -1013,14 +1440,14 @@ suedostasien: {
   type: "geografie",
   name: "Südostasien",
   players: {
-    Bruttoinlandsprodukt: { name: "Singapur", value: 90 },
-    Bevölkerung: { name: "Indonesien", value: 85 },
+    Bruttoinlandsprodukt: { name: "Singapur", value: 92 },
+    Bevölkerung: { name: "Indonesien", value: 90 },
     Bildung: { name: "Singapur", value: 95 },
     Sicherheit: { name: "Singapur", value: 95 },
-    Gesundheitssystem: { name: "Singapur", value: 95 },
-    Technologie: { name: "Singapur", value: 98 },
+    Gesundheitssystem: { name: "Singapur", value: 90 },
+    Technologie: { name: "Singapur", value: 95 },
     Klima: { name: "Thailand", value: 85 },
-    Natur: { name: "Indonesien", value: 100 },
+    Natur: { name: "Indonesien", value: 90 },
     Infrastruktur: { name: "Singapur", value: 95 }
   }
 },
@@ -1029,15 +1456,15 @@ mittelamerika: {
   type: "geografie",
   name: "Mittelamerika",
   players: {
-    Bruttoinlandsprodukt: { name: "Costa Rica", value: 70 },
-    Bevölkerung: { name: "Guatemala", value: 65 },
-    Bildung: { name: "Costa Rica", value: 85 },
-    Sicherheit: { name: "Costa Rica", value: 90 },
-    Gesundheitssystem: { name: "Costa Rica", value: 88 },
-    Technologie: { name: "Panama", value: 75 },
-    Klima: { name: "Costa Rica", value: 95 },
-    Natur: { name: "Costa Rica", value: 100 },
-    Infrastruktur: { name: "Panama", value: 80 }
+    Bruttoinlandsprodukt: { name: "Costa Rica", value: 78 },
+    Bevölkerung: { name: "Guatemala", value: 40 },
+    Bildung: { name: "Costa Rica", value: 80 },
+    Sicherheit: { name: "Costa Rica", value: 85 },
+    Gesundheitssystem: { name: "Costa Rica", value: 80 },
+    Technologie: { name: "Panama", value: 70 },
+    Klima: { name: "Costa Rica", value: 85 },
+    Natur: { name: "Costa Rica", value: 95 },
+    Infrastruktur: { name: "Panama", value: 78 }
   }
 },
 
@@ -1046,13 +1473,13 @@ suedpazifik: {
   name: "Südpazifik",
   players: {
     Bruttoinlandsprodukt: { name: "Neuseeland", value: 88 },
-    Bevölkerung: { name: "Fidschi", value: 20 },
+    Bevölkerung: { name: "Fidschi", value: 10 },
     Bildung: { name: "Neuseeland", value: 90 },
     Sicherheit: { name: "Neuseeland", value: 95 },
     Gesundheitssystem: { name: "Neuseeland", value: 92 },
     Technologie: { name: "Neuseeland", value: 85 },
-    Klima: { name: "Fidschi", value: 90 },
-    Natur: { name: "Neuseeland", value: 98 },
+    Klima: { name: "Fidschi", value: 85 },
+    Natur: { name: "Neuseeland", value: 95 },
     Infrastruktur: { name: "Neuseeland", value: 88 }
   }
 },
@@ -1062,14 +1489,14 @@ kleinasien: {
   name: "Kleinasien",
   players: {
     Bruttoinlandsprodukt: { name: "Türkei", value: 80 },
-    Bevölkerung: { name: "Türkei", value: 85 },
-    Bildung: { name: "Türkei", value: 75 },
-    Sicherheit: { name: "Türkei", value: 70 },
-    Gesundheitssystem: { name: "Türkei", value: 72 },
-    Technologie: { name: "Türkei", value: 78 },
-    Klima: { name: "Türkei", value: 85 },
-    Natur: { name: "Türkei", value: 80 },
-    Infrastruktur: { name: "Türkei", value: 75 }
+    Bevölkerung: { name: "Türkei", value: 80 },
+    Bildung: { name: "Türkei", value: 72 },
+    Sicherheit: { name: "Türkei", value: 65 },
+    Gesundheitssystem: { name: "Türkei", value: 70 },
+    Technologie: { name: "Türkei", value: 72 },
+    Klima: { name: "Türkei", value: 80 },
+    Natur: { name: "Türkei", value: 78 },
+    Infrastruktur: { name: "Türkei", value: 74 }
   }
 },
 
@@ -1077,18 +1504,17 @@ iberischeHalbinsel: {
   type: "geografie",
   name: "Iberische Halbinsel",
   players: {
-    Bruttoinlandsprodukt: { name: "Spanien", value: 85 },
-    Bevölkerung: { name: "Spanien", value: 70 },
-    Bildung: { name: "Portugal", value: 85 },
-    Sicherheit: { name: "Portugal", value: 90 },
-    Gesundheitssystem: { name: "Spanien", value: 88 },
-    Technologie: { name: "Spanien", value: 82 },
-    Klima: { name: "Portugal", value: 90 },
-    Natur: { name: "Portugal", value: 95 },
-    Infrastruktur: { name: "Spanien", value: 88 }
+    Bruttoinlandsprodukt: { name: "Spanien", value: 86 },
+    Bevölkerung: { name: "Spanien", value: 58 },
+    Bildung: { name: "Portugal", value: 78 },
+    Sicherheit: { name: "Portugal", value: 82 },
+    Gesundheitssystem: { name: "Spanien", value: 83 },
+    Technologie: { name: "Spanien", value: 78 },
+    Klima: { name: "Portugal", value: 88 },
+    Natur: { name: "Portugal", value: 82 },
+    Infrastruktur: { name: "Spanien", value: 84 }
   }
 }
-
 };
 
 const animalOpponents = {
@@ -1857,7 +2283,8 @@ const animalOpponents = {
 const opponentTeams = {
   ...footballOpponents,
   ...animalOpponents,
-  ...geografieOpponents
+  ...geografieOpponents,
+  ...berufeOpponents
 };
 
 /* ================== SPIELLOGIK ================== */
@@ -1888,7 +2315,7 @@ const endScreenTitle = document.querySelector("#endScreenTitle");
 startGameBtn.addEventListener("click", () => {
   const cat = categorySelect.value;
 
-  if (cat !== "fussball" && cat !== "tiere" && cat !== "geografie") {
+  if (cat !== "fussball" && cat !== "tiere" && cat !== "geografie" && cat !== "berufe") {
     premiumPopup.classList.remove("hidden");
     return;
   }
@@ -1917,7 +2344,9 @@ function startGame() {
       ? "Stelle dein Team zusammen"
       : cat === "tiere"
         ? "Stelle dein Tier zusammen"
-        : "Stelle dein Land zusammen";
+        : cat === "geografie"
+          ? "Stelle dein Land zusammen"
+          : "Stelle deinen Beruf zusammen";
 
   nextPlayer();
 }
@@ -1931,14 +2360,18 @@ function nextPlayer() {
       ? footballPlayers
       : cat === "tiere"
         ? animalPlayers
-        : geografiePlayers;
+        : cat === "geografie"
+          ? geografiePlayers
+          : berufePlayers;
 
   const catList =
     cat === "fussball"
       ? categoriesFootball
       : cat === "tiere"
         ? categoriesAnimals
-        : categoriesGeografie;
+        : cat === "geografie"
+          ? categoriesGeografie
+          : categoriesBerufe;
 
   if (usedCategories.length === catList.length) {
     renderFinal();
@@ -1988,17 +2421,15 @@ function chooseCategory(cat) {
 
   const value = currentPlayer.stats[cat];
 
-let ratingText = "Schwache Wahl 👎";
+  let ratingText = "Schwache Wahl 👎";
 
-if (value > 95) {
-  ratingText = "Weltklasse Wahl 🔥";
-} else if (value > 80) {
-  ratingText = "Gute Wahl 👍";
-} else if (value > 60) {
-  ratingText = "Solide Wahl ✊";
-}
-
-
+  if (value > 95) {
+    ratingText = "Weltklasse Wahl 🔥";
+  } else if (value > 80) {
+    ratingText = "Gute Wahl 👍";
+  } else if (value > 60) {
+    ratingText = "Solide Wahl ✊";
+  }
 
   userTeam[cat] = { name: currentPlayer.name, value };
 
@@ -2030,13 +2461,16 @@ function renderFinal() {
       ? categoriesFootball
       : cat === "tiere"
         ? categoriesAnimals
-        : categoriesGeografie;
+        : cat === "geografie"
+          ? categoriesGeografie
+          : categoriesBerufe;
 
   const opponentKeys = Object.keys(opponentTeams);
 
   const footballOpps = opponentKeys.filter(k => opponentTeams[k].type === "fussball");
   const animalOpps   = opponentKeys.filter(k => opponentTeams[k].type === "tiere");
   const geoOpps      = opponentKeys.filter(k => opponentTeams[k].type === "geografie");
+  const berufeOpps   = opponentKeys.filter(k => opponentTeams[k].type === "berufe");
 
   let opponent;
 
@@ -2044,8 +2478,10 @@ function renderFinal() {
     opponent = opponentTeams[footballOpps[Math.floor(Math.random() * footballOpps.length)]];
   } else if (cat === "tiere") {
     opponent = opponentTeams[animalOpps[Math.floor(Math.random() * animalOpps.length)]];
-  } else {
+  } else if (cat === "geografie") {
     opponent = opponentTeams[geoOpps[Math.floor(Math.random() * geoOpps.length)]];
+  } else {
+    opponent = opponentTeams[berufeOpps[Math.floor(Math.random() * berufeOpps.length)]];
   }
 
   endScreenTitle.innerHTML = `Duell gegen ${opponent.name}`;
@@ -2057,36 +2493,49 @@ function renderFinal() {
   catList.forEach(catName => {
     const user = userTeam[catName];
 
-    let oppValue, oppName;
 
-    if (cat === "fussball") {
-      oppValue = opponent.players[catName].value;
-      oppName = opponent.players[catName].name;
-    } else if (cat === "tiere") {
-      oppValue = opponent.stats[catName];
-      oppName = opponent.best[catName];
+
+let oppValue, oppName;
+
+if (cat === "fussball") {
+  const entry = opponent.players[catName];
+  if (entry) {
+    oppValue = entry.value;
+    oppName = entry.name;
+  } else {
+    oppValue = 0;
+    oppName = "Unbekannt";
+  }
+
+} else if (cat === "tiere") {
+  oppValue = opponent.stats[catName];
+  oppName = opponent.best[catName];
+
+} else { // geografie + berufe
+  const entry = opponent.players[catName];
+  if (entry) {
+    oppValue = entry.value;
+    oppName = entry.name;
+  } else {
+    oppValue = 0;
+    oppName = "Unbekannt";
+  }
+}
+    let result;
+    if (user.value > oppValue) {
+      result = "win";
+      wins++;
+    } else if (user.value < oppValue) {
+      result = "loss";
+      losses++;
     } else {
-      oppValue = opponent.players[catName].value;
-      oppName = opponent.players[catName].name;
+      result = "draw";
     }
 
-let result;
-if (user.value > oppValue) {
-  result = "win";
-  wins++;
-} else if (user.value < oppValue) {
-  result = "loss";
-  losses++;
-} else {
-  result = "draw"; // Unentschieden
-}
-
-
-let color;
-if (result === "win") color = "#4CAF50";       // grün
-else if (result === "loss") color = "#ff2a2a"; // rot
-else color = "#2196F3";                        // blau (Unentschieden)
-
+    let color;
+    if (result === "win") color = "#4CAF50";
+    else if (result === "loss") color = "#ff2a2a";
+    else color = "#2196F3";
 
     compareHTML += `
       <div class="duel-row slot" style="border-left-color:${color};">
@@ -2101,15 +2550,14 @@ else color = "#2196F3";                        // blau (Unentschieden)
     `;
   });
 
-const finalText =
-  wins > losses
-    ? "🎉 Du hast gewonnen!"
-    : wins < losses
-      ? "❌ Du hast verloren!"
-      : "🤝 Unentschieden!";
+  const finalText =
+    wins > losses
+      ? "🎉 Du hast gewonnen!"
+      : wins < losses
+        ? "❌ Du hast verloren!"
+        : "🤝 Unentschieden!";
 
-scoreLine.textContent = `${wins}-${losses} · ${finalText}`;
-
+  scoreLine.textContent = `${wins}-${losses} · ${finalText}`;
 
   summaryCard.innerHTML = compareHTML;
 }
