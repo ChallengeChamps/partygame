@@ -28,7 +28,7 @@ const categoriesAnimals = [
 
 /* Geografie-Kategorien (9 Werte, alle 1–100) */
 const categoriesGeografie = [
-"Bruttoinlandsprodukt",
+"Bruttoinlandsprodukt1",
 "Bevölkerung",
 "Bildung",
 "Sicherheit",
