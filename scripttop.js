@@ -517,155 +517,135 @@ type: "fussball",
 
 const geografiePlayers = [
 
-  { 
-    name: "USA", 
-    stats: { 
-      Bruttoinlandsprodukt: 100,
-      Bevölkerung: 95,
-      Bildung: 75,
-      Sicherheit: 60,
-      Gesundheitssystem: 65,
-      Technologie: 95,
-      Klima: 70,
-      Natur: 85,
-      Infrastruktur: 90
-    }
-  },
+{ name: "USA", stats: { Bruttoinlandsprodukt: 100, Bevölkerung: 95, Bildung: 75, Sicherheit: 60, Gesundheitssystem: 65, Technologie: 95, Klima: 70, Natur: 85, Infrastruktur: 90 }},
+{ name: "China", stats: { Bruttoinlandsprodukt: 95, Bevölkerung: 100, Bildung: 70, Sicherheit: 65, Gesundheitssystem: 60, Technologie: 85, Klima: 75, Natur: 80, Infrastruktur: 88 }},
+{ name: "Schweiz", stats: { Bruttoinlandsprodukt: 90, Bevölkerung: 25, Bildung: 95, Sicherheit: 98, Gesundheitssystem: 97, Technologie: 85, Klima: 85, Natur: 90, Infrastruktur: 95 }},
+{ name: "Deutschland", stats: { Bruttoinlandsprodukt: 92, Bevölkerung: 70, Bildung: 90, Sicherheit: 85, Gesundheitssystem: 90, Technologie: 88, Klima: 80, Natur: 75, Infrastruktur: 90 }},
+{ name: "Japan", stats: { Bruttoinlandsprodukt: 93, Bevölkerung: 60, Bildung: 95, Sicherheit: 95, Gesundheitssystem: 95, Technologie: 98, Klima: 70, Natur: 65, Infrastruktur: 95 }},
+{ name: "Indien", stats: { Bruttoinlandsprodukt: 85, Bevölkerung: 98, Bildung: 65, Sicherheit: 55, Gesundheitssystem: 50, Technologie: 75, Klima: 80, Natur: 90, Infrastruktur: 60 }},
+{ name: "Australien", stats: { Bruttoinlandsprodukt: 88, Bevölkerung: 30, Bildung: 85, Sicherheit: 90, Gesundheitssystem: 92, Technologie: 80, Klima: 85, Natur: 95, Infrastruktur: 88 }},
+{ name: "Brasilien", stats: { Bruttoinlandsprodukt: 75, Bevölkerung: 85, Bildung: 60, Sicherheit: 40, Gesundheitssystem: 55, Technologie: 60, Klima: 90, Natur: 100, Infrastruktur: 50 }},
+{ name: "Frankreich", stats: { Bruttoinlandsprodukt: 90, Bevölkerung: 65, Bildung: 88, Sicherheit: 80, Gesundheitssystem: 85, Technologie: 82, Klima: 80, Natur: 70, Infrastruktur: 88 }},
+{ name: "Kanada", stats: { Bruttoinlandsprodukt: 88, Bevölkerung: 40, Bildung: 90, Sicherheit: 95, Gesundheitssystem: 90, Technologie: 85, Klima: 70, Natur: 95, Infrastruktur: 85 }},
+{ name: "Italien", stats: { Bruttoinlandsprodukt: 88, Bevölkerung: 60, Bildung: 85, Sicherheit: 80, Gesundheitssystem: 82, Technologie: 80, Klima: 85, Natur: 75, Infrastruktur: 86 }},
+{ name: "Spanien", stats: { Bruttoinlandsprodukt: 86, Bevölkerung: 58, Bildung: 82, Sicherheit: 78, Gesundheitssystem: 83, Technologie: 78, Klima: 88, Natur: 80, Infrastruktur: 84 }},
+{ name: "Portugal", stats: { Bruttoinlandsprodukt: 80, Bevölkerung: 40, Bildung: 78, Sicherheit: 82, Gesundheitssystem: 80, Technologie: 75, Klima: 88, Natur: 82, Infrastruktur: 80 }},
+{ name: "Niederlande", stats: { Bruttoinlandsprodukt: 89, Bevölkerung: 45, Bildung: 90, Sicherheit: 88, Gesundheitssystem: 88, Technologie: 86, Klima: 78, Natur: 70, Infrastruktur: 92 }},
+{ name: "Belgien", stats: { Bruttoinlandsprodukt: 87, Bevölkerung: 42, Bildung: 88, Sicherheit: 82, Gesundheitssystem: 86, Technologie: 82, Klima: 76, Natur: 68, Infrastruktur: 90 }},
+{ name: "Österreich", stats: { Bruttoinlandsprodukt: 88, Bevölkerung: 35, Bildung: 90, Sicherheit: 92, Gesundheitssystem: 90, Technologie: 84, Klima: 82, Natur: 88, Infrastruktur: 90 }},
+{ name: "Schweden", stats: { Bruttoinlandsprodukt: 90, Bevölkerung: 30, Bildung: 92, Sicherheit: 94, Gesundheitssystem: 92, Technologie: 88, Klima: 70, Natur: 85, Infrastruktur: 92 }},
+{ name: "Norwegen", stats: { Bruttoinlandsprodukt: 91, Bevölkerung: 25, Bildung: 92, Sicherheit: 96, Gesundheitssystem: 93, Technologie: 87, Klima: 68, Natur: 92, Infrastruktur: 90 }},
+{ name: "Finnland", stats: { Bruttoinlandsprodukt: 88, Bevölkerung: 25, Bildung: 93, Sicherheit: 95, Gesundheitssystem: 92, Technologie: 86, Klima: 65, Natur: 88, Infrastruktur: 88 }},
+{ name: "Dänemark", stats: { Bruttoinlandsprodukt: 89, Bevölkerung: 28, Bildung: 91, Sicherheit: 94, Gesundheitssystem: 91, Technologie: 86, Klima: 72, Natur: 80, Infrastruktur: 90 }},
+{ name: "Polen", stats: { Bruttoinlandsprodukt: 82, Bevölkerung: 55, Bildung: 80, Sicherheit: 78, Gesundheitssystem: 75, Technologie: 72, Klima: 75, Natur: 70, Infrastruktur: 78 }},
+{ name: "Tschechien", stats: { Bruttoinlandsprodukt: 83, Bevölkerung: 35, Bildung: 82, Sicherheit: 82, Gesundheitssystem: 80, Technologie: 78, Klima: 74, Natur: 72, Infrastruktur: 80 }},
+{ name: "Slowakei", stats: { Bruttoinlandsprodukt: 80, Bevölkerung: 30, Bildung: 80, Sicherheit: 80, Gesundheitssystem: 78, Technologie: 74, Klima: 73, Natur: 72, Infrastruktur: 78 }},
+{ name: "Ungarn", stats: { Bruttoinlandsprodukt: 79, Bevölkerung: 35, Bildung: 78, Sicherheit: 76, Gesundheitssystem: 75, Technologie: 72, Klima: 74, Natur: 70, Infrastruktur: 76 }},
+{ name: "Rumänien", stats: { Bruttoinlandsprodukt: 76, Bevölkerung: 45, Bildung: 75, Sicherheit: 70, Gesundheitssystem: 70, Technologie: 68, Klima: 76, Natur: 78, Infrastruktur: 70 }},
+{ name: "Bulgarien", stats: { Bruttoinlandsprodukt: 72, Bevölkerung: 35, Bildung: 72, Sicherheit: 68, Gesundheitssystem: 68, Technologie: 65, Klima: 75, Natur: 76, Infrastruktur: 68 }},
+{ name: "Griechenland", stats: { Bruttoinlandsprodukt: 78, Bevölkerung: 40, Bildung: 78, Sicherheit: 74, Gesundheitssystem: 75, Technologie: 70, Klima: 85, Natur: 80, Infrastruktur: 75 }},
+{ name: "Türkei", stats: { Bruttoinlandsprodukt: 80, Bevölkerung: 80, Bildung: 72, Sicherheit: 65, Gesundheitssystem: 70, Technologie: 72, Klima: 80, Natur: 78, Infrastruktur: 74 }},
+{ name: "Irland", stats: { Bruttoinlandsprodukt: 88, Bevölkerung: 25, Bildung: 86, Sicherheit: 88, Gesundheitssystem: 84, Technologie: 82, Klima: 70, Natur: 80, Infrastruktur: 86 }},
+{ name: "Island", stats: { Bruttoinlandsprodukt: 86, Bevölkerung: 10, Bildung: 90, Sicherheit: 96, Gesundheitssystem: 90, Technologie: 80, Klima: 60, Natur: 95, Infrastruktur: 84 }},
+{ name: "Vereinigtes Königreich", stats: { Bruttoinlandsprodukt: 92, Bevölkerung: 70, Bildung: 90, Sicherheit: 85, Gesundheitssystem: 82, Technologie: 90, Klima: 75, Natur: 70, Infrastruktur: 90 }},
+{ name: "Russland", stats: { Bruttoinlandsprodukt: 82, Bevölkerung: 90, Bildung: 80, Sicherheit: 60, Gesundheitssystem: 70, Technologie: 78, Klima: 60, Natur: 88, Infrastruktur: 72 }},
+{ name: "Ukraine", stats: { Bruttoinlandsprodukt: 70, Bevölkerung: 60, Bildung: 75, Sicherheit: 40, Gesundheitssystem: 65, Technologie: 65, Klima: 70, Natur: 80, Infrastruktur: 60 }},
+{ name: "Weißrussland", stats: { Bruttoinlandsprodukt: 68, Bevölkerung: 40, Bildung: 72, Sicherheit: 55, Gesundheitssystem: 65, Technologie: 62, Klima: 68, Natur: 75, Infrastruktur: 62 }},
+{ name: "Litauen", stats: { Bruttoinlandsprodukt: 78, Bevölkerung: 25, Bildung: 82, Sicherheit: 80, Gesundheitssystem: 78, Technologie: 76, Klima: 70, Natur: 74, Infrastruktur: 78 }},
+{ name: "Lettland", stats: { Bruttoinlandsprodukt: 76, Bevölkerung: 22, Bildung: 80, Sicherheit: 78, Gesundheitssystem: 76, Technologie: 74, Klima: 70, Natur: 76, Infrastruktur: 76 }},
+{ name: "Estland", stats: { Bruttoinlandsprodukt: 80, Bevölkerung: 20, Bildung: 84, Sicherheit: 82, Gesundheitssystem: 78, Technologie: 80, Klima: 68, Natur: 78, Infrastruktur: 80 }},
+{ name: "Serbien", stats: { Bruttoinlandsprodukt: 74, Bevölkerung: 40, Bildung: 74, Sicherheit: 68, Gesundheitssystem: 70, Technologie: 68, Klima: 74, Natur: 76, Infrastruktur: 70 }},
+{ name: "Kroatien", stats: { Bruttoinlandsprodukt: 78, Bevölkerung: 30, Bildung: 78, Sicherheit: 80, Gesundheitssystem: 78, Technologie: 72, Klima: 80, Natur: 82, Infrastruktur: 78 }},
+{ name: "Slowenien", stats: { Bruttoinlandsprodukt: 80, Bevölkerung: 25, Bildung: 82, Sicherheit: 84, Gesundheitssystem: 82, Technologie: 76, Klima: 78, Natur: 80, Infrastruktur: 82 }},
+{ name: "Mexiko", stats: { Bruttoinlandsprodukt: 80, Bevölkerung: 80, Bildung: 70, Sicherheit: 55, Gesundheitssystem: 65, Technologie: 70, Klima: 85, Natur: 82, Infrastruktur: 70 }},
+{ name: "Argentinien", stats: { Bruttoinlandsprodukt: 78, Bevölkerung: 60, Bildung: 75, Sicherheit: 60, Gesundheitssystem: 70, Technologie: 68, Klima: 80, Natur: 88, Infrastruktur: 68 }},
+{ name: "Chile", stats: { Bruttoinlandsprodukt: 80, Bevölkerung: 40, Bildung: 78, Sicherheit: 75, Gesundheitssystem: 75, Technologie: 72, Klima: 78, Natur: 84, Infrastruktur: 76 }},
+{ name: "Peru", stats: { Bruttoinlandsprodukt: 74, Bevölkerung: 55, Bildung: 70, Sicherheit: 55, Gesundheitssystem: 65, Technologie: 65, Klima: 80, Natur: 90, Infrastruktur: 60 }},
+{ name: "Kolumbien", stats: { Bruttoinlandsprodukt: 76, Bevölkerung: 70, Bildung: 68, Sicherheit: 50, Gesundheitssystem: 62, Technologie: 64, Klima: 82, Natur: 88, Infrastruktur: 62 }},
+{ name: "Venezuela", stats: { Bruttoinlandsprodukt: 60, Bevölkerung: 60, Bildung: 65, Sicherheit: 30, Gesundheitssystem: 50, Technologie: 55, Klima: 82, Natur: 88, Infrastruktur: 50 }},
+{ name: "Ecuador", stats: { Bruttoinlandsprodukt: 72, Bevölkerung: 45, Bildung: 68, Sicherheit: 55, Gesundheitssystem: 60, Technologie: 60, Klima: 82, Natur: 90, Infrastruktur: 58 }},
+{ name: "Uruguay", stats: { Bruttoinlandsprodukt: 78, Bevölkerung: 30, Bildung: 78, Sicherheit: 75, Gesundheitssystem: 75, Technologie: 70, Klima: 78, Natur: 80, Infrastruktur: 74 }},
+{ name: "Paraguay", stats: { Bruttoinlandsprodukt: 70, Bevölkerung: 35, Bildung: 65, Sicherheit: 55, Gesundheitssystem: 58, Technologie: 58, Klima: 80, Natur: 82, Infrastruktur: 55 }},
+{ name: "Bolivien", stats: { Bruttoinlandsprodukt: 68, Bevölkerung: 40, Bildung: 62, Sicherheit: 50, Gesundheitssystem: 55, Technologie: 55, Klima: 78, Natur: 88, Infrastruktur: 52 }},
+{ name: "Südafrika", stats: { Bruttoinlandsprodukt: 78, Bevölkerung: 70, Bildung: 70, Sicherheit: 45, Gesundheitssystem: 60, Technologie: 68, Klima: 80, Natur: 90, Infrastruktur: 70 }},
+{ name: "Nigeria", stats: { Bruttoinlandsprodukt: 72, Bevölkerung: 90, Bildung: 60, Sicherheit: 40, Gesundheitssystem: 55, Technologie: 60, Klima: 82, Natur: 85, Infrastruktur: 55 }},
+{ name: "Ägypten", stats: { Bruttoinlandsprodukt: 74, Bevölkerung: 85, Bildung: 65, Sicherheit: 50, Gesundheitssystem: 60, Technologie: 62, Klima: 85, Natur: 78, Infrastruktur: 60 }},
+{ name: "Marokko", stats: { Bruttoinlandsprodukt: 72, Bevölkerung: 60, Bildung: 65, Sicherheit: 60, Gesundheitssystem: 62, Technologie: 60, Klima: 82, Natur: 80, Infrastruktur: 62 }},
+{ name: "Algerien", stats: { Bruttoinlandsprodukt: 70, Bevölkerung: 70, Bildung: 62, Sicherheit: 55, Gesundheitssystem: 58, Technologie: 58, Klima: 80, Natur: 78, Infrastruktur: 58 }},
+{ name: "Tunesien", stats: { Bruttoinlandsprodukt: 72, Bevölkerung: 50, Bildung: 68, Sicherheit: 62, Gesundheitssystem: 64, Technologie: 62, Klima: 82, Natur: 78, Infrastruktur: 64 }},
+{ name: "Kenia", stats: { Bruttoinlandsprodukt: 68, Bevölkerung: 70, Bildung: 60, Sicherheit: 50, Gesundheitssystem: 55, Technologie: 58, Klima: 80, Natur: 88, Infrastruktur: 55 }},
+{ name: "Äthiopien", stats: { Bruttoinlandsprodukt: 65, Bevölkerung: 80, Bildung: 55, Sicherheit: 45, Gesundheitssystem: 50, Technologie: 52, Klima: 78, Natur: 85, Infrastruktur: 50 }},
+{ name: "Ghana", stats: { Bruttoinlandsprodukt: 70, Bevölkerung: 60, Bildung: 60, Sicherheit: 55, Gesundheitssystem: 58, Technologie: 58, Klima: 80, Natur: 82, Infrastruktur: 56 }},
+{ name: "Senegal", stats: { Bruttoinlandsprodukt: 68, Bevölkerung: 50, Bildung: 58, Sicherheit: 55, Gesundheitssystem: 56, Technologie: 55, Klima: 80, Natur: 82, Infrastruktur: 54 }},
+{ name: "Saudi-Arabien", stats: { Bruttoinlandsprodukt: 88, Bevölkerung: 60, Bildung: 70, Sicherheit: 70, Gesundheitssystem: 75, Technologie: 78, Klima: 85, Natur: 70, Infrastruktur: 82 }},
+{ name: "Vereinigte Arabische Emirate", stats: { Bruttoinlandsprodukt: 90, Bevölkerung: 40, Bildung: 78, Sicherheit: 80, Gesundheitssystem: 80, Technologie: 85, Klima: 85, Natur: 65, Infrastruktur: 90 }},
+{ name: "Katar", stats: { Bruttoinlandsprodukt: 92, Bevölkerung: 30, Bildung: 80, Sicherheit: 82, Gesundheitssystem: 82, Technologie: 86, Klima: 85, Natur: 60, Infrastruktur: 90 }},
+{ name: "Kuwait", stats: { Bruttoinlandsprodukt: 88, Bevölkerung: 30, Bildung: 78, Sicherheit: 78, Gesundheitssystem: 78, Technologie: 82, Klima: 85, Natur: 60, Infrastruktur: 86 }},
+{ name: "Bahrain", stats: { Bruttoinlandsprodukt: 86, Bevölkerung: 25, Bildung: 78, Sicherheit: 80, Gesundheitssystem: 78, Technologie: 80, Klima: 85, Natur: 58, Infrastruktur: 84 }},
+{ name: "Oman", stats: { Bruttoinlandsprodukt: 82, Bevölkerung: 30, Bildung: 75, Sicherheit: 78, Gesundheitssystem: 76, Technologie: 76, Klima: 85, Natur: 70, Infrastruktur: 80 }},
+{ name: "Israel", stats: { Bruttoinlandsprodukt: 88, Bevölkerung: 40, Bildung: 90, Sicherheit: 80, Gesundheitssystem: 82, Technologie: 92, Klima: 80, Natur: 70, Infrastruktur: 86 }},
+{ name: "Jordanien", stats: { Bruttoinlandsprodukt: 76, Bevölkerung: 45, Bildung: 72, Sicherheit: 70, Gesundheitssystem: 70, Technologie: 70, Klima: 80, Natur: 72, Infrastruktur: 72 }},
+{ name: "Libanon", stats: { Bruttoinlandsprodukt: 70, Bevölkerung: 40, Bildung: 75, Sicherheit: 55, Gesundheitssystem: 68, Technologie: 68, Klima: 80, Natur: 70, Infrastruktur: 68 }},
+{ name: "Iran", stats: { Bruttoinlandsprodukt: 78, Bevölkerung: 80, Bildung: 72, Sicherheit: 55, Gesundheitssystem: 68, Technologie: 70, Klima: 78, Natur: 75, Infrastruktur: 70 }},
+{ name: "Pakistan", stats: { Bruttoinlandsprodukt: 72, Bevölkerung: 90, Bildung: 60, Sicherheit: 45, Gesundheitssystem: 55, Technologie: 60, Klima: 78, Natur: 80, Infrastruktur: 55 }},
+{ name: "Bangladesch", stats: { Bruttoinlandsprodukt: 70, Bevölkerung: 95, Bildung: 58, Sicherheit: 45, Gesundheitssystem: 52, Technologie: 58, Klima: 80, Natur: 78, Infrastruktur: 52 }},
+{ name: "Sri Lanka", stats: { Bruttoinlandsprodukt: 72, Bevölkerung: 50, Bildung: 70, Sicherheit: 60, Gesundheitssystem: 65, Technologie: 62, Klima: 82, Natur: 84, Infrastruktur: 60 }},
+{ name: "Nepal", stats: { Bruttoinlandsprodukt: 65, Bevölkerung: 45, Bildung: 60, Sicherheit: 55, Gesundheitssystem: 55, Technologie: 55, Klima: 78, Natur: 90, Infrastruktur: 50 }},
+{ name: "Bhutan", stats: { Bruttoinlandsprodukt: 62, Bevölkerung: 20, Bildung: 65, Sicherheit: 70, Gesundheitssystem: 60, Technologie: 55, Klima: 80, Natur: 92, Infrastruktur: 50 }},
+{ name: "Myanmar", stats: { Bruttoinlandsprodukt: 60, Bevölkerung: 60, Bildung: 55, Sicherheit: 40, Gesundheitssystem: 50, Technologie: 52, Klima: 80, Natur: 85, Infrastruktur: 48 }},
+{ name: "Thailand", stats: { Bruttoinlandsprodukt: 78, Bevölkerung: 70, Bildung: 70, Sicherheit: 60, Gesundheitssystem: 68, Technologie: 70, Klima: 85, Natur: 88, Infrastruktur: 70 }},
+{ name: "Vietnam", stats: { Bruttoinlandsprodukt: 76, Bevölkerung: 80, Bildung: 68, Sicherheit: 58, Gesundheitssystem: 65, Technologie: 68, Klima: 82, Natur: 88, Infrastruktur: 68 }},
+{ name: "Malaysia", stats: { Bruttoinlandsprodukt: 80, Bevölkerung: 60, Bildung: 75, Sicherheit: 70, Gesundheitssystem: 72, Technologie: 75, Klima: 82, Natur: 84, Infrastruktur: 76 }},
+{ name: "Singapur", stats: { Bruttoinlandsprodukt: 92, Bevölkerung: 30, Bildung: 95, Sicherheit: 95, Gesundheitssystem: 90, Technologie: 95, Klima: 80, Natur: 60, Infrastruktur: 95 }},
+{ name: "Indonesien", stats: { Bruttoinlandsprodukt: 78, Bevölkerung: 90, Bildung: 65, Sicherheit: 55, Gesundheitssystem: 60, Technologie: 65, Klima: 85, Natur: 90, Infrastruktur: 62 }},
+{ name: "Philippinen", stats: { Bruttoinlandsprodukt: 74, Bevölkerung: 85, Bildung: 62, Sicherheit: 50, Gesundheitssystem: 58, Technologie: 60, Klima: 85, Natur: 88, Infrastruktur: 58 }},
+{ name: "Brunei", stats: { Bruttoinlandsprodukt: 86, Bevölkerung: 20, Bildung: 78, Sicherheit: 80, Gesundheitssystem: 78, Technologie: 80, Klima: 82, Natur: 70, Infrastruktur: 84 }},
+{ name: "Laos", stats: { Bruttoinlandsprodukt: 62, Bevölkerung: 35, Bildung: 55, Sicherheit: 55, Gesundheitssystem: 52, Technologie: 50, Klima: 80, Natur: 88, Infrastruktur: 48 }},
+{ name: "Kambodscha", stats: { Bruttoinlandsprodukt: 60, Bevölkerung: 45, Bildung: 55, Sicherheit: 50, Gesundheitssystem: 52, Technologie: 50, Klima: 82, Natur: 85, Infrastruktur: 48 }},
+{ name: "Mongolei", stats: { Bruttoinlandsprodukt: 70, Bevölkerung: 15, Bildung: 70, Sicherheit: 75, Gesundheitssystem: 65, Technologie: 60, Klima: 65, Natur: 88, Infrastruktur: 60 }},
+{ name: "Kasachstan", stats: { Bruttoinlandsprodukt: 78, Bevölkerung: 40, Bildung: 75, Sicherheit: 70, Gesundheitssystem: 68, Technologie: 70, Klima: 70, Natur: 80, Infrastruktur: 72 }},
+{ name: "Usbekistan", stats: { Bruttoinlandsprodukt: 72, Bevölkerung: 35, Bildung: 70, Sicherheit: 65, Gesundheitssystem: 60, Technologie: 62, Klima: 70, Natur: 78, Infrastruktur: 65 }},
+{ name: "Turkmenistan", stats: { Bruttoinlandsprodukt: 70, Bevölkerung: 20, Bildung: 65, Sicherheit: 60, Gesundheitssystem: 58, Technologie: 60, Klima: 75, Natur: 70, Infrastruktur: 60 }},
+{ name: "Kirgisistan", stats: { Bruttoinlandsprodukt: 65, Bevölkerung: 15, Bildung: 65, Sicherheit: 60, Gesundheitssystem: 55, Technologie: 55, Klima: 70, Natur: 80, Infrastruktur: 55 }},
+{ name: "Tadschikistan", stats: { Bruttoinlandsprodukt: 60, Bevölkerung: 20, Bildung: 60, Sicherheit: 55, Gesundheitssystem: 55, Technologie: 50, Klima: 70, Natur: 78, Infrastruktur: 50 }},
+{ name: "Georgien", stats: { Bruttoinlandsprodukt: 72, Bevölkerung: 20, Bildung: 75, Sicherheit: 70, Gesundheitssystem: 70, Technologie: 68, Klima: 75, Natur: 85, Infrastruktur: 70 }},
+{ name: "Armenien", stats: { Bruttoinlandsprodukt: 70, Bevölkerung: 15, Bildung: 72, Sicherheit: 68, Gesundheitssystem: 68, Technologie: 65, Klima: 75, Natur: 80, Infrastruktur: 68 }},
+{ name: "Aserbaidschan", stats: { Bruttoinlandsprodukt: 75, Bevölkerung: 25, Bildung: 70, Sicherheit: 65, Gesundheitssystem: 65, Technologie: 68, Klima: 75, Natur: 78, Infrastruktur: 70 }},
+{ name: "Südkorea", stats: { Bruttoinlandsprodukt: 92, Bevölkerung: 50, Bildung: 95, Sicherheit: 85, Gesundheitssystem: 90, Technologie: 98, Klima: 70, Natur: 65, Infrastruktur: 95 }},
+{ name: "Nordkorea", stats: { Bruttoinlandsprodukt: 55, Bevölkerung: 25, Bildung: 60, Sicherheit: 30, Gesundheitssystem: 50, Technologie: 55, Klima: 65, Natur: 70, Infrastruktur: 50 }},
+{ name: "Neuseeland", stats: { Bruttoinlandsprodukt: 88, Bevölkerung: 10, Bildung: 90, Sicherheit: 95, Gesundheitssystem: 92, Technologie: 85, Klima: 80, Natur: 95, Infrastruktur: 88 }},
+{ name: "Papua-Neuguinea", stats: { Bruttoinlandsprodukt: 60, Bevölkerung: 30, Bildung: 55, Sicherheit: 45, Gesundheitssystem: 50, Technologie: 45, Klima: 85, Natur: 90, Infrastruktur: 45 }},
+{ name: "Fidschi", stats: { Bruttoinlandsprodukt: 65, Bevölkerung: 10, Bildung: 60, Sicherheit: 70, Gesundheitssystem: 60, Technologie: 55, Klima: 85, Natur: 92, Infrastruktur: 55 }},
+{ name: "Samoa", stats: { Bruttoinlandsprodukt: 60, Bevölkerung: 5, Bildung: 60, Sicherheit: 75, Gesundheitssystem: 60, Technologie: 50, Klima: 85, Natur: 90, Infrastruktur: 50 }},
+{ name: "Tonga", stats: { Bruttoinlandsprodukt: 58, Bevölkerung: 5, Bildung: 58, Sicherheit: 70, Gesundheitssystem: 55, Technologie: 48, Klima: 85, Natur: 88, Infrastruktur: 48 }},
+{ name: "Jamaika", stats: { Bruttoinlandsprodukt: 65, Bevölkerung: 30, Bildung: 65, Sicherheit: 45, Gesundheitssystem: 60, Technologie: 55, Klima: 85, Natur: 88, Infrastruktur: 55 }},
+{ name: "Kuba", stats: { Bruttoinlandsprodukt: 70, Bevölkerung: 40, Bildung: 80, Sicherheit: 60, Gesundheitssystem: 75, Technologie: 60, Klima: 85, Natur: 80, Infrastruktur: 60 }},
+{ name: "Dominikanische Republik", stats: { Bruttoinlandsprodukt: 72, Bevölkerung: 50, Bildung: 65, Sicherheit: 55, Gesundheitssystem: 60, Technologie: 60, Klima: 85, Natur: 85, Infrastruktur: 60 }},
+{ name: "Haiti", stats: { Bruttoinlandsprodukt: 50, Bevölkerung: 30, Bildung: 45, Sicherheit: 30, Gesundheitssystem: 40, Technologie: 40, Klima: 85, Natur: 80, Infrastruktur: 35 }},
+{ name: "Costa Rica", stats: { Bruttoinlandsprodukt: 78, Bevölkerung: 20, Bildung: 80, Sicherheit: 85, Gesundheitssystem: 80, Technologie: 70, Klima: 85, Natur: 95, Infrastruktur: 75 }},
+{ name: "Panama", stats: { Bruttoinlandsprodukt: 80, Bevölkerung: 25, Bildung: 75, Sicherheit: 70, Gesundheitssystem: 72, Technologie: 70, Klima: 85, Natur: 85, Infrastruktur: 78 }},
+{ name: "Guatemala", stats: { Bruttoinlandsprodukt: 65, Bevölkerung: 40, Bildung: 55, Sicherheit: 40, Gesundheitssystem: 50, Technologie: 50, Klima: 85, Natur: 80, Infrastruktur: 45 }},
+{ name: "Honduras", stats: { Bruttoinlandsprodukt: 60, Bevölkerung: 35, Bildung: 55, Sicherheit: 35, Gesundheitssystem: 48, Technologie: 48, Klima: 85, Natur: 80, Infrastruktur: 45 }},
+{ name: "El Salvador", stats: { Bruttoinlandsprodukt: 62, Bevölkerung: 30, Bildung: 58, Sicherheit: 40, Gesundheitssystem: 50, Technologie: 50, Klima: 85, Natur: 78, Infrastruktur: 48 }},
+{ name: "Nicaragua", stats: { Bruttoinlandsprodukt: 58, Bevölkerung: 30, Bildung: 55, Sicherheit: 40, Gesundheitssystem: 48, Technologie: 45, Klima: 85, Natur: 80, Infrastruktur: 45 }},
+{ name: "Botswana", stats: { Bruttoinlandsprodukt: 70, Bevölkerung: 20, Bildung: 70, Sicherheit: 65, Gesundheitssystem: 65, Technologie: 60, Klima: 80, Natur: 85, Infrastruktur: 65 }},
+{ name: "Namibia", stats: { Bruttoinlandsprodukt: 68, Bevölkerung: 15, Bildung: 68, Sicherheit: 70, Gesundheitssystem: 65, Technologie: 60, Klima: 80, Natur: 90, Infrastruktur: 60 }},
+{ name: "Sambia", stats: { Bruttoinlandsprodukt: 60, Bevölkerung: 30, Bildung: 55, Sicherheit: 45, Gesundheitssystem: 50, Technologie: 50, Klima: 80, Natur: 85, Infrastruktur: 50 }},
+{ name: "Simbabwe", stats: { Bruttoinlandsprodukt: 55, Bevölkerung: 25, Bildung: 50, Sicherheit: 40, Gesundheitssystem: 45, Technologie: 45, Klima: 80, Natur: 85, Infrastruktur: 45 }},
+{ name: "Mosambik", stats: { Bruttoinlandsprodukt: 58, Bevölkerung: 35, Bildung: 50, Sicherheit: 40, Gesundheitssystem: 45, Technologie: 45, Klima: 85, Natur: 90, Infrastruktur: 45 }},
+{ name: "Madagaskar", stats: { Bruttoinlandsprodukt: 60, Bevölkerung: 30, Bildung: 55, Sicherheit: 45, Gesundheitssystem: 50, Technologie: 48, Klima: 85, Natur: 95, Infrastruktur: 45 }},
+{ name: "Tschad", stats: { Bruttoinlandsprodukt: 50, Bevölkerung: 20, Bildung: 45, Sicherheit: 35, Gesundheitssystem: 40, Technologie: 40, Klima: 80, Natur: 75, Infrastruktur: 40 }},
+{ name: "Sudan", stats: { Bruttoinlandsprodukt: 55, Bevölkerung: 35, Bildung: 50, Sicherheit: 35, Gesundheitssystem: 45, Technologie: 45, Klima: 80, Natur: 78, Infrastruktur: 45 }},
+{ name: "Südsudan", stats: { Bruttoinlandsprodukt: 45, Bevölkerung: 15, Bildung: 40, Sicherheit: 20, Gesundheitssystem: 35, Technologie: 35, Klima: 80, Natur: 75, Infrastruktur: 35 }},
+{ name: "Kongo", stats: { Bruttoinlandsprodukt: 55, Bevölkerung: 30, Bildung: 50, Sicherheit: 30, Gesundheitssystem: 45, Technologie: 40, Klima: 85, Natur: 90, Infrastruktur: 40 }},
+{ name: "Demokratische Republik Kongo", stats: { Bruttoinlandsprodukt: 50, Bevölkerung: 60, Bildung: 45, Sicherheit: 25, Gesundheitssystem: 40, Technologie: 38, Klima: 85, Natur: 95, Infrastruktur: 35 }},
+{ name: "Ruanda", stats: { Bruttoinlandsprodukt: 65, Bevölkerung: 20, Bildung: 65, Sicherheit: 70, Gesundheitssystem: 65, Technologie: 60, Klima: 80, Natur: 85, Infrastruktur: 60 }},
+{ name: "Burundi", stats: { Bruttoinlandsprodukt: 50, Bevölkerung: 20, Bildung: 45, Sicherheit: 35, Gesundheitssystem: 40, Technologie: 38, Klima: 80, Natur: 80, Infrastruktur: 38 }},
+{ name: "Uganda", stats: { Bruttoinlandsprodukt: 60, Bevölkerung: 40, Bildung: 55, Sicherheit: 45, Gesundheitssystem: 50, Technologie: 45, Klima: 80, Natur: 85, Infrastruktur: 45 }},
+{ name: "Tansania", stats: { Bruttoinlandsprodukt: 62, Bevölkerung: 50, Bildung: 55, Sicherheit: 50, Gesundheitssystem: 50, Technologie: 48, Klima: 85, Natur: 90, Infrastruktur: 48 }},
+{ name: "Luxemburg", stats: { Bruttoinlandsprodukt: 90, Bevölkerung: 10, Bildung: 90, Sicherheit: 95, Gesundheitssystem: 90, Technologie: 85, Klima: 75, Natur: 70, Infrastruktur: 92 }}
 
-  { 
-    name: "China", 
-    stats: { 
-      Bruttoinlandsprodukt: 95,
-      Bevölkerung: 100,
-      Bildung: 70,
-      Sicherheit: 65,
-      Gesundheitssystem: 60,
-      Technologie: 85,
-      Klima: 75,
-      Natur: 80,
-      Infrastruktur: 88
-    }
-  },
 
-  { 
-    name: "Schweiz", 
-    stats: { 
-      Bruttoinlandsprodukt: 90,
-      Bevölkerung: 25,
-      Bildung: 95,
-      Sicherheit: 98,
-      Gesundheitssystem: 97,
-      Technologie: 85,
-      Klima: 85,
-      Natur: 90,
-      Infrastruktur: 95
-    }
-  },
-
-  { 
-    name: "Deutschland", 
-    stats: { 
-      Bruttoinlandsprodukt: 92,
-      Bevölkerung: 70,
-      Bildung: 90,
-      Sicherheit: 85,
-      Gesundheitssystem: 90,
-      Technologie: 88,
-      Klima: 80,
-      Natur: 75,
-      Infrastruktur: 90
-    }
-  },
-
-  { 
-    name: "Japan", 
-    stats: { 
-      Bruttoinlandsprodukt: 93,
-      Bevölkerung: 60,
-      Bildung: 95,
-      Sicherheit: 95,
-      Gesundheitssystem: 95,
-      Technologie: 98,
-      Klima: 70,
-      Natur: 65,
-      Infrastruktur: 95
-    }
-  },
-
-  { 
-    name: "Indien", 
-    stats: { 
-      Bruttoinlandsprodukt: 85,
-      Bevölkerung: 98,
-      Bildung: 65,
-      Sicherheit: 55,
-      Gesundheitssystem: 50,
-      Technologie: 75,
-      Klima: 80,
-      Natur: 90,
-      Infrastruktur: 60
-    }
-  },
-
-  { 
-    name: "Australien", 
-    stats: { 
-      Bruttoinlandsprodukt: 88,
-      Bevölkerung: 30,
-      Bildung: 85,
-      Sicherheit: 90,
-      Gesundheitssystem: 92,
-      Technologie: 80,
-      Klima: 85,
-      Natur: 95,
-      Infrastruktur: 88
-    }
-  },
-
-  { 
-    name: "Brasilien", 
-    stats: { 
-      Bruttoinlandsprodukt: 75,
-      Bevölkerung: 85,
-      Bildung: 60,
-      Sicherheit: 40,
-      Gesundheitssystem: 55,
-      Technologie: 60,
-      Klima: 90,
-      Natur: 100,
-      Infrastruktur: 50
-    }
-  },
-
-  { 
-    name: "Frankreich", 
-    stats: { 
-      Bruttoinlandsprodukt: 90,
-      Bevölkerung: 65,
-      Bildung: 88,
-      Sicherheit: 80,
-      Gesundheitssystem: 85,
-      Technologie: 82,
-      Klima: 80,
-      Natur: 70,
-      Infrastruktur: 88
-    }
-  },
-
-  { 
-    name: "Kanada", 
-    stats: { 
-      Bruttoinlandsprodukt: 88,
-      Bevölkerung: 40,
-      Bildung: 90,
-      Sicherheit: 95,
-      Gesundheitssystem: 90,
-      Technologie: 85,
-      Klima: 70,
-      Natur: 95,
-      Infrastruktur: 85
-    }
-  }
 
 ];
 
