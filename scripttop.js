@@ -2278,7 +2278,6 @@ const animalOpponents = {
 };
 
 
-
 /* --- Zentrales Gegner-Objekt --- */
 const opponentTeams = {
   ...footballOpponents,
@@ -2295,7 +2294,7 @@ let userTeam = {};
 let currentPlayer = null;
 let wins = 0;
 
-/* DOM-Elemente – passe IDs an deine HTML an */
+/* -------------------- DOM ELEMENTE -------------------- */
 const startGameBtn = document.querySelector("#startGameBtn");
 const categorySelect = document.querySelector("#categorySelect");
 const premiumPopup = document.querySelector("#premiumPopup");
@@ -2310,6 +2309,32 @@ const categoryButtonsEl = document.querySelector("#categoryButtons");
 const scoreLine = document.querySelector("#scoreLine");
 const summaryCard = document.querySelector("#summaryCard");
 const endScreenTitle = document.querySelector("#endScreenTitle");
+const recordBox = document.querySelector("#recordBox");
+
+/* -------------------- REKORD SYSTEM -------------------- */
+let bestAverage_fussball = parseFloat(localStorage.getItem("bestAverage_fussball")) || 0;
+let bestAverage_tiere = parseFloat(localStorage.getItem("bestAverage_tiere")) || 0;
+let bestAverage_geografie = parseFloat(localStorage.getItem("bestAverage_geografie")) || 0;
+let bestAverage_berufe = parseFloat(localStorage.getItem("bestAverage_berufe")) || 0;
+
+/* Rekord anzeigen – basierend auf aktueller Auswahl im Dropdown */
+function updateRecordDisplay() {
+  if (!recordBox) return;
+
+  const cat = categorySelect.value;
+
+  let record =
+    cat === "fussball" ? bestAverage_fussball :
+    cat === "tiere"    ? bestAverage_tiere :
+    cat === "geografie"? bestAverage_geografie :
+                         bestAverage_berufe;
+
+  recordBox.textContent = `Bester ${cat}-Rekord: ${record.toFixed(1)}`;
+}
+
+/* Beim Laden und beim Wechsel der Kategorie aktualisieren */
+updateRecordDisplay();
+categorySelect.addEventListener("change", updateRecordDisplay);
 
 /* -------------------- START -------------------- */
 startGameBtn.addEventListener("click", () => {
@@ -2490,37 +2515,75 @@ function renderFinal() {
   wins = 0;
   let losses = 0;
 
+  /* --- Durchschnitt berechnen --- */
+  let sum = 0;
+  let count = 0;
+
   catList.forEach(catName => {
     const user = userTeam[catName];
+    if (user) {
+      sum += user.value;
+      count++;
+    }
+  });
 
+  const avg = count > 0 ? (sum / count).toFixed(1) : 0;
 
-
-let oppValue, oppName;
-
-if (cat === "fussball") {
-  const entry = opponent.players[catName];
-  if (entry) {
-    oppValue = entry.value;
-    oppName = entry.name;
-  } else {
-    oppValue = 0;
-    oppName = "Unbekannt";
+  /* Rekord pro Kategorie aktualisieren */
+  if (cat === "fussball" && avg > bestAverage_fussball) {
+    bestAverage_fussball = parseFloat(avg);
+    localStorage.setItem("bestAverage_fussball", bestAverage_fussball);
   }
 
-} else if (cat === "tiere") {
-  oppValue = opponent.stats[catName];
-  oppName = opponent.best[catName];
-
-} else { // geografie + berufe
-  const entry = opponent.players[catName];
-  if (entry) {
-    oppValue = entry.value;
-    oppName = entry.name;
-  } else {
-    oppValue = 0;
-    oppName = "Unbekannt";
+  if (cat === "tiere" && avg > bestAverage_tiere) {
+    bestAverage_tiere = parseFloat(avg);
+    localStorage.setItem("bestAverage_tiere", bestAverage_tiere);
   }
-}
+
+  if (cat === "geografie" && avg > bestAverage_geografie) {
+    bestAverage_geografie = parseFloat(avg);
+    localStorage.setItem("bestAverage_geografie", bestAverage_geografie);
+  }
+
+  if (cat === "berufe" && avg > bestAverage_berufe) {
+    bestAverage_berufe = parseFloat(avg);
+    localStorage.setItem("bestAverage_berufe", bestAverage_berufe);
+  }
+
+  /* Rekordanzeige nach dem Spiel aktualisieren */
+  updateRecordDisplay();
+
+  /* Durchschnitt oben einfügen */
+  summaryCard.innerHTML = `
+    <div class="duel-row slot" style="border-left-color:#444;">
+      <div class="duel-left">
+        <b>Durchschnitt</b><br>
+        ${avg}
+      </div>
+      <div class="duel-right">&nbsp;</div>
+    </div>
+  `;
+
+  /* Gegnervergleich */
+  catList.forEach(catName => {
+    const user = userTeam[catName];
+    if (!user) return;
+
+    let oppValue, oppName;
+
+    if (cat === "fussball") {
+      const entry = opponent.players[catName];
+      oppValue = entry ? entry.value : 0;
+      oppName = entry ? entry.name : "Unbekannt";
+    } else if (cat === "tiere") {
+      oppValue = opponent.stats[catName];
+      oppName = opponent.best[catName];
+    } else {
+      const entry = opponent.players[catName];
+      oppValue = entry ? entry.value : 0;
+      oppName = entry ? entry.name : "Unbekannt";
+    }
+
     let result;
     if (user.value > oppValue) {
       result = "win";
@@ -2532,10 +2595,10 @@ if (cat === "fussball") {
       result = "draw";
     }
 
-    let color;
-    if (result === "win") color = "#4CAF50";
-    else if (result === "loss") color = "#ff2a2a";
-    else color = "#2196F3";
+    let color =
+      result === "win" ? "#4CAF50" :
+      result === "loss" ? "#ff2a2a" :
+                          "#2196F3";
 
     compareHTML += `
       <div class="duel-row slot" style="border-left-color:${color};">
@@ -2551,13 +2614,11 @@ if (cat === "fussball") {
   });
 
   const finalText =
-    wins > losses
-      ? "🎉 Du hast gewonnen!"
-      : wins < losses
-        ? "❌ Du hast verloren!"
-        : "🤝 Unentschieden!";
+    wins > losses ? "🎉 Du hast gewonnen!" :
+    wins < losses ? "❌ Du hast verloren!" :
+                    "🤝 Unentschieden!";
 
   scoreLine.textContent = `${wins}-${losses} · ${finalText}`;
 
-  summaryCard.innerHTML = compareHTML;
+  summaryCard.innerHTML += compareHTML;
 }
