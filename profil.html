@@ -1,0 +1,3461 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ChallengeChamp – Profil</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.12), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(255,255,255,.08), transparent 35%),
+        linear-gradient(135deg, #111827, #1f2937 50%, #111827);
+
+      color: #111;
+      padding: 25px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1050px;
+      margin: auto;
+    }
+
+    /* ---------------- HEADER ---------------- */
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .back-button,
+    .shop-button {
+      text-decoration: none;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-weight: 800;
+      transition: .2s ease;
+    }
+
+    .back-button {
+      background: white;
+      color: #111;
+      box-shadow: 0 5px 15px rgba(0,0,0,.2);
+    }
+
+    .shop-button {
+      background: linear-gradient(135deg, #ffd700, #ffae00);
+      color: #111;
+      box-shadow:
+        0 5px 18px rgba(0,0,0,.3),
+        0 0 15px rgba(255,215,0,.3);
+    }
+
+    .back-button:hover,
+    .shop-button:hover {
+      transform: translateY(-2px);
+    }
+
+    /* ---------------- TITEL ---------------- */
+
+    .page-title {
+      color: white;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .page-title h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 900;
+    }
+
+    .page-title p {
+      margin: 8px 0 0;
+      opacity: .8;
+      font-size: 1rem;
+      color: white;
+    }
+
+    /* ---------------- CARDS ---------------- */
+
+    .section-card {
+      background: rgba(255,255,255,.97);
+      border-radius: 24px;
+      padding: 25px;
+      margin-bottom: 22px;
+
+      box-shadow:
+        0 15px 40px rgba(0,0,0,.28);
+
+      backdrop-filter: blur(10px);
+    }
+
+    .section-title {
+      font-size: 1.45rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .section-subtitle {
+      color: #666;
+      font-size: .95rem;
+      margin-bottom: 20px;
+    }
+
+    /* ---------------- PROFIL ---------------- */
+
+    .profile-card {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .avatar {
+      width: 105px;
+      height: 105px;
+      min-width: 105px;
+
+      border-radius: 24px;
+
+      background:
+        linear-gradient(135deg, #111827, #374151);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font-size: 3.5rem;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 8px 25px rgba(0,0,0,.25);
+
+      transition: .25s ease;
+    }
+
+    .avatar:hover {
+      transform: scale(1.05);
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-name {
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 5px;
+      word-break: break-word;
+    }
+
+    .player-id {
+      color: #777;
+      font-size: .85rem;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      font-family: monospace;
+    }
+
+    .name-button {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 15px;
+
+      background: #111827;
+      color: white;
+
+      font-weight: 800;
+      cursor: pointer;
+
+      transition: .2s ease;
+    }
+
+    .name-button:hover {
+      transform: translateY(-2px);
+      background: #374151;
+    }
+
+    .name-button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ---------------- AUFKLAPPBARE SYMBOLE ---------------- */
+
+    .symbols-section {
+      overflow: hidden;
+    }
+
+    .symbols-toggle {
+      width: 100%;
+      border: none;
+      padding: 0;
+      margin: 0;
+
+      background: transparent;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+      text-align: left;
+
+      cursor: pointer;
+    }
+
+    .symbols-toggle .section-title {
+      margin-bottom: 5px;
+    }
+
+    .symbols-toggle .section-subtitle {
+      margin-bottom: 0;
+    }
+
+    .toggle-arrow {
+      flex-shrink: 0;
+
+      width: 38px;
+      height: 38px;
+
+      border-radius: 50%;
+
+      background: #111;
+      color: white;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 1rem;
+      font-weight: 900;
+
+      transition:
+        transform .3s ease,
+        background .2s ease;
+    }
+
+    .symbols-toggle:hover .toggle-arrow {
+      background: #333;
+    }
+
+    .symbols-content {
+      display: grid;
+
+      grid-template-rows: 0fr;
+
+      opacity: 0;
+
+      transition:
+        grid-template-rows .4s ease,
+        opacity .3s ease,
+        margin-top .4s ease;
+    }
+
+    .symbols-content > .symbol-grid {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .symbols-section.open .symbols-content {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      margin-top: 20px;
+    }
+
+    .symbols-section.open .toggle-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* ---------------- SYMBOL GRID ---------------- */
+
+    .symbol-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(auto-fill, minmax(90px, 1fr));
+
+      gap: 12px;
+    }
+
+    .symbol-item {
+      min-height: 90px;
+
+      border-radius: 18px;
+
+      border: 2px solid #e5e7eb;
+
+      background: #f9fafb;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      cursor: pointer;
+
+      transition: .2s ease;
+
+      position: relative;
+
+      user-select: none;
+    }
+
+    .symbol-item:hover {
+      transform: translateY(-3px);
+      border-color: #111;
+    }
+
+    .symbol-item.selected {
+      border-color: #111827;
+
+      box-shadow:
+        0 0 0 3px rgba(17,24,39,.12);
+    }
+
+    .symbol-icon {
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+
+    .symbol-name {
+      font-size: .75rem;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .symbol-item.locked {
+      filter: grayscale(1);
+      opacity: .42;
+      cursor: pointer;
+    }
+
+    .symbol-item.locked:hover {
+      opacity: .65;
+    }
+
+    .symbol-lock {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      font-size: .75rem;
+    }
+
+    /* ---------------- SPIELZEIT ---------------- */
+
+    .total-hours-card {
+      border-radius: 20px;
+      padding: 22px;
+
+      background:
+        linear-gradient(135deg, #111827, #374151);
+
+      color: white;
+
+      text-align: center;
+
+      margin-bottom: 20px;
+
+      box-shadow:
+        0 10px 25px rgba(0,0,0,.25);
+    }
+
+    .total-hours-label {
+      font-size: .9rem;
+      opacity: .75;
+      margin-bottom: 5px;
+    }
+
+    .total-hours {
+      font-size: 2.7rem;
+      font-weight: 900;
+    }
+
+    .game-hours-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(auto-fit, minmax(230px, 1fr));
+
+      gap: 12px;
+    }
+
+    .game-hour-card {
+      border: 2px solid #e5e7eb;
+      border-radius: 18px;
+
+      padding: 16px;
+
+      background: #fafafa;
+    }
+
+    .game-hour-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+
+      margin-bottom: 10px;
+    }
+
+    .game-name {
+      font-weight: 900;
+    }
+
+    .game-time {
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 9px;
+
+      border-radius: 20px;
+
+      background: #e5e7eb;
+
+      overflow: hidden;
+
+      margin-top: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+
+      background:
+        linear-gradient(90deg, #111827, #6b7280);
+
+      border-radius: 20px;
+
+      transition: width .4s ease;
+    }
+
+    .next-milestone {
+      color: #777;
+      font-size: .78rem;
+      margin-top: 8px;
+    }
+
+    /* ---------------- MEILENSTEINE ---------------- */
+
+    .milestone-group {
+      margin-bottom: 25px;
+    }
+
+    .milestone-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .milestone-group-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .milestone-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(auto-fill, minmax(150px, 1fr));
+
+      gap: 10px;
+    }
+
+    .milestone {
+      border-radius: 16px;
+
+      padding: 15px;
+
+      border: 2px solid #e5e7eb;
+
+      background: #f9fafb;
+
+      text-align: center;
+
+      position: relative;
+    }
+
+    .milestone.unlocked {
+      border-color: #f0b400;
+
+      background:
+        linear-gradient(
+          135deg,
+          #fff8d6,
+          #fff
+        );
+
+      box-shadow:
+        0 4px 15px rgba(255,190,0,.15);
+    }
+
+    .milestone.locked {
+      filter: grayscale(1);
+      opacity: .45;
+    }
+
+    .milestone-icon {
+      font-size: 2rem;
+      margin-bottom: 7px;
+    }
+
+    .milestone-name {
+      font-weight: 900;
+      font-size: .85rem;
+    }
+
+    .milestone-time {
+      color: #777;
+      font-size: .75rem;
+      margin-top: 4px;
+    }
+
+    .milestone-lock {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      font-size: .7rem;
+    }
+
+    /* ---------------- SUCHE ---------------- */
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-input {
+      flex: 1;
+
+      border: 2px solid #ddd;
+      border-radius: 14px;
+
+      padding: 13px 15px;
+
+      font-size: 1rem;
+
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: #111;
+    }
+
+    .search-button {
+      border: none;
+
+      border-radius: 14px;
+
+      padding: 0 20px;
+
+      background: #111827;
+      color: white;
+
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+    .search-result {
+      margin-top: 18px;
+    }
+
+    .search-result-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      border: 2px solid #e5e7eb;
+
+      border-radius: 18px;
+
+      padding: 15px;
+
+      cursor: pointer;
+
+      transition: .2s ease;
+    }
+
+    .search-result-card:hover {
+      transform: translateY(-2px);
+      border-color: #111;
+    }
+
+    .search-result-avatar {
+      width: 55px;
+      height: 55px;
+
+      border-radius: 15px;
+
+      background: #111827;
+
+      color: white;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font-size: 1.8rem;
+    }
+
+    .search-result-name {
+      font-weight: 900;
+    }
+
+    .search-result-id {
+      font-family: monospace;
+      font-size: .75rem;
+      color: #777;
+      margin-top: 3px;
+    }
+
+    .no-result {
+      text-align: center;
+      color: #777;
+      padding: 20px;
+    }
+
+    /* ---------------- POPUPS ---------------- */
+
+    .popup-overlay {
+      position: fixed;
+
+      inset: 0;
+
+      background: rgba(0,0,0,.65);
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      z-index: 1000;
+    }
+
+    .popup-overlay.active {
+      display: flex;
+    }
+
+    .popup {
+      width: 100%;
+      max-width: 430px;
+
+      background: white;
+
+      border-radius: 25px;
+
+      padding: 25px;
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.4);
+    }
+
+    .popup h2 {
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+
+    .popup-input {
+      width: 100%;
+
+      border: 2px solid #ddd;
+
+      border-radius: 12px;
+
+      padding: 13px;
+
+      font-size: 1rem;
+
+      outline: none;
+
+      margin-bottom: 12px;
+    }
+
+    .popup-input:focus {
+      border-color: #111;
+    }
+
+    .popup-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .popup-button {
+      border: none;
+
+      border-radius: 12px;
+
+      padding: 11px 16px;
+
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+    .popup-cancel {
+      background: #e5e7eb;
+      color: #111;
+    }
+
+    .popup-confirm {
+      background: #111827;
+      color: white;
+    }
+
+    .public-profile {
+      text-align: center;
+    }
+
+    .public-avatar {
+      width: 95px;
+      height: 95px;
+
+      border-radius: 22px;
+
+      background: #111827;
+
+      color: white;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 3rem;
+
+      margin: 0 auto 15px;
+    }
+
+    .public-name {
+      font-size: 1.7rem;
+      font-weight: 900;
+    }
+
+    .public-id {
+      color: #777;
+      font-family: monospace;
+      margin: 6px 0 20px;
+    }
+
+    .public-hours {
+      border-radius: 16px;
+      padding: 15px;
+      background: #f3f4f6;
+      font-weight: 800;
+    }
+
+    /* ---------------- RESPONSIVE ---------------- */
+
+    @media (max-width: 650px) {
+
+      body {
+        padding: 15px;
+      }
+
+      .page-title h1 {
+        font-size: 2rem;
+      }
+
+      .profile-card {
+        align-items: flex-start;
+      }
+
+      .avatar {
+        width: 80px;
+        height: 80px;
+        min-width: 80px;
+        font-size: 2.7rem;
+      }
+
+      .profile-name {
+        font-size: 1.5rem;
+      }
+
+      .search-box {
+        flex-direction: column;
+      }
+
+      .search-button {
+        padding: 13px;
+      }
+
+      .milestone-grid {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+
+  <div class="topbar">
+
+    <a href="startseite.html" class="back-button">
+      ← Zurück zur Startseite
+    </a>
+
+    <a href="shop.html" class="shop-button">
+      🛒 Shop
+    </a>
+
+  </div>
+
+
+  <!-- TITEL -->
+
+  <div class="page-title">
+
+    <h1>👤 Mein Profil</h1>
+
+    <p>
+      Deine Spielzeit, Symbole und Meilensteine
+    </p>
+
+  </div>
+
+
+  <!-- PROFIL -->
+
+  <section class="section-card">
+
+    <div class="profile-card">
+
+      <div
+        class="avatar"
+        id="myAvatar"
+        onclick="showSymbolSection()"
+        title="Symbol auswählen"
+      >
+        🎮
+      </div>
+
+      <div class="profile-info">
+
+        <div
+          class="profile-name"
+          id="myName"
+        >
+          Spieler
+        </div>
+
+        <div class="player-id">
+          ID:
+          <span id="myId">
+            ------------
+          </span>
+        </div>
+
+        <button
+          class="name-button"
+          id="changeNameBtn"
+          onclick="openNamePopup()"
+        >
+          ✏️ Namen einmalig ändern
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- SYMBOLE -->
+
+  <section
+    class="section-card symbols-section"
+    id="symbolsSection"
+  >
+
+    <button
+      class="symbols-toggle"
+      onclick="toggleSymbols()"
+    >
+
+      <div>
+
+        <div class="section-title">
+          🏷️ Deine Symbole
+        </div>
+
+        <div class="section-subtitle">
+          Symbole auswählen und freischalten
+        </div>
+
+      </div>
+
+      <span
+        class="toggle-arrow"
+        id="symbolsArrow"
+      >
+        ▼
+      </span>
+
+    </button>
+
+
+    <div
+      class="symbols-content"
+      id="symbolsContent"
+    >
+
+      <div
+        class="symbol-grid"
+        id="symbolGrid"
+      ></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- SPIELZEIT -->
+
+  <section class="section-card">
+
+    <div class="section-title">
+      ⏱️ Spielzeit
+    </div>
+
+    <div class="section-subtitle">
+      Deine Zeit wird für jedes Spiel separat gespeichert.
+    </div>
+
+
+    <div class="total-hours-card">
+
+      <div class="total-hours-label">
+        GESAMTE SPIELZEIT
+      </div>
+
+      <div
+        class="total-hours"
+        id="totalHours"
+      >
+        0h 0min
+      </div>
+
+    </div>
+
+
+    <div
+      class="game-hours-grid"
+      id="gameHoursGrid"
+    ></div>
+
+  </section>
+
+
+  <!-- MEILENSTEINE -->
+
+  <section class="section-card">
+
+    <div class="section-title">
+      🏆 Meilensteine
+    </div>
+
+    <div class="section-subtitle">
+      Spiele länger und schalte neue Symbole frei.
+    </div>
+
+
+    <!-- GESAMT -->
+
+    <div class="milestone-group">
+
+      <div class="milestone-group-title">
+        🌍 Gesamtspielzeit
+      </div>
+
+      <div
+        class="milestone-grid"
+        id="globalMilestones"
+      ></div>
+
+    </div>
+
+
+    <!-- SPIELE -->
+
+    <div class="milestone-group">
+
+      <div class="milestone-group-title">
+        🎮 Meilensteine pro Spiel
+      </div>
+
+      <div
+        id="gameMilestones"
+      ></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- SPIELERSUCHE -->
+
+  <section class="section-card">
+
+    <div class="section-title">
+      🔎 Spieler suchen
+    </div>
+
+    <div class="section-subtitle">
+      Suche andere Spieler über ihre 12-stellige Spieler-ID.
+    </div>
+
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        class="search-input"
+        id="playerSearch"
+        maxlength="12"
+        placeholder="z. B. CC7K4M9P2X1A"
+        autocomplete="off"
+      >
+
+      <button
+        class="search-button"
+        onclick="searchPlayer()"
+      >
+        Suchen
+      </button>
+
+    </div>
+
+
+    <div
+      class="search-result"
+      id="searchResult"
+    ></div>
+
+  </section>
+
+</div>
+
+
+<!-- NAMEN POPUP -->
+
+<div
+  class="popup-overlay"
+  id="namePopup"
+>
+
+  <div class="popup">
+
+    <h2>
+      ✏️ Namen ändern
+    </h2>
+
+    <p>
+      Du kannst deinen Spielernamen nur einmal ändern.
+    </p>
+
+    <input
+      type="text"
+      class="popup-input"
+      id="nameInput"
+      maxlength="20"
+      placeholder="Dein neuer Name"
+    >
+
+    <div class="popup-buttons">
+
+      <button
+        class="popup-button popup-cancel"
+        onclick="closePopup('namePopup')"
+      >
+        Abbrechen
+      </button>
+
+      <button
+        class="popup-button popup-confirm"
+        onclick="changeName()"
+      >
+        Speichern
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- CODE POPUP -->
+
+<div
+  class="popup-overlay"
+  id="codePopup"
+>
+
+  <div class="popup">
+
+    <h2>
+      🔒 Symbol freischalten
+    </h2>
+
+    <p id="codeDescription">
+      Gib den Freischaltcode ein.
+    </p>
+
+    <input
+      type="text"
+      class="popup-input"
+      id="codeInput"
+      placeholder="Freischaltcode"
+      autocomplete="off"
+    >
+
+    <div class="popup-buttons">
+
+      <button
+        class="popup-button popup-cancel"
+        onclick="closePopup('codePopup')"
+      >
+        Abbrechen
+      </button>
+
+      <button
+        class="popup-button popup-confirm"
+        onclick="checkCode()"
+      >
+        Freischalten
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ÖFFENTLICHES PROFIL -->
+
+<div
+  class="popup-overlay"
+  id="publicProfilePopup"
+>
+
+  <div class="popup">
+
+    <div class="public-profile">
+
+      <div
+        class="public-avatar"
+        id="publicAvatar"
+      >
+        🎮
+      </div>
+
+      <div
+        class="public-name"
+        id="publicName"
+      >
+        Spieler
+      </div>
+
+      <div
+        class="public-id"
+        id="publicId"
+      >
+        ID
+      </div>
+
+      <div
+        class="public-hours"
+        id="publicHours"
+      >
+        ⏱️ 0 Stunden gespielt
+      </div>
+
+      <br>
+
+      <button
+        class="popup-button popup-cancel"
+        onclick="closePopup('publicProfilePopup')"
+      >
+        Schließen
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  /* =========================================================
+     STORAGE
+  ========================================================= */
+
+  const STORAGE = {
+
+    name:
+      "challengeChampProfileName",
+
+    nameChanged:
+      "challengeChampNameChanged",
+
+    playerId:
+      "challengeChampPlayerId",
+
+    avatar:
+      "challengeChampAvatar",
+
+    unlockedSymbols:
+      "challengeChampUnlockedSymbols",
+
+    gameHours:
+      "challengeChampGameHours",
+
+    activeGame:
+      "challengeChampActiveGame",
+
+    gameStart:
+      "challengeChampGameStart"
+
+  };
+
+
+  /* =========================================================
+     SPIELE
+  ========================================================= */
+
+  const gameDefinitions = [
+
+    {
+      id: "fakeorfakt",
+      name: "Fake or Fakt"
+    },
+
+    {
+      id: "10von10",
+      name: "10 von 10"
+    },
+
+    {
+      id: "wop",
+      name: "Wort oder Pech"
+    },
+
+    {
+      id: "imposter",
+      name: "Imposter"
+    },
+
+    {
+      id: "imposterpremium",
+      name: "Imposter Premium"
+    },
+
+    {
+      id: "wort",
+      name: "Wort"
+    },
+
+    {
+      id: "liste",
+      name: "Liste"
+    },
+
+    {
+      id: "tipptopf",
+      name: "Tipptopf"
+    },
+
+    {
+      id: "stillepost",
+      name: "Stille Post"
+    },
+
+    {
+      id: "habnochnie",
+      name: "Hab ich noch nie"
+    },
+
+    {
+      id: "werbinich",
+      name: "Wer bin ich?"
+    },
+
+    {
+      id: "superquiz",
+      name: "Super Quiz"
+    },
+
+    {
+      id: "duoplay",
+      name: "Duo Play"
+    },
+
+    {
+      id: "uberbieten",
+      name: "Überbieten"
+    },
+
+    {
+      id: "these",
+      name: "These"
+    },
+
+    {
+      id: "100quiz",
+      name: "100 Quiz"
+    },
+
+    {
+      id: "wolf",
+      name: "Wolf"
+    },
+
+    {
+      id: "wm",
+      name: "TeamMaster"
+    },
+
+    {
+      id: "wmhunter",
+      name: "WM Hunter"
+    },
+
+    {
+      id: "wmguess",
+      name: "WM Guess"
+    },
+
+    {
+      id: "wmtop",
+      name: "WM Top"
+    },
+
+    {
+      id: "tictactoe",
+      name: "Tic Tac Toe"
+    }
+
+  ];
+
+
+  /* =========================================================
+     CODE-SYMBOLE
+  ========================================================= */
+
+  const codeSymbols = [
+
+    {
+      id: "champion",
+      icon: "🏆",
+      name: "Champion",
+      code: "CHAMP-2026"
+    },
+
+    {
+      id: "fire",
+      icon: "🔥",
+      name: "Feuer",
+      code: "FIRE-777"
+    },
+
+    {
+      id: "crown",
+      icon: "👑",
+      name: "König",
+      code: "CROWN-999"
+    },
+
+    {
+      id: "diamond",
+      icon: "💎",
+      name: "Diamant",
+      code: "DIAMOND-CC"
+    },
+
+    {
+      id: "lightning",
+      icon: "⚡",
+      name: "Blitz",
+      code: "BOLT-2026"
+    }
+
+  ];
+
+
+  /* =========================================================
+     MEILENSTEINE PRO SPIEL
+     
+     10 Minuten
+     30 Minuten
+     1 Stunde
+     3 Stunden
+     5 Stunden
+  ========================================================= */
+
+  const gameMilestones = [
+
+    {
+      id: "10min",
+      minutes: 10,
+      icon: "🕐",
+      name: "Anfänger"
+    },
+
+    {
+      id: "30min",
+      minutes: 30,
+      icon: "⏱️",
+      name: "Spieler"
+    },
+
+    {
+      id: "1h",
+      minutes: 60,
+      icon: "⭐",
+      name: "Fortgeschritten"
+    },
+
+    {
+      id: "3h",
+      minutes: 180,
+      icon: "🔥",
+      name: "Profi"
+    },
+
+    {
+      id: "5h",
+      minutes: 300,
+      icon: "🚀",
+      name: "Meister"
+    }
+
+  ];
+
+
+  /* =========================================================
+     GESAMT-MEILENSTEINE
+     
+     1h
+     5h
+     10h
+     25h
+     50h
+     100h
+  ========================================================= */
+
+  const globalMilestones = [
+
+    {
+      id: "global_1h",
+      minutes: 60,
+      icon: "🌟",
+      name: "1 Stunde"
+    },
+
+    {
+      id: "global_5h",
+      minutes: 300,
+      icon: "🚀",
+      name: "5 Stunden"
+    },
+
+    {
+      id: "global_10h",
+      minutes: 600,
+      icon: "🏆",
+      name: "10 Stunden"
+    },
+
+    {
+      id: "global_25h",
+      minutes: 1500,
+      icon: "💎",
+      name: "25 Stunden"
+    },
+
+    {
+      id: "global_50h",
+      minutes: 3000,
+      icon: "🐉",
+      name: "50 Stunden"
+    },
+
+    {
+      id: "global_100h",
+      minutes: 6000,
+      icon: "👑",
+      name: "100 Stunden"
+    }
+
+  ];
+
+
+  /* =========================================================
+     FALSCHE SPIELER FÜR DIE SUCHE
+  ========================================================= */
+
+  const fakePlayers = [
+
+    {
+      name: "Max",
+      id: "CC7K4M9P2X1A",
+      avatar: "🏆",
+      hours: 18.7
+    },
+
+    {
+      name: "Lina",
+      id: "CC3Q8T5N7B2Z",
+      avatar: "🔥",
+      hours: 42.3
+    },
+
+    {
+      name: "Tom",
+      id: "CC9L2F6R8W4K",
+      avatar: "🚀",
+      hours: 7.9
+    }
+
+  ];
+
+
+  /* =========================================================
+     NAMEN
+  ========================================================= */
+
+  function randomPlayerName() {
+
+    const names = [
+
+      "Spieler",
+      "ChallengeKid",
+      "QuizMaster",
+      "Champ",
+      "Player",
+      "GameStar",
+      "LuckyPlayer"
+
+    ];
+
+    return names[
+      Math.floor(
+        Math.random() * names.length
+      )
+    ];
+
+  }
+
+
+  function getPlayerName() {
+
+    let name =
+      localStorage.getItem(
+        STORAGE.name
+      );
+
+    if (!name) {
+
+      name = randomPlayerName();
+
+      localStorage.setItem(
+        STORAGE.name,
+        name
+      );
+
+    }
+
+    return name;
+
+  }
+
+
+  /* =========================================================
+     PLAYER ID
+  ========================================================= */
+
+  function generatePlayerId() {
+
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    let id = "";
+
+    for (
+      let i = 0;
+      i < 12;
+      i++
+    ) {
+
+      id += characters[
+        Math.floor(
+          Math.random() * characters.length
+        )
+      ];
+
+    }
+
+    return id;
+
+  }
+
+
+  function getPlayerId() {
+
+    let id =
+      localStorage.getItem(
+        STORAGE.playerId
+      );
+
+    if (!id) {
+
+      id = generatePlayerId();
+
+      localStorage.setItem(
+        STORAGE.playerId,
+        id
+      );
+
+    }
+
+    return id;
+
+  }
+
+
+  /* =========================================================
+     SPIELZEIT DATEN
+  ========================================================= */
+
+  function getGameHours() {
+
+    let data = {};
+
+    try {
+
+      data = JSON.parse(
+        localStorage.getItem(
+          STORAGE.gameHours
+        )
+      ) || {};
+
+    } catch {
+
+      data = {};
+
+    }
+
+
+    gameDefinitions.forEach(game => {
+
+      if (
+        typeof data[game.id] !== "number"
+      ) {
+
+        data[game.id] = 0;
+
+      }
+
+    });
+
+
+    return data;
+
+  }
+
+
+  function saveGameHours(data) {
+
+    localStorage.setItem(
+      STORAGE.gameHours,
+      JSON.stringify(data)
+    );
+
+  }
+
+
+  /* =========================================================
+     AKTIVER SPIEL-TIMER
+     
+     Diese Funktionen können auch auf deinen
+     jeweiligen Spielseiten verwendet werden.
+  ========================================================= */
+
+  function startGameTimer(gameId) {
+
+    const gameExists =
+      gameDefinitions.some(
+        game => game.id === gameId
+      );
+
+    if (!gameExists) {
+
+      console.warn(
+        "Unbekannte Spiel-ID:",
+        gameId
+      );
+
+      return;
+
+    }
+
+
+    /*
+      Falls bereits ein anderes Spiel läuft,
+      wird dessen Zeit zuerst gespeichert.
+    */
+
+    stopGameTimer();
+
+
+    localStorage.setItem(
+      STORAGE.activeGame,
+      gameId
+    );
+
+    localStorage.setItem(
+      STORAGE.gameStart,
+      Date.now().toString()
+    );
+
+  }
+
+
+  function stopGameTimer() {
+
+    const activeGame =
+      localStorage.getItem(
+        STORAGE.activeGame
+      );
+
+    const start =
+      parseInt(
+        localStorage.getItem(
+          STORAGE.gameStart
+        ),
+        10
+      );
+
+
+    if (
+      !activeGame ||
+      !start ||
+      Number.isNaN(start)
+    ) {
+
+      return;
+
+    }
+
+
+    const elapsed =
+      Date.now() - start;
+
+
+    /*
+      Nur sinnvolle Zeit speichern.
+      Millisekunden werden in Stunden umgerechnet.
+    */
+
+    if (elapsed > 0) {
+
+      const data =
+        getGameHours();
+
+      const hours =
+        elapsed / 3600000;
+
+
+      data[activeGame] =
+        (data[activeGame] || 0)
+        + hours;
+
+
+      saveGameHours(data);
+
+    }
+
+
+    localStorage.removeItem(
+      STORAGE.activeGame
+    );
+
+    localStorage.removeItem(
+      STORAGE.gameStart
+    );
+
+  }
+
+
+  /*
+    Alle 5 Sekunden wird die laufende Zeit
+    gespeichert. Dadurch geht bei einem Absturz
+    nicht die komplette Spielzeit verloren.
+  */
+
+  let timerInterval =
+    setInterval(() => {
+
+      const activeGame =
+        localStorage.getItem(
+          STORAGE.activeGame
+        );
+
+      if (activeGame) {
+
+        stopGameTimer();
+
+        startGameTimer(
+          activeGame
+        );
+
+      }
+
+    }, 5000);
+
+
+  /*
+    Wenn der Nutzer die Seite verlässt,
+    wird die Zeit ebenfalls gespeichert.
+  */
+
+  window.addEventListener(
+    "beforeunload",
+    () => {
+
+      stopGameTimer();
+
+    }
+  );
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (
+        document.visibilityState === "hidden"
+      ) {
+
+        stopGameTimer();
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     GESAMTSTUNDEN
+  ========================================================= */
+
+  function getTotalHours() {
+
+    const data =
+      getGameHours();
+
+    let total = 0;
+
+    gameDefinitions.forEach(game => {
+
+      total +=
+        Number(data[game.id] || 0);
+
+    });
+
+
+    return total;
+
+  }
+
+
+  /* =========================================================
+     ZEIT FORMATIERUNG
+  ========================================================= */
+
+  function formatTime(hours) {
+
+    const totalMinutes =
+      Math.floor(
+        hours * 60
+      );
+
+    const h =
+      Math.floor(
+        totalMinutes / 60
+      );
+
+    const min =
+      totalMinutes % 60;
+
+
+    if (h <= 0) {
+
+      return `${min}min`;
+
+    }
+
+
+    if (min <= 0) {
+
+      return `${h}h`;
+
+    }
+
+
+    return `${h}h ${min}min`;
+
+  }
+
+
+  function formatDecimalHours(hours) {
+
+    return (
+      Math.round(
+        hours * 10
+      ) / 10
+    ).toFixed(1);
+
+  }
+
+
+  /* =========================================================
+     SYMBOL-DATEN
+  ========================================================= */
+
+  function getUnlockedSymbols() {
+
+    let symbols = [];
+
+    try {
+
+      symbols =
+        JSON.parse(
+          localStorage.getItem(
+            STORAGE.unlockedSymbols
+          )
+        ) || [];
+
+    } catch {
+
+      symbols = [];
+
+    }
+
+
+    /*
+      Das normale Grundsymbol ist immer frei.
+    */
+
+    if (!symbols.includes("basic")) {
+
+      symbols.push("basic");
+
+    }
+
+
+    return symbols;
+
+  }
+
+
+  function saveUnlockedSymbols(symbols) {
+
+    localStorage.setItem(
+      STORAGE.unlockedSymbols,
+      JSON.stringify(symbols)
+    );
+
+  }
+
+
+  /* =========================================================
+     MEILENSTEIN-SYMBOL-ID
+  ========================================================= */
+
+  function getGameMilestoneSymbolId(
+    gameId,
+    milestoneId
+  ) {
+
+    return (
+      "game_" +
+      gameId +
+      "_" +
+      milestoneId
+    );
+
+  }
+
+
+  /* =========================================================
+     MEILENSTEINE PRÜFEN UND FREISCHALTEN
+  ========================================================= */
+
+  function unlockMilestones() {
+
+    let unlocked =
+      getUnlockedSymbols();
+
+    const gameHours =
+      getGameHours();
+
+
+    /*
+      MEILENSTEINE PRO SPIEL
+    */
+
+    gameDefinitions.forEach(game => {
+
+      const minutes =
+        (gameHours[game.id] || 0)
+        * 60;
+
+
+      gameMilestones.forEach(
+        milestone => {
+
+          if (
+            minutes >=
+            milestone.minutes
+          ) {
+
+            const symbolId =
+              getGameMilestoneSymbolId(
+                game.id,
+                milestone.id
+              );
+
+
+            if (
+              !unlocked.includes(
+                symbolId
+              )
+            ) {
+
+              unlocked.push(
+                symbolId
+              );
+
+            }
+
+          }
+
+        }
+      );
+
+    });
+
+
+    /*
+      GESAMT-MEILENSTEINE
+    */
+
+    const totalMinutes =
+      getTotalHours() * 60;
+
+
+    globalMilestones.forEach(
+      milestone => {
+
+        if (
+          totalMinutes >=
+          milestone.minutes
+        ) {
+
+          if (
+            !unlocked.includes(
+              milestone.id
+            )
+          ) {
+
+            unlocked.push(
+              milestone.id
+            );
+
+          }
+
+        }
+
+      }
+    );
+
+
+    saveUnlockedSymbols(
+      unlocked
+    );
+
+  }
+
+
+  /* =========================================================
+     SYMBOL-BEREICH RENDERN
+  ========================================================= */
+
+  function renderSymbols() {
+
+    const grid =
+      document.getElementById(
+        "symbolGrid"
+      );
+
+
+    const unlocked =
+      getUnlockedSymbols();
+
+
+    grid.innerHTML = "";
+
+
+    /*
+      GRUNDSYMBOL
+    */
+
+    addSymbolToGrid(
+      grid,
+      {
+        id: "basic",
+        icon: "🎮",
+        name: "Gamer",
+        unlocked: true
+      },
+      unlocked
+    );
+
+
+    /*
+      CODE-SYMBOLE
+    */
+
+    codeSymbols.forEach(
+      symbol => {
+
+        addSymbolToGrid(
+          grid,
+          {
+            ...symbol,
+            type: "code",
+            unlocked:
+              unlocked.includes(
+                symbol.id
+              )
+          },
+          unlocked
+        );
+
+      }
+    );
+
+
+    /*
+      GESAMT-MEILENSTEINE
+    */
+
+    globalMilestones.forEach(
+      milestone => {
+
+        addSymbolToGrid(
+          grid,
+          {
+            id: milestone.id,
+            icon: milestone.icon,
+            name:
+              "Gesamt " +
+              milestone.name,
+            unlocked:
+              unlocked.includes(
+                milestone.id
+              ),
+            type: "milestone"
+          },
+          unlocked
+        );
+
+      }
+    );
+
+
+    /*
+      SPIEL-MEILENSTEINE
+
+      Es werden viele Symbole erzeugt,
+      weil jedes Spiel eigene
+      Meilensteine besitzt.
+    */
+
+    gameDefinitions.forEach(
+      game => {
+
+        gameMilestones.forEach(
+          milestone => {
+
+            const id =
+              getGameMilestoneSymbolId(
+                game.id,
+                milestone.id
+              );
+
+
+            addSymbolToGrid(
+              grid,
+              {
+                id: id,
+                icon: milestone.icon,
+                name:
+                  game.name +
+                  " – " +
+                  milestone.name,
+                unlocked:
+                  unlocked.includes(id),
+                type: "gameMilestone"
+              },
+              unlocked
+            );
+
+          }
+        );
+
+      }
+    );
+
+  }
+
+
+  function addSymbolToGrid(
+    grid,
+    symbol,
+    unlocked
+  ) {
+
+    const item =
+      document.createElement(
+        "div"
+      );
+
+
+    const isUnlocked =
+      unlocked.includes(
+        symbol.id
+      );
+
+
+    item.className =
+      "symbol-item " +
+      (
+        isUnlocked
+          ? "unlocked"
+          : "locked"
+      );
+
+
+    if (
+      localStorage.getItem(
+        STORAGE.avatar
+      ) === symbol.id
+    ) {
+
+      item.classList.add(
+        "selected"
+      );
+
+    }
+
+
+    item.innerHTML = `
+
+      <div class="symbol-icon">
+        ${symbol.icon}
+      </div>
+
+      <div class="symbol-name">
+        ${symbol.name}
+      </div>
+
+      ${
+        isUnlocked
+          ? ""
+          : `<div class="symbol-lock">🔒</div>`
+      }
+
+    `;
+
+
+    item.onclick = () => {
+
+      if (isUnlocked) {
+
+        selectSymbol(
+          symbol.id,
+          symbol.icon
+        );
+
+      } else if (
+        symbol.type === "code"
+      ) {
+
+        openCodePopup(
+          symbol
+        );
+
+      }
+
+    };
+
+
+    grid.appendChild(
+      item
+    );
+
+  }
+
+
+  /* =========================================================
+     SYMBOL AUSWÄHLEN
+  ========================================================= */
+
+  function selectSymbol(
+    id,
+    icon
+  ) {
+
+    localStorage.setItem(
+      STORAGE.avatar,
+      id
+    );
+
+
+    document.getElementById(
+      "myAvatar"
+    ).textContent = icon;
+
+
+    renderSymbols();
+
+  }
+
+
+  /* =========================================================
+     CODE POPUP
+  ========================================================= */
+
+  let selectedCodeSymbol =
+    null;
+
+
+  function openCodePopup(
+    symbol
+  ) {
+
+    selectedCodeSymbol =
+      symbol;
+
+
+    document.getElementById(
+      "codeDescription"
+    ).textContent =
+      `Gib den Code für „${symbol.name}“ ein.`;
+
+
+    document.getElementById(
+      "codeInput"
+    ).value = "";
+
+
+    document.getElementById(
+      "codePopup"
+    ).classList.add(
+      "active"
+    );
+
+
+    setTimeout(() => {
+
+      document.getElementById(
+        "codeInput"
+      ).focus();
+
+    }, 100);
+
+  }
+
+
+  function checkCode() {
+
+    if (!selectedCodeSymbol) {
+
+      return;
+
+    }
+
+
+    const input =
+      document.getElementById(
+        "codeInput"
+      ).value
+      .trim()
+      .toUpperCase();
+
+
+    if (
+      input ===
+      selectedCodeSymbol.code
+        .toUpperCase()
+    ) {
+
+      let unlocked =
+        getUnlockedSymbols();
+
+
+      if (
+        !unlocked.includes(
+          selectedCodeSymbol.id
+        )
+      ) {
+
+        unlocked.push(
+          selectedCodeSymbol.id
+        );
+
+      }
+
+
+      saveUnlockedSymbols(
+        unlocked
+      );
+
+
+      closePopup(
+        "codePopup"
+      );
+
+
+      renderSymbols();
+
+
+      alert(
+        `🎉 Das Symbol „${selectedCodeSymbol.name}“ wurde freigeschaltet!`
+      );
+
+    } else {
+
+      alert(
+        "❌ Der Code ist falsch."
+      );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     NAMEN ÄNDERN
+  ========================================================= */
+
+  function openNamePopup() {
+
+    if (
+      localStorage.getItem(
+        STORAGE.nameChanged
+      ) === "true"
+    ) {
+
+      return;
+
+    }
+
+
+    document.getElementById(
+      "nameInput"
+    ).value =
+      getPlayerName();
+
+
+    document.getElementById(
+      "namePopup"
+    ).classList.add(
+      "active"
+    );
+
+  }
+
+
+  function changeName() {
+
+    const input =
+      document.getElementById(
+        "nameInput"
+      ).value.trim();
+
+
+    if (!input) {
+
+      alert(
+        "Bitte gib einen Namen ein."
+      );
+
+      return;
+
+    }
+
+
+    localStorage.setItem(
+      STORAGE.name,
+      input
+    );
+
+
+    localStorage.setItem(
+      STORAGE.nameChanged,
+      "true"
+    );
+
+
+    closePopup(
+      "namePopup"
+    );
+
+
+    renderProfile();
+
+  }
+
+
+  /* =========================================================
+     POPUPS
+  ========================================================= */
+
+  function closePopup(
+    id
+  ) {
+
+    document.getElementById(
+      id
+    ).classList.remove(
+      "active"
+    );
+
+  }
+
+
+  /* =========================================================
+     SYMBOL-BEREICH ÖFFNEN
+  ========================================================= */
+
+  function toggleSymbols() {
+
+    const section =
+      document.getElementById(
+        "symbolsSection"
+      );
+
+
+    section.classList.toggle(
+      "open"
+    );
+
+  }
+
+
+  function showSymbolSection() {
+
+    const section =
+      document.getElementById(
+        "symbolsSection"
+      );
+
+
+    section.classList.add(
+      "open"
+    );
+
+
+    setTimeout(() => {
+
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    }, 100);
+
+  }
+
+
+  /* =========================================================
+     SPIELZEIT RENDERN
+  ========================================================= */
+
+  function renderHours() {
+
+    const data =
+      getGameHours();
+
+
+    const total =
+      getTotalHours();
+
+
+    document.getElementById(
+      "totalHours"
+    ).textContent =
+      formatTime(total);
+
+
+    const grid =
+      document.getElementById(
+        "gameHoursGrid"
+      );
+
+
+    grid.innerHTML = "";
+
+
+    gameDefinitions.forEach(
+      game => {
+
+        const hours =
+          data[game.id] || 0;
+
+
+        const minutes =
+          hours * 60;
+
+
+        /*
+          Fortschritt bis zum nächsten
+          Spiel-Meilenstein
+        */
+
+        let next =
+          gameMilestones.find(
+            milestone =>
+              minutes <
+              milestone.minutes
+          );
+
+
+        let progress = 100;
+
+
+        if (next) {
+
+          const previous =
+            gameMilestones[
+              gameMilestones.indexOf(next) - 1
+            ];
+
+
+          const previousMinutes =
+            previous
+              ? previous.minutes
+              : 0;
+
+
+          progress =
+            (
+              (minutes - previousMinutes)
+              /
+              (next.minutes - previousMinutes)
+            ) * 100;
+
+
+          progress =
+            Math.max(
+              0,
+              Math.min(
+                100,
+                progress
+              )
+            );
+
+        }
+
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+
+        card.className =
+          "game-hour-card";
+
+
+        card.innerHTML = `
+
+          <div class="game-hour-top">
+
+            <div class="game-name">
+              ${game.name}
+            </div>
+
+            <div class="game-time">
+              ${formatTime(hours)}
+            </div>
+
+          </div>
+
+          <div class="progress-bar">
+
+            <div
+              class="progress-fill"
+              style="width:${progress}%"
+            ></div>
+
+          </div>
+
+          <div class="next-milestone">
+
+            ${
+              next
+                ? `Nächster Meilenstein:
+                   ${next.icon}
+                   ${formatMilestoneTime(next.minutes)}`
+                : "🏆 Alle Spiel-Meilensteine erreicht!"
+            }
+
+          </div>
+
+        `;
+
+
+        grid.appendChild(
+          card
+        );
+
+      }
+    );
+
+  }
+
+
+  function formatMilestoneTime(
+    minutes
+  ) {
+
+    if (minutes < 60) {
+
+      return minutes + " Minuten";
+
+    }
+
+
+    return (
+      minutes / 60
+    ) + " Stunde" +
+      (
+        minutes === 60
+          ? ""
+          : "n"
+      );
+
+  }
+
+
+  /* =========================================================
+     GESAMT-MEILENSTEINE RENDERN
+  ========================================================= */
+
+  function renderGlobalMilestones() {
+
+    const container =
+      document.getElementById(
+        "globalMilestones"
+      );
+
+
+    const totalMinutes =
+      getTotalHours() * 60;
+
+
+    const unlocked =
+      getUnlockedSymbols();
+
+
+    container.innerHTML = "";
+
+
+    globalMilestones.forEach(
+      milestone => {
+
+        const isUnlocked =
+          unlocked.includes(
+            milestone.id
+          );
+
+
+        const item =
+          document.createElement(
+            "div"
+          );
+
+
+        item.className =
+          "milestone " +
+          (
+            isUnlocked
+              ? "unlocked"
+              : "locked"
+          );
+
+
+        item.innerHTML = `
+
+          <div class="milestone-icon">
+            ${milestone.icon}
+          </div>
+
+          <div class="milestone-name">
+            ${milestone.name}
+          </div>
+
+          <div class="milestone-time">
+            ${
+              isUnlocked
+                ? "✅ Freigeschaltet"
+                : "🔒 Noch gesperrt"
+            }
+          </div>
+
+          ${
+            !isUnlocked
+              ? `<div class="milestone-lock">🔒</div>`
+              : ""
+          }
+
+        `;
+
+
+        container.appendChild(
+          item
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     SPIEL-MEILENSTEINE RENDERN
+  ========================================================= */
+
+  function renderGameMilestones() {
+
+    const container =
+      document.getElementById(
+        "gameMilestones"
+      );
+
+
+    const data =
+      getGameHours();
+
+
+    const unlocked =
+      getUnlockedSymbols();
+
+
+    container.innerHTML = "";
+
+
+    gameDefinitions.forEach(
+      game => {
+
+        const group =
+          document.createElement(
+            "div"
+          );
+
+
+        group.className =
+          "milestone-group";
+
+
+        const title =
+          document.createElement(
+            "div"
+          );
+
+
+        title.className =
+          "milestone-group-title";
+
+
+        title.textContent =
+          "🎮 " +
+          game.name;
+
+
+        group.appendChild(
+          title
+        );
+
+
+        const grid =
+          document.createElement(
+            "div"
+          );
+
+
+        grid.className =
+          "milestone-grid";
+
+
+        const playedMinutes =
+          (data[game.id] || 0)
+          * 60;
+
+
+        gameMilestones.forEach(
+          milestone => {
+
+            const symbolId =
+              getGameMilestoneSymbolId(
+                game.id,
+                milestone.id
+              );
+
+
+            const isUnlocked =
+              unlocked.includes(
+                symbolId
+              );
+
+
+            const item =
+              document.createElement(
+                "div"
+              );
+
+
+            item.className =
+              "milestone " +
+              (
+                isUnlocked
+                  ? "unlocked"
+                  : "locked"
+              );
+
+
+            item.innerHTML = `
+
+              <div class="milestone-icon">
+                ${milestone.icon}
+              </div>
+
+              <div class="milestone-name">
+                ${milestone.name}
+              </div>
+
+              <div class="milestone-time">
+                ${
+                  isUnlocked
+                    ? "✅ Freigeschaltet"
+                    : `${milestone.minutes < 60
+                        ? milestone.minutes + " Min."
+                        : (milestone.minutes / 60) + "h"
+                      } benötigt`
+                }
+              </div>
+
+              ${
+                !isUnlocked
+                  ? `<div class="milestone-lock">🔒</div>`
+                  : ""
+              }
+
+            `;
+
+
+            grid.appendChild(
+              item
+            );
+
+          }
+        );
+
+
+        group.appendChild(
+          grid
+        );
+
+
+        container.appendChild(
+          group
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     PROFIL RENDERN
+  ========================================================= */
+
+  function renderProfile() {
+
+    /*
+      Name
+    */
+
+    document.getElementById(
+      "myName"
+    ).textContent =
+      getPlayerName();
+
+
+    /*
+      ID
+    */
+
+    document.getElementById(
+      "myId"
+    ).textContent =
+      getPlayerId();
+
+
+    /*
+      Name-Button
+    */
+
+    const nameChanged =
+      localStorage.getItem(
+        STORAGE.nameChanged
+      ) === "true";
+
+
+    const nameButton =
+      document.getElementById(
+        "changeNameBtn"
+      );
+
+
+    if (nameChanged) {
+
+      nameButton.disabled = true;
+
+      nameButton.textContent =
+        "🔒 Name bereits geändert";
+
+    }
+
+
+    /*
+      Avatar
+    */
+
+    const avatarId =
+      localStorage.getItem(
+        STORAGE.avatar
+      );
+
+
+    const avatar =
+      findSymbolIcon(
+        avatarId
+      );
+
+
+    document.getElementById(
+      "myAvatar"
+    ).textContent =
+      avatar || "🎮";
+
+
+    /*
+      Meilensteine zuerst
+    */
+
+    unlockMilestones();
+
+
+    /*
+      Inhalte rendern
+    */
+
+    renderSymbols();
+
+    renderHours();
+
+    renderGlobalMilestones();
+
+    renderGameMilestones();
+
+  }
+
+
+  /* =========================================================
+     SYMBOL-ICON SUCHEN
+  ========================================================= */
+
+  function findSymbolIcon(
+    id
+  ) {
+
+    if (!id) {
+
+      return "🎮";
+
+    }
+
+
+    if (id === "basic") {
+
+      return "🎮";
+
+    }
+
+
+    const code =
+      codeSymbols.find(
+        symbol =>
+          symbol.id === id
+      );
+
+
+    if (code) {
+
+      return code.icon;
+
+    }
+
+
+    const global =
+      globalMilestones.find(
+        milestone =>
+          milestone.id === id
+      );
+
+
+    if (global) {
+
+      return global.icon;
+
+    }
+
+
+    /*
+      Spiel-Meilenstein-ID
+      beginnt mit "game_"
+    */
+
+    if (
+      id.startsWith("game_")
+    ) {
+
+      const parts =
+        id.split("_");
+
+
+      const milestoneId =
+        parts[
+          parts.length - 1
+        ];
+
+
+      const milestone =
+        gameMilestones.find(
+          m =>
+            m.id ===
+            milestoneId
+        );
+
+
+      if (milestone) {
+
+        return milestone.icon;
+
+      }
+
+    }
+
+
+    return "🎮";
+
+  }
+
+
+  /* =========================================================
+     SPIELERSUCHE
+  ========================================================= */
+
+  function searchPlayer() {
+
+    const input =
+      document.getElementById(
+        "playerSearch"
+      ).value
+      .trim()
+      .toUpperCase();
+
+
+    const result =
+      document.getElementById(
+        "searchResult"
+      );
+
+
+    result.innerHTML = "";
+
+
+    if (!input) {
+
+      return;
+
+    }
+
+
+    /*
+      Eigenes Profil
+    */
+
+    const ownId =
+      getPlayerId();
+
+
+    if (
+      input === ownId
+    ) {
+
+      createSearchResult(
+        {
+          name:
+            getPlayerName(),
+
+          id:
+            ownId,
+
+          avatar:
+            findSymbolIcon(
+              localStorage.getItem(
+                STORAGE.avatar
+              )
+            ),
+
+          hours:
+            getTotalHours()
+
+        },
+        result
+      );
+
+
+      return;
+
+    }
+
+
+    /*
+      Fake-Spieler
+    */
+
+    const player =
+      fakePlayers.find(
+        p =>
+          p.id.toUpperCase()
+          === input
+      );
+
+
+    if (!player) {
+
+      result.innerHTML = `
+
+        <div class="no-result">
+
+          ❌ Kein Spieler mit dieser ID gefunden.
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    createSearchResult(
+      player,
+      result
+    );
+
+  }
+
+
+  function createSearchResult(
+    player,
+    container
+  ) {
+
+    const card =
+      document.createElement(
+        "div"
+      );
+
+
+    card.className =
+      "search-result-card";
+
+
+    card.innerHTML = `
+
+      <div class="search-result-avatar">
+
+        ${player.avatar}
+
+      </div>
+
+      <div>
+
+        <div class="search-result-name">
+
+          ${player.name}
+
+        </div>
+
+        <div class="search-result-id">
+
+          ${player.id}
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    card.onclick = () => {
+
+      showPublicProfile(
+        player
+      );
+
+    };
+
+
+    container.appendChild(
+      card
+    );
+
+  }
+
+
+  /* =========================================================
+     ÖFFENTLICHES PROFIL
+  ========================================================= */
+
+  function showPublicProfile(
+    player
+  ) {
+
+    document.getElementById(
+      "publicAvatar"
+    ).textContent =
+      player.avatar;
+
+
+    document.getElementById(
+      "publicName"
+    ).textContent =
+      player.name;
+
+
+    document.getElementById(
+      "publicId"
+    ).textContent =
+      "ID: " + player.id;
+
+
+    document.getElementById(
+      "publicHours"
+    ).textContent =
+      "⏱️ " +
+      formatTime(
+        Number(player.hours || 0)
+      ) +
+      " gespielt";
+
+
+    document.getElementById(
+      "publicProfilePopup"
+    ).classList.add(
+      "active"
+    );
+
+  }
+
+
+  /* =========================================================
+     ENTER-TASTE BEI SUCHE
+  ========================================================= */
+
+  document.getElementById(
+    "playerSearch"
+  ).addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        searchPlayer();
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     INITIALISIERUNG
+  ========================================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+      renderProfile();
+
+    }
+  );
+
+
+</script>
+
+</body>
+</html>

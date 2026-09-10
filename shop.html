@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChallengeChamp Shop 🛒</title>
+
+<style>
+/* -------------------- GLOBAL -------------------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 0 12px 35px;
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('dein-bild-url-hier.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.18);
+  pointer-events: none;
+  z-index: -1;
+}
+
+h1 {
+  text-align: center;
+  color: #fff;
+  margin: 25px 0 8px;
+  font-size: 2.4rem;
+  text-shadow: 2px 2px 6px #000;
+}
+
+.subtitle {
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 1px 1px 5px #000;
+  margin-bottom: 18px;
+}
+
+/* -------------------- TOP BAR -------------------- */
+.top-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px auto 25px;
+}
+
+.coins-display {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 105px;
+  height: 42px;
+  padding: 0 18px;
+  background: #fff;
+  color: #111;
+  border-radius: 30px;
+  font-size: 1.05rem;
+  font-weight: 900;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.95);
+  color: #111;
+  text-decoration: none;
+  font-weight: 900;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: .2s;
+}
+
+.back-button:hover {
+  transform: scale(1.05);
+}
+
+/* -------------------- SHOP GRID -------------------- */
+.shop-container {
+  width: 100%;
+  max-width: 1050px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.shop-card {
+  position: relative;
+  min-height: 215px;
+  padding: 22px 16px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.94);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform .25s ease, box-shadow .25s ease;
+  animation: cardFloat 3s ease-in-out infinite;
+
+  /* Gleiche Position für alle Preis-Buttons */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.shop-card:nth-child(2) { animation-delay: .2s; }
+.shop-card:nth-child(3) { animation-delay: .4s; }
+.shop-card:nth-child(4) { animation-delay: .6s; }
+.shop-card:nth-child(5) { animation-delay: .8s; }
+.shop-card:nth-child(6) { animation-delay: 1s; }
+
+.shop-card:hover {
+  transform: translateY(-7px) scale(1.025);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.38);
+}
+
+.shop-card::before {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  top: -55px;
+  right: -45px;
+  border-radius: 50%;
+  background: rgba(0,234,255,0.18);
+  animation: bubble 3s infinite ease-in-out;
+}
+
+.shop-icon {
+  position: relative;
+  font-size: 3.2rem;
+  margin-bottom: 8px;
+}
+
+.shop-name {
+  position: relative;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #111;
+}
+
+.shop-description {
+  position: relative;
+  min-height: 42px;
+  height: 42px;
+  margin: 7px 0 12px;
+  font-size: .9rem;
+  color: #444;
+  font-weight: 600;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.price {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 8px 17px;
+  margin-top: auto;
+  border-radius: 25px;
+  background: linear-gradient(135deg,#ffd700,#ffae00);
+  color: #111;
+  font-weight: 900;
+  box-shadow: 0 4px 10px rgba(0,0,0,.2);
+  white-space: nowrap;
+}
+
+/* -------------------- GEKAUFT -------------------- */
+.shop-card.purchased {
+  background: rgba(185,185,185,0.82);
+  filter: grayscale(1);
+  cursor: default;
+  transform: none;
+  animation: none;
+}
+
+.shop-card.purchased:hover {
+  transform: none;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.purchased-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: rgba(255,255,255,0.22);
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+}
+
+.shop-card.purchased .purchased-overlay {
+  display: flex;
+}
+
+.checkmark {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #fff;
+  color: #20a83a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 900;
+  box-shadow: 0 5px 18px rgba(0,0,0,.25);
+  animation: checkPop .45s ease-out;
+}
+
+/* -------------------- POPUP -------------------- */
+.popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(7px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.popup {
+  width: 100%;
+  max-width: 370px;
+  position: relative;
+  padding: 27px 22px;
+  border-radius: 24px;
+  background: linear-gradient(135deg,#fff,#f2f2f2);
+  text-align: center;
+  box-shadow: 0 15px 45px rgba(0,0,0,.45);
+  animation: popupIn .25s ease-out;
+}
+
+.close {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
+  background: #ff4d4d;
+  color: #fff;
+  font-weight: 900;
+  line-height: 31px;
+  cursor: pointer;
+}
+
+.popup-icon {
+  font-size: 3rem;
+}
+
+.popup h2 {
+  margin: 8px 0;
+}
+
+.popup p {
+  font-weight: 600;
+  color: #444;
+}
+
+.popup-price {
+  font-size: 1.35rem;
+  font-weight: 900;
+  margin: 15px 0;
+}
+
+.popup-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.popup-buttons button {
+  flex: 1;
+  border: none;
+  padding: 13px 10px;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.cancel-btn {
+  background: #ddd;
+  color: #111;
+}
+
+.buy-btn {
+  background: linear-gradient(135deg,#ffd700,#ffae00);
+  color: #111;
+}
+
+.popup-buttons button:hover {
+  transform: scale(1.04);
+}
+
+/* -------------------- ERFOLG -------------------- */
+.success-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,.78);
+  backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.success-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px 20px;
+  border-radius: 28px;
+  background: linear-gradient(135deg,#fff,#f4f4f4);
+  text-align: center;
+  box-shadow: 0 15px 50px rgba(0,0,0,.5);
+  animation: successPop .55s ease-out;
+}
+
+.success-check {
+  font-size: 5rem;
+  animation: checkPop .6s ease-out;
+}
+
+.success-box h2 {
+  margin: 5px 0 8px;
+}
+
+.code-box {
+  margin: 15px 0;
+  padding: 15px;
+  border-radius: 15px;
+  background: #111;
+  color: #00eaff;
+  font-family: monospace;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  user-select: all;
+}
+
+.success-close {
+  border: none;
+  border-radius: 15px;
+  padding: 12px 25px;
+  background: #00eaff;
+  color: #111;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+/* -------------------- ANIMATIONEN -------------------- */
+@keyframes cardFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes bubble {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+
+@keyframes popupIn {
+  from { opacity: 0; transform: scale(.82); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes successPop {
+  0% { opacity: 0; transform: scale(.5) rotate(-4deg); }
+  65% { transform: scale(1.06) rotate(1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@keyframes checkPop {
+  0% { transform: scale(.2); opacity: 0; }
+  65% { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@media (min-width: 700px) {
+  .shop-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 430px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .shop-container {
+    gap: 11px;
+  }
+
+  .shop-card {
+    min-height: 205px;
+    padding: 18px 10px;
+  }
+
+  .shop-icon {
+    font-size: 2.6rem;
+  }
+
+  .shop-name {
+    font-size: 1.05rem;
+  }
+
+  .shop-description {
+    font-size: .82rem;
+    height: 42px;
+    min-height: 42px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<h1>🛒 ChallengeChamp Shop</h1>
+<div class="subtitle">Gib deine verdienten Coins für besondere Extras aus!</div>
+
+<div class="top-bar">
+  <div class="coins-display">
+    🪙 <span id="coinAmount">0</span>
+  </div>
+
+  <a class="back-button" href="startseite.html">
+    ← Zurück
+  </a>
+</div>
+
+<!-- SHOP -->
+<div class="shop-container">
+
+  <div class="shop-card"
+       data-id="premium1m"
+       data-name="1 Monat Premium"
+       data-price="500"
+       data-icon="💎">
+    <div class="shop-icon">💎</div>
+    <div class="shop-name">1 Monat Premium</div>
+    <div class="shop-description">Premium für 30 Tage freischalten.</div>
+    <div class="price">🪙 500 Coins</div>
+    <div class="purchased-overlay"><div class="checkmark">✓</div></div>
+  </div>
+
+  <div class="shop-card"
+       data-id="premium3m"
+       data-name="3 Monate Premium"
+       data-price="1200"
+       data-icon="👑">
+    <div class="shop-icon">👑</div>
+    <div class="shop-name">3 Monate Premium</div>
+    <div class="shop-description">Drei Monate Premium zum Vorteilspreis.</div>
+    <div class="price">🪙 1.200 Coins</div>
+    <div class="purchased-overlay"><div class="checkmark">✓</div></div>
+  </div>
+
+  <div class="shop-card"
+       data-id="background1"
+       data-name="Premium Hintergrund: Galaxy"
+       data-price="250"
+       data-icon="🌌">
+    <div class="shop-icon">🌌</div>
+    <div class="shop-name">Galaxy Hintergrund</div>
+    <div class="shop-description">Schalte den Galaxy-Hintergrund frei.</div>
+    <div class="price">🪙 250 Coins</div>
+    <div class="purchased-overlay"><div class="checkmark">✓</div></div>
+  </div>
+
+  <div class="shop-card"
+       data-id="background2"
+       data-name="Premium Hintergrund: Fußball"
+       data-price="250"
+       data-icon="⚽">
+    <div class="shop-icon">⚽</div>
+    <div class="shop-name">Fußball Hintergrund</div>
+    <div class="shop-description">Ein exklusiver Fußball-Look für deine Spiele.</div>
+    <div class="price">🪙 250 Coins</div>
+    <div class="purchased-overlay"><div class="checkmark">✓</div></div>
+  </div>
+
+  <div class="shop-card"
+       data-id="background3"
+       data-name="Premium Hintergrund: Halloween"
+       data-price="300"
+       data-icon="🎃">
+    <div class="shop-icon">🎃</div>
+    <div class="shop-name">Halloween Hintergrund</div>
+    <div class="shop-description">Gruseliger Premium-Hintergrund.</div>
+    <div class="price">🪙 300 Coins</div>
+    <div class="purchased-overlay"><div class="checkmark">✓</div></div>
+  </div>
+
+  <div class="shop-card"
+       data-id="effect1"
+       data-name="Goldener Profil-Effekt"
+       data-price="400"
+       data-icon="✨">
+    <div class="shop-icon">✨</div>
+    <div class="shop-name">Goldener Effekt</div>
+    <div class="shop-description">Ein exklusiver goldener Effekt für dein Profil.</div>
+    <div class="price">🪙 400 Coins</div>
+    <div class="purchased-overlay"><div class="checkmark">✓</div></div>
+  </div>
+
+</div>
+
+<!-- KAUF-BESTÄTIGUNG -->
+<div id="confirmOverlay" class="popup-overlay">
+  <div class="popup">
+    <div class="close" onclick="closeConfirm()">X</div>
+
+    <div class="popup-icon" id="confirmIcon">💎</div>
+    <h2 id="confirmName">Artikel</h2>
+
+    <p>Willst du diesen Artikel wirklich kaufen?</p>
+
+    <div class="popup-price">
+      Preis: 🪙 <span id="confirmPrice">0</span> Coins
+    </div>
+
+    <div class="popup-buttons">
+      <button class="cancel-btn" onclick="closeConfirm()">Abbrechen</button>
+      <button class="buy-btn" onclick="confirmPurchase()">Kaufen</button>
+    </div>
+  </div>
+</div>
+
+<!-- NICHT GENUG COINS -->
+<div id="errorOverlay" class="popup-overlay">
+  <div class="popup">
+    <div class="popup-icon">😕</div>
+    <h2>Nicht genug Coins</h2>
+    <p id="errorText">Du brauchst mehr Coins.</p>
+    <div class="popup-buttons">
+      <button class="buy-btn" onclick="closeError()">Verstanden</button>
+    </div>
+  </div>
+</div>
+
+<!-- ERFOLG -->
+<div id="successOverlay" class="success-overlay">
+  <div class="success-box">
+    <div class="success-check">✅</div>
+    <h2 id="successTitle">Kauf erfolgreich!</h2>
+    <p>Der Artikel wurde freigeschaltet.</p>
+
+    <div id="successCodeArea"></div>
+
+    <button class="success-close" onclick="closeSuccess()">
+      Weiter
+    </button>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   COIN SYSTEM
+   ========================================================= */
+
+let coins = parseInt(localStorage.getItem("teamMasterCoins"), 10) || 0;
+
+function updateCoinDisplay() {
+  const el = document.getElementById("coinAmount");
+  if (el) el.textContent = coins;
+}
+
+function saveCoins() {
+  localStorage.setItem("teamMasterCoins", coins);
+  updateCoinDisplay();
+}
+
+/* =========================================================
+   SHOP
+   ========================================================= */
+
+let selectedItem = null;
+
+const confirmOverlay = document.getElementById("confirmOverlay");
+const errorOverlay = document.getElementById("errorOverlay");
+const successOverlay = document.getElementById("successOverlay");
+
+const confirmName = document.getElementById("confirmName");
+const confirmPrice = document.getElementById("confirmPrice");
+const confirmIcon = document.getElementById("confirmIcon");
+const errorText = document.getElementById("errorText");
+
+function isPurchased(id) {
+  return localStorage.getItem("shopPurchased_" + id) === "true";
+}
+
+function setPurchased(id) {
+  localStorage.setItem("shopPurchased_" + id, "true");
+}
+
+function markPurchased(card) {
+  card.classList.add("purchased");
+}
+
+function openConfirm(card) {
+  if (card.classList.contains("purchased")) return;
+
+  selectedItem = {
+    id: card.dataset.id,
+    name: card.dataset.name,
+    price: parseInt(card.dataset.price, 10),
+    icon: card.dataset.icon,
+    card: card
+  };
+
+  confirmIcon.textContent = selectedItem.icon;
+  confirmName.textContent = selectedItem.name;
+  confirmPrice.textContent = selectedItem.price.toLocaleString("de-DE");
+
+  confirmOverlay.style.display = "flex";
+}
+
+function closeConfirm() {
+  confirmOverlay.style.display = "none";
+  selectedItem = null;
+}
+
+function closeError() {
+  errorOverlay.style.display = "none";
+}
+
+function confirmPurchase() {
+  if (!selectedItem) return;
+
+  const item = selectedItem;
+
+  /* Noch einmal prüfen, damit Coins nicht unterschritten werden */
+  coins = parseInt(localStorage.getItem("teamMasterCoins"), 10) || 0;
+
+  if (coins < item.price) {
+    closeConfirm();
+
+    const missing = item.price - coins;
+
+    errorText.textContent =
+      `Dir fehlen noch ${missing.toLocaleString("de-DE")} Coins.`;
+
+    errorOverlay.style.display = "flex";
+    return;
+  }
+
+  /* Coins abziehen */
+  coins -= item.price;
+  saveCoins();
+
+  /* Kauf dauerhaft speichern */
+  setPurchased(item.id);
+  markPurchased(item.card);
+
+  closeConfirm();
+
+  /* Artikel aktivieren */
+  activateItem(item);
+
+  /* Erfolgs-Popup */
+  document.getElementById("successTitle").textContent =
+    `${item.icon} ${item.name} gekauft!`;
+
+  successOverlay.style.display = "flex";
+}
+
+function closeSuccess() {
+  successOverlay.style.display = "none";
+}
+
+/* =========================================================
+   ARTIKEL AKTIVIEREN
+   ========================================================= */
+
+function activateItem(item) {
+  const codeArea = document.getElementById("successCodeArea");
+
+  codeArea.innerHTML = "";
+
+  /*
+   * PREMIUM:
+   * Hier wird Premium direkt aktiviert.
+   *
+   * Die angezeigten Codes sind Demo-/Shop-Codes.
+   * Falls dein Premium-System später echte zeitlich begrenzte
+   * Premium-Laufzeiten unterstützen soll, kann diese Stelle
+   * entsprechend erweitert werden.
+   */
+
+  if (item.id === "premium1m") {
+    localStorage.setItem("premium", "true");
+
+    const code = createShopCode("PREMIUM1M");
+
+    codeArea.innerHTML = `
+      <p><b>Dein Premium-Code:</b></p>
+      <div class="code-box">${code}</div>
+      <p>Premium wurde auf diesem Gerät aktiviert.</p>
+    `;
+  }
+
+  else if (item.id === "premium3m") {
+    localStorage.setItem("premium", "true");
+
+    const code = createShopCode("PREMIUM3M");
+
+    codeArea.innerHTML = `
+      <p><b>Dein Premium-Code:</b></p>
+      <div class="code-box">${code}</div>
+      <p>Premium wurde auf diesem Gerät aktiviert.</p>
+    `;
+  }
+
+  else if (item.id === "background1") {
+    localStorage.setItem("shopBackgroundGalaxy", "true");
+
+    codeArea.innerHTML = `
+      <p>🌌 Der Galaxy-Hintergrund wurde freigeschaltet.</p>
+    `;
+  }
+
+  else if (item.id === "background2") {
+    localStorage.setItem("shopBackgroundFootball", "true");
+
+    codeArea.innerHTML = `
+      <p>⚽ Der Fußball-Hintergrund wurde freigeschaltet.</p>
+    `;
+  }
+
+  else if (item.id === "background3") {
+    localStorage.setItem("shopBackgroundHalloween", "true");
+
+    codeArea.innerHTML = `
+      <p>🎃 Der Halloween-Hintergrund wurde freigeschaltet.</p>
+    `;
+  }
+
+  else if (item.id === "effect1") {
+    localStorage.setItem("shopGoldEffect", "true");
+
+    codeArea.innerHTML = `
+      <p>✨ Der goldene Profil-Effekt wurde freigeschaltet.</p>
+    `;
+  }
+
+  else {
+    codeArea.innerHTML = `
+      <p>🎁 Artikel erfolgreich freigeschaltet!</p>
+    `;
+  }
+}
+
+/* =========================================================
+   DEMO-CODE GENERATOR
+   ========================================================= */
+
+function createShopCode(prefix) {
+  const random =
+    Math.random().toString(36).substring(2, 8).toUpperCase();
+
+  return `${prefix}-${random}`;
+}
+
+/* =========================================================
+   KARTEN LADEN
+   ========================================================= */
+
+document.querySelectorAll(".shop-card").forEach(card => {
+
+  if (isPurchased(card.dataset.id)) {
+    markPurchased(card);
+  }
+
+  card.addEventListener("click", () => {
+    openConfirm(card);
+  });
+});
+
+/* =========================================================
+   POPUPS MIT ESC SCHLIESSEN
+   ========================================================= */
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    closeConfirm();
+    closeError();
+    closeSuccess();
+  }
+});
+
+updateCoinDisplay();
+</script>
+
+</body>
+</html>
