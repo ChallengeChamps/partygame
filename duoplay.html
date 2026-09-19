@@ -157,7 +157,7 @@ button:hover {
 
     <button onclick="generateInputs()">Namen eingeben</button>
     <button onclick="startGame()">Spiel starten</button>
-    <a href="startseite.html"><button class="menu-button">Zurück zum Hauptmenü</button></a>
+    <a href="startseite.html" onclick="gameHasStarted=false; pausePlaytimeTracking();"><button class="menu-button">Zurück zum Hauptmenü</button></a>
   </div>
 
   <!-- Spielbereich -->
@@ -180,6 +180,93 @@ button:hover {
   </div>
 
 <script>
+
+  const PLAYTIME_GAME_ID = "duoplay";
+  const PLAYTIME_STORAGE_KEY = "challengeChampGameHours";
+
+  let playtimeRunning = false;
+  let playtimeLastTimestamp = null;
+  let playtimeInterval = null;
+  let gameHasStarted = false;
+
+  function getChallengeChampGameHours() {
+    try {
+      return JSON.parse(localStorage.getItem(PLAYTIME_STORAGE_KEY)) || {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function saveChallengeChampGameHours(data) {
+    localStorage.setItem(PLAYTIME_STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function saveCurrentPlaytime() {
+    if (!playtimeRunning || playtimeLastTimestamp === null) return;
+
+    const now = Date.now();
+    const elapsedMilliseconds = now - playtimeLastTimestamp;
+    playtimeLastTimestamp = now;
+
+    if (elapsedMilliseconds <= 0) return;
+
+    const elapsedHours = elapsedMilliseconds / 3600000;
+    const data = getChallengeChampGameHours();
+
+    if (typeof data[PLAYTIME_GAME_ID] !== "number") {
+      data[PLAYTIME_GAME_ID] = 0;
+    }
+
+    data[PLAYTIME_GAME_ID] += elapsedHours;
+    saveChallengeChampGameHours(data);
+  }
+
+  function startPlaytimeTracking() {
+    if (playtimeRunning) return;
+
+    playtimeRunning = true;
+    playtimeLastTimestamp = Date.now();
+
+    playtimeInterval = setInterval(() => {
+      if (playtimeRunning && document.visibilityState === "visible") {
+        saveCurrentPlaytime();
+      }
+    }, 5000);
+  }
+
+  function pausePlaytimeTracking() {
+    if (!playtimeRunning) return;
+
+    saveCurrentPlaytime();
+    playtimeRunning = false;
+    playtimeLastTimestamp = null;
+
+    if (playtimeInterval) {
+      clearInterval(playtimeInterval);
+      playtimeInterval = null;
+    }
+  }
+
+  function resumePlaytimeTracking() {
+    if (!gameHasStarted) return;
+    if (playtimeRunning) return;
+    if (document.visibilityState !== "visible") return;
+
+    startPlaytimeTracking();
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      pausePlaytimeTracking();
+    } else {
+      resumePlaytimeTracking();
+    }
+  });
+
+  window.addEventListener("pagehide", () => {
+    saveCurrentPlaytime();
+  });
+
   let playerNames = [];
   let usedScenarios = [];
   let selectedTheme = "random";
@@ -215,6 +302,7 @@ button:hover {
   }
 
   loadThemes();
+  generateInputs();
 
   themeSelect.addEventListener("change", () => {
     selectedTheme = themeSelect.value;
@@ -521,13 +609,22 @@ button:hover {
     const count = parseInt(document.getElementById("playerCount").value);
 
     for (let i = 0; i < count; i++) {
-      const name = document.getElementById(`player${i}`).value.trim();
+      const input = document.getElementById(`player${i}`);
+      if (!input) {
+        alert("Bitte zuerst auf „Namen eingeben“ klicken!");
+        return;
+      }
+
+      const name = input.value.trim();
       if (name === "") {
         alert("Bitte alle Spielernamen eingeben.");
         return;
       }
       playerNames.push(name);
     }
+
+    gameHasStarted = true;
+    startPlaytimeTracking();
 
     document.getElementById("startScreen").classList.add("hidden");
     document.getElementById("gameArea").classList.remove("hidden");
@@ -576,12 +673,14 @@ button:hover {
   }
 
   function endGame() {
+    gameHasStarted = false;
+    pausePlaytimeTracking();
     location.reload();
   }
 </script>
 
 </body>
-  <footer style="margin-top:20px;">
+<footer>
   <a href="agb.html">AGB</a> |
   <a href="datenschutz.html">Datenschutz</a> |
   <a href="cookies.html">Cookies</a> |
