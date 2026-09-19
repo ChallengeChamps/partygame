@@ -169,7 +169,7 @@
     </select>
 
     <button onclick="setupPlayers()">Weiter</button>
-    <button onclick="window.location.href='startseite.html'">Zurück zum Hauptmenü</button>
+    <button onclick="pausePlaytimeTracking(); gameHasStarted = false; window.location.href='startseite.html'">Zurück zum Hauptmenü</button>
   </div>
 
   <div class="container hidden" id="categoryAnimation">
@@ -188,12 +188,66 @@
   <div class="container hidden" id="results">
     <h2>🏆 Gewinner</h2>
     <div id="winnerBoard"></div>
-    <button onclick="location.reload()">Erneut spielen</button>
+    <button onclick="pausePlaytimeTracking(); gameHasStarted = false; location.reload()">Erneut spielen</button>
   </div>
 
   <div class="scoreboard" id="scoreDisplay"></div>
 
   <script>
+    // ChallengeChamp Spielzeit-Tracking
+    const PLAYTIME_GAME_ID = "superquiz";
+    const PLAYTIME_STORAGE_KEY = "challengeChampGameHours";
+    let playtimeRunning = false;
+    let playtimeLastTimestamp = null;
+    let playtimeInterval = null;
+    let gameHasStarted = false;
+
+    function getChallengeChampGameHours() {
+      try { return JSON.parse(localStorage.getItem(PLAYTIME_STORAGE_KEY)) || {}; }
+      catch (error) { return {}; }
+    }
+    function saveChallengeChampGameHours(data) {
+      localStorage.setItem(PLAYTIME_STORAGE_KEY, JSON.stringify(data));
+    }
+    function saveCurrentPlaytime() {
+      if (!playtimeRunning || playtimeLastTimestamp === null) return;
+      const now = Date.now();
+      const elapsedMilliseconds = now - playtimeLastTimestamp;
+      playtimeLastTimestamp = now;
+      if (elapsedMilliseconds <= 0) return;
+      const data = getChallengeChampGameHours();
+      if (typeof data[PLAYTIME_GAME_ID] !== "number") data[PLAYTIME_GAME_ID] = 0;
+      data[PLAYTIME_GAME_ID] += elapsedMilliseconds / 3600000;
+      saveChallengeChampGameHours(data);
+    }
+    function startPlaytimeTracking() {
+      if (playtimeRunning) return;
+      playtimeRunning = true;
+      playtimeLastTimestamp = Date.now();
+      playtimeInterval = setInterval(() => {
+        if (playtimeRunning && document.visibilityState === "visible") saveCurrentPlaytime();
+      }, 5000);
+    }
+    function pausePlaytimeTracking() {
+      if (!playtimeRunning) return;
+      saveCurrentPlaytime();
+      playtimeRunning = false;
+      playtimeLastTimestamp = null;
+      if (playtimeInterval) {
+        clearInterval(playtimeInterval);
+        playtimeInterval = null;
+      }
+    }
+    function resumePlaytimeTracking() {
+      if (!gameHasStarted || playtimeRunning || document.visibilityState !== "visible") return;
+      startPlaytimeTracking();
+    }
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") pausePlaytimeTracking();
+      else resumePlaytimeTracking();
+    });
+    window.addEventListener("pagehide", saveCurrentPlaytime);
+
   const questionPool = {
 "Allgemeinwissen": [
   { q: "Wie viele Kontinente gibt es?", a: ["5", "6", "7"], correct: 2 },
@@ -521,6 +575,8 @@
     startBtn.onclick = () => {
       players = [];
       scores = {};
+      gameHasStarted = true;
+      startPlaytimeTracking();
       for (let i = 0; i < count; i++) {
         const name = document.getElementById(`player${i}`).value || `Spieler ${i + 1}`;
         players.push(name);
@@ -633,6 +689,9 @@
   }
 
   function showResults() {
+    pausePlaytimeTracking();
+    gameHasStarted = false;
+
     document.getElementById("quizRound").classList.add("hidden");
     document.getElementById("results").classList.remove("hidden");
     const board = document.getElementById("winnerBoard");
@@ -658,7 +717,7 @@
   }
 </script>
 </body>
-  <footer style="margin-top:20px;">
+<footer style="margin-top:20px;">
   <a href="agb.html">AGB</a> |
   <a href="datenschutz.html">Datenschutz</a> |
   <a href="cookies.html">Cookies</a> |
