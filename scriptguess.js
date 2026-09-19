@@ -1547,123 +1547,494 @@ socialmedia: {
 
 };
 
+/* =========================================================
+   CHALLENGECHAMP SPIELZEIT-TRACKER
+   ========================================================= */
+
+const PLAYTIME_GAME_ID = "wmguess";
+const PLAYTIME_STORAGE_KEY = "challengeChampGameHours";
+
+let playtimeRunning = false;
+let playtimeLastTimestamp = null;
+let playtimeInterval = null;
+let gameHasStarted = false;
+
+function getChallengeChampGameHours() {
+  try {
+    return JSON.parse(
+      localStorage.getItem(PLAYTIME_STORAGE_KEY)
+    ) || {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function saveChallengeChampGameHours(data) {
+  localStorage.setItem(
+    PLAYTIME_STORAGE_KEY,
+    JSON.stringify(data)
+  );
+}
+
+function saveCurrentPlaytime() {
+  if (
+    !playtimeRunning ||
+    playtimeLastTimestamp === null
+  ) {
+    return;
+  }
+
+  const now = Date.now();
+
+  const elapsedMilliseconds =
+    now - playtimeLastTimestamp;
+
+  playtimeLastTimestamp = now;
+
+  if (elapsedMilliseconds <= 0) {
+    return;
+  }
+
+  const elapsedHours =
+    elapsedMilliseconds / 3600000;
+
+  const data =
+    getChallengeChampGameHours();
+
+  if (
+    typeof data[PLAYTIME_GAME_ID] !== "number"
+  ) {
+    data[PLAYTIME_GAME_ID] = 0;
+  }
+
+  data[PLAYTIME_GAME_ID] += elapsedHours;
+
+  saveChallengeChampGameHours(data);
+}
+
+function startPlaytimeTracking() {
+  if (playtimeRunning) {
+    return;
+  }
+
+  playtimeRunning = true;
+  playtimeLastTimestamp = Date.now();
+
+  playtimeInterval = setInterval(() => {
+
+    if (
+      playtimeRunning &&
+      document.visibilityState === "visible"
+    ) {
+      saveCurrentPlaytime();
+    }
+
+  }, 5000);
+}
+
+function pausePlaytimeTracking() {
+  if (!playtimeRunning) {
+    return;
+  }
+
+  saveCurrentPlaytime();
+
+  playtimeRunning = false;
+  playtimeLastTimestamp = null;
+
+  if (playtimeInterval) {
+    clearInterval(playtimeInterval);
+    playtimeInterval = null;
+  }
+}
+
+function resumePlaytimeTracking() {
+  if (!gameHasStarted) {
+    return;
+  }
+
+  if (playtimeRunning) {
+    return;
+  }
+
+  if (
+    document.visibilityState !== "visible"
+  ) {
+    return;
+  }
+
+  startPlaytimeTracking();
+}
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+
+    if (
+      document.visibilityState === "hidden"
+    ) {
+      pausePlaytimeTracking();
+    } else {
+      resumePlaytimeTracking();
+    }
+
+  }
+);
+
+window.addEventListener(
+  "pagehide",
+  () => {
+    saveCurrentPlaytime();
+  }
+);
+
+
 /* RANDOM PAIR */
+
 function getRandomPair(pool) {
   const items = pool.items;
   let a = null, b = null;
   let tries = 0;
 
   while (tries < 50) {
-    a = items[Math.floor(Math.random() * items.length)];
-    b = items[Math.floor(Math.random() * items.length)];
-    if (a === b) { tries++; continue; }
 
-    const diff = Math.abs(a[pool.key] - b[pool.key]);
-    if (diff <= pool.threshold) return { a, b };
+    a =
+      items[
+        Math.floor(
+          Math.random() * items.length
+        )
+      ];
+
+    b =
+      items[
+        Math.floor(
+          Math.random() * items.length
+        )
+      ];
+
+    if (a === b) {
+      tries++;
+      continue;
+    }
+
+    const diff =
+      Math.abs(
+        a[pool.key] -
+        b[pool.key]
+      );
+
+    if (diff <= pool.threshold) {
+      return { a, b };
+    }
 
     tries++;
   }
+
   return { a, b };
 }
 
-/* START ROUND */
-function startRound() {
-  const pool = pools[currentCategory];
-  currentPair = getRandomPair(pool);
 
-  const label = pool.label;
-  const unit = pool.unit;
+/* START ROUND */
+
+function startRound() {
+
+  const pool =
+    pools[currentCategory];
+
+  currentPair =
+    getRandomPair(pool);
+
+  const label =
+    pool.label;
+
+  const unit =
+    pool.unit;
 
   let question = "";
-  if (currentCategory === "fussball") question = `Welcher Spieler ist mehr wert (${label} in ${unit})?`;
-  if (currentCategory === "wirtschaft") question = `Welches Unternehmen ist mehr wert (${label} in ${unit})?`;
-  if (currentCategory === "geografie") question = `Welches Land hat mehr Einwohner (${label} in ${unit}) (Stand 2026)?`;
-  if (currentCategory === "tiere") question = `Welches Tier ist schneller (${label} in ${unit})?`;
-  if (currentCategory === "musik") question = `Welcher Künstler hat mehr ${label} (${unit})?`;
-  if (currentCategory === "filme") question = `Welcher Film hat mehr ${label} (${unit}) eingespielt?`;
-  if (currentCategory === "alter") question = `${label} (${unit})?`;
-  if (currentCategory === "socialmedia") question = `Wer hat mehr ${label} (${unit})?`;
 
-  roundTitle.textContent = "Guess the Hype – " + label;
-  questionText.innerHTML = `<p>${question}</p>`;
-  choiceA.textContent = currentPair.a.name;
-  choiceB.textContent = currentPair.b.name;
+  if (
+    currentCategory === "fussball"
+  )
+    question =
+      `Welcher Spieler ist mehr wert (${label} in ${unit})?`;
+
+  if (
+    currentCategory === "wirtschaft"
+  )
+    question =
+      `Welches Unternehmen ist mehr wert (${label} in ${unit})?`;
+
+  if (
+    currentCategory === "geografie"
+  )
+    question =
+      `Welches Land hat mehr Einwohner (${label} in ${unit}) (Stand 2026)?`;
+
+  if (
+    currentCategory === "tiere"
+  )
+    question =
+      `Welches Tier ist schneller (${label} in ${unit})?`;
+
+  if (
+    currentCategory === "musik"
+  )
+    question =
+      `Welcher Künstler hat mehr ${label} (${unit})?`;
+
+  if (
+    currentCategory === "filme"
+  )
+    question =
+      `Welcher Film hat mehr ${label} (${unit}) eingespielt?`;
+
+  if (
+    currentCategory === "alter"
+  )
+    question =
+      `${label} (${unit})?`;
+
+  if (
+    currentCategory === "socialmedia"
+  )
+    question =
+      `Wer hat mehr ${label} (${unit})?`;
+
+  roundTitle.textContent =
+    "Guess the Hype – " + label;
+
+  questionText.innerHTML =
+    `<p>${question}</p>`;
+
+  choiceA.textContent =
+    currentPair.a.name;
+
+  choiceB.textContent =
+    currentPair.b.name;
+
   feedback.innerHTML = "";
-  valueBox.classList.add("hidden");
+
+  valueBox.classList.add(
+    "hidden"
+  );
 }
 
-/* HANDLE CHOICE */
-function handleChoice(choice) {
-  const pool = pools[currentCategory];
-  const aVal = currentPair.a[pool.key];
-  const bVal = currentPair.b[pool.key];
 
-  valueBox.classList.remove("hidden");
+/* HANDLE CHOICE */
+
+function handleChoice(choice) {
+
+  const pool =
+    pools[currentCategory];
+
+  const aVal =
+    currentPair.a[pool.key];
+
+  const bVal =
+    currentPair.b[pool.key];
+
+  valueBox.classList.remove(
+    "hidden"
+  );
+
   valueBox.innerHTML = `
-    <strong>${currentPair.a.name}:</strong> ${aVal} ${pool.unit}<br>
-    <strong>${currentPair.b.name}:</strong> ${bVal} ${pool.unit}
+    <strong>${currentPair.a.name}:</strong>
+    ${aVal} ${pool.unit}<br>
+
+    <strong>${currentPair.b.name}:</strong>
+    ${bVal} ${pool.unit}
   `;
 
   /* Gleichstand = immer richtig */
+
   if (aVal === bVal) {
+
     score++;
-    scoreValue.textContent = score;
+
+    scoreValue.textContent =
+      score;
+
     yaySound.currentTime = 0;
+
     yaySound.play();
-    feedback.innerHTML = `<div class="correct">✔️ Gleichstand – immer richtig!</div>`;
-    setTimeout(startRound, 1200);
+
+    feedback.innerHTML =
+      `<div class="correct">
+        ✔️ Gleichstand – immer richtig!
+      </div>`;
+
+    setTimeout(
+      startRound,
+      1200
+    );
+
     return;
   }
 
-  const correct = aVal >= bVal ? currentPair.a : currentPair.b;
-  const chosen = choice === "A" ? currentPair.a : currentPair.b;
+  const correct =
+    aVal >= bVal
+      ? currentPair.a
+      : currentPair.b;
+
+  const chosen =
+    choice === "A"
+      ? currentPair.a
+      : currentPair.b;
 
   if (chosen === correct) {
+
     score++;
-    scoreValue.textContent = score;
+
+    scoreValue.textContent =
+      score;
+
     yaySound.currentTime = 0;
+
     yaySound.play();
-    feedback.innerHTML = `<div class="correct">✔️ Richtig!</div>`;
-    setTimeout(startRound, 1200);
+
+    feedback.innerHTML =
+      `<div class="correct">
+        ✔️ Richtig!
+      </div>`;
+
+    setTimeout(
+      startRound,
+      1200
+    );
+
   } else {
-    feedback.innerHTML = `<div class="wrong">❌ Falsch! ${correct.name} wäre richtig gewesen.</div>`;
-    setTimeout(endGame, 1500);
+
+    feedback.innerHTML =
+      `<div class="wrong">
+        ❌ Falsch!
+        ${correct.name}
+        wäre richtig gewesen.
+      </div>`;
+
+    setTimeout(
+      endGame,
+      1500
+    );
   }
 }
 
-/* END GAME */
-function endGame() {
-  updateRecord(currentCategory, score);
 
-  gameScreen.classList.add("hidden");
-  endScreen.classList.remove("hidden");
+/* END GAME */
+
+function endGame() {
+
+  // Spielzeit speichern und beenden
+  pausePlaytimeTracking();
+  gameHasStarted = false;
+
+  updateRecord(
+    currentCategory,
+    score
+  );
+
+  gameScreen.classList.add(
+    "hidden"
+  );
+
+  endScreen.classList.remove(
+    "hidden"
+  );
 
   summaryCard.innerHTML = `
-    <p>Du hast <strong>${score}</strong> Punkte erreicht.</p>
-    <p>Rekord in dieser Kategorie: <strong>${getRecord(currentCategory)}</strong></p>
+    <p>
+      Du hast
+      <strong>${score}</strong>
+      Punkte erreicht.
+    </p>
+
+    <p>
+      Rekord in dieser Kategorie:
+      <strong>
+        ${getRecord(currentCategory)}
+      </strong>
+    </p>
   `;
 }
 
+
 /* START GAME */
-document.getElementById("startGameBtn").addEventListener("click", () => {
-  currentCategory = categorySelect.value;
-  score = 0;
-  scoreValue.textContent = score;
-  startScreen.classList.add("hidden");
-  gameScreen.classList.remove("hidden");
-  endScreen.classList.add("hidden");
-  startRound();
-});
 
-choiceA.addEventListener("click", () => handleChoice("A"));
-choiceB.addEventListener("click", () => handleChoice("B"));
+document
+  .getElementById("startGameBtn")
+  .addEventListener(
+    "click",
+    () => {
 
-document.getElementById("restartBtn").addEventListener("click", () => {
-  score = 0;
-  scoreValue.textContent = score;
-  endScreen.classList.add("hidden");
-  gameScreen.classList.remove("hidden");
-  startRound();
-});
+      currentCategory =
+        categorySelect.value;
 
-window.closePremiumPopup = closePremiumPopup;
+      score = 0;
+
+      scoreValue.textContent =
+        score;
+
+      startScreen.classList.add(
+        "hidden"
+      );
+
+      gameScreen.classList.remove(
+        "hidden"
+      );
+
+      endScreen.classList.add(
+        "hidden"
+      );
+
+      // Spielzeit starten
+      gameHasStarted = true;
+      startPlaytimeTracking();
+
+      startRound();
+    }
+  );
+
+
+choiceA.addEventListener(
+  "click",
+  () => handleChoice("A")
+);
+
+choiceB.addEventListener(
+  "click",
+  () => handleChoice("B")
+);
+
+
+/* RESTART */
+
+document
+  .getElementById("restartBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      pausePlaytimeTracking();
+
+      score = 0;
+
+      scoreValue.textContent =
+        score;
+
+      endScreen.classList.add(
+        "hidden"
+      );
+
+      gameScreen.classList.remove(
+        "hidden"
+      );
+
+      gameHasStarted = true;
+      startPlaytimeTracking();
+
+      startRound();
+    }
+  );
+
+
+window.closePremiumPopup =
+  closePremiumPopup;
