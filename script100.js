@@ -2788,6 +2788,96 @@ teamCountSelect.addEventListener("change", () => {
   }
 });
 
+
+/* ============================
+   PLAYTIME TRACKING
+============================ */
+const PLAYTIME_GAME_ID = "100quiz";
+const PLAYTIME_STORAGE_KEY = "challengeChampGameHours";
+
+let playtimeRunning = false;
+let playtimeLastTimestamp = null;
+let playtimeInterval = null;
+let gameHasStarted = false;
+
+function getChallengeChampGameHours() {
+  try {
+    return JSON.parse(localStorage.getItem(PLAYTIME_STORAGE_KEY)) || {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function saveChallengeChampGameHours(data) {
+  localStorage.setItem(PLAYTIME_STORAGE_KEY, JSON.stringify(data));
+}
+
+function saveCurrentPlaytime() {
+  if (!playtimeRunning || playtimeLastTimestamp === null) return;
+
+  const now = Date.now();
+  const elapsedMilliseconds = now - playtimeLastTimestamp;
+  playtimeLastTimestamp = now;
+
+  if (elapsedMilliseconds <= 0) return;
+
+  const elapsedHours = elapsedMilliseconds / 3600000;
+  const data = getChallengeChampGameHours();
+
+  if (typeof data[PLAYTIME_GAME_ID] !== "number") {
+    data[PLAYTIME_GAME_ID] = 0;
+  }
+
+  data[PLAYTIME_GAME_ID] += elapsedHours;
+  saveChallengeChampGameHours(data);
+}
+
+function startPlaytimeTracking() {
+  if (playtimeRunning) return;
+
+  playtimeRunning = true;
+  playtimeLastTimestamp = Date.now();
+
+  playtimeInterval = setInterval(() => {
+    if (playtimeRunning && document.visibilityState === "visible") {
+      saveCurrentPlaytime();
+    }
+  }, 5000);
+}
+
+function pausePlaytimeTracking() {
+  if (!playtimeRunning) return;
+
+  saveCurrentPlaytime();
+  playtimeRunning = false;
+  playtimeLastTimestamp = null;
+
+  if (playtimeInterval) {
+    clearInterval(playtimeInterval);
+    playtimeInterval = null;
+  }
+}
+
+function resumePlaytimeTracking() {
+  if (!gameHasStarted) return;
+  if (playtimeRunning) return;
+  if (document.visibilityState !== "visible") return;
+
+  startPlaytimeTracking();
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    pausePlaytimeTracking();
+  } else {
+    resumePlaytimeTracking();
+  }
+});
+
+window.addEventListener("pagehide", () => {
+  saveCurrentPlaytime();
+});
+
 /* ============================
    GAME LOGIC
 ============================ */
@@ -2801,6 +2891,9 @@ let currentPoints = 0;
 let currentButton = null;
 
 document.getElementById("start-game").addEventListener("click", () => {
+  gameHasStarted = true;
+  startPlaytimeTracking();
+
   const count = parseInt(teamCountSelect.value);
   teams = [];
 
@@ -3041,6 +3134,9 @@ function updateScoreboard() {
 ============================ */
 
 function endGame() {
+  pausePlaytimeTracking();
+  gameHasStarted = false;
+
   document.getElementById("game-screen").classList.add("hidden");
   document.getElementById("end-screen").classList.remove("hidden");
 
@@ -3059,5 +3155,7 @@ function endGame() {
 }
 
 document.getElementById("restart-game").addEventListener("click", () => {
+  pausePlaytimeTracking();
+  gameHasStarted = false;
   location.reload();
 });
