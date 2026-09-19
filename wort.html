@@ -14,7 +14,6 @@
       overflow-x: hidden;
       color: #fff;
     }
-
     .container {
       max-width: 600px;
       margin: auto;
@@ -24,77 +23,27 @@
       margin-top: 40px;
       animation: fadeIn 1s ease;
     }
-
-    h1, h2, h3 {
-      text-align: center;
-      text-shadow: 2px 2px 6px #000;
-    }
-
+    h1, h2, h3 { text-align: center; text-shadow: 2px 2px 6px #000; }
     button {
-      padding: 10px;
-      margin: 10px 5px;
-      border-radius: 10px;
-      border: none;
-      font-size: 1rem;
-      background-color: #ff4081;
-      color: white;
-      cursor: pointer;
+      padding: 10px; margin: 10px 5px; border-radius: 10px; border: none;
+      font-size: 1rem; background-color: #ff4081; color: white; cursor: pointer;
       transition: background-color 0.3s;
     }
-
-    button:hover {
-      background-color: #e91e63;
-    }
-
+    button:hover { background-color: #e91e63; }
     .card {
-      background: #fff;
-      color: #000;
-      border-radius: 20px;
-      padding: 20px;
-      margin: 20px 0;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      background: #fff; color: #000; border-radius: 20px; padding: 20px;
+      margin: 20px 0; box-shadow: 0 8px 20px rgba(0,0,0,0.3);
       animation: slideUp 0.8s ease;
     }
-
-    .hidden {
-      display: none;
-    }
-
-    .result-item {
-      padding: 10px;
-      border-radius: 10px;
-      margin: 5px 0;
-    }
-
-    .correct {
-      background-color: #4caf50;
-      color: white;
-    }
-
-    .wrong {
-      background-color: #f44336;
-      color: white;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(100px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
+    .hidden { display: none; }
+    .result-item { padding: 10px; border-radius: 10px; margin: 5px 0; }
+    .correct { background-color: #4caf50; color: white; }
+    .wrong { background-color: #f44336; color: white; }
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     @media (max-width: 600px) {
-      .container {
-        margin: 20px;
-        padding: 15px;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
+      .container { margin: 20px; padding: 15px; }
+      h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -105,10 +54,8 @@
     <button onclick="startGame(60)">1 Minute</button>
     <button onclick="startGame(120)">2 Minuten</button>
     <button onclick="startGame(180)">3 Minuten</button>
-<button onclick="window.location.href='startseite.html'" class="menu-button">
-  Zurück zum Hauptmenü
+    <button onclick="window.location.href='startseite.html'" class="menu-button">Zurück zum Hauptmenü</button>
   </div>
-
 
   <div class="container hidden" id="countdownScreen">
     <h2 id="countdownDisplay">Bereit?</h2>
@@ -136,15 +83,15 @@
     <button onclick="goToStart()">🏠 Zurück zur Startseite</button>
   </div>
 
-  <script>
+<script>
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
-let originalCards = [
-  // 🏠 Alltag
+
+const originalCards = [
   { word: "Zahnbürste", forbidden: ["Zähne", "Putzen", "Pasta", "Bad", "Mund"] },
   { word: "Fernseher", forbidden: ["Bildschirm", "Sender", "Programm", "Fernbedienung", "Serie"] },
   { word: "Spiegel", forbidden: ["Reflexion", "Glas", "Gesicht", "Bad", "Rahmen"] },
@@ -156,8 +103,6 @@ let originalCards = [
   { word: "Stuhl", forbidden: ["Sitzen", "Beine", "Lehne", "Tisch", "Möbel"] },
   { word: "Tisch", forbidden: ["Essen", "Beine", "Platte", "Stuhl", "Möbel"] },
   { word: "Uhr", forbidden: ["Zeit", "Zeiger", "Armband", "Sekunde", "Stunde"] },
-
-  // 👩‍⚕️ Berufe
   { word: "Zahnarzt", forbidden: ["Zähne", "Bohrer", "Praxis", "Schmerzen", "Behandlung"] },
   { word: "Arzt", forbidden: ["Krankenhaus", "Patient", "Medizin", "Behandlung", "Praxis"] },
   { word: "Lehrer", forbidden: ["Schule", "Unterricht", "Klasse", "Tafel", "Schüler"] },
@@ -168,8 +113,6 @@ let originalCards = [
   { word: "Pilot", forbidden: ["Flugzeug", "Fliegen", "Cockpit", "Reise", "Himmel"] },
   { word: "Koch", forbidden: ["Küche", "Topf", "Rezept", "Zutaten", "Essen"] },
   { word: "Mechaniker", forbidden: ["Auto", "Reparieren", "Werkstatt", "Motor", "Werkzeug"] },
-
-  // 🐶 Tiere
   { word: "Hund", forbidden: ["Bellen", "Tier", "Leine", "Pfote", "Haustier"] },
   { word: "Katze", forbidden: ["Miau", "Schnurren", "Tier", "Fell", "Haustier"] },
   { word: "Vogel", forbidden: ["Fliegen", "Flügel", "Nest", "Singen", "Schnabel"] },
@@ -180,8 +123,6 @@ let originalCards = [
   { word: "Hase", forbidden: ["Ostern", "Fell", "Möhre", "Springen", "Tier"] },
   { word: "Schaf", forbidden: ["Wolle", "Weide", "Tier", "Herde", "Blöken"] },
   { word: "Ente", forbidden: ["Wasser", "Schnabel", "Quaken", "Federn", "Tier"] },
-
-  // 📱 Technik
   { word: "Handy", forbidden: ["Handy", "Touchscreen", "App", "Telefon", "Internet"] },
   { word: "Computer", forbidden: ["Tastatur", "Bildschirm", "Maus", "Programm", "Internet"] },
   { word: "Tablet", forbidden: ["Touch", "App", "Display", "Mobil", "Gerät"] },
@@ -193,8 +134,6 @@ let originalCards = [
   { word: "Mikrofon", forbidden: ["Sprechen", "Ton", "Aufnahme", "Gerät", "Kabel"] },
   { word: "Router", forbidden: ["Internet", "WLAN", "Verbindung", "Modem", "Signal"] },
   { word: "Kopfhörer", forbidden: ["Musik", "Ohren", "Ton", "Kabel", "Tragen"] },
-
-  // 🍕 Essen & Trinken
   { word: "Pizza", forbidden: ["Teig", "Käse", "Tomatensoße", "Ofen", "Italien"] },
   { word: "Eis", forbidden: ["Kalt", "Sommer", "Kugel", "Geschmack", "Waffel"] },
   { word: "Kaffee", forbidden: ["Tasse", "Bohne", "Trinken", "Koffein", "Heiß"] },
@@ -207,8 +146,6 @@ let originalCards = [
   { word: "Banane", forbidden: ["Gelb", "Obst", "Schale", "Affe", "Krumm"] },
   { word: "Brot", forbidden: ["Backen", "Mehl", "Scheibe", "Bäcker", "Brötchen"] },
   { word: "Kuchen", forbidden: ["Backen", "Süß", "Mehl", "Zucker", "Geburtstag"] },
-
-  // 🎉 Feiertage & Events
   { word: "Weihnachten", forbidden: ["Geschenke", "Baum", "Familie", "Feier", "Plätzchen"] },
   { word: "Ostern", forbidden: ["Eier", "Hase", "Frühling", "Nest", "Feiertag"] },
   { word: "Geburtstag", forbidden: ["Feier", "Kerzen", "Geschenk", "Kuchen", "Alter"] },
@@ -219,8 +156,6 @@ let originalCards = [
   { word: "Party", forbidden: ["Musik", "Feiern", "Tanzen", "Getränke", "Freunde"] },
   { word: "Ferien", forbidden: ["Urlaub", "Schule", "Pause", "Reise", "Sommer"] },
   { word: "Urlaub", forbidden: ["Reise", "Strand", "Hotel", "Ferien", "Koffer"] },
-
-  // 🌍 Orte & Verkehr
   { word: "Zug", forbidden: ["Schiene", "Bahnhof", "Fahrt", "Lokomotive", "Waggon"] },
   { word: "Auto", forbidden: ["Fahren", "Motor", "Straße", "Lenkrad", "Reifen"] },
   { word: "Bus", forbidden: ["Haltestelle", "Fahrt", "Fahrer", "Linie", "ÖPNV"] },
@@ -250,20 +185,97 @@ let originalCards = [
   { word: "Rathaus", forbidden: ["Stadt", "Bürger", "Politik", "Verwaltung", "Amt"] },
   { word: "Tankstelle", forbidden: ["Benzin", "Auto", "Zapfsäule", "Zahlen", "Fahren"] },
   { word: "Post", forbidden: ["Brief", "Paket", "Zusteller", "Adresse", "Stempel"] }
-    ];
-let shuffledCards = [];
+];
 
+const PLAYTIME_GAME_ID = "wort";
+const PLAYTIME_STORAGE_KEY = "challengeChampGameHours";
+let playtimeRunning = false;
+let playtimeLastTimestamp = null;
+let playtimeInterval = null;
+let gameHasStarted = false;
+
+function getChallengeChampGameHours() {
+  try {
+    return JSON.parse(localStorage.getItem(PLAYTIME_STORAGE_KEY)) || {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function saveChallengeChampGameHours(data) {
+  localStorage.setItem(PLAYTIME_STORAGE_KEY, JSON.stringify(data));
+}
+
+function saveCurrentPlaytime() {
+  if (!playtimeRunning || playtimeLastTimestamp === null) return;
+  const now = Date.now();
+  const elapsedMilliseconds = now - playtimeLastTimestamp;
+  playtimeLastTimestamp = now;
+  if (elapsedMilliseconds <= 0) return;
+  const elapsedHours = elapsedMilliseconds / 3600000;
+  const data = getChallengeChampGameHours();
+  if (typeof data[PLAYTIME_GAME_ID] !== "number") data[PLAYTIME_GAME_ID] = 0;
+  data[PLAYTIME_GAME_ID] += elapsedHours;
+  saveChallengeChampGameHours(data);
+}
+
+function startPlaytimeTracking() {
+  if (playtimeRunning) return;
+  playtimeRunning = true;
+  playtimeLastTimestamp = Date.now();
+  playtimeInterval = setInterval(() => {
+    if (playtimeRunning && document.visibilityState === "visible") saveCurrentPlaytime();
+  }, 5000);
+}
+
+function pausePlaytimeTracking() {
+  if (!playtimeRunning) return;
+  saveCurrentPlaytime();
+  playtimeRunning = false;
+  playtimeLastTimestamp = null;
+  if (playtimeInterval) {
+    clearInterval(playtimeInterval);
+    playtimeInterval = null;
+  }
+}
+
+function resumePlaytimeTracking() {
+  if (!gameHasStarted || playtimeRunning || document.visibilityState !== "visible") return;
+  startPlaytimeTracking();
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") pausePlaytimeTracking();
+  else resumePlaytimeTracking();
+});
+
+window.addEventListener("pagehide", saveCurrentPlaytime);
+
+let shuffledCards = [];
 let currentIndex = 0;
 let timer;
 let timeLeft = 0;
 let results = [];
 let selectedDuration = 0;
 
+function startRoundTimer() {
+  timeLeft = selectedDuration;
+  updateTimerDisplay();
+  clearInterval(timer);
+  timer = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+}
+
 function startGame(duration) {
   selectedDuration = duration;
   shuffledCards = [...originalCards];
   shuffle(shuffledCards);
   currentIndex = 0;
+  results = [];
+  gameHasStarted = false;
 
   document.getElementById("startScreen").classList.add("hidden");
   document.getElementById("countdownScreen").classList.remove("hidden");
@@ -279,15 +291,9 @@ function startGame(duration) {
       clearInterval(countdownInterval);
       document.getElementById("countdownScreen").classList.add("hidden");
       document.getElementById("gameScreen").classList.remove("hidden");
-
-      timeLeft = selectedDuration;
-      updateTimerDisplay();
-      timer = setInterval(() => {
-        timeLeft--;
-        updateTimerDisplay();
-        if (timeLeft <= 0) endGame();
-      }, 1000);
-
+      gameHasStarted = true;
+      startPlaytimeTracking();
+      startRoundTimer();
       showCard();
     }
   }, 1000);
@@ -304,7 +310,6 @@ function showCard() {
     endGame();
     return;
   }
-
   const card = shuffledCards[currentIndex];
   document.getElementById("mainWord").textContent = card.word;
   const list = document.getElementById("forbiddenWords");
@@ -317,20 +322,22 @@ function showCard() {
 }
 
 function markCorrect() {
+  if (!gameHasStarted || currentIndex >= shuffledCards.length) return;
   results.push({ word: shuffledCards[currentIndex].word, correct: true });
   nextCard();
 }
 
 function markWrong() {
+  if (!gameHasStarted || currentIndex >= shuffledCards.length) return;
   results.push({ word: shuffledCards[currentIndex].word, correct: false });
   nextCard();
 }
 
 function skipCard() {
+  if (!gameHasStarted) return;
   nextCard();
 }
 
-// ✅ Wiederhergestellte Funktion
 function nextCard() {
   currentIndex++;
   showCard();
@@ -338,6 +345,10 @@ function nextCard() {
 
 function endGame() {
   clearInterval(timer);
+  timer = null;
+  pausePlaytimeTracking();
+  gameHasStarted = false;
+
   document.getElementById("gameScreen").classList.add("hidden");
   document.getElementById("resultScreen").classList.remove("hidden");
 
@@ -353,12 +364,19 @@ function endGame() {
     if (item.correct) score++;
   });
 
-  document.getElementById("scoreDisplay").textContent = `✅ Du hast ${score} von ${results.length} richtig!`;
+  const reason = currentIndex >= shuffledCards.length ? "🃏 Alle Karten gespielt!" : "⏰ Zeit abgelaufen!";
+  document.getElementById("scoreDisplay").textContent =
+    `${reason} ✅ Du hast ${score} von ${results.length} richtig!`;
 }
 
 function restartGame() {
+  clearInterval(timer);
+  timer = null;
+  pausePlaytimeTracking();
+  gameHasStarted = false;
   currentIndex = 0;
   results = [];
+
   document.getElementById("resultScreen").classList.add("hidden");
   document.getElementById("countdownScreen").classList.remove("hidden");
 
@@ -373,53 +391,33 @@ function restartGame() {
       clearInterval(countdownInterval);
       document.getElementById("countdownScreen").classList.add("hidden");
       document.getElementById("gameScreen").classList.remove("hidden");
-
-      timeLeft = selectedDuration;
-      updateTimerDisplay();
-      timer = setInterval(() => {
-        timeLeft--;
-        updateTimerDisplay();
-        if (timeLeft <= 0) endGame();
-      }, 1000);
-
+      gameHasStarted = true;
+      startPlaytimeTracking();
+      startRoundTimer();
       showCard();
     }
   }, 1000);
 }
 
 function goToStart() {
+  clearInterval(timer);
+  timer = null;
+  pausePlaytimeTracking();
+  gameHasStarted = false;
   currentIndex = 0;
   results = [];
   document.getElementById("resultScreen").classList.add("hidden");
+  document.getElementById("countdownScreen").classList.add("hidden");
+  document.getElementById("gameScreen").classList.add("hidden");
   document.getElementById("startScreen").classList.remove("hidden");
 }
-function endGame() {
-  clearInterval(timer);
-  document.getElementById("gameScreen").classList.add("hidden");
-  document.getElementById("resultScreen").classList.remove("hidden");
+</script>
 
-  const resultsList = document.getElementById("resultsList");
-  resultsList.innerHTML = "";
-  let score = 0;
-
-  results.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "result-item " + (item.correct ? "correct" : "wrong");
-    div.textContent = item.word;
-    resultsList.appendChild(div);
-    if (item.correct) score++;
-  });
-
-  let reason = currentIndex >= shuffledCards.length ? "🃏 Alle Karten gespielt!" : "⏰ Zeit abgelaufen!";
-  document.getElementById("scoreDisplay").textContent = `${reason} ✅ Du hast ${score} von ${results.length} richtig!`;
-}
-  </script>
-</body>
-  <footer style="margin-top:20px;">
+<footer style="margin-top:20px;">
   <a href="agb.html">AGB</a> |
   <a href="datenschutz.html">Datenschutz</a> |
   <a href="cookies.html">Cookies</a> |
   <a href="hilfe.html">Hilfe</a>
 </footer>
+</body>
 </html>
-
