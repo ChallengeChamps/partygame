@@ -167,6 +167,199 @@ select, input, button {
   </div>
 
   <script>
+/* =========================================================
+   CHALLENGECHAMP SPIELZEIT
+   Spiel-ID: 10von10
+========================================================= */
+
+const PLAYTIME_GAME_ID = "10von10";
+const PLAYTIME_STORAGE_KEY = "challengeChampGameHours";
+
+let playtimeRunning = false;
+let playtimeLastTimestamp = null;
+let playtimeInterval = null;
+
+
+/* Gespeicherte Spielzeiten laden */
+function getChallengeChampGameHours() {
+  try {
+    return JSON.parse(
+      localStorage.getItem(PLAYTIME_STORAGE_KEY)
+    ) || {};
+  } catch (error) {
+    return {};
+  }
+}
+
+
+/* Spielzeiten speichern */
+function saveChallengeChampGameHours(data) {
+  localStorage.setItem(
+    PLAYTIME_STORAGE_KEY,
+    JSON.stringify(data)
+  );
+}
+
+
+/* Vergangene Zeit seit dem letzten Speichern sichern */
+function saveCurrentPlaytime() {
+
+  if (!playtimeRunning || playtimeLastTimestamp === null) {
+    return;
+  }
+
+  const now = Date.now();
+
+  const elapsedMilliseconds =
+    now - playtimeLastTimestamp;
+
+  /*
+    Sofort Timestamp aktualisieren,
+    damit dieselbe Zeit nicht zweimal gezählt wird.
+  */
+  playtimeLastTimestamp = now;
+
+  if (elapsedMilliseconds <= 0) {
+    return;
+  }
+
+  const elapsedHours =
+    elapsedMilliseconds / 3600000;
+
+  const data =
+    getChallengeChampGameHours();
+
+  if (typeof data[PLAYTIME_GAME_ID] !== "number") {
+    data[PLAYTIME_GAME_ID] = 0;
+  }
+
+  data[PLAYTIME_GAME_ID] += elapsedHours;
+
+  saveChallengeChampGameHours(data);
+}
+
+
+/* Timer starten */
+function startPlaytimeTracking() {
+
+  if (playtimeRunning) {
+    return;
+  }
+
+  playtimeRunning = true;
+  playtimeLastTimestamp = Date.now();
+
+  /*
+    Alle 5 Sekunden zwischenspeichern.
+    Dadurch geht beim Schließen kaum Zeit verloren.
+  */
+  playtimeInterval = setInterval(() => {
+
+    if (
+      playtimeRunning &&
+      document.visibilityState === "visible"
+    ) {
+      saveCurrentPlaytime();
+    }
+
+  }, 5000);
+
+}
+
+
+/* Timer pausieren */
+function pausePlaytimeTracking() {
+
+  if (!playtimeRunning) {
+    return;
+  }
+
+  saveCurrentPlaytime();
+
+  playtimeRunning = false;
+  playtimeLastTimestamp = null;
+
+  if (playtimeInterval) {
+    clearInterval(playtimeInterval);
+    playtimeInterval = null;
+  }
+
+}
+
+
+/* Timer wieder fortsetzen */
+function resumePlaytimeTracking() {
+
+  /*
+    Nur fortsetzen, wenn das Spiel tatsächlich
+    schon gestartet wurde.
+  */
+
+  if (!gameHasStarted) {
+    return;
+  }
+
+  if (playtimeRunning) {
+    return;
+  }
+
+  playtimeRunning = true;
+  playtimeLastTimestamp = Date.now();
+
+  playtimeInterval = setInterval(() => {
+
+    if (
+      playtimeRunning &&
+      document.visibilityState === "visible"
+    ) {
+      saveCurrentPlaytime();
+    }
+
+  }, 5000);
+
+}
+
+
+/* =========================================================
+   TAB / APP WECHSEL
+========================================================= */
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+
+    /*
+      Verlässt der Spieler den Tab,
+      läuft die Spielzeit nicht weiter.
+    */
+
+    if (document.visibilityState === "hidden") {
+
+      pausePlaytimeTracking();
+
+    } else {
+
+      resumePlaytimeTracking();
+
+    }
+
+  }
+);
+
+
+/*
+  Beim Schließen / Neuladen noch einmal speichern
+*/
+window.addEventListener(
+  "pagehide",
+  () => {
+
+    if (playtimeRunning) {
+      saveCurrentPlaytime();
+    }
+
+  }
+);
     const normalStatements = [
   "sie hat ein TikTok Account für ihren Hund",
   "sie trägt Crocs mit Socken",
@@ -246,7 +439,7 @@ let usedStatements = [];
     let currentStatement = "";
     let distractors = [];
     let correctRating = 0;
-
+let gameHasStarted = false;
     document.getElementById("playerCount").addEventListener("change", () => {
       const count = parseInt(document.getElementById("playerCount").value);
       const container = document.getElementById("playerInputs");
@@ -256,17 +449,50 @@ let usedStatements = [];
       }
     });
 
-    function startGame() {
-      const count = parseInt(document.getElementById("playerCount").value);
-      players = [];
-      for (let i = 0; i < count; i++) {
-        const name = document.getElementById(`player${i}`).value || `Spieler ${i + 1}`;
-        players.push(name);
-      }
-      document.getElementById("setup").classList.add("hidden");
-      document.getElementById("game").classList.remove("hidden");
-      showQuestion();
-    }
+ function startGame() {
+
+  const count =
+    parseInt(
+      document.getElementById("playerCount").value
+    );
+
+  players = [];
+
+  for (let i = 0; i < count; i++) {
+
+    const name =
+      document.getElementById(`player${i}`).value
+      || `Spieler ${i + 1}`;
+
+    players.push(name);
+
+  }
+
+
+  /* ===============================
+     SPIELZEIT STARTEN
+  =============================== */
+
+  gameHasStarted = true;
+
+  startPlaytimeTracking();
+
+
+  /* ===============================
+     SPIEL STARTEN
+  =============================== */
+
+  document
+    .getElementById("setup")
+    .classList.add("hidden");
+
+  document
+    .getElementById("game")
+    .classList.remove("hidden");
+
+  showQuestion();
+
+}
 
 function showQuestion() {
   document.getElementById("ratingInput").value = "";
@@ -349,20 +575,44 @@ while (distractors.length < 2) {
       document.getElementById("resultPhase").classList.remove("hidden");
     }
 
-    function nextRound() {
-      currentPlayerIndex++;
-      if (currentPlayerIndex >= players.length) {
-        alert("🎉 Spiel beendet!");
-        location.reload();
-      } else {
-        document.getElementById("resultPhase").classList.add("hidden");
-        document.getElementById("game").classList.remove("hidden");
-        showQuestion();
-      }
+  function nextRound() {
+
+  currentPlayerIndex++;
+
+  if (currentPlayerIndex >= players.length) {
+
+    /* ===============================
+       SPIEL BEENDET
+       ZEIT SPEICHERN UND STOPPEN
+    =============================== */
+
+    pausePlaytimeTracking();
+
+    gameHasStarted = false;
+
+
+    alert("🎉 Spiel beendet!");
+
+
+    location.reload();
+
+  } else {
+
+    document
+      .getElementById("resultPhase")
+      .classList.add("hidden");
+
+    document
+      .getElementById("game")
+      .classList.remove("hidden");
+
+    showQuestion();
+
+  }
     }
   </script>
 </body>
-  <footer style="margin-top:20px;">
+<footer>
   <a href="agb.html">AGB</a> |
   <a href="datenschutz.html">Datenschutz</a> |
   <a href="cookies.html">Cookies</a> |
