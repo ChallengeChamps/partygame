@@ -115,7 +115,6 @@ h1 {
   transition: transform .25s ease, box-shadow .25s ease;
   animation: cardFloat 3s ease-in-out infinite;
 
-  /* Gleiche Position für alle Preis-Buttons */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -362,6 +361,7 @@ h1 {
   font-weight: 900;
   letter-spacing: 1px;
   user-select: all;
+  word-break: break-word;
 }
 
 .success-close {
@@ -483,48 +483,56 @@ h1 {
 
   <div class="shop-card"
        data-id="background1"
-       data-name="Premium Hintergrund: Galaxy"
-       data-price="250"
-       data-icon="🌌">
-    <div class="shop-icon">🌌</div>
-    <div class="shop-name">Galaxy Hintergrund</div>
-    <div class="shop-description">Schalte den Galaxy-Hintergrund frei.</div>
-    <div class="price">🪙 250 Coins</div>
+       data-name="Logo „Goldener Champion“"
+       data-price="2500"
+       data-icon="🏆">
+    <div class="shop-icon">🏆</div>
+    <div class="shop-name">Logo „Goldener Champion“</div>
+    <div class="shop-description">
+      Schalte das Logo „Goldener Champion“ für dein Profil frei.
+    </div>
+    <div class="price">🪙 2.500 Coins</div>
     <div class="purchased-overlay"><div class="checkmark">✓</div></div>
   </div>
 
   <div class="shop-card"
        data-id="background2"
-       data-name="Premium Hintergrund: Fußball"
-       data-price="250"
-       data-icon="⚽">
-    <div class="shop-icon">⚽</div>
-    <div class="shop-name">Fußball Hintergrund</div>
-    <div class="shop-description">Ein exklusiver Fußball-Look für deine Spiele.</div>
-    <div class="price">🪙 250 Coins</div>
+       data-name="Logo „Feuersturm“"
+       data-price="500"
+       data-icon="🔥">
+    <div class="shop-icon">🔥</div>
+    <div class="shop-name">Logo „Feuersturm“</div>
+    <div class="shop-description">
+      Schalte das Logo „Feuersturm“ für dein Profil frei.
+    </div>
+    <div class="price">🪙 500 Coins</div>
     <div class="purchased-overlay"><div class="checkmark">✓</div></div>
   </div>
 
   <div class="shop-card"
        data-id="background3"
-       data-name="Premium Hintergrund: Halloween"
-       data-price="300"
-       data-icon="🎃">
-    <div class="shop-icon">🎃</div>
-    <div class="shop-name">Halloween Hintergrund</div>
-    <div class="shop-description">Gruseliger Premium-Hintergrund.</div>
-    <div class="price">🪙 300 Coins</div>
+       data-name="Logo „Diamant-Legende“"
+       data-price="3000"
+       data-icon="💎">
+    <div class="shop-icon">💎</div>
+    <div class="shop-name">Logo „Diamant-Legende“</div>
+    <div class="shop-description">
+      Schalte das Logo „Diamant-Legende“ für dein Profil frei.
+    </div>
+    <div class="price">🪙 3.000 Coins</div>
     <div class="purchased-overlay"><div class="checkmark">✓</div></div>
   </div>
 
   <div class="shop-card"
        data-id="effect1"
-       data-name="Goldener Profil-Effekt"
+       data-name="Logo „Blitz-Champion“"
        data-price="400"
-       data-icon="✨">
-    <div class="shop-icon">✨</div>
-    <div class="shop-name">Goldener Effekt</div>
-    <div class="shop-description">Ein exklusiver goldener Effekt für dein Profil.</div>
+       data-icon="⚡">
+    <div class="shop-icon">⚡</div>
+    <div class="shop-name">Logo „Blitz-Champion“</div>
+    <div class="shop-description">
+      Schalte das Logo „Blitz-Champion“ für dein Profil frei.
+    </div>
     <div class="price">🪙 400 Coins</div>
     <div class="purchased-overlay"><div class="checkmark">✓</div></div>
   </div>
@@ -534,9 +542,11 @@ h1 {
 <!-- KAUF-BESTÄTIGUNG -->
 <div id="confirmOverlay" class="popup-overlay">
   <div class="popup">
+
     <div class="close" onclick="closeConfirm()">X</div>
 
     <div class="popup-icon" id="confirmIcon">💎</div>
+
     <h2 id="confirmName">Artikel</h2>
 
     <p>Willst du diesen Artikel wirklich kaufen?</p>
@@ -546,36 +556,59 @@ h1 {
     </div>
 
     <div class="popup-buttons">
-      <button class="cancel-btn" onclick="closeConfirm()">Abbrechen</button>
-      <button class="buy-btn" onclick="confirmPurchase()">Kaufen</button>
+      <button class="cancel-btn" onclick="closeConfirm()">
+        Abbrechen
+      </button>
+
+      <button class="buy-btn" onclick="confirmPurchase()">
+        Kaufen
+      </button>
     </div>
+
   </div>
 </div>
 
 <!-- NICHT GENUG COINS -->
 <div id="errorOverlay" class="popup-overlay">
   <div class="popup">
+
     <div class="popup-icon">😕</div>
+
     <h2>Nicht genug Coins</h2>
-    <p id="errorText">Du brauchst mehr Coins.</p>
+
+    <p id="errorText">
+      Du brauchst mehr Coins.
+    </p>
+
     <div class="popup-buttons">
-      <button class="buy-btn" onclick="closeError()">Verstanden</button>
+      <button class="buy-btn" onclick="closeError()">
+        Verstanden
+      </button>
     </div>
+
   </div>
 </div>
 
 <!-- ERFOLG -->
 <div id="successOverlay" class="success-overlay">
   <div class="success-box">
+
     <div class="success-check">✅</div>
-    <h2 id="successTitle">Kauf erfolgreich!</h2>
-    <p>Der Artikel wurde freigeschaltet.</p>
+
+    <h2 id="successTitle">
+      Kauf erfolgreich!
+    </h2>
+
+    <p>
+      Der Artikel wurde freigeschaltet.
+    </p>
 
     <div id="successCodeArea"></div>
 
     <button class="success-close" onclick="closeSuccess()">
       Weiter
     </button>
+
   </div>
 </div>
 
@@ -584,11 +617,15 @@ h1 {
    COIN SYSTEM
    ========================================================= */
 
-let coins = parseInt(localStorage.getItem("teamMasterCoins"), 10) || 0;
+let coins =
+  parseInt(localStorage.getItem("teamMasterCoins"), 10) || 0;
 
 function updateCoinDisplay() {
   const el = document.getElementById("coinAmount");
-  if (el) el.textContent = coins;
+
+  if (el) {
+    el.textContent = coins;
+  }
 }
 
 function saveCoins() {
@@ -596,35 +633,66 @@ function saveCoins() {
   updateCoinDisplay();
 }
 
+
 /* =========================================================
    SHOP
    ========================================================= */
 
 let selectedItem = null;
 
-const confirmOverlay = document.getElementById("confirmOverlay");
-const errorOverlay = document.getElementById("errorOverlay");
-const successOverlay = document.getElementById("successOverlay");
+const confirmOverlay =
+  document.getElementById("confirmOverlay");
 
-const confirmName = document.getElementById("confirmName");
-const confirmPrice = document.getElementById("confirmPrice");
-const confirmIcon = document.getElementById("confirmIcon");
-const errorText = document.getElementById("errorText");
+const errorOverlay =
+  document.getElementById("errorOverlay");
+
+const successOverlay =
+  document.getElementById("successOverlay");
+
+const confirmName =
+  document.getElementById("confirmName");
+
+const confirmPrice =
+  document.getElementById("confirmPrice");
+
+const confirmIcon =
+  document.getElementById("confirmIcon");
+
+const errorText =
+  document.getElementById("errorText");
+
+
+/* =========================================================
+   GEKAUFTE ARTIKEL
+   ========================================================= */
 
 function isPurchased(id) {
-  return localStorage.getItem("shopPurchased_" + id) === "true";
+  return localStorage.getItem(
+    "shopPurchased_" + id
+  ) === "true";
 }
 
 function setPurchased(id) {
-  localStorage.setItem("shopPurchased_" + id, "true");
+  localStorage.setItem(
+    "shopPurchased_" + id,
+    "true"
+  );
 }
 
 function markPurchased(card) {
   card.classList.add("purchased");
 }
 
+
+/* =========================================================
+   KAUF-POPUP
+   ========================================================= */
+
 function openConfirm(card) {
-  if (card.classList.contains("purchased")) return;
+
+  if (card.classList.contains("purchased")) {
+    return;
+  }
 
   selectedItem = {
     id: card.dataset.id,
@@ -634,187 +702,448 @@ function openConfirm(card) {
     card: card
   };
 
-  confirmIcon.textContent = selectedItem.icon;
-  confirmName.textContent = selectedItem.name;
-  confirmPrice.textContent = selectedItem.price.toLocaleString("de-DE");
+  confirmIcon.textContent =
+    selectedItem.icon;
+
+  confirmName.textContent =
+    selectedItem.name;
+
+  confirmPrice.textContent =
+    selectedItem.price.toLocaleString("de-DE");
 
   confirmOverlay.style.display = "flex";
 }
+
 
 function closeConfirm() {
   confirmOverlay.style.display = "none";
   selectedItem = null;
 }
 
+
 function closeError() {
   errorOverlay.style.display = "none";
 }
 
+
+/* =========================================================
+   KAUFEN
+   ========================================================= */
+
 function confirmPurchase() {
-  if (!selectedItem) return;
+
+  if (!selectedItem) {
+    return;
+  }
 
   const item = selectedItem;
 
-  /* Noch einmal prüfen, damit Coins nicht unterschritten werden */
-  coins = parseInt(localStorage.getItem("teamMasterCoins"), 10) || 0;
+  /*
+   * Coins noch einmal direkt aus dem
+   * localStorage laden.
+   */
+  coins =
+    parseInt(
+      localStorage.getItem("teamMasterCoins"),
+      10
+    ) || 0;
+
+
+  /*
+   * SICHERHEITSPRÜFUNG
+   */
 
   if (coins < item.price) {
+
     closeConfirm();
 
-    const missing = item.price - coins;
+    const missing =
+      item.price - coins;
 
     errorText.textContent =
       `Dir fehlen noch ${missing.toLocaleString("de-DE")} Coins.`;
 
     errorOverlay.style.display = "flex";
+
     return;
   }
 
-  /* Coins abziehen */
+
+  /*
+   * COINS ABZIEHEN
+   */
+
   coins -= item.price;
+
   saveCoins();
 
-  /* Kauf dauerhaft speichern */
+
+  /*
+   * KAUF SPEICHERN
+   */
+
   setPurchased(item.id);
+
   markPurchased(item.card);
+
+
+  /*
+   * ARTIKEL AKTIVIEREN
+   */
 
   closeConfirm();
 
-  /* Artikel aktivieren */
   activateItem(item);
 
-  /* Erfolgs-Popup */
+
+  /*
+   * ERFOLGS-POPUP
+   */
+
   document.getElementById("successTitle").textContent =
     `${item.icon} ${item.name} gekauft!`;
 
   successOverlay.style.display = "flex";
 }
 
+
 function closeSuccess() {
   successOverlay.style.display = "none";
 }
+
+
+/* =========================================================
+   INDIVIDUELLEN CODE ERSTELLEN
+   ========================================================= */
+
+function getOrCreateItemCode(id, prefix) {
+
+  const storageKey =
+    "shopCode_" + id;
+
+  /*
+   * Wenn bereits ein Code existiert,
+   * wird genau dieser wieder verwendet.
+   */
+  let existingCode =
+    localStorage.getItem(storageKey);
+
+  if (existingCode) {
+    return existingCode;
+  }
+
+
+  /*
+   * Zufälligen Code erzeugen
+   */
+
+  const random =
+    Math.random()
+      .toString(36)
+      .substring(2, 8)
+      .toUpperCase();
+
+
+  const newCode =
+    `${prefix}-${random}`;
+
+
+  /*
+   * Code dauerhaft speichern
+   */
+
+  localStorage.setItem(
+    storageKey,
+    newCode
+  );
+
+  return newCode;
+}
+
 
 /* =========================================================
    ARTIKEL AKTIVIEREN
    ========================================================= */
 
 function activateItem(item) {
-  const codeArea = document.getElementById("successCodeArea");
+
+  const codeArea =
+    document.getElementById("successCodeArea");
 
   codeArea.innerHTML = "";
 
-  /*
-   * PREMIUM:
-   * Hier wird Premium direkt aktiviert.
-   *
-   * Die angezeigten Codes sind Demo-/Shop-Codes.
-   * Falls dein Premium-System später echte zeitlich begrenzte
-   * Premium-Laufzeiten unterstützen soll, kann diese Stelle
-   * entsprechend erweitert werden.
-   */
+
+  /* =======================================================
+     PREMIUM – 1 MONAT
+     ======================================================= */
 
   if (item.id === "premium1m") {
-    localStorage.setItem("premium", "true");
 
-    const code = createShopCode("PREMIUM1M");
+    localStorage.setItem(
+      "premium",
+      "true"
+    );
+
+    const code =
+      getOrCreateItemCode(
+        "premium1m",
+        "PREMIUM-1M"
+      );
 
     codeArea.innerHTML = `
       <p><b>Dein Premium-Code:</b></p>
-      <div class="code-box">${code}</div>
-      <p>Premium wurde auf diesem Gerät aktiviert.</p>
+
+      <div class="code-box">
+        ${code}
+      </div>
+
+      <p>
+        Premium wurde auf diesem Gerät aktiviert.
+      </p>
     `;
   }
+
+
+  /* =======================================================
+     PREMIUM – 3 MONATE
+     ======================================================= */
 
   else if (item.id === "premium3m") {
-    localStorage.setItem("premium", "true");
 
-    const code = createShopCode("PREMIUM3M");
+    localStorage.setItem(
+      "premium",
+      "true"
+    );
+
+    const code =
+      getOrCreateItemCode(
+        "premium3m",
+        "PREMIUM-3M"
+      );
 
     codeArea.innerHTML = `
       <p><b>Dein Premium-Code:</b></p>
-      <div class="code-box">${code}</div>
-      <p>Premium wurde auf diesem Gerät aktiviert.</p>
+
+      <div class="code-box">
+        ${code}
+      </div>
+
+      <p>
+        Premium wurde auf diesem Gerät aktiviert.
+      </p>
     `;
   }
+
+
+  /* =======================================================
+     LOGO – GOLDENER CHAMPION
+     ======================================================= */
 
   else if (item.id === "background1") {
-    localStorage.setItem("shopBackgroundGalaxy", "true");
+
+    localStorage.setItem(
+      "shopBackgroundGalaxy",
+      "true"
+    );
+
+    const code =
+      getOrCreateItemCode(
+        "background1",
+        "GOLD-CHAMP"
+      );
 
     codeArea.innerHTML = `
-      <p>🌌 Der Galaxy-Hintergrund wurde freigeschaltet.</p>
+      <p><b>Dein Logo-Code:</b></p>
+
+      <div class="code-box">
+        ${code}
+      </div>
+
+      <p>
+        🏆 Das Logo „Goldener Champion“
+        wurde freigeschaltet.
+      </p>
     `;
   }
+
+
+  /* =======================================================
+     LOGO – FEUERSTURM
+     ======================================================= */
 
   else if (item.id === "background2") {
-    localStorage.setItem("shopBackgroundFootball", "true");
+
+    localStorage.setItem(
+      "shopBackgroundFootball",
+      "true"
+    );
+
+    const code =
+      getOrCreateItemCode(
+        "background2",
+        "FIRE-STORM"
+      );
 
     codeArea.innerHTML = `
-      <p>⚽ Der Fußball-Hintergrund wurde freigeschaltet.</p>
+      <p><b>Dein Logo-Code:</b></p>
+
+      <div class="code-box">
+        ${code}
+      </div>
+
+      <p>
+        🔥 Das Logo „Feuersturm“
+        wurde freigeschaltet.
+      </p>
     `;
   }
+
+
+  /* =======================================================
+     LOGO – DIAMANT-LEGENDE
+     ======================================================= */
 
   else if (item.id === "background3") {
-    localStorage.setItem("shopBackgroundHalloween", "true");
+
+    localStorage.setItem(
+      "shopBackgroundHalloween",
+      "true"
+    );
+
+    const code =
+      getOrCreateItemCode(
+        "background3",
+        "DIAMOND-LEGEND"
+      );
 
     codeArea.innerHTML = `
-      <p>🎃 Der Halloween-Hintergrund wurde freigeschaltet.</p>
+      <p><b>Dein Logo-Code:</b></p>
+
+      <div class="code-box">
+        ${code}
+      </div>
+
+      <p>
+        💎 Das Logo „Diamant-Legende“
+        wurde freigeschaltet.
+      </p>
     `;
   }
+
+
+  /* =======================================================
+     GOLDENER PROFIL-EFFEKT
+     ======================================================= */
 
   else if (item.id === "effect1") {
-    localStorage.setItem("shopGoldEffect", "true");
+
+    localStorage.setItem(
+      "shopGoldEffect",
+      "true"
+    );
+
+    const code =
+      getOrCreateItemCode(
+        "effect1",
+        "GOLD-EFFECT"
+      );
 
     codeArea.innerHTML = `
-      <p>✨ Der goldene Profil-Effekt wurde freigeschaltet.</p>
+      <p><b>Dein Effekt-Code:</b></p>
+
+      <div class="code-box">
+        ${code}
+      </div>
+
+      <p>
+        ✨ Der goldene Profil-Effekt
+        wurde freigeschaltet.
+      </p>
     `;
   }
+
+
+  /* =======================================================
+     SONSTIGE ARTIKEL
+     ======================================================= */
 
   else {
+
+    const code =
+      getOrCreateItemCode(
+        item.id,
+        "SHOP"
+      );
+
     codeArea.innerHTML = `
-      <p>🎁 Artikel erfolgreich freigeschaltet!</p>
+      <p><b>Dein Artikel-Code:</b></p>
+
+      <div class="code-box">
+        ${code}
+      </div>
+
+      <p>
+        🎁 Artikel erfolgreich freigeschaltet!
+      </p>
     `;
   }
 }
 
-/* =========================================================
-   DEMO-CODE GENERATOR
-   ========================================================= */
-
-function createShopCode(prefix) {
-  const random =
-    Math.random().toString(36).substring(2, 8).toUpperCase();
-
-  return `${prefix}-${random}`;
-}
 
 /* =========================================================
    KARTEN LADEN
    ========================================================= */
 
-document.querySelectorAll(".shop-card").forEach(card => {
+document
+  .querySelectorAll(".shop-card")
+  .forEach(card => {
 
-  if (isPurchased(card.dataset.id)) {
-    markPurchased(card);
-  }
+    /*
+     * Bereits gekaufte Artikel markieren
+     */
 
-  card.addEventListener("click", () => {
-    openConfirm(card);
+    if (isPurchased(card.dataset.id)) {
+      markPurchased(card);
+    }
+
+
+    /*
+     * Karte anklickbar machen
+     */
+
+    card.addEventListener("click", () => {
+      openConfirm(card);
+    });
+
   });
-});
+
 
 /* =========================================================
    POPUPS MIT ESC SCHLIESSEN
    ========================================================= */
 
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") {
-    closeConfirm();
-    closeError();
-    closeSuccess();
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (event.key === "Escape") {
+
+      closeConfirm();
+      closeError();
+      closeSuccess();
+
+    }
+
   }
-});
+);
+
+
+/* =========================================================
+   START
+   ========================================================= */
 
 updateCoinDisplay();
+
 </script>
 
 </body>
