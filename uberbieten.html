@@ -119,7 +119,7 @@ button:hover {
   </select>
 
   <button onclick="goToTeamNames()">Weiter</button>
-  <button class="menu-button" onclick="window.location.href='startseite.html'">Zurück zum Hauptmenü</button>
+  <button class="menu-button" onclick="gameHasStarted=false; pausePlaytimeTracking(); window.location.href='startseite.html'">Zurück zum Hauptmenü</button>
 </div>
 
 <!-- TEAMNAMEN -->
@@ -157,11 +157,101 @@ button:hover {
   <div id="finalScores"></div>
   <h2 id="winnerTeam"></h2>
 
-  <button onclick="location.href='startseite.html'">Zurück zur Startseite</button>
+  <button onclick="gameHasStarted=false; pausePlaytimeTracking(); location.href='startseite.html'">Zurück zur Startseite</button>
   <button onclick="restartGame()">Erneut spielen</button>
 </div>
 
 <script>
+
+// ----------------------------
+// CHALLENGECHAMP SPIELZEIT
+// ----------------------------
+const PLAYTIME_GAME_ID = "uberbieten";
+const PLAYTIME_STORAGE_KEY = "challengeChampGameHours";
+
+let playtimeRunning = false;
+let playtimeLastTimestamp = null;
+let playtimeInterval = null;
+let gameHasStarted = false;
+
+function getChallengeChampGameHours() {
+  try {
+    return JSON.parse(localStorage.getItem(PLAYTIME_STORAGE_KEY)) || {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function saveChallengeChampGameHours(data) {
+  localStorage.setItem(PLAYTIME_STORAGE_KEY, JSON.stringify(data));
+}
+
+function saveCurrentPlaytime() {
+  if (!playtimeRunning || playtimeLastTimestamp === null) return;
+
+  const now = Date.now();
+  const elapsedMilliseconds = now - playtimeLastTimestamp;
+  playtimeLastTimestamp = now;
+
+  if (elapsedMilliseconds <= 0) return;
+
+  const elapsedHours = elapsedMilliseconds / 3600000;
+  const data = getChallengeChampGameHours();
+
+  if (typeof data[PLAYTIME_GAME_ID] !== "number") {
+    data[PLAYTIME_GAME_ID] = 0;
+  }
+
+  data[PLAYTIME_GAME_ID] += elapsedHours;
+  saveChallengeChampGameHours(data);
+}
+
+function startPlaytimeTracking() {
+  if (playtimeRunning) return;
+
+  playtimeRunning = true;
+  playtimeLastTimestamp = Date.now();
+
+  playtimeInterval = setInterval(() => {
+    if (playtimeRunning && document.visibilityState === "visible") {
+      saveCurrentPlaytime();
+    }
+  }, 5000);
+}
+
+function pausePlaytimeTracking() {
+  if (!playtimeRunning) return;
+
+  saveCurrentPlaytime();
+  playtimeRunning = false;
+  playtimeLastTimestamp = null;
+
+  if (playtimeInterval) {
+    clearInterval(playtimeInterval);
+    playtimeInterval = null;
+  }
+}
+
+function resumePlaytimeTracking() {
+  if (!gameHasStarted) return;
+  if (playtimeRunning) return;
+  if (document.visibilityState !== "visible") return;
+
+  startPlaytimeTracking();
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    pausePlaytimeTracking();
+  } else {
+    resumePlaytimeTracking();
+  }
+});
+
+window.addEventListener("pagehide", () => {
+  saveCurrentPlaytime();
+});
+
 // ----------------------------
 // DATEN
 // ----------------------------
@@ -551,6 +641,9 @@ function startGame() {
   totalRounds = teams.length * 2 - 1;
   currentRound = 0;
 
+  gameHasStarted = true;
+  startPlaytimeTracking();
+
   document.getElementById("screen-teamnames").classList.add("hidden");
   nextRound();
 }
@@ -638,6 +731,9 @@ function awardPoint(team) {
 // ----------------------------
 
 function showFinal() {
+  gameHasStarted = false;
+  pausePlaytimeTracking();
+
   document.getElementById("screen-final").classList.remove("hidden");
 
   const container = document.getElementById("finalScores");
@@ -665,6 +761,8 @@ function showFinal() {
 function restartGame() {
   usedQuestions = [];
   currentRound = 0;
+  gameHasStarted = true;
+  startPlaytimeTracking();
   for (let t of teams) scores[t] = 0;
 
   document.getElementById("screen-final").classList.add("hidden");
@@ -674,10 +772,11 @@ function restartGame() {
 </script>
 
 </body>
-<footer>
+<footer style="margin-top:20px;">
   <a href="agb.html">AGB</a> |
   <a href="datenschutz.html">Datenschutz</a> |
-  <a href="cookies.html">Cookies</a>
+  <a href="cookies.html">Cookies</a> |
+  <a href="hilfe.html">Hilfe</a>
 </footer>
 
 </html>
