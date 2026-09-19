@@ -106,35 +106,34 @@
     }
 
     /* Querformat-Erzwingung für Hochkantgeräte */
-@media screen and (orientation: portrait) {
-  #wordDisplayScreen.show {
-    transform: rotate(90deg);
-    transform-origin: center center;
-    width: 100vh;
-    height: 100vw;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%; /* zentriert das Element */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
+    @media screen and (orientation: portrait) {
+      #wordDisplayScreen.show {
+        transform: rotate(90deg);
+        transform-origin: center center;
+        width: 100vh;
+        height: 100vw;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
 
-  #finalWord {
-    font-size: 14vw;
-    text-align: center;
-  }
+      #finalWord {
+        font-size: 14vw;
+        text-align: center;
+      }
 
-  #closeButton {
-    transform: rotate(-90deg);
-    position: absolute;
-    top: 20px;
-    left: 20px;
-  }
-}
-
+      #closeButton {
+        transform: rotate(-90deg);
+        position: absolute;
+        top: 20px;
+        left: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -162,9 +161,101 @@
   </div>
 
   <script>
+    // ChallengeChamp Spielzeit-Tracking
+    const PLAYTIME_GAME_ID = "wort";
+    const PLAYTIME_STORAGE_KEY = "challengeChampGameHours";
+
+    let playtimeRunning = false;
+    let playtimeLastTimestamp = null;
+    let playtimeInterval = null;
+    let gameHasStarted = false;
+
+    function getChallengeChampGameHours() {
+      try {
+        return JSON.parse(localStorage.getItem(PLAYTIME_STORAGE_KEY)) || {};
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function saveChallengeChampGameHours(data) {
+      localStorage.setItem(PLAYTIME_STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function saveCurrentPlaytime() {
+      if (!playtimeRunning || playtimeLastTimestamp === null) return;
+
+      const now = Date.now();
+      const elapsedMilliseconds = now - playtimeLastTimestamp;
+      playtimeLastTimestamp = now;
+
+      if (elapsedMilliseconds <= 0) return;
+
+      const elapsedHours = elapsedMilliseconds / 3600000;
+      const data = getChallengeChampGameHours();
+
+      if (typeof data[PLAYTIME_GAME_ID] !== "number") {
+        data[PLAYTIME_GAME_ID] = 0;
+      }
+
+      data[PLAYTIME_GAME_ID] += elapsedHours;
+      saveChallengeChampGameHours(data);
+    }
+
+    function startPlaytimeTracking() {
+      if (playtimeRunning) return;
+
+      playtimeRunning = true;
+      playtimeLastTimestamp = Date.now();
+
+      playtimeInterval = setInterval(() => {
+        if (playtimeRunning && document.visibilityState === "visible") {
+          saveCurrentPlaytime();
+        }
+      }, 5000);
+    }
+
+    function pausePlaytimeTracking() {
+      if (!playtimeRunning) return;
+
+      saveCurrentPlaytime();
+      playtimeRunning = false;
+      playtimeLastTimestamp = null;
+
+      if (playtimeInterval) {
+        clearInterval(playtimeInterval);
+        playtimeInterval = null;
+      }
+    }
+
+    function resumePlaytimeTracking() {
+      if (!gameHasStarted) return;
+      if (playtimeRunning) return;
+      if (document.visibilityState !== "visible") return;
+
+      startPlaytimeTracking();
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        pausePlaytimeTracking();
+      } else {
+        resumePlaytimeTracking();
+      }
+    });
+
+    window.addEventListener("pagehide", () => {
+      saveCurrentPlaytime();
+    });
+
     function goToInput() {
       document.getElementById("startScreen").classList.add("hidden");
       document.getElementById("inputScreen").classList.remove("hidden");
+
+      if (!gameHasStarted) {
+        gameHasStarted = true;
+        startPlaytimeTracking();
+      }
     }
 
     function confirmWord() {
@@ -181,6 +272,9 @@
     }
 
     function goToStart() {
+      pausePlaytimeTracking();
+      gameHasStarted = false;
+
       document.getElementById("wordDisplayScreen").classList.remove("show");
       document.getElementById("mainApp").style.display = "block";
       document.getElementById("wordInput").value = "";
@@ -189,7 +283,7 @@
     }
   </script>
 </body>
-  <footer style="margin-top:20px;">
+<footer style="margin-top:20px;">
   <a href="agb.html">AGB</a> |
   <a href="datenschutz.html">Datenschutz</a> |
   <a href="cookies.html">Cookies</a> |
