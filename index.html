@@ -227,6 +227,93 @@
     let liars = [];
     let currentIndex = 0;
 
+    // ================================
+    // ChallengeChamp Spielzeit-Tracking
+    // ================================
+    const PLAYTIME_GAME_ID = "fakeorfakt";
+    const PLAYTIME_STORAGE_KEY = "challengeChampGameHours";
+
+    let playtimeRunning = false;
+    let playtimeLastTimestamp = null;
+    let playtimeInterval = null;
+
+    function getChallengeChampGameHours() {
+      try {
+        return JSON.parse(localStorage.getItem(PLAYTIME_STORAGE_KEY)) || {};
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function saveChallengeChampGameHours(data) {
+      localStorage.setItem(PLAYTIME_STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function saveCurrentPlaytime() {
+      if (!playtimeRunning || playtimeLastTimestamp === null) return;
+
+      const now = Date.now();
+      const elapsedMilliseconds = now - playtimeLastTimestamp;
+      playtimeLastTimestamp = now;
+
+      if (elapsedMilliseconds <= 0) return;
+
+      const elapsedHours = elapsedMilliseconds / 3600000;
+      const data = getChallengeChampGameHours();
+
+      if (typeof data[PLAYTIME_GAME_ID] !== "number") {
+        data[PLAYTIME_GAME_ID] = 0;
+      }
+
+      data[PLAYTIME_GAME_ID] += elapsedHours;
+      saveChallengeChampGameHours(data);
+    }
+
+    function startPlaytimeTracking() {
+      if (playtimeRunning) return;
+
+      playtimeRunning = true;
+      playtimeLastTimestamp = Date.now();
+
+      playtimeInterval = setInterval(() => {
+        if (playtimeRunning && document.visibilityState === "visible") {
+          saveCurrentPlaytime();
+        }
+      }, 5000);
+    }
+
+    function pausePlaytimeTracking() {
+      if (!playtimeRunning) return;
+
+      saveCurrentPlaytime();
+      playtimeRunning = false;
+      playtimeLastTimestamp = null;
+
+      if (playtimeInterval) {
+        clearInterval(playtimeInterval);
+        playtimeInterval = null;
+      }
+    }
+
+    function resumePlaytimeTracking() {
+      if (!playtimeRunning && document.visibilityState === "visible") {
+        startPlaytimeTracking();
+      }
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        pausePlaytimeTracking();
+      } else {
+        resumePlaytimeTracking();
+      }
+    });
+
+    window.addEventListener("pagehide", () => {
+      saveCurrentPlaytime();
+    });
+
+
     let factsPool = [
   "🌕 Auf der Venus ist ein Tag länger als ein Jahr. ",
   "🌍 Die Erde ist nicht perfekt rund.",
@@ -366,6 +453,10 @@
 
       document.getElementById("setup").classList.add("hidden");
       document.getElementById("game").classList.remove("hidden");
+
+      // Spielzeit erst ab dem tatsächlichen Spielstart zählen
+      startPlaytimeTracking();
+
       showCard();
     }
 
@@ -405,6 +496,9 @@
     function nextCard() {
       currentIndex++;
       if (currentIndex >= players.length) {
+        // Spiel beendet: Zeitmessung sauber stoppen
+        pausePlaytimeTracking();
+
         document.getElementById("game").classList.add("hidden");
         document.getElementById("end").classList.remove("hidden");
       } else {
@@ -418,6 +512,10 @@
     }
 
     function restartGame() {
+      // Falls das Spiel über "Erneut spielen" neu gestartet wird,
+      // darf die alte Messung nicht weiterlaufen.
+      pausePlaytimeTracking();
+
       document.getElementById("setup").classList.remove("hidden");
       document.getElementById("end").classList.add("hidden");
       document.getElementById("playerInputs").innerHTML = "";
@@ -436,7 +534,7 @@
     });
   </script>
 </body>
-  <footer style="margin-top:20px;">
+<footer>
   <a href="agb.html">AGB</a> |
   <a href="datenschutz.html">Datenschutz</a> |
   <a href="cookies.html">Cookies</a> |
