@@ -216,6 +216,96 @@ button:hover {
 </div>
 
 <script>
+/* ============================
+   PLAYTIME TRACKING
+============================ */
+const PLAYTIME_GAME_ID = "tictactoe";
+const PLAYTIME_STORAGE_KEY = "challengeChampGameHours";
+
+let playtimeRunning = false;
+let playtimeLastTimestamp = null;
+let playtimeInterval = null;
+let gameHasStarted = false;
+
+function getChallengeChampGameHours() {
+  try {
+    return JSON.parse(localStorage.getItem(PLAYTIME_STORAGE_KEY)) || {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function saveChallengeChampGameHours(data) {
+  localStorage.setItem(PLAYTIME_STORAGE_KEY, JSON.stringify(data));
+}
+
+function saveCurrentPlaytime() {
+  if (!playtimeRunning || playtimeLastTimestamp === null) return;
+
+  const now = Date.now();
+  const elapsedMilliseconds = now - playtimeLastTimestamp;
+  playtimeLastTimestamp = now;
+
+  if (elapsedMilliseconds <= 0) return;
+
+  const elapsedHours = elapsedMilliseconds / 3600000;
+  const data = getChallengeChampGameHours();
+
+  if (typeof data[PLAYTIME_GAME_ID] !== "number") {
+    data[PLAYTIME_GAME_ID] = 0;
+  }
+
+  data[PLAYTIME_GAME_ID] += elapsedHours;
+  saveChallengeChampGameHours(data);
+}
+
+function startPlaytimeTracking() {
+  if (playtimeRunning) return;
+
+  playtimeRunning = true;
+  playtimeLastTimestamp = Date.now();
+
+  playtimeInterval = setInterval(() => {
+    if (playtimeRunning && document.visibilityState === "visible") {
+      saveCurrentPlaytime();
+    }
+  }, 5000);
+}
+
+function pausePlaytimeTracking() {
+  if (!playtimeRunning) return;
+
+  saveCurrentPlaytime();
+  playtimeRunning = false;
+  playtimeLastTimestamp = null;
+
+  if (playtimeInterval) {
+    clearInterval(playtimeInterval);
+    playtimeInterval = null;
+  }
+}
+
+function resumePlaytimeTracking() {
+  if (!gameHasStarted) return;
+  if (playtimeRunning) return;
+  if (document.visibilityState !== "visible") return;
+
+  startPlaytimeTracking();
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    pausePlaytimeTracking();
+  } else {
+    resumePlaytimeTracking();
+  }
+});
+
+window.addEventListener("pagehide", () => {
+  saveCurrentPlaytime();
+});
+
+
 /* PREMIUM SYSTEM */
 const hasPremium = localStorage.getItem("premium") === "true";
 const premiumCategories = ["wirtschaft","geografie","tiere","filme","socialmedia"];
@@ -777,6 +867,8 @@ function pickRandomPreset(category) {
 }
 
 startGameBtn.addEventListener('click', () => {
+  gameHasStarted = true;
+  startPlaytimeTracking();
   currentPreset = pickRandomPreset(currentCategory);
   if (!currentPreset) return;
   startScreen.classList.add('hidden');
@@ -857,6 +949,8 @@ function checkGameState() {
   }
 
   if (winner) {
+    pausePlaytimeTracking();
+    gameHasStarted = false;
     gameOver = true;
     gameStatusEl.textContent = (winner === 'X' ? 'Rot' : 'Blau') + ' hat gewonnen!';
     gameStatusEl.classList.remove('hidden');
@@ -865,6 +959,8 @@ function checkGameState() {
   }
 
   if (board.every(cell => cell !== null)) {
+    pausePlaytimeTracking();
+    gameHasStarted = false;
     gameOver = true;
     gameStatusEl.textContent = 'Unentschieden – niemand kann mehr gewinnen.';
     gameStatusEl.classList.remove('hidden');
@@ -873,6 +969,8 @@ function checkGameState() {
 }
 
 function showSolution() {
+  pausePlaytimeTracking();
+  gameHasStarted = false;
   if (!currentPreset) return;
   solutionGridEl.innerHTML = '';
   const { labels, players } = currentPreset;
@@ -910,8 +1008,12 @@ function showSolution() {
 }
 
 function restartGame() {
+  pausePlaytimeTracking();
+  gameHasStarted = false;
   solutionScreen.classList.add('hidden');
   gameScreen.classList.remove('hidden');
+  gameHasStarted = true;
+  startPlaytimeTracking();
   initGame();
 }
 </script>
