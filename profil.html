@@ -173,6 +173,29 @@
       font-family: monospace;
     }
 
+    /* SYMBOL-NAME NEBEN AVATAR */
+
+    .selected-symbol {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-bottom: 14px;
+
+      font-size: .95rem;
+      font-weight: 900;
+      color: #374151;
+    }
+
+    .selected-symbol-label {
+      color: #777;
+      font-weight: 700;
+    }
+
+    .selected-symbol-name {
+      color: #111827;
+    }
+
     .name-button {
       border: none;
       border-radius: 12px;
@@ -389,6 +412,81 @@
       font-weight: 900;
     }
 
+    /* AUFKLAPPBARE SPIELZEIT */
+
+    .hours-toggle {
+      width: 100%;
+      border: none;
+      background: #f3f4f6;
+
+      border-radius: 16px;
+
+      padding: 15px 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      cursor: pointer;
+
+      font-weight: 900;
+      font-size: 1rem;
+
+      transition: .2s ease;
+    }
+
+    .hours-toggle:hover {
+      background: #e5e7eb;
+    }
+
+    .hours-toggle-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hours-toggle-arrow {
+      width: 32px;
+      height: 32px;
+
+      border-radius: 50%;
+
+      background: #111827;
+      color: white;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      transition: transform .3s ease;
+    }
+
+    .hours-section.open .hours-toggle-arrow {
+      transform: rotate(180deg);
+    }
+
+    .hours-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+
+      transition:
+        grid-template-rows .4s ease,
+        opacity .3s ease,
+        margin-top .4s ease;
+    }
+
+    .hours-content-inner {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .hours-section.open .hours-content {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      margin-top: 14px;
+    }
+
     .game-hours-grid {
       display: grid;
 
@@ -469,6 +567,86 @@
       font-size: 1.15rem;
       font-weight: 900;
       margin-bottom: 12px;
+    }
+
+    /* AUFKLAPPBARE GESAMTMEILENSTEINE */
+
+    .global-milestone-toggle,
+    .game-milestone-toggle {
+      width: 100%;
+      border: none;
+      background: #f3f4f6;
+
+      border-radius: 16px;
+
+      padding: 14px 16px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      cursor: pointer;
+
+      font-weight: 900;
+
+      transition: .2s ease;
+    }
+
+    .global-milestone-toggle:hover,
+    .game-milestone-toggle:hover {
+      background: #e5e7eb;
+    }
+
+    .milestone-toggle-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .milestone-toggle-arrow {
+      width: 30px;
+      height: 30px;
+
+      border-radius: 50%;
+
+      background: #111827;
+      color: white;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      transition: transform .3s ease;
+    }
+
+    .global-milestone-section.open .milestone-toggle-arrow,
+    .game-milestone-section.open .milestone-toggle-arrow {
+      transform: rotate(180deg);
+    }
+
+    .global-milestone-content,
+    .game-milestone-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+
+      transition:
+        grid-template-rows .4s ease,
+        opacity .3s ease,
+        margin-top .4s ease;
+    }
+
+    .global-milestone-section.open .global-milestone-content,
+    .game-milestone-section.open .game-milestone-content {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      margin-top: 12px;
+    }
+
+    .global-milestone-inner,
+    .game-milestone-inner {
+      min-height: 0;
+      overflow: hidden;
     }
 
     .milestone-grid {
@@ -792,6 +970,10 @@
         font-size: 1.5rem;
       }
 
+      .selected-symbol {
+        font-size: .82rem;
+      }
+
       .search-box {
         flex-direction: column;
       }
@@ -873,6 +1055,21 @@
           </span>
         </div>
 
+        <div class="selected-symbol">
+
+          <span class="selected-symbol-label">
+            🏷️ Symbol:
+          </span>
+
+          <span
+            class="selected-symbol-name"
+            id="mySymbolName"
+          >
+            Gamer
+          </span>
+
+        </div>
+
         <button
           class="name-button"
           id="changeNameBtn"
@@ -937,90 +1134,7 @@
   </section>
 
 
-  <!-- SPIELZEIT -->
-
-  <section class="section-card">
-
-    <div class="section-title">
-      ⏱️ Spielzeit
-    </div>
-
-    <div class="section-subtitle">
-      Deine Zeit wird für jedes Spiel separat gespeichert.
-    </div>
-
-
-    <div class="total-hours-card">
-
-      <div class="total-hours-label">
-        GESAMTE SPIELZEIT
-      </div>
-
-      <div
-        class="total-hours"
-        id="totalHours"
-      >
-        0h 0min
-      </div>
-
-    </div>
-
-
-    <div
-      class="game-hours-grid"
-      id="gameHoursGrid"
-    ></div>
-
-  </section>
-
-
-  <!-- MEILENSTEINE -->
-
-  <section class="section-card">
-
-    <div class="section-title">
-      🏆 Meilensteine
-    </div>
-
-    <div class="section-subtitle">
-      Spiele länger und schalte neue Symbole frei.
-    </div>
-
-
-    <!-- GESAMT -->
-
-    <div class="milestone-group">
-
-      <div class="milestone-group-title">
-        🌍 Gesamtspielzeit
-      </div>
-
-      <div
-        class="milestone-grid"
-        id="globalMilestones"
-      ></div>
-
-    </div>
-
-
-    <!-- SPIELE -->
-
-    <div class="milestone-group">
-
-      <div class="milestone-group-title">
-        🎮 Meilensteine pro Spiel
-      </div>
-
-      <div
-        id="gameMilestones"
-      ></div>
-
-    </div>
-
-  </section>
-
-
-  <!-- SPIELERSUCHE -->
+  <!-- SPIELERSUCHE – WEITER OBEN -->
 
   <section class="section-card">
 
@@ -1058,6 +1172,157 @@
       class="search-result"
       id="searchResult"
     ></div>
+
+  </section>
+
+
+  <!-- SPIELZEIT -->
+
+  <section class="section-card">
+
+    <div class="section-title">
+      ⏱️ Spielzeit
+    </div>
+
+    <div class="section-subtitle">
+      Deine Zeit wird für jedes Spiel separat gespeichert.
+    </div>
+
+
+    <div class="total-hours-card">
+
+      <div class="total-hours-label">
+        GESAMTE SPIELZEIT
+      </div>
+
+      <div
+        class="total-hours"
+        id="totalHours"
+      >
+        0h 0min
+      </div>
+
+    </div>
+
+
+    <!-- AUFKLAPPBARE SPIELZEIT PRO SPIEL -->
+
+    <div
+      class="hours-section"
+      id="hoursSection"
+    >
+
+      <button
+        class="hours-toggle"
+        onclick="toggleHours()"
+      >
+
+        <div class="hours-toggle-left">
+          <span>🎮</span>
+          <span>Spielzeit pro Spiel</span>
+        </div>
+
+        <span class="hours-toggle-arrow">
+          ▼
+        </span>
+
+      </button>
+
+
+      <div class="hours-content">
+
+        <div class="hours-content-inner">
+
+          <div
+            class="game-hours-grid"
+            id="gameHoursGrid"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- MEILENSTEINE -->
+
+  <section class="section-card">
+
+    <div class="section-title">
+      🏆 Meilensteine
+    </div>
+
+    <div class="section-subtitle">
+      Spiele länger und schalte neue Symbole frei.
+    </div>
+
+
+    <!-- GESAMT -->
+
+    <div class="milestone-group">
+
+      <div class="milestone-group-title">
+        🌍 Gesamtspielzeit
+      </div>
+
+
+      <!-- AUFKLAPPBAR -->
+
+      <div
+        class="global-milestone-section"
+        id="globalMilestoneSection"
+      >
+
+        <button
+          class="global-milestone-toggle"
+          onclick="toggleGlobalMilestones()"
+        >
+
+          <div class="milestone-toggle-left">
+            <span>🏆</span>
+            <span>Meilensteine der Gesamtspielzeit</span>
+          </div>
+
+          <span class="milestone-toggle-arrow">
+            ▼
+          </span>
+
+        </button>
+
+
+        <div class="global-milestone-content">
+
+          <div class="global-milestone-inner">
+
+            <div
+              class="milestone-grid"
+              id="globalMilestones"
+            ></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- SPIELE -->
+
+    <div class="milestone-group">
+
+      <div class="milestone-group-title">
+        🎮 Meilensteine pro Spiel
+      </div>
+
+
+      <div id="gameMilestones"></div>
+
+    </div>
 
   </section>
 
@@ -1268,27 +1533,27 @@
 
     {
       id: "wop",
-      name: "Wort oder Pech"
+      name: "Wahrheit oder Pflicht"
     },
 
     {
       id: "imposter",
-      name: "Imposter"
+      name: "Finde den Imposter"
     },
 
     {
       id: "imposterpremium",
-      name: "Imposter Premium"
+      name: "Wer lügt am Besten"
     },
 
     {
       id: "wort",
-      name: "Wort"
+      name: "Verbotene Wörter"
     },
 
     {
       id: "liste",
-      name: "Liste"
+      name: "TopSort"
     },
 
     {
@@ -1298,12 +1563,12 @@
 
     {
       id: "stillepost",
-      name: "Stille Post"
+      name: "PinselPost"
     },
 
     {
       id: "habnochnie",
-      name: "Hab ich noch nie"
+      name: "Ich hab noch nie"
     },
 
     {
@@ -1313,57 +1578,57 @@
 
     {
       id: "superquiz",
-      name: "Super Quiz"
+      name: "Superquiz"
     },
 
     {
       id: "duoplay",
-      name: "Duo Play"
+      name: "Duo-Pantomime"
     },
 
     {
       id: "uberbieten",
-      name: "Überbieten"
+      name: "BattleBid"
     },
 
     {
       id: "these",
-      name: "These"
+      name: "Lüge oder Wahrheit"
     },
 
     {
       id: "100quiz",
-      name: "100 Quiz"
+      name: "TeamQuiz Board"
     },
 
     {
       id: "wolf",
-      name: "Wolf"
+      name: "Nightfall Village"
     },
 
     {
       id: "wm",
-      name: "TeamMaster"
+      name: "MatchMaster"
     },
 
     {
       id: "wmhunter",
-      name: "WM Hunter"
+      name: "PlayMaster"
     },
 
     {
       id: "wmguess",
-      name: "WM Guess"
+      name: "Guess the Hype"
     },
 
     {
       id: "wmtop",
-      name: "WM Top"
+      name: "TeamMaster"
     },
 
     {
       id: "tictactoe",
-      name: "Tic Tac Toe"
+      name: "Guess Grid"
     }
 
   ];
@@ -1378,35 +1643,35 @@
     {
       id: "champion",
       icon: "🏆",
-      name: "Champion",
+      name: "Goldener Champion",
       code: "CHAMP-2026"
     },
 
     {
       id: "fire",
       icon: "🔥",
-      name: "Feuer",
+      name: "Feuersturm",
       code: "FIRE-777"
     },
 
     {
       id: "crown",
       icon: "👑",
-      name: "König",
+      name: "Königskrone",
       code: "CROWN-999"
     },
 
     {
       id: "diamond",
       icon: "💎",
-      name: "Diamant",
+      name: "Diamant-Legende",
       code: "DIAMOND-CC"
     },
 
     {
       id: "lightning",
       icon: "⚡",
-      name: "Blitz",
+      name: "Blitz-Champion",
       code: "BOLT-2026"
     }
 
@@ -1429,35 +1694,35 @@
       id: "10min",
       minutes: 10,
       icon: "🕐",
-      name: "Anfänger"
+      name: "Warm-up-Held"
     },
 
     {
       id: "30min",
       minutes: 30,
       icon: "⏱️",
-      name: "Spieler"
+      name: "Challenge-Spieler"
     },
 
     {
       id: "1h",
       minutes: 60,
       icon: "⭐",
-      name: "Fortgeschritten"
+      name: "Game-Profi"
     },
 
     {
       id: "3h",
       minutes: 180,
       icon: "🔥",
-      name: "Profi"
+      name: "Challenge-Bestie"
     },
 
     {
       id: "5h",
       minutes: 300,
       icon: "🚀",
-      name: "Meister"
+      name: "Spiel-Legende"
     }
 
   ];
@@ -1480,42 +1745,42 @@
       id: "global_1h",
       minutes: 60,
       icon: "🌟",
-      name: "1 Stunde"
+      name: "Stundenstarter"
     },
 
     {
       id: "global_5h",
       minutes: 300,
       icon: "🚀",
-      name: "5 Stunden"
+      name: "Challenge-Rakete"
     },
 
     {
       id: "global_10h",
       minutes: 600,
       icon: "🏆",
-      name: "10 Stunden"
+      name: "Challenge-Champion"
     },
 
     {
       id: "global_25h",
       minutes: 1500,
       icon: "💎",
-      name: "25 Stunden"
+      name: "Diamant-Spieler"
     },
 
     {
       id: "global_50h",
       minutes: 3000,
       icon: "🐉",
-      name: "50 Stunden"
+      name: "Challenge-Drache"
     },
 
     {
       id: "global_100h",
       minutes: 6000,
       icon: "👑",
-      name: "100 Stunden"
+      name: "Ultimate Champion"
     }
 
   ];
@@ -2190,9 +2455,7 @@
           {
             id: milestone.id,
             icon: milestone.icon,
-            name:
-              "Gesamt " +
-              milestone.name,
+            name: milestone.name,
             unlocked:
               unlocked.includes(
                 milestone.id
@@ -2209,9 +2472,8 @@
     /*
       SPIEL-MEILENSTEINE
 
-      Es werden viele Symbole erzeugt,
-      weil jedes Spiel eigene
-      Meilensteine besitzt.
+      Jedes Spiel bekommt eigene
+      passende Symbolnamen.
     */
 
     gameDefinitions.forEach(
@@ -2233,9 +2495,10 @@
                 id: id,
                 icon: milestone.icon,
                 name:
-                  game.name +
-                  " – " +
-                  milestone.name,
+                  getGameSymbolName(
+                    game,
+                    milestone
+                  ),
                 unlocked:
                   unlocked.includes(id),
                 type: "gameMilestone"
@@ -2247,6 +2510,215 @@
         );
 
       }
+    );
+
+  }
+
+
+  /* =========================================================
+     COOLE SYMBOLNAMEN PASSEND ZUM SPIEL
+  ========================================================= */
+
+  function getGameSymbolName(
+    game,
+    milestone
+  ) {
+
+    const names = {
+
+      fakeorfakt: {
+        "10min": "Fakten-Fuchs",
+        "30min": "Fake-Jäger",
+        "1h": "Wahrheitsprofi",
+        "3h": "Fakten-Legende",
+        "5h": "Fake-König"
+      },
+
+      "10von10": {
+        "10min": "Rating-Rookie",
+        "30min": "10er-Kenner",
+        "1h": "Bewertungsprofi",
+        "3h": "10-von-10-Legende",
+        "5h": "Rating-Champion"
+      },
+
+      wop: {
+        "10min": "Wortakrobat",
+        "30min": "Pechvogel-Profi",
+        "1h": "Wort-Meister",
+        "3h": "Wort-Legende",
+        "5h": "Wort-Champion"
+      },
+
+      imposter: {
+        "10min": "Imposter-Spürnase",
+        "30min": "Lügenjäger",
+        "1h": "Imposter-Detektiv",
+        "3h": "Meisterdetektiv",
+        "5h": "Imposter-Legende"
+      },
+
+      imposterpremium: {
+        "10min": "Premium-Spürer",
+        "30min": "Lügenleser",
+        "1h": "Elite-Detektiv",
+        "3h": "Mastermind",
+        "5h": "Premium-Legende"
+      },
+
+      wort: {
+        "10min": "Wortfinder",
+        "30min": "Buchstabenjäger",
+        "1h": "Wortprofi",
+        "3h": "Wortmagier",
+        "5h": "Wort-Legende"
+      },
+
+      liste: {
+        "10min": "Listenstarter",
+        "30min": "Listenjäger",
+        "1h": "Listenprofi",
+        "3h": "Listenmeister",
+        "5h": "Listen-Legende"
+      },
+
+      tipptopf: {
+        "10min": "Tipp-Talent",
+        "30min": "Begriffe-Kenner",
+        "1h": "Tipp-Profi",
+        "3h": "Begriffe-Meister",
+        "5h": "Tipp-Legende"
+      },
+
+      stillepost: {
+        "10min": "Kritzel-Künstler",
+        "30min": "Zeichenprofi",
+        "1h": "Pinselmeister",
+        "3h": "Malkünstler",
+        "5h": "Stille-Post-Legende"
+      },
+
+      habnochnie: {
+        "10min": "Mutiger Starter",
+        "30min": "Geständnis-Profi",
+        "1h": "Ehrlichkeitsheld",
+        "3h": "Never-Have-I-Ever-Profi",
+        "5h": "Geständnis-Legende"
+      },
+
+      werbinich: {
+        "10min": "Rätsel-Rookie",
+        "30min": "Identitätsjäger",
+        "1h": "Wer-bin-ich-Profi",
+        "3h": "Menschenkenner",
+        "5h": "Identitäts-Legende"
+      },
+
+      superquiz: {
+        "10min": "Quizstarter",
+        "30min": "Quiz-Kenner",
+        "1h": "Quizprofi",
+        "3h": "Quizmeister",
+        "5h": "Quiz-Legende"
+      },
+
+      duoplay: {
+        "10min": "Duo-Starter",
+        "30min": "Teamplayer",
+        "1h": "Duo-Profi",
+        "3h": "Partner-Legende",
+        "5h": "Duo-Champion"
+      },
+
+      uberbieten: {
+        "10min": "Gebotsstarter",
+        "30min": "Überbieter",
+        "1h": "Bietprofi",
+        "3h": "Gebotsmeister",
+        "5h": "Biet-Legende"
+      },
+
+      these: {
+        "10min": "Meinungsstarter",
+        "30min": "These-Taktiker",
+        "1h": "Argumentationsprofi",
+        "3h": "Debattenmeister",
+        "5h": "These-Legende"
+      },
+
+      "100quiz": {
+        "10min": "Hundert-Fragen-Held",
+        "30min": "100er-Kenner",
+        "1h": "Quiz-Marathoner",
+        "3h": "100-Quiz-Profi",
+        "5h": "100-Quiz-Legende"
+      },
+
+      wolf: {
+        "10min": "Dorfwache",
+        "30min": "Nachtwächter",
+        "1h": "Wolfsspürer",
+        "3h": "Nachtfall-Profi",
+        "5h": "Dorf-Legende"
+      },
+
+      wm: {
+        "10min": "TeamMaster-Rookie",
+        "30min": "TeamMaster",
+        "1h": "TeamMaster-Profi",
+        "3h": "TeamMaster-Meister",
+        "5h": "TeamMaster-Legende"
+      },
+
+      wmhunter: {
+        "10min": "WM-Spürer",
+        "30min": "WM-Jäger",
+        "1h": "WM-Profi",
+        "3h": "WM-Hunter-Meister",
+        "5h": "WM-Jagd-Legende"
+      },
+
+      wmguess: {
+        "10min": "Fußball-Tipper",
+        "30min": "Match-Rater",
+        "1h": "Fußball-Orakel",
+        "3h": "MatchMaster",
+        "5h": "Fußball-Legende"
+      },
+
+      wmtop: {
+        "10min": "Ranking-Rookie",
+        "30min": "Toplisten-Kenner",
+        "1h": "Ranking-Profi",
+        "3h": "TopMaster",
+        "5h": "Ranking-Legende"
+      },
+
+      tictactoe: {
+        "10min": "Kreuzchen-Starter",
+        "30min": "Taktikspieler",
+        "1h": "Tic-Tac-Profi",
+        "3h": "Taktikmeister",
+        "5h": "Tic-Tac-Legende"
+      }
+
+    };
+
+
+    if (
+      names[game.id] &&
+      names[game.id][milestone.id]
+    ) {
+
+      return names[game.id][milestone.id];
+
+    }
+
+
+    return (
+      game.name +
+      " – " +
+      milestone.name
     );
 
   }
@@ -2360,7 +2832,112 @@
     ).textContent = icon;
 
 
+    const symbolName =
+      getSymbolNameById(id);
+
+
+    document.getElementById(
+      "mySymbolName"
+    ).textContent =
+      symbolName;
+
+
     renderSymbols();
+
+  }
+
+
+  /* =========================================================
+     SYMBOL-NAME SUCHEN
+  ========================================================= */
+
+  function getSymbolNameById(id) {
+
+    if (!id || id === "basic") {
+
+      return "Gamer";
+
+    }
+
+
+    const code =
+      codeSymbols.find(
+        symbol =>
+          symbol.id === id
+      );
+
+
+    if (code) {
+
+      return code.name;
+
+    }
+
+
+    const global =
+      globalMilestones.find(
+        milestone =>
+          milestone.id === id
+      );
+
+
+    if (global) {
+
+      return global.name;
+
+    }
+
+
+    if (
+      id.startsWith("game_")
+    ) {
+
+      const parts =
+        id.split("_");
+
+
+      const milestoneId =
+        parts[
+          parts.length - 1
+        ];
+
+
+      const gameId =
+        parts
+          .slice(1, -1)
+          .join("_");
+
+
+      const game =
+        gameDefinitions.find(
+          game =>
+            game.id === gameId
+        );
+
+
+      const milestone =
+        gameMilestones.find(
+          milestone =>
+            milestone.id === milestoneId
+        );
+
+
+      if (
+        game &&
+        milestone
+      ) {
+
+        return getGameSymbolName(
+          game,
+          milestone
+        );
+
+      }
+
+    }
+
+
+    return "Gamer";
 
   }
 
@@ -2608,6 +3185,44 @@
       });
 
     }, 100);
+
+  }
+
+
+  /* =========================================================
+     SPIELZEIT AUFKLAPPEN
+  ========================================================= */
+
+  function toggleHours() {
+
+    const section =
+      document.getElementById(
+        "hoursSection"
+      );
+
+
+    section.classList.toggle(
+      "open"
+    );
+
+  }
+
+
+  /* =========================================================
+     GESAMT-MEILENSTEINE AUFKLAPPEN
+  ========================================================= */
+
+  function toggleGlobalMilestones() {
+
+    const section =
+      document.getElementById(
+        "globalMilestoneSection"
+      );
+
+
+    section.classList.toggle(
+      "open"
+    );
 
   }
 
@@ -2900,27 +3515,56 @@
 
 
         group.className =
-          "milestone-group";
+          "milestone-group game-milestone-section";
 
 
-        const title =
+        const toggle =
+          document.createElement(
+            "button"
+          );
+
+
+        toggle.className =
+          "game-milestone-toggle";
+
+
+        toggle.innerHTML = `
+
+          <div class="milestone-toggle-left">
+
+            <span>🎮</span>
+
+            <span>
+              ${game.name}
+            </span>
+
+          </div>
+
+          <span class="milestone-toggle-arrow">
+            ▼
+          </span>
+
+        `;
+
+
+        const content =
           document.createElement(
             "div"
           );
 
 
-        title.className =
-          "milestone-group-title";
+        content.className =
+          "game-milestone-content";
 
 
-        title.textContent =
-          "🎮 " +
-          game.name;
+        const inner =
+          document.createElement(
+            "div"
+          );
 
 
-        group.appendChild(
-          title
-        );
+        inner.className =
+          "game-milestone-inner";
 
 
         const grid =
@@ -2976,7 +3620,10 @@
               </div>
 
               <div class="milestone-name">
-                ${milestone.name}
+                ${getGameSymbolName(
+                  game,
+                  milestone
+                )}
               </div>
 
               <div class="milestone-time">
@@ -3007,8 +3654,34 @@
         );
 
 
-        group.appendChild(
+        inner.appendChild(
           grid
+        );
+
+
+        content.appendChild(
+          inner
+        );
+
+
+        toggle.addEventListener(
+          "click",
+          () => {
+
+            group.classList.toggle(
+              "open"
+            );
+
+          }
+        );
+
+
+        group.appendChild(
+          toggle
+        );
+
+        group.appendChild(
+          content
         );
 
 
@@ -3075,7 +3748,7 @@
 
 
     /*
-      Avatar
+      Avatar + Symbolname
     */
 
     const avatarId =
@@ -3094,6 +3767,14 @@
       "myAvatar"
     ).textContent =
       avatar || "🎮";
+
+
+    document.getElementById(
+      "mySymbolName"
+    ).textContent =
+      getSymbolNameById(
+        avatarId
+      );
 
 
     /*
@@ -3187,11 +3868,15 @@
         ];
 
 
+      const milestoneIdWithoutPrefix =
+        milestoneId;
+
+
       const milestone =
         gameMilestones.find(
           m =>
             m.id ===
-            milestoneId
+            milestoneIdWithoutPrefix
         );
 
 
@@ -3280,7 +3965,7 @@
 
 
     /*
-      Fake-Spieler
+      3 fiktive Spieler
     */
 
     const player =
