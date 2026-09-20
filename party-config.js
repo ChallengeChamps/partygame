@@ -2,12 +2,12 @@ window.CHALLENGE_CHAMP_CONFIG = {
   multiplayerGames: [
     {
       id: "spiel1",
-      title: "Wahrheit oder Pflicht",
+      title: "Fake or Fakt",
       description: "Der Klassiker für jede Party – jetzt live zusammen spielen!",
       icon: "🔥",
-      minPlayers: 2,
+      minPlayers: 3,
       maxPlayers: 6,
-      url: "wop.html"
+      url: "index.html"
     },
     {
       id: "spiel2",
