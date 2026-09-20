@@ -1,15 +1,16 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getDatabase, ref, set, get, child, onValue, push, update, onDisconnect, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-// HIER SIND DEINE ECHTEN FIREBASE-ZUGANGSDATEN:
+// DEINE ECHTEN KORREKTEN ZUGANGSDATEN:
 const firebaseConfig = {
-  apiKey: "AIzaSy...",
-  authDomain: "challengechamp-1234.firebaseapp.com",
-  databaseURL: "https://challengechamp-1234-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "challengechamp-1234",
-  storageBucket: "challengechamp-1234.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef"
+  apiKey: "AIzaSyCbYDyrMm3fdqPbiXgI3S3dPRd024H4Tuk",
+  authDomain: "challengechamp-2477b.firebaseapp.com",
+  databaseURL: "https://challengechamp-2477b-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "challengechamp-2477b",
+  storageBucket: "challengechamp-2477b.firebasestorage.app",
+  messagingSenderId: "1091222818635",
+  appId: "1:1091222818635:web:4925c525afbd3ad8ed22ce",
+  measurementId: "G-TNM3S65YBH"
 };
 
 // Initialisierung
