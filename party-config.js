@@ -6,17 +6,17 @@ window.CHALLENGE_CHAMP_CONFIG = {
       description: "Der Klassiker für jede Party – jetzt live zusammen spielen!",
       icon: "🔥",
       minPlayers: 2,
-      maxPlayers: 10,
-      url: "game.html"
+      maxPlayers: 6,
+      url: "wop.html"
     },
     {
       id: "spiel2",
-      title: "Wer würde eher...",
-      description: "Finde heraus, was deine Freunde wirklich über dich denken.",
+      title: "Finde den Imposter",
+      description: "Finde heraus, wer von euch der beste Imposter ist.",
       icon: "🤔",
-      minPlayers: 2,
-      maxPlayers: 12,
-      url: "wer-wuerde-eher.html"
+      minPlayers: 3,
+      maxPlayers: 6,
+      url: "imposter.html"
     },
     {
       id: "spiel3",
@@ -24,8 +24,8 @@ window.CHALLENGE_CHAMP_CONFIG = {
       description: "Enthülle die lustigsten Geheimnisse deiner Gruppe.",
       icon: "🍹",
       minPlayers: 2,
-      maxPlayers: 15,
-      url: "ich-habe-noch-nie.html"
+      maxPlayers: 12,
+      url: "habnochnie.html"
     }
   ]
 };
