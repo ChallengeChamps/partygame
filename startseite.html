@@ -260,8 +260,7 @@ h1 {
   border-radius:2px;
 }
 
-/* -------------------- KEYFRAMES -------------------- */
-
+/* KEYFRAMES */
 @keyframes unlockFadeIn {
   from { opacity:0; transform:scale(0.9); }
   to { opacity:1; transform:scale(1); }
@@ -289,6 +288,11 @@ h1 {
 
 @keyframes confettiFall {
   to { transform:translateY(110vh) rotate(720deg); }
+}
+
+@keyframes fadeInBG {
+  from { opacity:0; transform:scale(0.95); }
+  to { opacity:1; transform:scale(1); }
 }
 
 /* SEARCH */
@@ -657,6 +661,71 @@ h1 {
     ⚠️ Verbindung verloren. Wir versuchen, die Verbindung wiederherzustellen...
 </div>
 
+<!-- PREMIUM HINTERGRUND WÄHLER -->
+<div id="premiumBackgroundSelector" 
+     style="
+       display:none;
+       max-width:340px;
+       margin:20px auto;
+       padding:20px;
+       border-radius:18px;
+       background:rgba(255,255,255,0.85);
+       box-shadow:0 8px 25px rgba(0,0,0,0.25);
+       backdrop-filter:blur(6px);
+       text-align:center;
+       animation:fadeInBG 0.4s ease;
+     ">
+
+  <h3 style="
+      margin:0 0 12px 0;
+      font-size:1.4rem;
+      color:#000;
+      font-weight:bold;
+      text-shadow:0 0 4px rgba(0,0,0,0.1);
+  ">
+    🎨 Premium Hintergrund wählen
+  </h3>
+
+  <select id="bgSelect" style="
+      width:100%;
+      padding:12px;
+      border-radius:12px;
+      border:none;
+      font-size:1rem;
+      box-shadow:0 4px 12px rgba(0,0,0,0.15);
+      outline:none;
+      background:white;
+  ">
+    <option value="dein-bild-url-hier.png">🚩 Standard</option>
+    <option value="bg3.png">🌵 Natur</option>
+    <option value="bg2.png">🌌 Galaxy</option>
+    <option value="bg1.png">⚽ Fußball</option>
+    <option value="bg6.png">🏦 Wirtschaft</option>
+    <option value="bg4.png">😺 Tiere -1</option>
+    <option value="bg5.png">😺 Tiere -2</option>
+    <option value="bg7.png">🎃 Halloween</option>
+  </select>
+
+  <button onclick="saveBackground(document.getElementById('bgSelect').value)" 
+          style="
+            margin-top:14px;
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:14px;
+            background:linear-gradient(135deg,#00eaff,#00c4d4);
+            font-size:1.1rem;
+            font-weight:bold;
+            cursor:pointer;
+            box-shadow:0 6px 18px rgba(0,0,0,0.25);
+            transition:0.2s;
+          "
+          onmouseover="this.style.transform='scale(1.03)'"
+          onmouseout="this.style.transform='scale(1)'">
+    Speichern
+  </button>
+</div>
+
 <!-- NEWS POPUP -->
 <div id="premiumPopup">
   <div id="premiumPopupContent">
@@ -818,6 +887,9 @@ function checkPremiumPassword() {
     localStorage.setItem("premium", "true");
     document.getElementById("premiumPasswordPopup").style.display = "none";
     document.getElementById("premiumUnlocked").style.display = "flex";
+    if (document.getElementById("premiumBackgroundSelector")) {
+      document.getElementById("premiumBackgroundSelector").style.display = "block";
+    }
     setTimeout(() => { document.getElementById("premiumUnlocked").style.display = "none"; }, 2000);
   } else {
     document.getElementById("premiumError").style.display = "block";
@@ -826,7 +898,18 @@ function checkPremiumPassword() {
 
 function logoutPremium() {
   localStorage.removeItem("premium");
+  if (document.getElementById("premiumBackgroundSelector")) {
+    document.getElementById("premiumBackgroundSelector").style.display = "none";
+  }
+  document.body.style.backgroundImage = "url('dein-bild-url-hier.png')";
   alert("Premium wurde deaktiviert.");
+}
+
+/* -------------------- HINTERGRUND SYSTEM -------------------- */
+function saveBackground(bg) {
+  if (!isPremium()) return;
+  localStorage.setItem("premiumBackground", bg);
+  document.body.style.backgroundImage = `url('${bg}')`;
 }
 
 /* -------------------- STICKER & CARDS -------------------- */
@@ -978,7 +1061,7 @@ async function leaveParty() {
   }
 }
 
-/* -------------------- COINS & FREUNDE -------------------- */
+/* -------------------- COINS & FREUNDE & INITIALISIERUNG -------------------- */
 function updateCoinDisplay() {
   const coinAmount = document.getElementById("coinAmount");
   if (!coinAmount) return;
@@ -988,6 +1071,20 @@ function updateCoinDisplay() {
 
 document.addEventListener("DOMContentLoaded", () => {
   updateCoinDisplay();
+  
+  // Premium-Hintergrund beim Laden prüfen und anzeigen
+  if (isPremium()) {
+    const bgSelector = document.getElementById("premiumBackgroundSelector");
+    if (bgSelector) bgSelector.style.display = "block";
+
+    const savedBg = localStorage.getItem("premiumBackground");
+    if (savedBg) {
+      document.body.style.backgroundImage = `url('${savedBg}')`;
+    }
+  } else {
+    document.body.style.backgroundImage = "url('dein-bild-url-hier.png')";
+  }
+
   const activeCode = localStorage.getItem("currentPartyCode");
   
   const checkFB = setInterval(() => {
