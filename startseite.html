@@ -291,48 +291,7 @@ h1 {
   to { transform:translateY(110vh) rotate(720deg); }
 }
 
-/* Fade-In */
-@keyframes premiumFadeIn {
-  from { opacity:0; transform:scale(0.8); }
-  to { opacity:1; transform:scale(1); }
-}
-
-/* Konfetti */
-.confetti {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background: hsl(calc(360 * var(--i)), 80%, 60%);
-  top: -10px;
-  left: calc(100% * var(--j));
-  opacity: 0.9;
-  animation: fall 1.8s linear forwards;
-  border-radius: 2px;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh) rotate(720deg);
-  }
-}
-
-/* Pulsierende Kreise */
-.pulse-ring {
-  position:absolute;
-  width:200px;
-  height:200px;
-  border:4px solid #00eaff;
-  border-radius:50%;
-  animation:pulseRing 1.8s infinite ease-out;
-  opacity:0.6;
-}
-
-@keyframes pulseRing {
-  0% { transform:scale(0.6); opacity:0.8; }
-  100% { transform:scale(2.5); opacity:0; }
-}
-
-/* -------------------- SEARCH -------------------- */
+/* SEARCH */
 .search-box {
   width: 85%;
   max-width: 280px;
@@ -373,7 +332,7 @@ h1 {
   background: #f2f2f2;
 }
 
-/* -------------------- BUTTONS -------------------- */
+/* BUTTONS */
 .instructions-button {
   text-align: center;
   margin-top: 10px;
@@ -534,22 +493,6 @@ h1 {
   100% { box-shadow: 0 0 8px rgba(0, 255, 100, 0.6); }
 }
 
-.sticker-wm::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  animation: shineWM 3s infinite;
-}
-
-@keyframes shineWM {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
 .bottom-help-button {
   text-align: center;
   margin: 25px 0;
@@ -573,7 +516,7 @@ h1 {
   transform: scale(1.05);
 }
 
-/* -------------------- CARD IMAGES -------------------- */
+/* CARD IMAGES */
 .fakeorfakt::before { background-image: url('index1.png'); }
 .zehnvonzehn::before { background-image: url('10von10.png'); }
 .wop::before { background-image: url('wop.png'); }
@@ -595,7 +538,7 @@ h1 {
 .wmtop::before { background-image: url('wm.png'); }
 .wolf::before { background-image: url('wolf.png'); }
 
-/* -------------------- COINS + SHOP -------------------- */
+/* COINS + SHOP */
 .top-actions {
   display: flex;
   justify-content: center;
@@ -640,11 +583,72 @@ h1 {
   transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
+
+/* -------------------- MULTIPLAYER PARTY BAR -------------------- */
+.party-bar {
+  background: rgba(255, 255, 255, 0.95);
+  max-width: 450px;
+  margin: 15px auto;
+  padding: 15px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.party-bar-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.party-btn {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: 0.2s;
+}
+
+.party-btn-create { background: #2ed573; color: white; }
+.party-btn-join { background: #1e90ff; color: white; }
+.party-btn-leave { background: #ff4757; color: white; }
+
+.party-box-info {
+  background: #f1f2f6;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.party-code-badge {
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #2f3542;
+}
+
+.party-players-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.party-player-tag {
+  background: #ffffff;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 </style>
 
 <!-- QRCode.js & Party Style -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<link rel="stylesheet" href="css/party-style.css">
 </head>
 <body>
 
@@ -652,78 +656,6 @@ h1 {
 <div id="connection-status-banner" class="connection-banner" style="display: none;">
     ⚠️ Verbindung verloren. Wir versuchen, die Verbindung wiederherzustellen...
 </div>
-
-<!-- PREMIUM Hintergrund Auswahl -->
-<div id="premiumBackgroundSelector" 
-     style="
-       display:none;
-       max-width:340px;
-       margin:20px auto;
-       padding:20px;
-       border-radius:18px;
-       background:rgba(255,255,255,0.85);
-       box-shadow:0 8px 25px rgba(0,0,0,0.25);
-       backdrop-filter:blur(6px);
-       text-align:center;
-       animation:fadeInBG 0.4s ease;
-     ">
-
-  <h3 style="
-      margin:0 0 12px 0;
-      font-size:1.4rem;
-      color:#000;
-      font-weight:bold;
-      text-shadow:0 0 4px rgba(0,0,0,0.1);
-  ">
-    🎨 Premium Hintergrund wählen
-  </h3>
-
-  <select id="bgSelect" style="
-      width:100%;
-      padding:12px;
-      border-radius:12px;
-      border:none;
-      font-size:1rem;
-      box-shadow:0 4px 12px rgba(0,0,0,0.15);
-      outline:none;
-      background:white;
-  ">
-    <option value="dein-bild-url-hier.png">🚩 Standart</option>
-    <option value="bg3.png">🌵 Natur</option>
-    <option value="bg2.png">🌌 Galaxy</option>
-    <option value="bg1.png">⚽ Fußball</option>
-    <option value="bg6.png">🏦 Wirtschaft</option>
-    <option value="bg4.png">😺 Tiere -1</option>
-    <option value="bg5.png">😺 Tiere -2</option>
-    <option value="bg7.png">🎃 Halloween</option>
-  </select>
-
-  <button onclick="saveBackground(document.getElementById('bgSelect').value)" 
-          style="
-            margin-top:14px;
-            width:100%;
-            padding:12px;
-            border:none;
-            border-radius:14px;
-            background:linear-gradient(135deg,#00eaff,#00c4d4);
-            font-size:1.1rem;
-            font-weight:bold;
-            cursor:pointer;
-            box-shadow:0 6px 18px rgba(0,0,0,0.25);
-            transition:0.2s;
-          "
-          onmouseover="this.style.transform='scale(1.03)'"
-          onmouseout="this.style.transform='scale(1)'">
-    Speichern
-  </button>
-</div>
-
-<style>
-@keyframes fadeInBG {
-  from { opacity:0; transform:scale(0.95); }
-  to { opacity:1; transform:scale(1); }
-}
-</style>
 
 <!-- NEWS POPUP -->
 <div id="premiumPopup">
@@ -739,18 +671,11 @@ h1 {
       <li>Nightfall Village 🌙</li>
       <li>5 WM-Special Spiele⚽</li>
     </ul>
-    <p><b>Premium Features:</b></p>
-    <ul>
-      <li>Neue Premium Kategorien 💎</li>
-      <li>Neue Premium Spiele 🎉</li>
-      <li>Neue Premium Hintergrundwahl 🖼️</li>
-    </ul>
     <p><b>Neuigkeiten:</b></p>
     <ul>
       <li>Spielsuche 🔍</li>
       <li>Bugfixes 🔧</li>
       <li>Sound- und Animationerweiterungen 🎶</li>
-      <li>Über 150 neue Kategorien ➕</li>
     </ul>
   </div>
 </div>
@@ -780,8 +705,6 @@ h1 {
 <div id="premiumUnlocked" class="premium-unlock">
   <div class="unlock-glow"></div>
   <div class="unlock-ring"></div>
-  <div class="unlock-ring delay1"></div>
-  <div class="unlock-ring delay2"></div>
   <div class="unlock-diamond"></div>
   <div class="unlock-text">Premium aktiviert 💎</div>
 </div>
@@ -790,7 +713,6 @@ h1 {
 
 <!-- COINS + SHOP + PROFIL -->
 <div class="top-actions">
-
   <div class="coins-display">
     🪙 <span id="coinAmount">0</span>
   </div>
@@ -805,7 +727,23 @@ h1 {
     </a>
     <span id="friendRequestBadge" class="badge-count">0</span>
   </div>
+</div>
 
+<!-- MULTIPLAYER PARTY BEREICH -->
+<div class="party-bar">
+  <div id="partyActionBtns" class="party-bar-btns">
+    <button class="party-btn party-btn-create" onclick="createParty()">🎉 Party erstellen</button>
+    <button class="party-btn party-btn-join" onclick="promptJoinParty()">🔑 Raum beitreten</button>
+  </div>
+
+  <div id="partyActiveBox" class="party-box-info" style="display: none;">
+    <div>Dein Party-Code:</div>
+    <div class="party-code-badge" id="partyCodeDisplay">------</div>
+    <div style="margin-top: 5px; font-size: 0.85rem; color: #555;">Mitspieler im Raum:</div>
+    <div class="party-players-list" id="partyPlayersList"></div>
+    <br>
+    <button class="party-btn party-btn-leave" onclick="leaveParty()">Raum verlassen</button>
+  </div>
 </div>
 
 <!-- SUCHFELD -->
@@ -829,100 +767,28 @@ h1 {
 
 <!-- GRID -->
 <div class="card-container">
-
-  <a href="index.html" class="card fakeorfakt">
-    <div class="card-content">Fake or Fakt 🎭<div class="player-count">3–6</div></div>
-  </a>
-
-  <a href="10von10.html" class="card zehnvonzehn">
-    <div class="card-content">10 von 10 💘<div class="player-count">2–6</div></div>
-  </a>
-
-  <a href="wop.html" class="card wop">
-    <div class="card-content">Wahrheit oder Pflicht 🔥<div class="player-count">1–6</div></div>
-  </a>
-
-  <a href="imposter.html" class="card imposter">
-    <div class="card-content">Finde den Imposter 🕵️‍♂️<div class="player-count">3–6</div></div>
-  </a>
-
-  <a href="imposterpremium.html" class="card imposterpremium">
-    <div class="card-content">Wer lügt am Besten 🔍<div class="player-count">3–12</div></div>
-  </a>
-
-  <a href="wort.html" class="card wort">
-    <div class="card-content">Verbotene Wörter 🙊<div class="player-count">2+</div></div>
-  </a>
-
-  <a href="liste.html" class="card topsort">
-    <div class="card-content">TopSort 📜<div class="player-count">2–5</div></div>
-  </a>
-
-  <a href="tipptopf.html" class="card tipptopf">
-    <div class="card-content">TippTopf 👆<div class="player-count">2–8</div></div>
-  </a>
-
-  <a href="stillepost.html" class="card stillepost">
-    <div class="card-content">PinselPost 🖌️<div class="player-count">3–8</div></div>
-  </a>
-
-  <a href="habnochnie.html" class="card habnochnie">
-    <div class="card-content">Ich hab noch nie 🚫<div class="player-count">1–12</div></div>
-  </a>
-
-  <a href="werbinich.html" class="card werbinich">
-    <div class="card-content">Wer bin ich ⁉️<div class="player-count">2+</div></div>
-  </a>
-
-  <a href="superquiz.html" class="card superquiz">
-    <div class="card-content">Superquiz 🧠<div class="player-count">1–8</div></div>
-  </a>
-
-  <a href="duoplay.html" class="card duoplay">
-    <div class="card-content">Duo‑Pantomime 🎬<div class="player-count">3–10</div></div>
-  </a>
-
-  <a href="uberbieten.html" class="card uberbieten">
-    <div class="card-content">BattleBid 📈<div class="player-count">2–10</div></div>
-  </a>
-
-  <a href="these.html" class="card zehnvonzehn">
-    <div class="card-content">Lüge oder Wahrheit 🤥<div class="player-count">2–5</div></div>
-  </a>
-
-  <a href="100quiz.html" class="card quiz">
-    <div class="card-content">TeamQuiz Board 🧾<div class="player-count">1+</div></div>
-  </a>
-
-  <a href="wolf.html" class="card wolf">
-    <div class="card-content">Nightfall Village 🌙<div class="player-count">4-15</div></div>
-  </a>
-
-  <a href="wm.html" class="card wmspiel">
-    <div class="sticker sticker-wm">WM‑Special</div>
-    <div class="card-content">MatchMaster ⚽<div class="player-count">2–5</div></div>
-  </a>
-
-  <a href="wmhunter.html" class="card wmspiel">
-    <div class="sticker sticker-wm">WM‑Special</div>
-    <div class="card-content">PlayerMaster ⭐<div class="player-count">1+</div></div>
-  </a>
-
-  <a href="wmguess.html" class="card wmguess">
-    <div class="sticker sticker-wm">WM‑Special</div>
-    <div class="card-content">Guess the Hype 📱<div class="player-count">1+</div></div>
-  </a> 
-
-  <a href="wmtop.html" class="card wmtop">
-    <div class="sticker sticker-wm">WM‑Special</div>
-    <div class="card-content">TeamMaster 👨<div class="player-count">1+</div></div>
-  </a>
-
-  <a href="tictactoe.html" class="card wmtop">
-    <div class="sticker sticker-wm">WM‑Special</div>
-    <div class="card-content">Guess Grid 🧩<div class="player-count">2</div></div>
-  </a>
-
+  <a href="index.html" class="card fakeorfakt"><div class="card-content">Fake or Fakt 🎭<div class="player-count">3–6</div></div></a>
+  <a href="10von10.html" class="card zehnvonzehn"><div class="card-content">10 von 10 💘<div class="player-count">2–6</div></div></a>
+  <a href="wop.html" class="card wop"><div class="card-content">Wahrheit oder Pflicht 🔥<div class="player-count">1–6</div></div></a>
+  <a href="imposter.html" class="card imposter"><div class="card-content">Finde den Imposter 🕵️‍♂️<div class="player-count">3–6</div></div></a>
+  <a href="imposterpremium.html" class="card imposterpremium"><div class="card-content">Wer lügt am Besten 🔍<div class="player-count">3–12</div></div></a>
+  <a href="wort.html" class="card wort"><div class="card-content">Verbotene Wörter 🙊<div class="player-count">2+</div></div></a>
+  <a href="liste.html" class="card topsort"><div class="card-content">TopSort 📜<div class="player-count">2–5</div></div></a>
+  <a href="tipptopf.html" class="card tipptopf"><div class="card-content">TippTopf 👆<div class="player-count">2–8</div></div></a>
+  <a href="stillepost.html" class="card stillepost"><div class="card-content">PinselPost 🖌️<div class="player-count">3–8</div></div></a>
+  <a href="habnochnie.html" class="card habnochnie"><div class="card-content">Ich hab noch nie 🚫<div class="player-count">1–12</div></div></a>
+  <a href="werbinich.html" class="card werbinich"><div class="card-content">Wer bin ich ⁉️<div class="player-count">2+</div></div></a>
+  <a href="superquiz.html" class="card superquiz"><div class="card-content">Superquiz 🧠<div class="player-count">1–8</div></div></a>
+  <a href="duoplay.html" class="card duoplay"><div class="card-content">Duo‑Pantomime 🎬<div class="player-count">3–10</div></div></a>
+  <a href="uberbieten.html" class="card uberbieten"><div class="card-content">BattleBid 📈<div class="player-count">2–10</div></div></a>
+  <a href="these.html" class="card zehnvonzehn"><div class="card-content">Lüge oder Wahrheit 🤥<div class="player-count">2–5</div></div></a>
+  <a href="100quiz.html" class="card quiz"><div class="card-content">TeamQuiz Board 🧾<div class="player-count">1+</div></div></a>
+  <a href="wolf.html" class="card wolf"><div class="card-content">Nightfall Village 🌙<div class="player-count">4-15</div></div></a>
+  <a href="wm.html" class="card wmspiel"><div class="sticker sticker-wm">WM‑Special</div><div class="card-content">MatchMaster ⚽<div class="player-count">2–5</div></div></a>
+  <a href="wmhunter.html" class="card wmspiel"><div class="sticker sticker-wm">WM‑Special</div><div class="card-content">PlayerMaster ⭐<div class="player-count">1+</div></div></a>
+  <a href="wmguess.html" class="card wmguess"><div class="sticker sticker-wm">WM‑Special</div><div class="card-content">Guess the Hype 📱<div class="player-count">1+</div></div></a>
+  <a href="wmtop.html" class="card wmtop"><div class="sticker sticker-wm">WM‑Special</div><div class="card-content">TeamMaster 👨<div class="player-count">1+</div></div></a>
+  <a href="tictactoe.html" class="card wmtop"><div class="sticker sticker-wm">WM‑Special</div><div class="card-content">Guess Grid 🧩<div class="player-count">2</div></div></a>
 </div>
 
 <div class="bottom-help-button">
@@ -934,7 +800,6 @@ h1 {
 
 <script>
 /* -------------------- PREMIUM LOGIK -------------------- */
-
 const premiumGames = ["imposterpremium", "wolf"];
 const newGames = ["imposterpremium", "uberbieten", "these", "100quiz", "wolf"];
 
@@ -942,36 +807,18 @@ function isPremium() {
   return localStorage.getItem("premium") === "true";
 }
 
-function openPremiumLogin() {
-  document.getElementById("premiumLoginPopup").style.display = "flex";
-}
-
-function closePremiumLogin() {
-  document.getElementById("premiumLoginPopup").style.display = "none";
-}
-
-function premiumAlready() {
-  closePremiumLogin();
-  document.getElementById("premiumPasswordPopup").style.display = "flex";
-}
-
-function closePremiumPassword() {
-  document.getElementById("premiumPasswordPopup").style.display = "none";
-}
+function openPremiumLogin() { document.getElementById("premiumLoginPopup").style.display = "flex"; }
+function closePremiumLogin() { document.getElementById("premiumLoginPopup").style.display = "none"; }
+function premiumAlready() { closePremiumLogin(); document.getElementById("premiumPasswordPopup").style.display = "flex"; }
+function closePremiumPassword() { document.getElementById("premiumPasswordPopup").style.display = "none"; }
 
 function checkPremiumPassword() {
   const pw = document.getElementById("premiumPasswordInput").value;
-
   if (pw === "abc123") {
     localStorage.setItem("premium", "true");
-    document.getElementById("premiumBackgroundSelector").style.display = "block";
-
     document.getElementById("premiumPasswordPopup").style.display = "none";
     document.getElementById("premiumUnlocked").style.display = "flex";
-
-    setTimeout(() => {
-      document.getElementById("premiumUnlocked").style.display = "none";
-    }, 2000);
+    setTimeout(() => { document.getElementById("premiumUnlocked").style.display = "none"; }, 2000);
   } else {
     document.getElementById("premiumError").style.display = "block";
   }
@@ -982,12 +829,10 @@ function logoutPremium() {
   alert("Premium wurde deaktiviert.");
 }
 
-/* -------------------- STICKER + PREMIUM BLOCKER -------------------- */
-
+/* -------------------- STICKER & CARDS -------------------- */
 document.querySelectorAll(".card").forEach(card => {
   const link = card.getAttribute("href");
   if (!link) return;
-
   const gameId = link.replace(".html", "");
 
   if (newGames.includes(gameId)) {
@@ -1013,7 +858,6 @@ document.querySelectorAll(".card").forEach(card => {
 });
 
 /* -------------------- SUCHE -------------------- */
-
 const games = [
   { name: "Fake or Fakt 🎭", link: "index.html" },
   { name: "10 von 10 💘", link: "10von10.html" },
@@ -1044,18 +888,10 @@ const searchResults = document.getElementById("searchResults");
 searchInput.addEventListener("input", () => {
   const value = searchInput.value.toLowerCase();
   searchResults.innerHTML = "";
-
-  if (value.trim() === "") {
-    searchResults.style.display = "none";
-    return;
-  }
+  if (value.trim() === "") { searchResults.style.display = "none"; return; }
 
   const filtered = games.filter(g => g.name.toLowerCase().includes(value));
-
-  if (filtered.length === 0) {
-    searchResults.style.display = "none";
-    return;
-  }
+  if (filtered.length === 0) { searchResults.style.display = "none"; return; }
 
   filtered.forEach(g => {
     const div = document.createElement("div");
@@ -1063,71 +899,101 @@ searchInput.addEventListener("input", () => {
     div.onclick = () => window.location.href = g.link;
     searchResults.appendChild(div);
   });
-
   searchResults.style.display = "block";
 });
 
-/* -------------------- NEWS POPUP AUTO -------------------- */
-window.addEventListener("load", () => {
-  document.getElementById("premiumPopup").style.display = "flex";
-});
+/* -------------------- MULTIPLAYER PARTY MANAGER -------------------- */
+let currentPartyCode = null;
 
-function showPremiumUnlocked() {
-  const box = document.getElementById("premiumUnlocked");
-  box.style.display = "flex";
-
-  for (let i = 0; i < 80; i++) {
-    const conf = document.createElement("div");
-    conf.classList.add("confetti");
-    conf.style.setProperty("--i", Math.random());
-    conf.style.setProperty("--j", Math.random());
-    box.appendChild(conf);
-
-    setTimeout(() => conf.remove(), 1800);
-  }
-
-  setTimeout(() => {
-    box.style.display = "none";
-  }, 2200);
+function getPlayerName() {
+  return localStorage.getItem("challengeChampProfileName") || "Spieler";
 }
 
-/* -------------------- PREMIUM HINTERGRUND -------------------- */
+async function createParty() {
+  if (!window.firebaseDB) return alert("Fehler: Verbindung zum Server nicht bereit.");
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  const name = getPlayerName();
 
-function saveBackground(bg) {
-  if (!isPremium()) return;
-  localStorage.setItem("premiumBackground", bg);
-  document.body.style.backgroundImage = `url('${bg}')`;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  if (isPremium()) {
-    const savedBg = localStorage.getItem("premiumBackground");
-    if (savedBg) {
-      document.body.style.backgroundImage = `url('${savedBg}')`;
+  const partyRef = window.fbRef(window.firebaseDB, `parties/${code}`);
+  await window.fbSet(partyRef, {
+    created: Date.now(),
+    host: name,
+    players: {
+      p1: { name: name, host: true }
     }
-  } else {
-    document.body.style.backgroundImage = "url('dein-bild-url-hier.png')";
+  });
+
+  localStorage.setItem("currentPartyCode", code);
+  initPartyListener(code);
+}
+
+function promptJoinParty() {
+  const code = prompt("Gib den 6-stelligen Party-Code ein:");
+  if (code && code.length === 6) joinParty(code.trim());
+}
+
+async function joinParty(code) {
+  if (!window.firebaseDB) return;
+  const partyRef = window.fbRef(window.firebaseDB, `parties/${code}`);
+  const snap = await window.fbGet(partyRef);
+
+  if (!snap.exists()) return alert("Party nicht gefunden!");
+
+  const name = getPlayerName();
+  const pKey = "p_" + Date.now();
+  await window.fbSet(window.fbRef(window.firebaseDB, `parties/${code}/players/${pKey}`), { name: name });
+
+  localStorage.setItem("currentPartyCode", code);
+  initPartyListener(code);
+}
+
+function initPartyListener(code) {
+  currentPartyCode = code;
+  document.getElementById("partyActionBtns").style.display = "none";
+  document.getElementById("partyActiveBox").style.display = "block";
+  document.getElementById("partyCodeDisplay").innerText = code;
+
+  const partyRef = window.fbRef(window.firebaseDB, `parties/${code}/players`);
+  window.fbOnValue(partyRef, (snapshot) => {
+    const list = document.getElementById("partyPlayersList");
+    list.innerHTML = "";
+    if (snapshot.exists()) {
+      const players = snapshot.val();
+      Object.values(players).forEach(p => {
+        const tag = document.createElement("div");
+        tag.className = "party-player-tag";
+        tag.innerText = p.name + (p.host ? " 👑" : "");
+        list.appendChild(tag);
+      });
+    }
+  });
+}
+
+async function leaveParty() {
+  if (currentPartyCode && window.firebaseDB) {
+    localStorage.removeItem("currentPartyCode");
+    document.getElementById("partyActionBtns").style.display = "flex";
+    document.getElementById("partyActiveBox").style.display = "none";
+    currentPartyCode = null;
   }
-});
+}
 
-/* -------------------- COINS ANZEIGE -------------------- */
-
+/* -------------------- COINS & FREUNDE -------------------- */
 function updateCoinDisplay() {
   const coinAmount = document.getElementById("coinAmount");
   if (!coinAmount) return;
-
   const coins = parseInt(localStorage.getItem("teamMasterCoins"), 10) || 0;
   coinAmount.textContent = coins;
 }
 
-updateCoinDisplay();
-
-/* -------------------- FREUNDSCHAFTSANFRAGEN LISTENER -------------------- */
-
 document.addEventListener("DOMContentLoaded", () => {
+  updateCoinDisplay();
+  const activeCode = localStorage.getItem("currentPartyCode");
+  
   const checkFB = setInterval(() => {
     if (window.firebaseDB) {
       clearInterval(checkFB);
+      if (activeCode) initPartyListener(activeCode);
       listenForFriendRequests();
     }
   }, 100);
@@ -1159,12 +1025,12 @@ function listenForFriendRequests() {
 }
 </script>
 
-</body>
-<footer style="margin-top:20px;">
-  <a href="agb.html">AGB</a> |
-  <a href="datenschutz.html">Datenschutz</a> |
-  <a href="cookies.html">Cookies</a> |
-  <a href="hilfe.html">Hilfe</a>
+<footer style="margin-top:20px; text-align: center; color: white;">
+  <a href="agb.html" style="color: white;">AGB</a> |
+  <a href="datenschutz.html" style="color: white;">Datenschutz</a> |
+  <a href="cookies.html" style="color: white;">Cookies</a> |
+  <a href="hilfe.html" style="color: white;">Hilfe</a>
 </footer>
 
+</body>
 </html>
