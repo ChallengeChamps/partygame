@@ -193,10 +193,10 @@
       <div class="card">
         <h2>Spieler <span id="playerNumber"></span></h2>
         <button onclick="revealCard()" id="revealBtn">Karte aufdecken</button>
-        <h3 id="cardContent" class="hidden"></h3>
+        <div id="cardContent" class="hidden" style="margin-top: 15px;"></div>
       </div>
     </div>
-    <button onclick="nextPlayer()" id="nextBtn">Nächster Spieler</button>
+    <button onclick="nextPlayer()" id="nextBtn" class="hidden">Nächster Spieler 👍</button>
   </div>
 
   <div class="container hidden" id="reveal">
@@ -310,7 +310,7 @@
         const players = Object.values(this.partyData.players || {});
         const container = document.getElementById('online-game-container');
 
-        // 1. ZUSTAND: SETUP (Lügneranzahl wählen)
+        // 1. ZUSTAND: SETUP
         if (state.status === 'setup') {
           if (this.isHost) {
             const maxLiars = Math.max(1, players.length - 2);
@@ -430,11 +430,9 @@
         const liarCount = parseInt(document.getElementById("onlineLiarSelect").value, 10);
         const playerIds = Object.keys(this.partyData.players);
 
-        // 1. Lügner zufällig bestimmen
         const shuffledPlayers = [...playerIds].sort(() => 0.5 - Math.random());
         const liars = shuffledPlayers.slice(0, liarCount);
 
-        // 2. Jeder Fakt-Spieler bekommt einen einzigartigen echten Fakt aus dem Pool
         const shuffledFacts = [...realFactsPool].sort(() => 0.5 - Math.random());
         const assignedFacts = {};
         
@@ -446,7 +444,6 @@
           }
         });
 
-        // 3. Vorbereitete Fakes für den Lügner auswählen
         const randomFakeSet = fakeOptionsPool[Math.floor(Math.random() * fakeOptionsPool.length)];
 
         const roles = {};
@@ -530,11 +527,12 @@
     }
 
     // =========================================================================
-    // OFFLINE SPIEL-LOGIK (PASS & PLAY)
+    // OFFLINE SPIEL-LOGIK (PASS & PLAY) - VOLLSTÄNDIG ERHALTEN & OPTIMIERT
     // =========================================================================
-    let players = [];
+    let playerRoles = [];
     let currentPlayer = 0;
-    let liars = [];
+    let offlineLiars = [];
+    let offlineSelectedFakeText = "";
 
     function startGame() {
       const playerCount = parseInt(document.getElementById('playerCount').value);
@@ -546,24 +544,29 @@
       }
 
       const shuffledFacts = [...realFactsPool].sort(() => 0.5 - Math.random());
-      players = [];
-      liars = [];
+      const randomFakeSet = fakeOptionsPool[Math.floor(Math.random() * fakeOptionsPool.length)];
 
-      while (liars.length < liarCount) {
+      playerRoles = [];
+      offlineLiars = [];
+
+      while (offlineLiars.length < liarCount) {
         const index = Math.floor(Math.random() * playerCount);
-        if (!liars.includes(index)) {
-          liars.push(index);
+        if (!offlineLiars.includes(index)) {
+          offlineLiars.push(index);
         }
       }
 
+      let factIndex = 0;
       for (let i = 0; i < playerCount; i++) {
-        if (liars.includes(i)) {
-          players.push("DU BIST DER LÜGNER! Erfinde einen freien Fake-Fakt.");
+        if (offlineLiars.includes(i)) {
+          playerRoles.push({ role: 'liar', fakeData: randomFakeSet });
         } else {
-          players.push(shuffledFacts[i % shuffledFacts.length].fact);
+          playerRoles.push({ role: 'fact', item: shuffledFacts[factIndex % shuffledFacts.length] });
+          factIndex++;
         }
       }
 
+      currentPlayer = 0;
       document.getElementById('setup').classList.add('hidden');
       document.getElementById('game').classList.remove('hidden');
       showPlayer();
@@ -572,26 +575,75 @@
     function showPlayer() {
       document.getElementById('playerNumber').innerText = currentPlayer + 1;
       document.getElementById('cardContent').classList.add('hidden');
+      document.getElementById('cardContent').innerHTML = '';
+      document.getElementById('nextBtn').classList.add('hidden');
       document.getElementById('revealBtn').disabled = false;
       document.getElementById('revealBtn').style.opacity = 1;
+      offlineSelectedFakeText = "";
     }
 
     function revealCard() {
       const cardContent = document.getElementById('cardContent');
-      cardContent.innerText = players[currentPlayer];
+      const data = playerRoles[currentPlayer];
+
+      if (data.role === 'liar') {
+        cardContent.innerHTML = `
+          <h3 style="color: #ff4757; margin-top: 0;">🤫 DU BIST DER LÜGNER!</h3>
+          <p style="color: #000;">Wähle eine Option ODER tippe deine eigene Lüge ein:</p>
+          
+          <button class="option-btn" id="offOpt1" style="background:#2f3542; color:#fff;" onclick="selectOfflineOption(1, '${data.fakeData.fake1}')">
+            1️⃣ ${data.fakeData.fake1}
+          </button>
+          <button class="option-btn" id="offOpt2" style="background:#2f3542; color:#fff;" onclick="selectOfflineOption(2, '${data.fakeData.fake2}')">
+            2️⃣ ${data.fakeData.fake2}
+          </button>
+
+          <input type="text" id="offCustomFake" placeholder="Eigene Lüge eingeben..." style="margin-top:10px; border:1px solid #ccc; background:#f9f9f9; color:#000;" oninput="selectOfflineCustomOption(this.value)">
+        `;
+      } else {
+        cardContent.innerHTML = `
+          <h3 style="color: #2ed573; margin-top: 0;">📜 DEIN FAKT (Wahrheit)</h3>
+          <p style="color: #000; font-size: 1.1rem; font-weight: bold;">Kategorie: ${data.item.category}</p>
+          <p style="color: #000; font-size: 1.1rem; background: #f1f2f6; padding: 12px; border-radius: 10px;">
+            ${data.item.fact}
+          </p>
+        `;
+      }
+
       cardContent.classList.remove('hidden');
       document.getElementById('revealBtn').disabled = true;
       document.getElementById('revealBtn').style.opacity = 0.6;
+      document.getElementById('nextBtn').classList.remove('hidden');
+    }
+
+    function selectOfflineOption(num, text) {
+      offlineSelectedFakeText = text;
+      const customInp = document.getElementById("offCustomFake");
+      if (customInp) customInp.value = "";
+      document.querySelectorAll("#cardContent .option-btn").forEach(btn => btn.style.background = "#2f3542");
+      const btn = document.getElementById("offOpt" + num);
+      if (btn) btn.style.background = "#ff4081";
+    }
+
+    function selectOfflineCustomOption(val) {
+      offlineSelectedFakeText = val;
+      document.querySelectorAll("#cardContent .option-btn").forEach(btn => btn.style.background = "#2f3542");
     }
 
     function nextPlayer() {
+      const data = playerRoles[currentPlayer];
+      if (data.role === 'liar' && !offlineSelectedFakeText.trim()) {
+        alert("Bitte wähle eine Lüge aus oder gib eine eigene ein!");
+        return;
+      }
+
       currentPlayer++;
-      if (currentPlayer < players.length) {
+      if (currentPlayer < playerRoles.length) {
         showPlayer();
       } else {
         document.getElementById('game').classList.add('hidden');
         document.getElementById('reveal').classList.remove('hidden');
-        const starter = Math.floor(Math.random() * players.length) + 1;
+        const starter = Math.floor(Math.random() * playerRoles.length) + 1;
         document.getElementById('starterInfo').innerText = `Spieler ${starter} beginnt mit der ersten Aussage.`;
       }
     }
@@ -601,7 +653,7 @@
       document.getElementById('result').classList.remove('hidden');
       const list = document.getElementById('liarList');
       list.innerHTML = '';
-      liars.forEach(i => {
+      offlineLiars.forEach(i => {
         const li = document.createElement('li');
         li.textContent = `Spieler ${i + 1}`;
         list.appendChild(li);
