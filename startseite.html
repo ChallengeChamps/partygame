@@ -163,9 +163,7 @@ h1 {
   to { opacity:1; transform:scale(1); }
 }
 
-/* PREMIUM UNLOCK ANIMATION – NEU & KRASS */
-/* -------------------- PREMIUM UNLOCK – MODERN -------------------- */
-
+/* PREMIUM UNLOCK ANIMATION */
 .premium-unlock {
   display:none;
   position:fixed;
@@ -180,7 +178,6 @@ h1 {
   animation:unlockFadeIn 0.4s ease forwards;
 }
 
-/* Glow Hintergrund */
 .unlock-glow {
   position:absolute;
   width:420px;
@@ -190,7 +187,6 @@ h1 {
   animation:glowPulse 2s infinite ease-in-out;
 }
 
-/* Ringe */
 .unlock-ring {
   position:absolute;
   width:260px;
@@ -204,7 +200,6 @@ h1 {
 .unlock-ring.delay1 { animation-delay:0.4s; }
 .unlock-ring.delay2 { animation-delay:0.8s; }
 
-/* Diamant */
 .unlock-diamond {
   width:80px;
   height:80px;
@@ -214,7 +209,6 @@ h1 {
   box-shadow:0 0 25px #00eaff;
 }
 
-/* Text */
 .unlock-text {
   margin-top:20px;
   font-size:2.4rem;
@@ -223,7 +217,6 @@ h1 {
   animation:textFade 1s ease forwards;
 }
 
-/* Konfetti */
 .premium-unlock .confetti {
   position:absolute;
   width:10px;
@@ -235,8 +228,6 @@ h1 {
   animation:confettiFall 1.8s linear forwards;
   border-radius:2px;
 }
-
-/* -------------------- KEYFRAMES -------------------- */
 
 @keyframes unlockFadeIn {
   from { opacity:0; transform:scale(0.9); }
@@ -266,49 +257,6 @@ h1 {
 @keyframes confettiFall {
   to { transform:translateY(110vh) rotate(720deg); }
 }
-
-
-/* Fade-In */
-@keyframes premiumFadeIn {
-  from { opacity:0; transform:scale(0.8); }
-  to { opacity:1; transform:scale(1); }
-}
-
-/* Konfetti */
-.confetti {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background: hsl(calc(360 * var(--i)), 80%, 60%);
-  top: -10px;
-  left: calc(100% * var(--j));
-  opacity: 0.9;
-  animation: fall 1.8s linear forwards;
-  border-radius: 2px;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh) rotate(720deg);
-  }
-}
-
-/* Pulsierende Kreise */
-.pulse-ring {
-  position:absolute;
-  width:200px;
-  height:200px;
-  border:4px solid #00eaff;
-  border-radius:50%;
-  animation:pulseRing 1.8s infinite ease-out;
-  opacity:0.6;
-}
-
-@keyframes pulseRing {
-  0% { transform:scale(0.6); opacity:0.8; }
-  100% { transform:scale(2.5); opacity:0; }
-}
-
 
 /* -------------------- SEARCH -------------------- */
 .search-box {
@@ -512,22 +460,6 @@ h1 {
   100% { box-shadow: 0 0 8px rgba(0, 255, 100, 0.6); }
 }
 
-.sticker-wm::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  animation: shineWM 3s infinite;
-}
-
-@keyframes shineWM {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
 .bottom-help-button {
   text-align: center;
   margin: 25px 0;
@@ -535,8 +467,8 @@ h1 {
 
 .bottom-help-button a {
   display: inline-block;
-  background-color: #ffffff; /* Weiß */
-  color: #000;               /* Schwarz */
+  background-color: #ffffff;
+  color: #000;
   font-weight: bold;
   padding: 12px 26px;
   border-radius: 30px;
@@ -550,8 +482,6 @@ h1 {
   background-color: #f2f2f2;
   transform: scale(1.05);
 }
-
-
 
 /* -------------------- CARD IMAGES -------------------- */
 .fakeorfakt::before { background-image: url('index1.png'); }
@@ -576,7 +506,6 @@ h1 {
 .wolf::before { background-image: url('wolf.png'); }
 
 /* -------------------- COINS + SHOP -------------------- */
-
 .top-actions {
   display: flex;
   justify-content: center;
@@ -585,7 +514,6 @@ h1 {
   margin: 12px auto 5px auto;
 }
 
-/* Kleine ovale Coins-Anzeige */
 .coins-display {
   display: inline-flex;
   align-items: center;
@@ -602,7 +530,6 @@ h1 {
   box-sizing: border-box;
 }
 
-/* Shop Button */
 .shop-button {
   display: inline-flex;
   align-items: center;
@@ -624,79 +551,215 @@ h1 {
   box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
 </style>
+
+<!-- QRCode.js Library & Party Style -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link rel="stylesheet" href="party-style.css">
 </head>
 <body>
-<!-- PREMIUM Hintergrund Auswahl -->
-<div id="premiumBackgroundSelector" 
-     style="
-       display:none;
-       max-width:340px;
-       margin:20px auto;
-       padding:20px;
-       border-radius:18px;
-       background:rgba(255,255,255,0.85);
-       box-shadow:0 8px 25px rgba(0,0,0,0.25);
-       backdrop-filter:blur(6px);
-       text-align:center;
-       animation:fadeInBG 0.4s ease;
-     ">
 
-  <h3 style="
-      margin:0 0 12px 0;
-      font-size:1.4rem;
-      color:#000;
-      font-weight:bold;
-      text-shadow:0 0 4px rgba(0,0,0,0.1);
-  ">
-    🎨 Premium Hintergrund wählen
-  </h3>
-
-  <select id="bgSelect" style="
-      width:100%;
-      padding:12px;
-      border-radius:12px;
-      border:none;
-      font-size:1rem;
-      box-shadow:0 4px 12px rgba(0,0,0,0.15);
-      outline:none;
-      background:white;
-  ">
-    <option value="dein-bild-url-hier.png">🚩 Standart</option>
-    <option value="bg3.png">🌵 Natur</option>
-    <option value="bg2.png">🌌 Galaxy</option>
-    <option value="bg1.png">⚽ Fußball</option>
-    <option value="bg6.png">🏦 Wirtschaft</option>
-    <option value="bg4.png">😺 Tiere -1</option>
-    <option value="bg5.png">😺 Tiere -2</option>
-    <option value="bg7.png">🎃 Halloween</option>
-  </select>
-
-  <button onclick="saveBackground(document.getElementById('bgSelect').value)" 
-          style="
-            margin-top:14px;
-            width:100%;
-            padding:12px;
-            border:none;
-            border-radius:14px;
-            background:linear-gradient(135deg,#00eaff,#00c4d4);
-            font-size:1.1rem;
-            font-weight:bold;
-            cursor:pointer;
-            box-shadow:0 6px 18px rgba(0,0,0,0.25);
-            transition:0.2s;
-          "
-          onmouseover="this.style.transform='scale(1.03)'"
-          onmouseout="this.style.transform='scale(1)'">
-    Speichern
-  </button>
+<!-- Verbindungs-Status Banner -->
+<div id="connection-status-banner" class="connection-banner" style="display: none;">
+  ⚠️ Verbindung verloren. Wir versuchen, die Verbindung wiederherzustellen...
 </div>
 
-<style>
-@keyframes fadeInBG {
-  from { opacity:0; transform:scale(0.95); }
-  to { opacity:1; transform:scale(1); }
-}
-</style>
+<!-- HAUPTINHALT WRAPPER -->
+<div id="main-startseite-content">
+
+  <!-- PREMIUM Hintergrund Auswahl -->
+  <div id="premiumBackgroundSelector" 
+       style="
+         display:none;
+         max-width:340px;
+         margin:20px auto;
+         padding:20px;
+         border-radius:18px;
+         background:rgba(255,255,255,0.85);
+         box-shadow:0 8px 25px rgba(0,0,0,0.25);
+         backdrop-filter:blur(6px);
+         text-align:center;
+         animation:fadeInBG 0.4s ease;
+       ">
+
+    <h3 style="margin:0 0 12px 0; font-size:1.4rem; color:#000; font-weight:bold;">
+      🎨 Premium Hintergrund wählen
+    </h3>
+
+    <select id="bgSelect" style="width:100%; padding:12px; border-radius:12px; border:none; font-size:1rem; box-shadow:0 4px 12px rgba(0,0,0,0.15); outline:none; background:white;">
+      <option value="dein-bild-url-hier.png">🚩 Standard</option>
+      <option value="bg3.png">🌵 Natur</option>
+      <option value="bg2.png">🌌 Galaxy</option>
+      <option value="bg1.png">⚽ Fußball</option>
+      <option value="bg6.png">🏦 Wirtschaft</option>
+      <option value="bg4.png">😺 Tiere -1</option>
+      <option value="bg5.png">😺 Tiere -2</option>
+      <option value="bg7.png">🎃 Halloween</option>
+    </select>
+
+    <button onclick="saveBackground(document.getElementById('bgSelect').value)" 
+            style="margin-top:14px; width:100%; padding:12px; border:none; border-radius:14px; background:linear-gradient(135deg,#00eaff,#00c4d4); font-size:1.1rem; font-weight:bold; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.25); transition:0.2s;"
+            onmouseover="this.style.transform='scale(1.03)'"
+            onmouseout="this.style.transform='scale(1)'">
+      Speichern
+    </button>
+  </div>
+
+  <h1>Wähle dein Spiel</h1>
+
+  <!-- COINS + SHOP + PROFIL -->
+  <div class="top-actions">
+    <div class="coins-display">
+      🪙 <span id="coinAmount">0</span>
+    </div>
+
+    <a href="shop.html" class="shop-button">
+      🛒 Shop
+    </a>
+
+    <a href="profil.html" class="profile-button">
+      👤 Profil
+    </a>
+  </div>
+
+  <!-- SUCHFELD -->
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="🔍 Spiel suchen...">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- ONLINE MULTIPLAYER SEKTION -->
+  <section class="online-play-section">
+    <h2>🎮 Online spielen</h2>
+    <div class="party-buttons-container">
+      <button class="btn-party btn-create-party" onclick="partyManager.openCreateModal()">
+        🎉 Party erstellen
+      </button>
+      <button class="btn-party btn-join-party" onclick="partyManager.openJoinModal()">
+        👥 Party beitreten
+      </button>
+    </div>
+  </section>
+
+  <!-- BUTTONS -->
+  <div class="instructions-button">
+    <a href="spielanleitung.html">📘 Spielanleitung</a>
+  </div>
+
+  <div class="instructions-button premium-button">
+    <a href="#" onclick="openPremiumLogin()">💎 ChallengeChamp Premium</a>
+  </div>
+
+  <div class="instructions-button logout-button">
+    <a href="#" onclick="logoutPremium()">Premium abmelden</a>
+  </div>
+
+  <!-- SPIELE GRID -->
+  <div class="card-container">
+    <a href="index.html" class="card fakeorfakt">
+      <div class="card-content">Fake or Fakt 🎭<div class="player-count">3–6</div></div>
+    </a>
+
+    <a href="10von10.html" class="card zehnvonzehn">
+      <div class="card-content">10 von 10 💘<div class="player-count">2–6</div></div>
+    </a>
+
+    <a href="wop.html" class="card wop">
+      <div class="card-content">Wahrheit oder Pflicht 🔥<div class="player-count">1–6</div></div>
+    </a>
+
+    <a href="imposter.html" class="card imposter">
+      <div class="card-content">Finde den Imposter 🕵️‍♂️<div class="player-count">3–6</div></div>
+    </a>
+
+    <a href="imposterpremium.html" class="card imposterpremium">
+      <div class="card-content">Wer lügt am Besten 🔍<div class="player-count">3–12</div></div>
+    </a>
+
+    <a href="wort.html" class="card wort">
+      <div class="card-content">Verbotene Wörter 🙊<div class="player-count">2+</div></div>
+    </a>
+
+    <a href="liste.html" class="card topsort">
+      <div class="card-content">TopSort 📜<div class="player-count">2–5</div></div>
+    </a>
+
+    <a href="tipptopf.html" class="card tipptopf">
+      <div class="card-content">TippTopf 👆<div class="player-count">2–8</div></div>
+    </a>
+
+    <a href="stillepost.html" class="card stillepost">
+      <div class="card-content">PinselPost 🖌️<div class="player-count">3–8</div></div>
+    </a>
+
+    <a href="habnochnie.html" class="card habnochnie">
+      <div class="card-content">Ich hab noch nie 🚫<div class="player-count">1–12</div></div>
+    </a>
+
+    <a href="werbinich.html" class="card werbinich">
+      <div class="card-content">Wer bin ich ⁉️<div class="player-count">2+</div></div>
+    </a>
+
+    <a href="superquiz.html" class="card superquiz">
+      <div class="card-content">Superquiz 🧠<div class="player-count">1–8</div></div>
+    </a>
+
+    <a href="duoplay.html" class="card duoplay">
+      <div class="card-content">Duo‑Pantomime 🎬<div class="player-count">3–10</div></div>
+    </a>
+
+    <a href="uberbieten.html" class="card uberbieten">
+      <div class="card-content">BattleBid 📈<div class="player-count">2–10</div></div>
+    </a>
+
+    <a href="these.html" class="card zehnvonzehn">
+      <div class="card-content">Lüge oder Wahrheit 🤥<div class="player-count">2–5</div></div>
+    </a>
+
+    <a href="100quiz.html" class="card quiz">
+      <div class="card-content">TeamQuiz Board 🧾<div class="player-count">1+</div></div>
+    </a>
+
+    <a href="wolf.html" class="card wolf">
+      <div class="card-content">Nightfall Village 🌙<div class="player-count">4-15</div></div>
+    </a>
+
+    <a href="wm.html" class="card wmspiel">
+      <div class="sticker sticker-wm">WM‑Special</div>
+      <div class="card-content">MatchMaster ⚽<div class="player-count">2–5</div></div>
+    </a>
+
+    <a href="wmhunter.html" class="card wmspiel">
+      <div class="sticker sticker-wm">WM‑Special</div>
+      <div class="card-content">PlayerMaster ⭐<div class="player-count">1+</div></div>
+    </a>
+
+    <a href="wmguess.html" class="card wmguess">
+      <div class="sticker sticker-wm">WM‑Special</div>
+      <div class="card-content">Guess the Hype 📱<div class="player-count">1+</div></div>
+    </a> 
+
+    <a href="wmtop.html" class="card wmtop">
+      <div class="sticker sticker-wm">WM‑Special</div>
+      <div class="card-content">TeamMaster 👨<div class="player-count">1+</div></div>
+    </a>
+
+    <a href="tictactoe.html" class="card wmtop">
+      <div class="sticker sticker-wm">WM‑Special</div>
+      <div class="card-content">Guess Grid 🧩<div class="player-count">2</div></div>
+    </a>
+  </div>
+
+  <div class="bottom-help-button">
+    <a href="hilfe.html">Hilfe</a>
+  </div>
+
+  <footer style="margin-top:20px; text-align:center;">
+    <a href="agb.html">AGB</a> |
+    <a href="datenschutz.html">Datenschutz</a> |
+    <a href="cookies.html">Cookies</a> |
+    <a href="hilfe.html">Hilfe</a>
+  </footer>
+</div>
 
 <!-- NEWS POPUP -->
 <div id="premiumPopup">
@@ -755,155 +818,87 @@ h1 {
   <div class="unlock-ring"></div>
   <div class="unlock-ring delay1"></div>
   <div class="unlock-ring delay2"></div>
-
   <div class="unlock-diamond"></div>
-
   <div class="unlock-text">Premium aktiviert 💎</div>
 </div>
 
+<!-- MODAL: Party Erstellen -->
+<div id="modal-create-party" class="cc-modal">
+  <div class="cc-modal-content">
+    <span class="cc-modal-close" onclick="partyManager.closeModals()">&times;</span>
+    <h2>🎉 Party erstellen</h2>
+    
+    <div class="form-group">
+      <label>Dein Name (Host):</label>
+      <input type="text" id="create-host-name" class="form-input" placeholder="z. B. Marvin">
+    </div>
 
+    <p>Wähle ein Multiplayer-Spiel aus:</p>
+    <div id="party-game-grid" class="party-game-grid"></div>
 
-<h1>Wähle dein Spiel</h1>
-
-<!-- COINS + SHOP + PROFIL -->
-<div class="top-actions">
-
-  <div class="coins-display">
-    🪙 <span id="coinAmount">0</span>
+    <button id="btn-confirm-create-party" class="btn-party btn-create-party" style="width: 100%;" disabled onclick="partyManager.createParty(document.getElementById('create-host-name').value)">
+      Party erstellen
+    </button>
   </div>
-
-  <a href="shop.html" class="shop-button">
-    🛒 Shop
-  </a>
-
-  <a href="profil.html" class="profile-button">
-    👤 Profil
-  </a>
-
 </div>
 
-<!-- SUCHFELD -->
-<div class="search-box">
-  <input type="text" id="searchInput" placeholder="🔍 Spiel suchen...">
-  <div class="search-results" id="searchResults"></div>
+<!-- MODAL: Party Beitreten -->
+<div id="modal-join-party" class="cc-modal">
+  <div class="cc-modal-content">
+    <span class="cc-modal-close" onclick="partyManager.closeModals()">&times;</span>
+    <h2>👥 Party beitreten</h2>
+    
+    <div class="form-group">
+      <label>Party-Code:</label>
+      <input type="text" id="input-party-code" class="form-input" style="text-transform: uppercase;" placeholder="X7K92">
+    </div>
+
+    <div class="form-group">
+      <label>Dein Name:</label>
+      <input type="text" id="input-player-name" class="form-input" placeholder="z. B. Lisa">
+    </div>
+
+    <p id="join-error-msg" style="color: #ff4757; font-weight: bold; min-height: 24px;"></p>
+
+    <button class="btn-party btn-join-party" style="width: 100%;" onclick="partyManager.joinParty(document.getElementById('input-party-code').value, document.getElementById('input-player-name').value)">
+      🎮 Beitreten
+    </button>
+  </div>
 </div>
 
-<!-- BUTTONS -->
-<div class="instructions-button">
-  <a href="spielanleitung.html">📘 Spielanleitung</a>
-</div>
+<!-- LOBBY SCREEN -->
+<div id="lobby-screen" style="display: none;">
+  <div class="lobby-card">
+    <h2>🎉 ChallengeChamp Party</h2>
+    <p>Teile den Code oder QR-Code mit deinen Freunden:</p>
+    
+    <div class="party-code-display" id="display-party-code">-----</div>
+    
+    <br>
+    <div class="qr-code-wrapper">
+      <div id="qrcode-container"></div>
+    </div>
 
-<div class="instructions-button premium-button">
-  <a href="#" onclick="openPremiumLogin()">💎 ChallengeChamp Premium</a>
-</div>
+    <h3>👥 Spieler in der Lobby</h3>
+    <ul id="lobby-players-list" class="players-list"></ul>
 
-<div class="instructions-button logout-button">
-  <a href="#" onclick="logoutPremium()">Premium abmelden</a>
-</div>
+    <div id="host-controls" style="display: none; margin-top: 25px;">
+      <p id="host-min-player-warning" style="color: #FFD700; font-weight: bold;"></p>
+      <button id="btn-start-game" class="btn-party btn-create-party" style="width: 100%; font-size: 1.4rem;" onclick="partyManager.startGame()">
+        ▶️ Spiel starten
+      </button>
+    </div>
 
-<!-- GRID -->
-<div class="card-container">
-
-  <a href="index.html" class="card fakeorfakt">
-    <div class="card-content">Fake or Fakt 🎭<div class="player-count">3–6</div></div>
-  </a>
-
-  <a href="10von10.html" class="card zehnvonzehn">
-    <div class="card-content">10 von 10 💘<div class="player-count">2–6</div></div>
-  </a>
-
-  <a href="wop.html" class="card wop">
-    <div class="card-content">Wahrheit oder Pflicht 🔥<div class="player-count">1–6</div></div>
-  </a>
-
-  <a href="imposter.html" class="card imposter">
-    <div class="card-content">Finde den Imposter 🕵️‍♂️<div class="player-count">3–6</div></div>
-  </a>
-
-  <a href="imposterpremium.html" class="card imposterpremium">
-    <div class="card-content">Wer lügt am Besten 🔍<div class="player-count">3–12</div></div>
-  </a>
-
-  <a href="wort.html" class="card wort">
-    <div class="card-content">Verbotene Wörter 🙊<div class="player-count">2+</div></div>
-  </a>
-
-  <a href="liste.html" class="card topsort">
-    <div class="card-content">TopSort 📜<div class="player-count">2–5</div></div>
-  </a>
-
-  <a href="tipptopf.html" class="card tipptopf">
-    <div class="card-content">TippTopf 👆<div class="player-count">2–8</div></div>
-  </a>
-
-  <a href="stillepost.html" class="card stillepost">
-    <div class="card-content">PinselPost 🖌️<div class="player-count">3–8</div></div>
-  </a>
-
-  <a href="habnochnie.html" class="card habnochnie">
-    <div class="card-content">Ich hab noch nie 🚫<div class="player-count">1–12</div></div>
-  </a>
-
-  <a href="werbinich.html" class="card werbinich">
-    <div class="card-content">Wer bin ich ⁉️<div class="player-count">2+</div></div>
-  </a>
-
-  <a href="superquiz.html" class="card superquiz">
-    <div class="card-content">Superquiz 🧠<div class="player-count">1–8</div></div>
-  </a>
-
-  <a href="duoplay.html" class="card duoplay">
-    <div class="card-content">Duo‑Pantomime 🎬<div class="player-count">3–10</div></div>
-  </a>
-
-  <a href="uberbieten.html" class="card uberbieten">
-    <div class="card-content">BattleBid 📈<div class="player-count">2–10</div></div>
-  </a>
-
-  <a href="these.html" class="card zehnvonzehn">
-    <div class="card-content">Lüge oder Wahrheit 🤥<div class="player-count">2–5</div></div>
-  </a>
-
-  <a href="100quiz.html" class="card quiz">
-    <div class="card-content">TeamQuiz Board 🧾<div class="player-count">1+</div></div>
-  </a>
-
-  <a href="wolf.html" class="card wolf">
-    <div class="card-content">Nightfall Village 🌙<div class="player-count">4-15</div></div>
-  </a>
-
-  <a href="wm.html" class="card wmspiel">
-  <div class="sticker sticker-wm">WM‑Special</div>
-    <div class="card-content">MatchMaster ⚽<div class="player-count">2–5</div></div>
-  </a>
-
-  <a href="wmhunter.html" class="card wmspiel">
-  <div class="sticker sticker-wm">WM‑Special</div>
-    <div class="card-content">PlayerMaster ⭐<div class="player-count">1+</div></div>
-  </a>
-
-  <a href="wmguess.html" class="card wmguess">
-  <div class="sticker sticker-wm">WM‑Special</div>
-    <div class="card-content">Guess the Hype 📱<div class="player-count">1+</div></div>
-  </a> 
-  <a href="wmtop.html" class="card wmtop">
-  <div class="sticker sticker-wm">WM‑Special</div>
-    <div class="card-content">TeamMaster 👨<div class="player-count">1+</div></div>
-  </a>
-
-  <a href="tictactoe.html" class="card wmtop">
-  <div class="sticker sticker-wm">WM‑Special</div>
-    <div class="card-content">Guess Grid 🧩<div class="player-count">2</div></div>
-  </a>
-
-</div>
-<div class="bottom-help-button">
-  <a href="hilfe.html">Hilfe</a>
+    <div id="client-message" style="display: none; margin-top: 25px;">
+      <p style="font-size: 1.1rem; opacity: 0.9;">
+        ⏳ Du bist der Party beigetreten!<br>Warte darauf, dass der Host das Spiel startet...
+      </p>
+    </div>
+  </div>
 </div>
 
 <script>
 /* -------------------- PREMIUM LOGIK -------------------- */
-
 const premiumGames = ["imposterpremium", "wolf"];
 const newGames = ["imposterpremium", "uberbieten", "these", "100quiz", "wolf"];
 
@@ -925,19 +920,15 @@ function premiumAlready() {
 }
 
 function closePremiumPassword() {
-
   document.getElementById("premiumPasswordPopup").style.display = "none";
 }
 
 function checkPremiumPassword() {
-
-
   const pw = document.getElementById("premiumPasswordInput").value;
 
   if (pw === "abc123") {
     localStorage.setItem("premium", "true");
-document.getElementById("premiumBackgroundSelector").style.display = "block";
-
+    document.getElementById("premiumBackgroundSelector").style.display = "block";
     document.getElementById("premiumPasswordPopup").style.display = "none";
     document.getElementById("premiumUnlocked").style.display = "flex";
 
@@ -955,7 +946,6 @@ function logoutPremium() {
 }
 
 /* -------------------- STICKER + PREMIUM BLOCKER -------------------- */
-
 document.querySelectorAll(".card").forEach(card => {
   const link = card.getAttribute("href");
   if (!link) return;
@@ -985,7 +975,6 @@ document.querySelectorAll(".card").forEach(card => {
 });
 
 /* -------------------- SUCHE -------------------- */
-
 const games = [
   { name: "Fake or Fakt 🎭", link: "index.html" },
   { name: "10 von 10 💘", link: "10von10.html" },
@@ -1044,35 +1033,13 @@ window.addEventListener("load", () => {
   document.getElementById("premiumPopup").style.display = "flex";
 });
 
-function showPremiumUnlocked() {
-  const box = document.getElementById("premiumUnlocked");
-  box.style.display = "flex";
-
-  // Konfetti erzeugen
-  for (let i = 0; i < 80; i++) {
-    const conf = document.createElement("div");
-    conf.classList.add("confetti");
-    conf.style.setProperty("--i", Math.random());
-    conf.style.setProperty("--j", Math.random());
-    box.appendChild(conf);
-
-    setTimeout(() => conf.remove(), 1800);
-  }
-
-  // Auto schließen nach 2.2 Sekunden
-  setTimeout(() => {
-    box.style.display = "none";
-  }, 2200);
-}
 /* -------------------- PREMIUM HINTERGRUND -------------------- */
-
 function saveBackground(bg) {
   if (!isPremium()) return;
   localStorage.setItem("premiumBackground", bg);
   document.body.style.backgroundImage = `url('${bg}')`;
 }
 
-// Hintergrund beim Laden setzen
 document.addEventListener("DOMContentLoaded", () => {
   if (isPremium()) {
     const savedBg = localStorage.getItem("premiumBackground");
@@ -1083,28 +1050,23 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.style.backgroundImage = "url('dein-bild-url-hier.png')";
   }
 });
-/* -------------------- COINS ANZEIGE -------------------- */
 
+/* -------------------- COINS ANZEIGE -------------------- */
 function updateCoinDisplay() {
   const coinAmount = document.getElementById("coinAmount");
-
   if (!coinAmount) return;
 
-  const coins =
-    parseInt(localStorage.getItem("teamMasterCoins"), 10) || 0;
-
+  const coins = parseInt(localStorage.getItem("teamMasterCoins"), 10) || 0;
   coinAmount.textContent = coins;
 }
 
 updateCoinDisplay();
 </script>
 
-</body>
-<footer style="margin-top:20px;">
-  <a href="agb.html">AGB</a> |
-  <a href="datenschutz.html">Datenschutz</a> |
-  <a href="cookies.html">Cookies</a> |
-  <a href="hilfe.html">Hilfe</a>
-</footer>
+<!-- MULTIPLAYER SKRIPTE -->
+<script type="module" src="firebase-config.js"></script>
+<script src="party-config.js"></script>
+<script src="party-manager.js"></script>
 
+</body>
 </html>
