@@ -314,6 +314,11 @@
 
       listenToParty() {
         const partyRef = window.fbRef(window.firebaseDB, 'parties/' + this.partyCode);
+        const playerRef = window.fbRef(window.firebaseDB, `parties/${this.partyCode}/players/${this.playerId}`);
+
+        // Disconnect Handler registrieren
+        window.fbOnDisconnect(playerRef).remove();
+
         window.fbOnValue(partyRef, (snapshot) => {
           if (!snapshot.exists()) {
             alert("Die Party wurde aufgelöst.");
@@ -323,6 +328,18 @@
 
           this.partyData = snapshot.val();
           this.isHost = (this.partyData.hostId === this.playerId);
+
+          // Falls der eigene Spieler durch den Seitenwechsel fehlte, wiederherstellen
+          if (this.partyData.players && !this.partyData.players[this.playerId]) {
+            const storedName = sessionStorage.getItem("cc_player_name") || "Spieler";
+            window.fbSet(playerRef, {
+              name: storedName,
+              isHost: this.isHost,
+              joinedAt: Date.now()
+            });
+            return;
+          }
+
           this.renderState();
         });
       }
@@ -345,7 +362,7 @@
               <h1>👑 Finde den Imposter (Host)</h1>
               <p>Mitspieler in dieser Party (${players.length}):</p>
               <ul class="player-pill-list">
-                ${players.map(p => `<li>${p.name}${p.isHost ? '👑' : ''}</li>`).join('')}
+                ${players.map(p => `<li>${p.name}${p.isHost ? ' 👑' : ''}</li>`).join('')}
               </ul>
 
               <div style="margin: 20px 0;">
@@ -359,7 +376,10 @@
             container.innerHTML = `
               <h1>⏳ Wartefenster</h1>
               <p>Der Host wählt gerade die Imposter-Anzahl aus...</p>
-              <p style="opacity:0.7;">Beigetretene Spieler: ${players.length}</p>
+              <p style="opacity:0.8;">Beigetretene Spieler (${players.length}):</p>
+              <ul class="player-pill-list">
+                ${players.map(p => `<li>${p.name}${p.isHost ? ' 👑' : ''}</li>`).join('')}
+              </ul>
             `;
           }
         } 
