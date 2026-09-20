@@ -1,0 +1,214 @@
+/* ==========================================================================
+   ChallengeChamp Online Multiplayer Styling
+   ========================================================================== */
+
+/* Online Spielen Sektion */
+.online-play-section {
+    margin: 30px 0;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.online-play-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.party-buttons-container {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-party {
+    padding: 16px 28px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-party:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.btn-create-party {
+    background: linear-gradient(135deg, #FF416C, #FF4B2B);
+    color: #fff;
+}
+
+.btn-join-party {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    color: #fff;
+}
+
+/* Modal Overlay */
+.cc-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.cc-modal-content {
+    background: #1e1e2f;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 550px;
+    width: 100%;
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.cc-modal-close {
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #aaa;
+}
+
+/* Games Grid Selection */
+.party-game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.party-game-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.party-game-card.selected {
+    border-color: #FF416C;
+    background: rgba(255, 65, 108, 0.15);
+}
+
+.game-card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+}
+
+.player-count {
+    display: block;
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-top: 8px;
+}
+
+/* Inputs & Forms */
+.form-group {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.form-input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+    font-size: 1.1rem;
+    box-sizing: border-box;
+}
+
+/* Lobby UI Display */
+.lobby-card {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #1e1e2f;
+    border-radius: 24px;
+    padding: 32px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+.party-code-display {
+    font-size: 3.5rem;
+    font-weight: 900;
+    letter-spacing: 6px;
+    color: #FFD700;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 12px 24px;
+    border-radius: 16px;
+    display: inline-block;
+    margin: 15px 0;
+    border: 2px dashed #FFD700;
+}
+
+.qr-code-wrapper {
+    background: #fff;
+    padding: 12px;
+    border-radius: 16px;
+    display: inline-block;
+    margin: 15px 0;
+}
+
+.players-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.player-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px 20px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+}
+
+.host-badge {
+    background: #FFD700;
+    color: #000;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.connection-banner {
+    background: #ff4757;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 10000;
+    font-weight: bold;
+}
