@@ -190,8 +190,7 @@ h1 {
 
 .unlock-glow {
   position:absolute;
-  width:420px;
-  height:420px;
+  width:420px; height:420px;
   background:radial-gradient(circle, rgba(0,234,255,0.8), rgba(0,0,0,0));
   filter:blur(40px);
   animation:glowPulse 2s infinite ease-in-out;
@@ -199,8 +198,7 @@ h1 {
 
 .unlock-ring {
   position:absolute;
-  width:260px;
-  height:260px;
+  width:260px; height:260px;
   border:4px solid #00eaff;
   border-radius:50%;
   animation:ringPulse 1.8s infinite ease-out;
@@ -208,8 +206,7 @@ h1 {
 }
 
 .unlock-diamond {
-  width:80px;
-  height:80px;
+  width:80px; height:80px;
   background:linear-gradient(135deg,#00eaff,#00c4d4);
   clip-path:polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   animation:diamondPop 0.8s ease forwards;
@@ -799,12 +796,12 @@ h1 {
 <script type="module" src="firebase-config.js"></script>
 
 <script>
-/* -------------------- SPIELE-LISTE -------------------- */
+/* -------------------- SPIELE-LISTE (MIT ONLINE-VERSIONS-PFADEN) -------------------- */
 const gamesList = [
-  { name: "Fake or Fakt 🎭", link: "index.html" },
+  { name: "Fake or Fakt 🎭 (Online)", link: "index-online.html" },
+  { name: "Finde den Imposter 🕵️‍♂️ (Online)", link: "imposter-online.html" },
   { name: "10 von 10 💘", link: "10von10.html" },
   { name: "Wahrheit oder Pflicht 🔥", link: "wop.html" },
-  { name: "Finde den Imposter 🕵️‍♂️", link: "imposter.html" },
   { name: "Wer lügt am Besten 🔍", link: "imposterpremium.html" },
   { name: "Verbotene Wörter 🙊", link: "wort.html" },
   { name: "TopSort 📜", link: "liste.html" },
@@ -914,9 +911,8 @@ searchInput.addEventListener("input", () => {
   searchResults.style.display = "block";
 });
 
-/* -------------------- MULTIPLAYER PARTY MANAGER (EXAKT WIE GEWÜNSCHT) -------------------- */
+/* -------------------- MULTIPLAYER PARTY MANAGER -------------------- */
 let currentPartyCode = null;
-let selectedTargetGame = null;
 
 function getPlayerName() {
   return localStorage.getItem("challengeChampProfileName") || "Spieler";
@@ -950,7 +946,6 @@ async function confirmCreateParty() {
 
   const dropdown = document.getElementById("partyGameSelectDropdown");
   const selectedGame = JSON.parse(dropdown.value);
-  selectedTargetGame = selectedGame;
 
   document.getElementById("partyGameSelectModal").style.display = "none";
 
@@ -1040,7 +1035,7 @@ function initPartyListener(code) {
     document.getElementById("hostControls").style.display = isHost ? "block" : "none";
     document.getElementById("clientWaitingText").style.display = isHost ? "none" : "block";
 
-    // Reagiere auf den Spielstart durch den Host
+    // Reagiere auf den Spielstart durch den Host -> Leite alle zur Online-Version weiter!
     if (data.gameStarted && data.targetGame) {
       window.location.href = data.targetGame;
     }
