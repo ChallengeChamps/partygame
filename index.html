@@ -162,7 +162,7 @@
   <!-- ONLINE MULTIPLAYER CONTAINER -->
   <div class="container hidden" id="online-game-container"></div>
 
-  <!-- OFFLINE SETUP (Klassisch) -->
+  <!-- OFFLINE SETUP (Klassisch auf einem Handy) -->
   <div class="container" id="setup">
     <h1>🎭 Fake or Fakt</h1>
     <h2>Spiel-Einstellungen (Offline)</h2>
@@ -217,37 +217,36 @@
 
   <!-- SKRIPT-LOGIK -->
   <script>
-    // Themen- und Faktenpool für Fake or Fakt
-    const factPool = [
+    // Großer Pool an echten Fakten aus ganz unterschiedlichen Kategorien
+    const realFactsPool = [
+      { category: "Botanik 🍌", fact: "Bananen sind botanisch gesehen Beeren, während Erdbeeren wissenschaftlich nicht dazu zählen." },
+      { category: "Meeresbiologie 🐧", fact: "Kaiserpinguine können über 500 Meter tief tauchen und dabei mehr als 20 Minuten unter Wasser bleiben." },
+      { category: "Architektur 🗼", fact: "Der Eiffelturm ist im Sommer durch die Wärmeausdehnung des Eisens bis zu 15 cm höher als im Winter." },
+      { category: "Ernährung 🍯", fact: "Honig wird niemals schlecht – in ägyptischen Pharaonengräbern wurde essbarer Honig gefunden, der über 3.000 Jahre alt ist." },
+      { category: "Astronomie 🪐", fact: "Ein einziger Tag auf dem Planeten Venus dauert länger als ein ganzes Jahr auf der Venus." },
+      { category: "Biologie 🦈", fact: "Haie existierten schon auf der Erde, bevor es die ersten Bäume gab." },
+      { category: "Geografie 🌋", fact: "Der höchste Berg der Erde (vom Meeresgrund aus gemessen) ist nicht der Mount Everest, sondern der Mauna Kea auf Hawaii." },
+      { category: "Anatomie 🐙", fact: "Kraken haben drei Herzen und blaues Blut." },
+      { category: "Geschichte 🍫", fact: "Schokolade wurde von den Maya und Aztekischen Herrschern früher als Zahlungsmittel verwendet." },
+      { category: "Physik ⚡", fact: "Ein einziger Blitzschlag enthält genug Energie, um etwa 100.000 Scheiben Brot zu toasten." }
+    ];
+
+    // Pool an vorbereiteten Fakes für Lügner (aus völlig anderen Kategorien)
+    const fakeOptionsPool = [
       {
-        topic: "Bananen",
-        realFact: "Bananen sind botanisch gesehen Beeren, während Erdbeeren keine sind.",
-        fakeOption1: "Bananen wachsen unter der Erde und werden erst am Licht gelb.",
-        fakeOption2: "Die Schale von Bananen enthält natürliche Magnetteilchen."
+        category: "Tierwelt 🐘",
+        fake1: "Elefanten sind die einzigen Säugetiere, die nicht springen können.",
+        fake2: "Zebras nutzen ihre Streifen, um mit Infrarotstrahlen andere Zebras zu orten."
       },
       {
-        topic: "Pinguine",
-        realFact: "Kaiserpinguine können bis zu 500 Meter tief tauchen.",
-        fakeOption1: "Pinguine trinken ausschließlich Salzwasser, da Süßwasser sie vergiftet.",
-        fakeOption2: "Pinguine haben Zähne auf der Zunge, um Fische festzuhalten."
+        category: "Alltag & Technik 📱",
+        fake1: "Das erste Mobiltelefon wog fast 5 Kilogramm und hatte einen Akku für nur 3 Minuten Gesprächszeit.",
+        fake2: "Kugelschreiber wurden ursprünglich entwickelt, um unter Wasser schreiben zu können."
       },
       {
-        topic: "Eiffelturm",
-        realFact: "Der Eiffelturm ist im Sommer durch die Hitzeausdehnung bis zu 15 cm höher.",
-        fakeOption1: "Der Eiffelturm sollte ursprünglich nach 20 Jahren wieder abgerissen werden.",
-        fakeOption2: "Im Fundament des Eiffelturms sind alte Eisenbahnwaggons verbaut."
-      },
-      {
-        topic: "Essen & Trinken",
-        realFact: "Honig wird niemals schlecht und kann nach Tausenden von Jahren noch essbar sein.",
-        fakeOption1: "Schokolade wurde im Mittelalter als Wundsalbe in Apotheken verkauft.",
-        fakeOption2: "Karotten enthalten einen Stoff, der die Zähne nachts im Dunkeln leuchten lässt."
-      },
-      {
-        topic: "Weltall",
-        realFact: "Ein Tag auf der Venus dauert länger als ein ganzes Jahr auf der Venus.",
-        fakeOption1: "Auf dem Saturn gibt es Winde, die Geräusche wie Walgesänge erzeugen.",
-        fakeOption2: "Der Mond entfernt sich jedes Jahr um 10 Meter von der Erde."
+        category: "Kultur & Geschichte 🏛️",
+        fake1: "In der Renaissance trugen Könige Schuhe aus getrocknetem Brot als Modetrend.",
+        fake2: "Die Chinesische Mauer wurde früher mit einer Mischung aus Reismehl gekittet."
       }
     ];
 
@@ -345,38 +344,43 @@
             `;
           }
         }
-        // 2. ZUSTAND: KARTE / FAKE WAHL
+        // 2. ZUSTAND: KARTE AUFDECKEN / LÜGE EINGEBEN
         else if (state.status === 'reveal_cards') {
           const myRole = state.roles ? state.roles[this.playerId] : 'fact';
 
           if (myRole === 'liar') {
+            const fakeData = state.fakeData || fakeOptionsPool[0];
+
             container.innerHTML = `
               <h1>🤫 DU BIST DER LÜGNER!</h1>
-              <p>Thema: <b>${state.item.topic}</b></p>
-              <p>Wähle eine vorgeschlagene Lüge ODER tippe eine eigene ein:</p>
+              <p>Erfinde einen Fake-Fakt oder wähle eine Option:</p>
 
-              <button class="option-btn" id="opt1" onclick="onlineManager.selectOption(1, '${state.item.fakeOption1}')">
-                1️⃣ ${state.item.fakeOption1}
+              <button class="option-btn" id="opt1" onclick="onlineManager.selectOption(1, '${fakeData.fake1}')">
+                1️⃣ ${fakeData.fake1}
               </button>
-              <button class="option-btn" id="opt2" onclick="onlineManager.selectOption(2, '${state.item.fakeOption2}')">
-                2️⃣ ${state.item.fakeOption2}
+              <button class="option-btn" id="opt2" onclick="onlineManager.selectOption(2, '${fakeData.fake2}')">
+                2️⃣ ${fakeData.fake2}
               </button>
 
-              <p style="margin-top:15px; font-weight:bold;">ODER eigene Lüge eingeben:</p>
-              <input type="text" id="customFakeInput" placeholder="Deine eigene Lüge..." oninput="onlineManager.selectCustomOption(this.value)">
+              <p style="margin-top:15px; font-weight:bold;">ODER völlig eigene Lüge eingeben:</p>
+              <input type="text" id="customFakeInput" placeholder="Deine erfundene Behauptung..." oninput="onlineManager.selectCustomOption(this.value)">
 
               <button id="btn-submit-fake" style="margin-top:20px;" onclick="onlineManager.submitFakeChoice()">
                 Lüge bestätigen & Weiter 👍
               </button>
             `;
           } else {
+            const myFactItem = state.assignedFacts ? state.assignedFacts[this.playerId] : { category: "Fakt", fact: "Wahrheit" };
+
             container.innerHTML = `
-              <h1>📜 DEIN FAKT (Echt)</h1>
-              <p>Thema: <b>${state.item.topic}</b></p>
+              <h1>📜 DEIN FAKT (Wahrheit)</h1>
+              <p>Kategorie: <b>${myFactItem.category}</b></p>
               
               <div class="secret-card-box" style="border-color:#2ed573;">
-                ${state.item.realFact}
+                ${myFactItem.fact}
               </div>
+
+              <p style="font-size:0.9rem; opacity:0.8;">Trage diesen Fakt gleich in der Runde überzeugend vor!</p>
 
               <button onclick="onlineManager.confirmFactReady()">
                 Gelesen & Bereit 👍
@@ -384,11 +388,11 @@
             `;
           }
         }
-        // 3. ZUSTAND: DISKUSSION
+        // 3. ZUSTAND: DISKUSSION & VORTRAG
         else if (state.status === 'playing') {
           container.innerHTML = `
-            <h1>🗣️ Diskutiert!</h1>
-            <p>Jeder trägt seine Aussage vor. Wer tischt eine Lüge auf?</p>
+            <h1>🗣️ Tragt eure Fakten vor!</h1>
+            <p>Jeder Spieler liest seine Aussage laut vor. Welcher Fakt ist erstunken und erlogen?</p>
 
             ${this.isHost ? `
               <div style="margin-top: 30px;">
@@ -407,10 +411,9 @@
 
           container.innerHTML = `
             <h1>🎉 Auflösung!</h1>
-            <p>Echter Fakt war: <b style="color:#2ed573;">${state.item.realFact}</b></p>
-
+            
             <div style="margin: 20px 0; padding: 15px; background: rgba(255,71,87,0.25); border-radius: 12px; border: 1px solid #ff4757;">
-              <h3>🕵️‍♂️ Lügner war(en):</h3>
+              <h3>🕵️‍♂️ Der Lügner war / Die Lügner waren:</h3>
               <h2 style="color: #ff4757; margin: 5px 0;">${liarNames.join(", ")}</h2>
             </div>
 
@@ -427,9 +430,24 @@
         const liarCount = parseInt(document.getElementById("onlineLiarSelect").value, 10);
         const playerIds = Object.keys(this.partyData.players);
 
-        const randomItem = factPool[Math.floor(Math.random() * factPool.length)];
-        const shuffled = [...playerIds].sort(() => 0.5 - Math.random());
-        const liars = shuffled.slice(0, liarCount);
+        // 1. Lügner zufällig bestimmen
+        const shuffledPlayers = [...playerIds].sort(() => 0.5 - Math.random());
+        const liars = shuffledPlayers.slice(0, liarCount);
+
+        // 2. Jeder Fakt-Spieler bekommt einen einzigartigen echten Fakt aus dem Pool
+        const shuffledFacts = [...realFactsPool].sort(() => 0.5 - Math.random());
+        const assignedFacts = {};
+        
+        let factIndex = 0;
+        playerIds.forEach(id => {
+          if (!liars.includes(id)) {
+            assignedFacts[id] = shuffledFacts[factIndex % shuffledFacts.length];
+            factIndex++;
+          }
+        });
+
+        // 3. Vorbereitete Fakes für den Lügner auswählen
+        const randomFakeSet = fakeOptionsPool[Math.floor(Math.random() * fakeOptionsPool.length)];
 
         const roles = {};
         playerIds.forEach(id => {
@@ -439,7 +457,8 @@
         const partyRef = window.fbRef(window.firebaseDB, 'parties/' + this.partyCode + '/gameState');
         await window.fbSet(partyRef, {
           status: 'reveal_cards',
-          item: randomItem,
+          assignedFacts: assignedFacts,
+          fakeData: randomFakeSet,
           roles: roles,
           liarIds: liars
         });
@@ -459,7 +478,7 @@
 
       async submitFakeChoice() {
         if (!this.selectedFakeText.trim()) {
-          alert("Bitte wähle eine Lüge oder gib eine ein!");
+          alert("Bitte wähle eine Lüge aus oder gib eine eigene ein!");
           return;
         }
 
@@ -500,7 +519,7 @@
       }
     }
 
-    // MULTIPLAYER CHECK
+    // MULTIPLAYER CHECK BEIM LADEN
     let onlineManager = null;
     const urlParams = new URLSearchParams(window.location.search);
     const partyCode = urlParams.get('party');
@@ -516,7 +535,6 @@
     let players = [];
     let currentPlayer = 0;
     let liars = [];
-    let selectedItem = null;
 
     function startGame() {
       const playerCount = parseInt(document.getElementById('playerCount').value);
@@ -527,15 +545,22 @@
         return;
       }
 
-      selectedItem = factPool[Math.floor(Math.random() * factPool.length)];
-      players = Array(playerCount).fill(selectedItem.realFact);
+      const shuffledFacts = [...realFactsPool].sort(() => 0.5 - Math.random());
+      players = [];
       liars = [];
 
       while (liars.length < liarCount) {
         const index = Math.floor(Math.random() * playerCount);
         if (!liars.includes(index)) {
           liars.push(index);
-          players[index] = "DU BIST DER LÜGNER! Erfinde einen Fake-Fakt zum Thema: " + selectedItem.topic;
+        }
+      }
+
+      for (let i = 0; i < playerCount; i++) {
+        if (liars.includes(i)) {
+          players.push("DU BIST DER LÜGNER! Erfinde einen freien Fake-Fakt.");
+        } else {
+          players.push(shuffledFacts[i % shuffledFacts.length].fact);
         }
       }
 
