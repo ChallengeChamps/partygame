@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>ChallengeChamp – Profil</title>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
@@ -16,12 +14,10 @@
       margin: 0;
       min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
-
       background:
         radial-gradient(circle at top left, rgba(255,255,255,.12), transparent 35%),
         radial-gradient(circle at bottom right, rgba(255,255,255,.08), transparent 35%),
         linear-gradient(135deg, #111827, #1f2937 50%, #111827);
-
       color: #111;
       padding: 25px;
     }
@@ -99,10 +95,7 @@
       border-radius: 24px;
       padding: 25px;
       margin-bottom: 22px;
-
-      box-shadow:
-        0 15px 40px rgba(0,0,0,.28);
-
+      box-shadow: 0 15px 40px rgba(0,0,0,.28);
       backdrop-filter: blur(10px);
     }
 
@@ -118,6 +111,39 @@
       margin-bottom: 20px;
     }
 
+    /* BANNER FÜR FREUNDSCHAFTSANFRAGEN */
+    .request-banner {
+      background: linear-gradient(135deg, #ff4081, #e91e63);
+      color: white;
+      border-radius: 20px;
+      padding: 18px 22px;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 10px 25px rgba(233,30,99,0.3);
+      flex-wrap: wrap;
+    }
+
+    .request-banner-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .request-btn {
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: .85rem;
+    }
+
+    .req-accept { background: #2ed573; color: white; }
+    .req-deny { background: #ffffff; color: #111; }
+    .req-view { background: rgba(0,0,0,0.25); color: white; }
+
     /* ---------------- PROFIL ---------------- */
 
     .profile-card {
@@ -130,23 +156,14 @@
       width: 105px;
       height: 105px;
       min-width: 105px;
-
       border-radius: 24px;
-
-      background:
-        linear-gradient(135deg, #111827, #374151);
-
+      background: linear-gradient(135deg, #111827, #374151);
       display: flex;
       justify-content: center;
       align-items: center;
-
       font-size: 3.5rem;
-
       cursor: pointer;
-
-      box-shadow:
-        0 8px 25px rgba(0,0,0,.25);
-
+      box-shadow: 0 8px 25px rgba(0,0,0,.25);
       transition: .25s ease;
     }
 
@@ -169,19 +186,15 @@
       color: #777;
       font-size: .85rem;
       letter-spacing: 2px;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       font-family: monospace;
     }
-
-    /* SYMBOL-NAME NEBEN AVATAR */
 
     .selected-symbol {
       display: flex;
       align-items: center;
       gap: 8px;
-
-      margin-bottom: 14px;
-
+      margin-bottom: 12px;
       font-size: .95rem;
       font-weight: 900;
       color: #374151;
@@ -192,21 +205,31 @@
       font-weight: 700;
     }
 
-    .selected-symbol-name {
-      color: #111827;
+    .favorite-game-select {
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .favorite-game-select select {
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 2px solid #ddd;
+      font-weight: bold;
+      outline: none;
+      cursor: pointer;
     }
 
     .name-button {
       border: none;
       border-radius: 12px;
       padding: 10px 15px;
-
       background: #111827;
       color: white;
-
       font-weight: 800;
       cursor: pointer;
-
       transition: .2s ease;
     }
 
@@ -221,774 +244,230 @@
       transform: none;
     }
 
-    /* ---------------- AUFKLAPPBARE SYMBOLE ---------------- */
+    /* ---------------- FREUNDESLISTE ---------------- */
 
-    .symbols-section {
-      overflow: hidden;
+    .friends-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
     }
 
-    .symbols-toggle {
-      width: 100%;
-      border: none;
-      padding: 0;
-      margin: 0;
-
-      background: transparent;
-
+    .friend-card {
+      border: 2px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 12px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-
-      gap: 15px;
-      text-align: left;
-
+      gap: 12px;
+      background: #fafafa;
       cursor: pointer;
+      transition: .2s;
     }
 
-    .symbols-toggle .section-title {
-      margin-bottom: 5px;
+    .friend-card:hover {
+      border-color: #111;
+      transform: translateY(-2px);
     }
 
-    .symbols-toggle .section-subtitle {
-      margin-bottom: 0;
-    }
-
-    .toggle-arrow {
-      flex-shrink: 0;
-
-      width: 38px;
-      height: 38px;
-
-      border-radius: 50%;
-
-      background: #111;
+    .friend-avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      background: #111827;
       color: white;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
-      font-size: 1rem;
-      font-weight: 900;
-
-      transition:
-        transform .3s ease,
-        background .2s ease;
+      font-size: 1.5rem;
+      position: relative;
     }
 
-    .symbols-toggle:hover .toggle-arrow {
-      background: #333;
+    .online-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      border: 2px solid white;
     }
 
-    .symbols-content {
-      display: grid;
+    .online-indicator.online { background: #2ed573; }
+    .online-indicator.offline { background: #a4b0be; }
 
-      grid-template-rows: 0fr;
-
-      opacity: 0;
-
-      transition:
-        grid-template-rows .4s ease,
-        opacity .3s ease,
-        margin-top .4s ease;
-    }
-
-    .symbols-content > .symbol-grid {
-      min-height: 0;
+    .friend-info {
+      flex: 1;
       overflow: hidden;
     }
 
-    .symbols-section.open .symbols-content {
-      grid-template-rows: 1fr;
-      opacity: 1;
-      margin-top: 20px;
+    .friend-name {
+      font-weight: 900;
+      font-size: .95rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .symbols-section.open .toggle-arrow {
-      transform: rotate(180deg);
+    .friend-status {
+      font-size: .75rem;
+      color: #777;
     }
+
+    /* ---------------- AUFKLAPPBARE SYMBOLE ---------------- */
+
+    .symbols-section { overflow: hidden; }
+
+    .symbols-toggle {
+      width: 100%; border: none; padding: 0; margin: 0;
+      background: transparent; display: flex; align-items: center;
+      justify-content: space-between; gap: 15px; text-align: left; cursor: pointer;
+    }
+
+    .toggle-arrow {
+      flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%;
+      background: #111; color: white; display: flex; align-items: center;
+      justify-content: center; font-size: 1rem; font-weight: 900; transition: transform .3s ease, background .2s ease;
+    }
+
+    .symbols-content {
+      display: grid; grid-template-rows: 0fr; opacity: 0;
+      transition: grid-template-rows .4s ease, opacity .3s ease, margin-top .4s ease;
+    }
+
+    .symbols-content > .symbol-grid { min-height: 0; overflow: hidden; }
+
+    .symbols-section.open .symbols-content { grid-template-rows: 1fr; opacity: 1; margin-top: 20px; }
+    .symbols-section.open .toggle-arrow { transform: rotate(180deg); }
 
     /* ---------------- SYMBOL GRID ---------------- */
 
     .symbol-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(auto-fill, minmax(90px, 1fr));
-
-      gap: 12px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 12px;
     }
 
     .symbol-item {
-      min-height: 90px;
-
-      border-radius: 18px;
-
-      border: 2px solid #e5e7eb;
-
-      background: #f9fafb;
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      cursor: pointer;
-
-      transition: .2s ease;
-
-      position: relative;
-
-      user-select: none;
+      min-height: 90px; border-radius: 18px; border: 2px solid #e5e7eb;
+      background: #f9fafb; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; cursor: pointer; transition: .2s ease; position: relative; user-select: none;
     }
 
-    .symbol-item:hover {
-      transform: translateY(-3px);
-      border-color: #111;
-    }
-
-    .symbol-item.selected {
-      border-color: #111827;
-
-      box-shadow:
-        0 0 0 3px rgba(17,24,39,.12);
-    }
-
-    .symbol-icon {
-      font-size: 2rem;
-      margin-bottom: 5px;
-    }
-
-    .symbol-name {
-      font-size: .75rem;
-      font-weight: 800;
-      text-align: center;
-    }
-
-    .symbol-item.locked {
-      filter: grayscale(1);
-      opacity: .42;
-      cursor: pointer;
-    }
-
-    .symbol-item.locked:hover {
-      opacity: .65;
-    }
-
-    .symbol-lock {
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      font-size: .75rem;
-    }
+    .symbol-item:hover { transform: translateY(-3px); border-color: #111; }
+    .symbol-item.selected { border-color: #111827; box-shadow: 0 0 0 3px rgba(17,24,39,.12); }
+    .symbol-icon { font-size: 2rem; margin-bottom: 5px; }
+    .symbol-name { font-size: .75rem; font-weight: 800; text-align: center; }
+    .symbol-item.locked { filter: grayscale(1); opacity: .42; cursor: pointer; }
+    .symbol-lock { position: absolute; top: 6px; right: 8px; font-size: .75rem; }
 
     /* ---------------- SPIELZEIT ---------------- */
 
     .total-hours-card {
-      border-radius: 20px;
-      padding: 22px;
-
-      background:
-        linear-gradient(135deg, #111827, #374151);
-
-      color: white;
-
-      text-align: center;
-
-      margin-bottom: 20px;
-
-      box-shadow:
-        0 10px 25px rgba(0,0,0,.25);
+      border-radius: 20px; padding: 22px;
+      background: linear-gradient(135deg, #111827, #374151);
+      color: white; text-align: center; margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.25);
     }
 
-    .total-hours-label {
-      font-size: .9rem;
-      opacity: .75;
-      margin-bottom: 5px;
-    }
-
-    .total-hours {
-      font-size: 2.7rem;
-      font-weight: 900;
-    }
-
-    /* AUFKLAPPBARE SPIELZEIT */
+    .total-hours-label { font-size: .9rem; opacity: .75; margin-bottom: 5px; }
+    .total-hours { font-size: 2.7rem; font-weight: 900; }
 
     .hours-toggle {
-      width: 100%;
-      border: none;
-      background: #f3f4f6;
-
-      border-radius: 16px;
-
-      padding: 15px 18px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      cursor: pointer;
-
-      font-weight: 900;
-      font-size: 1rem;
-
-      transition: .2s ease;
+      width: 100%; border: none; background: #f3f4f6; border-radius: 16px;
+      padding: 15px 18px; display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; font-weight: 900; font-size: 1rem; transition: .2s ease;
     }
 
-    .hours-toggle:hover {
-      background: #e5e7eb;
-    }
-
-    .hours-toggle-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
+    .hours-toggle-left { display: flex; align-items: center; gap: 10px; }
     .hours-toggle-arrow {
-      width: 32px;
-      height: 32px;
-
-      border-radius: 50%;
-
-      background: #111827;
-      color: white;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      transition: transform .3s ease;
+      width: 32px; height: 32px; border-radius: 50%; background: #111827; color: white;
+      display: flex; align-items: center; justify-content: center; transition: transform .3s ease;
     }
 
-    .hours-section.open .hours-toggle-arrow {
-      transform: rotate(180deg);
-    }
-
-    .hours-content {
-      display: grid;
-      grid-template-rows: 0fr;
-      opacity: 0;
-
-      transition:
-        grid-template-rows .4s ease,
-        opacity .3s ease,
-        margin-top .4s ease;
-    }
-
-    .hours-content-inner {
-      min-height: 0;
-      overflow: hidden;
-    }
-
-    .hours-section.open .hours-content {
-      grid-template-rows: 1fr;
-      opacity: 1;
-      margin-top: 14px;
-    }
-
-    .game-hours-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(auto-fit, minmax(230px, 1fr));
-
-      gap: 12px;
-    }
-
-    .game-hour-card {
-      border: 2px solid #e5e7eb;
-      border-radius: 18px;
-
-      padding: 16px;
-
-      background: #fafafa;
-    }
-
-    .game-hour-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-
-      margin-bottom: 10px;
-    }
-
-    .game-name {
-      font-weight: 900;
-    }
-
-    .game-time {
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 9px;
-
-      border-radius: 20px;
-
-      background: #e5e7eb;
-
-      overflow: hidden;
-
-      margin-top: 10px;
-    }
-
-    .progress-fill {
-      height: 100%;
-
-      background:
-        linear-gradient(90deg, #111827, #6b7280);
-
-      border-radius: 20px;
-
-      transition: width .4s ease;
-    }
-
-    .next-milestone {
-      color: #777;
-      font-size: .78rem;
-      margin-top: 8px;
-    }
+    .hours-section.open .hours-toggle-arrow { transform: rotate(180deg); }
+    .hours-content { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .4s ease, opacity .3s ease, margin-top .4s ease; }
+    .hours-content-inner { min-height: 0; overflow: hidden; }
+    .hours-section.open .hours-content { grid-template-rows: 1fr; opacity: 1; margin-top: 14px; }
+    .game-hours-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+    .game-hour-card { border: 2px solid #e5e7eb; border-radius: 18px; padding: 16px; background: #fafafa; }
+    .game-hour-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 10px; }
+    .game-name { font-weight: 900; }
+    .game-time { font-weight: 900; white-space: nowrap; }
+    .progress-bar { width: 100%; height: 9px; border-radius: 20px; background: #e5e7eb; overflow: hidden; margin-top: 10px; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #111827, #6b7280); border-radius: 20px; transition: width .4s ease; }
+    .next-milestone { color: #777; font-size: .78rem; margin-top: 8px; }
 
     /* ---------------- MEILENSTEINE ---------------- */
 
-    .milestone-group {
-      margin-bottom: 25px;
+    .milestone-group { margin-bottom: 25px; }
+    .milestone-group-title { font-size: 1.15rem; font-weight: 900; margin-bottom: 12px; }
+
+    .global-milestone-toggle, .game-milestone-toggle {
+      width: 100%; border: none; background: #f3f4f6; border-radius: 16px; padding: 14px 16px;
+      display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-weight: 900; transition: .2s ease;
     }
 
-    .milestone-group:last-child {
-      margin-bottom: 0;
-    }
-
-    .milestone-group-title {
-      font-size: 1.15rem;
-      font-weight: 900;
-      margin-bottom: 12px;
-    }
-
-    /* AUFKLAPPBARE GESAMTMEILENSTEINE */
-
-    .global-milestone-toggle,
-    .game-milestone-toggle {
-      width: 100%;
-      border: none;
-      background: #f3f4f6;
-
-      border-radius: 16px;
-
-      padding: 14px 16px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      cursor: pointer;
-
-      font-weight: 900;
-
-      transition: .2s ease;
-    }
-
-    .global-milestone-toggle:hover,
-    .game-milestone-toggle:hover {
-      background: #e5e7eb;
-    }
-
-    .milestone-toggle-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
+    .milestone-toggle-left { display: flex; align-items: center; gap: 10px; }
     .milestone-toggle-arrow {
-      width: 30px;
-      height: 30px;
-
-      border-radius: 50%;
-
-      background: #111827;
-      color: white;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      transition: transform .3s ease;
+      width: 30px; height: 30px; border-radius: 50%; background: #111827; color: white;
+      display: flex; align-items: center; justify-content: center; transition: transform .3s ease;
     }
 
-    .global-milestone-section.open .milestone-toggle-arrow,
-    .game-milestone-section.open .milestone-toggle-arrow {
-      transform: rotate(180deg);
-    }
+    .global-milestone-section.open .milestone-toggle-arrow, .game-milestone-section.open .milestone-toggle-arrow { transform: rotate(180deg); }
+    .global-milestone-content, .game-milestone-content { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .4s ease, opacity .3s ease, margin-top .4s ease; }
+    .global-milestone-section.open .global-milestone-content, .game-milestone-section.open .game-milestone-content { grid-template-rows: 1fr; opacity: 1; margin-top: 12px; }
+    .global-milestone-inner, .game-milestone-inner { min-height: 0; overflow: hidden; }
 
-    .global-milestone-content,
-    .game-milestone-content {
-      display: grid;
-      grid-template-rows: 0fr;
-      opacity: 0;
-
-      transition:
-        grid-template-rows .4s ease,
-        opacity .3s ease,
-        margin-top .4s ease;
-    }
-
-    .global-milestone-section.open .global-milestone-content,
-    .game-milestone-section.open .game-milestone-content {
-      grid-template-rows: 1fr;
-      opacity: 1;
-      margin-top: 12px;
-    }
-
-    .global-milestone-inner,
-    .game-milestone-inner {
-      min-height: 0;
-      overflow: hidden;
-    }
-
-    .milestone-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(auto-fill, minmax(150px, 1fr));
-
-      gap: 10px;
-    }
-
-    .milestone {
-      border-radius: 16px;
-
-      padding: 15px;
-
-      border: 2px solid #e5e7eb;
-
-      background: #f9fafb;
-
-      text-align: center;
-
-      position: relative;
-    }
-
-    .milestone.unlocked {
-      border-color: #f0b400;
-
-      background:
-        linear-gradient(
-          135deg,
-          #fff8d6,
-          #fff
-        );
-
-      box-shadow:
-        0 4px 15px rgba(255,190,0,.15);
-    }
-
-    .milestone.locked {
-      filter: grayscale(1);
-      opacity: .45;
-    }
-
-    .milestone-icon {
-      font-size: 2rem;
-      margin-bottom: 7px;
-    }
-
-    .milestone-name {
-      font-weight: 900;
-      font-size: .85rem;
-    }
-
-    .milestone-time {
-      color: #777;
-      font-size: .75rem;
-      margin-top: 4px;
-    }
-
-    .milestone-lock {
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      font-size: .7rem;
-    }
+    .milestone-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+    .milestone { border-radius: 16px; padding: 15px; border: 2px solid #e5e7eb; background: #f9fafb; text-align: center; position: relative; }
+    .milestone.unlocked { border-color: #f0b400; background: linear-gradient(135deg, #fff8d6, #fff); box-shadow: 0 4px 15px rgba(255,190,0,.15); }
+    .milestone.locked { filter: grayscale(1); opacity: .45; }
+    .milestone-icon { font-size: 2rem; margin-bottom: 7px; }
+    .milestone-name { font-weight: 900; font-size: .85rem; }
+    .milestone-time { color: #777; font-size: .75rem; margin-top: 4px; }
+    .milestone-lock { position: absolute; top: 6px; right: 8px; font-size: .7rem; }
 
     /* ---------------- SUCHE ---------------- */
 
-    .search-box {
-      display: flex;
-      gap: 10px;
-    }
-
-    .search-input {
-      flex: 1;
-
-      border: 2px solid #ddd;
-      border-radius: 14px;
-
-      padding: 13px 15px;
-
-      font-size: 1rem;
-
-      outline: none;
-    }
-
-    .search-input:focus {
-      border-color: #111;
-    }
-
-    .search-button {
-      border: none;
-
-      border-radius: 14px;
-
-      padding: 0 20px;
-
-      background: #111827;
-      color: white;
-
-      font-weight: 900;
-
-      cursor: pointer;
-    }
-
-    .search-result {
-      margin-top: 18px;
-    }
-
-    .search-result-card {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-
-      border: 2px solid #e5e7eb;
-
-      border-radius: 18px;
-
-      padding: 15px;
-
-      cursor: pointer;
-
-      transition: .2s ease;
-    }
-
-    .search-result-card:hover {
-      transform: translateY(-2px);
-      border-color: #111;
-    }
-
-    .search-result-avatar {
-      width: 55px;
-      height: 55px;
-
-      border-radius: 15px;
-
-      background: #111827;
-
-      color: white;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      font-size: 1.8rem;
-    }
-
-    .search-result-name {
-      font-weight: 900;
-    }
-
-    .search-result-id {
-      font-family: monospace;
-      font-size: .75rem;
-      color: #777;
-      margin-top: 3px;
-    }
-
-    .no-result {
-      text-align: center;
-      color: #777;
-      padding: 20px;
-    }
+    .search-box { display: flex; gap: 10px; }
+    .search-input { flex: 1; border: 2px solid #ddd; border-radius: 14px; padding: 13px 15px; font-size: 1rem; outline: none; }
+    .search-input:focus { border-color: #111; }
+    .search-button { border: none; border-radius: 14px; padding: 0 20px; background: #111827; color: white; font-weight: 900; cursor: pointer; }
+    .search-result { margin-top: 18px; }
 
     /* ---------------- POPUPS ---------------- */
 
     .popup-overlay {
-      position: fixed;
-
-      inset: 0;
-
-      background: rgba(0,0,0,.65);
-
-      display: none;
-
-      align-items: center;
-      justify-content: center;
-
-      padding: 20px;
-
-      z-index: 1000;
+      position: fixed; inset: 0; background: rgba(0,0,0,.65); display: none;
+      align-items: center; justify-content: center; padding: 20px; z-index: 1000;
     }
 
-    .popup-overlay.active {
-      display: flex;
-    }
+    .popup-overlay.active { display: flex; }
+    .popup { width: 100%; max-width: 430px; background: white; border-radius: 25px; padding: 25px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+    .popup h2 { margin-top: 0; margin-bottom: 15px; }
+    .popup-input { width: 100%; border: 2px solid #ddd; border-radius: 12px; padding: 13px; font-size: 1rem; outline: none; margin-bottom: 12px; }
+    .popup-input:focus { border-color: #111; }
+    .popup-buttons { display: flex; gap: 10px; justify-content: flex-end; }
+    .popup-button { border: none; border-radius: 12px; padding: 11px 16px; font-weight: 900; cursor: pointer; }
+    .popup-cancel { background: #e5e7eb; color: #111; }
+    .popup-confirm { background: #111827; color: white; }
 
-    .popup {
-      width: 100%;
-      max-width: 430px;
+    .public-profile { text-align: center; }
+    .public-avatar { width: 95px; height: 95px; border-radius: 22px; background: #111827; color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 15px; }
+    .public-name { font-size: 1.7rem; font-weight: 900; }
+    .public-id { color: #777; font-family: monospace; margin: 6px 0 10px; }
+    .public-hours { border-radius: 16px; padding: 12px; background: #f3f4f6; font-weight: 800; margin-bottom: 10px; }
+    .public-fav { border-radius: 16px; padding: 12px; background: #eef2ff; color: #3730a3; font-weight: 800; margin-bottom: 15px; }
 
-      background: white;
-
-      border-radius: 25px;
-
-      padding: 25px;
-
-      box-shadow:
-        0 20px 60px rgba(0,0,0,.4);
-    }
-
-    .popup h2 {
-      margin-top: 0;
-      margin-bottom: 15px;
-    }
-
-    .popup-input {
-      width: 100%;
-
-      border: 2px solid #ddd;
-
-      border-radius: 12px;
-
-      padding: 13px;
-
-      font-size: 1rem;
-
-      outline: none;
-
-      margin-bottom: 12px;
-    }
-
-    .popup-input:focus {
-      border-color: #111;
-    }
-
-    .popup-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
-
-    .popup-button {
-      border: none;
-
-      border-radius: 12px;
-
-      padding: 11px 16px;
-
-      font-weight: 900;
-
-      cursor: pointer;
-    }
-
-    .popup-cancel {
-      background: #e5e7eb;
-      color: #111;
-    }
-
-    .popup-confirm {
-      background: #111827;
-      color: white;
-    }
-
-    .public-profile {
-      text-align: center;
-    }
-
-    .public-avatar {
-      width: 95px;
-      height: 95px;
-
-      border-radius: 22px;
-
-      background: #111827;
-
-      color: white;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-size: 3rem;
-
-      margin: 0 auto 15px;
-    }
-
-    .public-name {
-      font-size: 1.7rem;
-      font-weight: 900;
-    }
-
-    .public-id {
-      color: #777;
-      font-family: monospace;
-      margin: 6px 0 20px;
-    }
-
-    .public-hours {
-      border-radius: 16px;
-      padding: 15px;
-      background: #f3f4f6;
-      font-weight: 800;
-    }
-
-    /* ---------------- RESPONSIVE ---------------- */
-
+    /* RESPONSIVE */
     @media (max-width: 650px) {
-
-      body {
-        padding: 15px;
-      }
-
-      .page-title h1 {
-        font-size: 2rem;
-      }
-
-      .profile-card {
-        align-items: flex-start;
-      }
-
-      .avatar {
-        width: 80px;
-        height: 80px;
-        min-width: 80px;
-        font-size: 2.7rem;
-      }
-
-      .profile-name {
-        font-size: 1.5rem;
-      }
-
-      .selected-symbol {
-        font-size: .82rem;
-      }
-
-      .search-box {
-        flex-direction: column;
-      }
-
-      .search-button {
-        padding: 13px;
-      }
-
-      .milestone-grid {
-        grid-template-columns:
-          repeat(2, 1fr);
-      }
-
+      body { padding: 15px; }
+      .page-title h1 { font-size: 2rem; }
+      .profile-card { align-items: flex-start; }
+      .avatar { width: 80px; height: 80px; min-width: 80px; font-size: 2.7rem; }
+      .profile-name { font-size: 1.5rem; }
+      .search-box { flex-direction: column; }
+      .search-button { padding: 13px; }
+      .milestone-grid { grid-template-columns: repeat(2, 1fr); }
     }
-
   </style>
 </head>
 
@@ -997,3148 +476,897 @@
 <div class="container">
 
   <!-- HEADER -->
-
   <div class="topbar">
-
-    <a href="startseite.html" class="back-button">
-      ← Zurück zur Startseite
-    </a>
-
-    <a href="shop.html" class="shop-button">
-      🛒 Shop
-    </a>
-
+    <a href="startseite.html" class="back-button">← Zurück zur Startseite</a>
+    <a href="shop.html" class="shop-button">🛒 Shop</a>
   </div>
-
 
   <!-- TITEL -->
-
   <div class="page-title">
-
     <h1>👤 Mein Profil</h1>
-
-    <p>
-      Deine Spielzeit, Symbole und Meilensteine
-    </p>
-
+    <p>Deine Spielzeit, Symbole und Meilensteine</p>
   </div>
 
+  <!-- FREUNDSCHAFTSANFRAGE BANNER (dynamisch) -->
+  <div id="requestBannerContainer"></div>
 
-  <!-- PROFIL -->
-
+  <!-- PROFIL CARD -->
   <section class="section-card">
-
     <div class="profile-card">
-
-      <div
-        class="avatar"
-        id="myAvatar"
-        onclick="showSymbolSection()"
-        title="Symbol auswählen"
-      >
-        🎮
-      </div>
+      <div class="avatar" id="myAvatar" onclick="showSymbolSection()" title="Symbol auswählen">🎮</div>
 
       <div class="profile-info">
-
-        <div
-          class="profile-name"
-          id="myName"
-        >
-          Spieler
-        </div>
-
-        <div class="player-id">
-          ID:
-          <span id="myId">
-            ------------
-          </span>
-        </div>
+        <div class="profile-name" id="myName">Spieler</div>
+        <div class="player-id">ID: <span id="myId">------------</span></div>
 
         <div class="selected-symbol">
-
-          <span class="selected-symbol-label">
-            🏷️ Symbol:
-          </span>
-
-          <span
-            class="selected-symbol-name"
-            id="mySymbolName"
-          >
-            Gamer
-          </span>
-
+          <span class="selected-symbol-label">🏷️ Symbol:</span>
+          <span class="selected-symbol-name" id="mySymbolName">Gamer</span>
         </div>
 
-        <button
-          class="name-button"
-          id="changeNameBtn"
-          onclick="openNamePopup()"
-        >
-          ✏️ Namen einmalig ändern
-        </button>
+        <!-- LIEBLINGSPIEL WÄHLEN -->
+        <div class="favorite-game-select">
+          <span style="font-weight: 700; color: #777;">❤️ Lieblingsspiel:</span>
+          <select id="favGameSelect" onchange="updateFavoriteGame(this.value)">
+            <option value="">Keines gewählt</option>
+          </select>
+        </div>
 
+        <button class="name-button" id="changeNameBtn" onclick="openNamePopup()">✏️ Namen einmalig ändern</button>
       </div>
-
     </div>
-
   </section>
 
+  <!-- FREUNDESLISTE -->
+  <section class="section-card">
+    <div class="section-title">👥 Meine Freunde</div>
+    <div class="section-subtitle">Aktivitäten und Online-Status deiner Freunde</div>
+    <div class="friends-grid" id="friendsGrid">
+      <div style="color: #777; font-size: 0.9rem;">Noch keine Freunde hinzugefügt.</div>
+    </div>
+  </section>
 
   <!-- SYMBOLE -->
-
-  <section
-    class="section-card symbols-section"
-    id="symbolsSection"
-  >
-
-    <button
-      class="symbols-toggle"
-      onclick="toggleSymbols()"
-    >
-
+  <section class="section-card symbols-section" id="symbolsSection">
+    <button class="symbols-toggle" onclick="toggleSymbols()">
       <div>
-
-        <div class="section-title">
-          🏷️ Deine Symbole
-        </div>
-
-        <div class="section-subtitle">
-          Symbole auswählen und freischalten
-        </div>
-
+        <div class="section-title">🏷️ Deine Symbole</div>
+        <div class="section-subtitle">Symbole auswählen und freischalten</div>
       </div>
-
-      <span
-        class="toggle-arrow"
-        id="symbolsArrow"
-      >
-        ▼
-      </span>
-
+      <span class="toggle-arrow" id="symbolsArrow">▼</span>
     </button>
-
-
-    <div
-      class="symbols-content"
-      id="symbolsContent"
-    >
-
-      <div
-        class="symbol-grid"
-        id="symbolGrid"
-      ></div>
-
+    <div class="symbols-content" id="symbolsContent">
+      <div class="symbol-grid" id="symbolGrid"></div>
     </div>
-
   </section>
 
-
-  <!-- SPIELERSUCHE – WEITER OBEN -->
-
+  <!-- SPIELERSUCHE -->
   <section class="section-card">
-
-    <div class="section-title">
-      🔎 Spieler suchen
-    </div>
-
-    <div class="section-subtitle">
-      Suche andere Spieler über ihre 12-stellige Spieler-ID.
-    </div>
-
-
+    <div class="section-title">🔎 Spieler suchen</div>
+    <div class="section-subtitle">Suche andere Spieler über ihre 12-stellige Spieler-ID.</div>
     <div class="search-box">
-
-      <input
-        type="text"
-        class="search-input"
-        id="playerSearch"
-        maxlength="12"
-        placeholder="z. B. CC7K4M9P2X1A"
-        autocomplete="off"
-      >
-
-      <button
-        class="search-button"
-        onclick="searchPlayer()"
-      >
-        Suchen
-      </button>
-
+      <input type="text" class="search-input" id="playerSearch" maxlength="12" placeholder="z. B. CC7K4M9P2X1A" autocomplete="off">
+      <button class="search-button" onclick="searchPlayer()">Suchen</button>
     </div>
-
-
-    <div
-      class="search-result"
-      id="searchResult"
-    ></div>
-
+    <div class="search-result" id="searchResult"></div>
   </section>
-
 
   <!-- SPIELZEIT -->
-
   <section class="section-card">
-
-    <div class="section-title">
-      ⏱️ Spielzeit
-    </div>
-
-    <div class="section-subtitle">
-      Deine Zeit wird für jedes Spiel separat gespeichert.
-    </div>
-
+    <div class="section-title">⏱️ Spielzeit</div>
+    <div class="section-subtitle">Deine Zeit wird für jedes Spiel separat gespeichert.</div>
 
     <div class="total-hours-card">
-
-      <div class="total-hours-label">
-        GESAMTE SPIELZEIT
-      </div>
-
-      <div
-        class="total-hours"
-        id="totalHours"
-      >
-        0h 0min
-      </div>
-
+      <div class="total-hours-label">GESAMTE SPIELZEIT</div>
+      <div class="total-hours" id="totalHours">0h 0min</div>
     </div>
 
-
-    <!-- AUFKLAPPBARE SPIELZEIT PRO SPIEL -->
-
-    <div
-      class="hours-section"
-      id="hoursSection"
-    >
-
-      <button
-        class="hours-toggle"
-        onclick="toggleHours()"
-      >
-
+    <div class="hours-section" id="hoursSection">
+      <button class="hours-toggle" onclick="toggleHours()">
         <div class="hours-toggle-left">
           <span>🎮</span>
           <span>Spielzeit pro Spiel</span>
         </div>
-
-        <span class="hours-toggle-arrow">
-          ▼
-        </span>
-
+        <span class="hours-toggle-arrow">▼</span>
       </button>
 
-
       <div class="hours-content">
-
         <div class="hours-content-inner">
-
-          <div
-            class="game-hours-grid"
-            id="gameHoursGrid"
-          ></div>
-
+          <div class="game-hours-grid" id="gameHoursGrid"></div>
         </div>
-
       </div>
-
     </div>
-
   </section>
 
-
   <!-- MEILENSTEINE -->
-
   <section class="section-card">
-
-    <div class="section-title">
-      🏆 Meilensteine
-    </div>
-
-    <div class="section-subtitle">
-      Spiele länger und schalte neue Symbole frei.
-    </div>
-
-
-    <!-- GESAMT -->
+    <div class="section-title">🏆 Meilensteine</div>
+    <div class="section-subtitle">Spiele länger und schalte neue Symbole frei.</div>
 
     <div class="milestone-group">
-
-      <div class="milestone-group-title">
-        🌍 Gesamtspielzeit
-      </div>
-
-
-      <!-- AUFKLAPPBAR -->
-
-      <div
-        class="global-milestone-section"
-        id="globalMilestoneSection"
-      >
-
-        <button
-          class="global-milestone-toggle"
-          onclick="toggleGlobalMilestones()"
-        >
-
+      <div class="milestone-group-title">🌍 Gesamtspielzeit</div>
+      <div class="global-milestone-section" id="globalMilestoneSection">
+        <button class="global-milestone-toggle" onclick="toggleGlobalMilestones()">
           <div class="milestone-toggle-left">
             <span>🏆</span>
             <span>Meilensteine der Gesamtspielzeit</span>
           </div>
-
-          <span class="milestone-toggle-arrow">
-            ▼
-          </span>
-
+          <span class="milestone-toggle-arrow">▼</span>
         </button>
-
-
         <div class="global-milestone-content">
-
           <div class="global-milestone-inner">
-
-            <div
-              class="milestone-grid"
-              id="globalMilestones"
-            ></div>
-
+            <div class="milestone-grid" id="globalMilestones"></div>
           </div>
-
         </div>
-
       </div>
-
     </div>
-
-
-    <!-- SPIELE -->
 
     <div class="milestone-group">
-
-      <div class="milestone-group-title">
-        🎮 Meilensteine pro Spiel
-      </div>
-
-
+      <div class="milestone-group-title">🎮 Meilensteine pro Spiel</div>
       <div id="gameMilestones"></div>
-
     </div>
-
   </section>
 
 </div>
 
-
-<!-- NAMEN POPUP -->
-
-<div
-  class="popup-overlay"
-  id="namePopup"
->
-
+<!-- MODAL: ERSTMALIGES ERSTELLEN -->
+<div class="popup-overlay" id="createProfileModal">
   <div class="popup">
-
-    <h2>
-      ✏️ Namen ändern
-    </h2>
-
-    <p>
-      Du kannst deinen Spielernamen nur einmal ändern.
-    </p>
-
-    <input
-      type="text"
-      class="popup-input"
-      id="nameInput"
-      maxlength="20"
-      placeholder="Dein neuer Name"
-    >
-
+    <h2>🎭 Profil erstellen</h2>
+    <p>Willkommen! Bitte wähle deinen Namen, um zu beginnen.</p>
+    <input type="text" class="popup-input" id="initialNameInput" maxlength="20" placeholder="Dein Nutzername">
     <div class="popup-buttons">
-
-      <button
-        class="popup-button popup-cancel"
-        onclick="closePopup('namePopup')"
-      >
-        Abbrechen
-      </button>
-
-      <button
-        class="popup-button popup-confirm"
-        onclick="changeName()"
-      >
-        Speichern
-      </button>
-
+      <button class="popup-button popup-confirm" onclick="finishProfileCreation()">Profil erstellen & weiter 👍</button>
     </div>
-
   </div>
-
 </div>
 
+<!-- NAMEN POPUP (1x Ändern) -->
+<div class="popup-overlay" id="namePopup">
+  <div class="popup">
+    <h2>✏️ Namen ändern</h2>
+    <p>Du kannst deinen Spielernamen nur einmal ändern.</p>
+    <input type="text" class="popup-input" id="nameInput" maxlength="20" placeholder="Dein neuer Name">
+    <div class="popup-buttons">
+      <button class="popup-button popup-cancel" onclick="closePopup('namePopup')">Abbrechen</button>
+      <button class="popup-button popup-confirm" onclick="changeName()">Speichern</button>
+    </div>
+  </div>
+</div>
 
 <!-- CODE POPUP -->
-
-<div
-  class="popup-overlay"
-  id="codePopup"
->
-
+<div class="popup-overlay" id="codePopup">
   <div class="popup">
-
-    <h2>
-      🔒 Symbol freischalten
-    </h2>
-
-    <p id="codeDescription">
-      Gib den Freischaltcode ein.
-    </p>
-
-    <input
-      type="text"
-      class="popup-input"
-      id="codeInput"
-      placeholder="Freischaltcode"
-      autocomplete="off"
-    >
-
+    <h2>🔒 Symbol freischalten</h2>
+    <p id="codeDescription">Gib den Freischaltcode ein.</p>
+    <input type="text" class="popup-input" id="codeInput" placeholder="Freischaltcode" autocomplete="off">
     <div class="popup-buttons">
-
-      <button
-        class="popup-button popup-cancel"
-        onclick="closePopup('codePopup')"
-      >
-        Abbrechen
-      </button>
-
-      <button
-        class="popup-button popup-confirm"
-        onclick="checkCode()"
-      >
-        Freischalten
-      </button>
-
+      <button class="popup-button popup-cancel" onclick="closePopup('codePopup')">Abbrechen</button>
+      <button class="popup-button popup-confirm" onclick="checkCode()">Freischalten</button>
     </div>
-
   </div>
-
 </div>
 
-
-<!-- ÖFFENTLICHES PROFIL -->
-
-<div
-  class="popup-overlay"
-  id="publicProfilePopup"
->
-
+<!-- ÖFFENTLICHES PROFIL CARD (POPUP) -->
+<div class="popup-overlay" id="publicProfilePopup">
   <div class="popup">
-
     <div class="public-profile">
+      <div class="public-avatar" id="publicAvatar">🎮</div>
+      <div class="public-name" id="publicName">Spieler</div>
+      <div class="public-id" id="publicId">ID</div>
+      <div style="font-size: 0.85rem; font-weight: bold; color: #555; margin-bottom: 10px;" id="publicSymbolText">Symbol: Gamer</div>
+      <div class="public-hours" id="publicHours">⏱️ 0 Stunden gespielt</div>
+      <div class="public-fav" id="publicFavGame">❤️ Lieblingsspiel: Keines</div>
 
-      <div
-        class="public-avatar"
-        id="publicAvatar"
-      >
-        🎮
-      </div>
-
-      <div
-        class="public-name"
-        id="publicName"
-      >
-        Spieler
-      </div>
-
-      <div
-        class="public-id"
-        id="publicId"
-      >
-        ID
-      </div>
-
-      <div
-        class="public-hours"
-        id="publicHours"
-      >
-        ⏱️ 0 Stunden gespielt
-      </div>
+      <div id="friendActionArea" style="margin-top: 15px;"></div>
 
       <br>
-
-      <button
-        class="popup-button popup-cancel"
-        onclick="closePopup('publicProfilePopup')"
-      >
-        Schließen
-      </button>
-
+      <button class="popup-button popup-cancel" onclick="closePopup('publicProfilePopup')">Schließen</button>
     </div>
-
   </div>
-
 </div>
 
+<!-- FIREBASE SKRIPTE -->
+<script type="module" src="firebase-config.js"></script>
 
 <script>
 
   /* =========================================================
-     STORAGE
+     STORAGE KEYS
   ========================================================= */
-
   const STORAGE = {
-
-    name:
-      "challengeChampProfileName",
-
-    nameChanged:
-      "challengeChampNameChanged",
-
-    playerId:
-      "challengeChampPlayerId",
-
-    avatar:
-      "challengeChampAvatar",
-
-    unlockedSymbols:
-      "challengeChampUnlockedSymbols",
-
-    gameHours:
-      "challengeChampGameHours",
-
-    activeGame:
-      "challengeChampActiveGame",
-
-    gameStart:
-      "challengeChampGameStart"
-
+    name: "challengeChampProfileName",
+    nameChanged: "challengeChampNameChanged",
+    playerId: "challengeChampPlayerId",
+    avatar: "challengeChampAvatar",
+    unlockedSymbols: "challengeChampUnlockedSymbols",
+    gameHours: "challengeChampGameHours",
+    activeGame: "challengeChampActiveGame",
+    gameStart: "challengeChampGameStart",
+    favGame: "challengeChampFavGame",
+    lastSyncedMinutes: "challengeChampLastSyncedMinutes"
   };
 
-
   /* =========================================================
-     SPIELE
+     SPIELE DEFINITIONEN
   ========================================================= */
-
   const gameDefinitions = [
-
-    {
-      id: "fakeorfakt",
-      name: "Fake or Fakt"
-    },
-
-    {
-      id: "10von10",
-      name: "10 von 10"
-    },
-
-    {
-      id: "wop",
-      name: "Wahrheit oder Pflicht"
-    },
-
-    {
-      id: "imposter",
-      name: "Finde den Imposter"
-    },
-
-    {
-      id: "imposterpremium",
-      name: "Wer lügt am Besten"
-    },
-
-    {
-      id: "wort",
-      name: "Verbotene Wörter"
-    },
-
-    {
-      id: "liste",
-      name: "TopSort"
-    },
-
-    {
-      id: "tipptopf",
-      name: "Tipptopf"
-    },
-
-    {
-      id: "stillepost",
-      name: "PinselPost"
-    },
-
-    {
-      id: "habnochnie",
-      name: "Ich hab noch nie"
-    },
-
-    {
-      id: "werbinich",
-      name: "Wer bin ich?"
-    },
-
-    {
-      id: "superquiz",
-      name: "Superquiz"
-    },
-
-    {
-      id: "duoplay",
-      name: "Duo-Pantomime"
-    },
-
-    {
-      id: "uberbieten",
-      name: "BattleBid"
-    },
-
-    {
-      id: "these",
-      name: "Lüge oder Wahrheit"
-    },
-
-    {
-      id: "100quiz",
-      name: "TeamQuiz Board"
-    },
-
-    {
-      id: "wolf",
-      name: "Nightfall Village"
-    },
-
-    {
-      id: "wm",
-      name: "MatchMaster"
-    },
-
-    {
-      id: "wmhunter",
-      name: "PlayMaster"
-    },
-
-    {
-      id: "wmguess",
-      name: "Guess the Hype"
-    },
-
-    {
-      id: "wmtop",
-      name: "TeamMaster"
-    },
-
-    {
-      id: "tictactoe",
-      name: "Guess Grid"
-    }
-
+    { id: "fakeorfakt", name: "Fake or Fakt" },
+    { id: "10von10", name: "10 von 10" },
+    { id: "wop", name: "Wahrheit oder Pflicht" },
+    { id: "imposter", name: "Finde den Imposter" },
+    { id: "imposterpremium", name: "Wer lügt am Besten" },
+    { id: "wort", name: "Verbotene Wörter" },
+    { id: "liste", name: "TopSort" },
+    { id: "tipptopf", name: "Tipptopf" },
+    { id: "stillepost", name: "PinselPost" },
+    { id: "habnochnie", name: "Ich hab noch nie" },
+    { id: "werbinich", name: "Wer bin ich?" },
+    { id: "superquiz", name: "Superquiz" },
+    { id: "duoplay", name: "Duo-Pantomime" },
+    { id: "uberbieten", name: "BattleBid" },
+    { id: "these", name: "Lüge oder Wahrheit" },
+    { id: "100quiz", name: "TeamQuiz Board" },
+    { id: "wolf", name: "Nightfall Village" },
+    { id: "wm", name: "MatchMaster" },
+    { id: "wmhunter", name: "PlayMaster" },
+    { id: "wmguess", name: "Guess the Hype" },
+    { id: "wmtop", name: "TeamMaster" },
+    { id: "tictactoe", name: "Guess Grid" }
   ];
-
-
-  /* =========================================================
-     CODE-SYMBOLE
-  ========================================================= */
 
   const codeSymbols = [
-
-    {
-      id: "champion",
-      icon: "🏆",
-      name: "Goldener Champion",
-      code: "CHAMP-2026"
-    },
-
-    {
-      id: "fire",
-      icon: "🔥",
-      name: "Feuersturm",
-      code: "FIRE-777"
-    },
-
-    {
-      id: "crown",
-      icon: "👑",
-      name: "Königskrone",
-      code: "CROWN-999"
-    },
-
-    {
-      id: "diamond",
-      icon: "💎",
-      name: "Diamant-Legende",
-      code: "DIAMOND-CC"
-    },
-
-    {
-      id: "lightning",
-      icon: "⚡",
-      name: "Blitz-Champion",
-      code: "BOLT-2026"
-    }
-
+    { id: "champion", icon: "🏆", name: "Goldener Champion", code: "CHAMP-2026" },
+    { id: "fire", icon: "🔥", name: "Feuersturm", code: "FIRE-777" },
+    { id: "crown", icon: "👑", name: "Königskrone", code: "CROWN-999" },
+    { id: "diamond", icon: "💎", name: "Diamant-Legende", code: "DIAMOND-CC" },
+    { id: "lightning", icon: "⚡", name: "Blitz-Champion", code: "BOLT-2026" }
   ];
-
-
-  /* =========================================================
-     MEILENSTEINE PRO SPIEL
-     
-     10 Minuten
-     30 Minuten
-     1 Stunde
-     3 Stunden
-     5 Stunden
-  ========================================================= */
 
   const gameMilestones = [
-
-    {
-      id: "10min",
-      minutes: 10,
-      icon: "🕐",
-      name: "Warm-up-Held"
-    },
-
-    {
-      id: "30min",
-      minutes: 30,
-      icon: "⏱️",
-      name: "Challenge-Spieler"
-    },
-
-    {
-      id: "1h",
-      minutes: 60,
-      icon: "⭐",
-      name: "Game-Profi"
-    },
-
-    {
-      id: "3h",
-      minutes: 180,
-      icon: "🔥",
-      name: "Challenge-Bestie"
-    },
-
-    {
-      id: "5h",
-      minutes: 300,
-      icon: "🚀",
-      name: "Spiel-Legende"
-    }
-
+    { id: "10min", minutes: 10, icon: "🕐", name: "Warm-up-Held" },
+    { id: "30min", minutes: 30, icon: "⏱️", name: "Challenge-Spieler" },
+    { id: "1h", minutes: 60, icon: "⭐", name: "Game-Profi" },
+    { id: "3h", minutes: 180, icon: "🔥", name: "Challenge-Bestie" },
+    { id: "5h", minutes: 300, icon: "🚀", name: "Spiel-Legende" }
   ];
-
-
-  /* =========================================================
-     GESAMT-MEILENSTEINE
-     
-     1h
-     5h
-     10h
-     25h
-     50h
-     100h
-  ========================================================= */
 
   const globalMilestones = [
-
-    {
-      id: "global_1h",
-      minutes: 60,
-      icon: "🌟",
-      name: "Stundenstarter"
-    },
-
-    {
-      id: "global_5h",
-      minutes: 300,
-      icon: "🚀",
-      name: "Challenge-Rakete"
-    },
-
-    {
-      id: "global_10h",
-      minutes: 600,
-      icon: "🏆",
-      name: "Challenge-Champion"
-    },
-
-    {
-      id: "global_25h",
-      minutes: 1500,
-      icon: "💎",
-      name: "Diamant-Spieler"
-    },
-
-    {
-      id: "global_50h",
-      minutes: 3000,
-      icon: "🐉",
-      name: "Challenge-Drache"
-    },
-
-    {
-      id: "global_100h",
-      minutes: 6000,
-      icon: "👑",
-      name: "Ultimate Champion"
-    }
-
+    { id: "global_1h", minutes: 60, icon: "🌟", name: "Stundenstarter" },
+    { id: "global_5h", minutes: 300, icon: "🚀", name: "Challenge-Rakete" },
+    { id: "global_10h", minutes: 600, icon: "🏆", name: "Challenge-Champion" },
+    { id: "global_25h", minutes: 1500, icon: "💎", name: "Diamant-Spieler" },
+    { id: "global_50h", minutes: 3000, icon: "🐉", name: "Challenge-Drache" },
+    { id: "global_100h", minutes: 6000, icon: "👑", name: "Ultimate Champion" }
   ];
 
-
   /* =========================================================
-     FALSCHE SPIELER FÜR DIE SUCHE
+     ERSTMALIGE PROFIL-ERSTELLUNG & CHECK
   ========================================================= */
-
-  const fakePlayers = [
-
-    {
-      name: "Max",
-      id: "CC7K4M9P2X1A",
-      avatar: "🏆",
-      hours: 18.7
-    },
-
-    {
-      name: "Lina",
-      id: "CC3Q8T5N7B2Z",
-      avatar: "🔥",
-      hours: 42.3
-    },
-
-    {
-      name: "Tom",
-      id: "CC9L2F6R8W4K",
-      avatar: "🚀",
-      hours: 7.9
-    }
-
-  ];
-
-
-  /* =========================================================
-     NAMEN
-  ========================================================= */
-
-  function randomPlayerName() {
-
-    const names = [
-
-      "Spieler",
-      "ChallengeKid",
-      "QuizMaster",
-      "Champ",
-      "Player",
-      "GameStar",
-      "LuckyPlayer"
-
-    ];
-
-    return names[
-      Math.floor(
-        Math.random() * names.length
-      )
-    ];
-
-  }
-
-
-  function getPlayerName() {
-
-    let name =
-      localStorage.getItem(
-        STORAGE.name
-      );
-
-    if (!name) {
-
-      name = randomPlayerName();
-
-      localStorage.setItem(
-        STORAGE.name,
-        name
-      );
-
-    }
-
-    return name;
-
-  }
-
-
-  /* =========================================================
-     PLAYER ID
-  ========================================================= */
-
-  function generatePlayerId() {
-
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-    let id = "";
-
-    for (
-      let i = 0;
-      i < 12;
-      i++
-    ) {
-
-      id += characters[
-        Math.floor(
-          Math.random() * characters.length
-        )
-      ];
-
-    }
-
-    return id;
-
-  }
-
-
-  function getPlayerId() {
-
-    let id =
-      localStorage.getItem(
-        STORAGE.playerId
-      );
-
-    if (!id) {
-
-      id = generatePlayerId();
-
-      localStorage.setItem(
-        STORAGE.playerId,
-        id
-      );
-
-    }
-
-    return id;
-
-  }
-
-
-  /* =========================================================
-     SPIELZEIT DATEN
-  ========================================================= */
-
-  function getGameHours() {
-
-    let data = {};
-
-    try {
-
-      data = JSON.parse(
-        localStorage.getItem(
-          STORAGE.gameHours
-        )
-      ) || {};
-
-    } catch {
-
-      data = {};
-
-    }
-
-
-    gameDefinitions.forEach(game => {
-
-      if (
-        typeof data[game.id] !== "number"
-      ) {
-
-        data[game.id] = 0;
-
-      }
-
-    });
-
-
-    return data;
-
-  }
-
-
-  function saveGameHours(data) {
-
-    localStorage.setItem(
-      STORAGE.gameHours,
-      JSON.stringify(data)
-    );
-
-  }
-
-
-  /* =========================================================
-     AKTIVER SPIEL-TIMER
-     
-     Diese Funktionen können auch auf deinen
-     jeweiligen Spielseiten verwendet werden.
-  ========================================================= */
-
-  function startGameTimer(gameId) {
-
-    const gameExists =
-      gameDefinitions.some(
-        game => game.id === gameId
-      );
-
-    if (!gameExists) {
-
-      console.warn(
-        "Unbekannte Spiel-ID:",
-        gameId
-      );
-
-      return;
-
-    }
-
-
-    /*
-      Falls bereits ein anderes Spiel läuft,
-      wird dessen Zeit zuerst gespeichert.
-    */
-
-    stopGameTimer();
-
-
-    localStorage.setItem(
-      STORAGE.activeGame,
-      gameId
-    );
-
-    localStorage.setItem(
-      STORAGE.gameStart,
-      Date.now().toString()
-    );
-
-  }
-
-
-  function stopGameTimer() {
-
-    const activeGame =
-      localStorage.getItem(
-        STORAGE.activeGame
-      );
-
-    const start =
-      parseInt(
-        localStorage.getItem(
-          STORAGE.gameStart
-        ),
-        10
-      );
-
-
-    if (
-      !activeGame ||
-      !start ||
-      Number.isNaN(start)
-    ) {
-
-      return;
-
-    }
-
-
-    const elapsed =
-      Date.now() - start;
-
-
-    /*
-      Nur sinnvolle Zeit speichern.
-      Millisekunden werden in Stunden umgerechnet.
-    */
-
-    if (elapsed > 0) {
-
-      const data =
-        getGameHours();
-
-      const hours =
-        elapsed / 3600000;
-
-
-      data[activeGame] =
-        (data[activeGame] || 0)
-        + hours;
-
-
-      saveGameHours(data);
-
-    }
-
-
-    localStorage.removeItem(
-      STORAGE.activeGame
-    );
-
-    localStorage.removeItem(
-      STORAGE.gameStart
-    );
-
-  }
-
-
-  /*
-    Alle 5 Sekunden wird die laufende Zeit
-    gespeichert. Dadurch geht bei einem Absturz
-    nicht die komplette Spielzeit verloren.
-  */
-
-  let timerInterval =
-    setInterval(() => {
-
-      const activeGame =
-        localStorage.getItem(
-          STORAGE.activeGame
-        );
-
-      if (activeGame) {
-
-        stopGameTimer();
-
-        startGameTimer(
-          activeGame
-        );
-
-      }
-
-    }, 5000);
-
-
-  /*
-    Wenn der Nutzer die Seite verlässt,
-    wird die Zeit ebenfalls gespeichert.
-  */
-
-  window.addEventListener(
-    "beforeunload",
-    () => {
-
-      stopGameTimer();
-
-    }
-  );
-
-
-  document.addEventListener(
-    "visibilitychange",
-    () => {
-
-      if (
-        document.visibilityState === "hidden"
-      ) {
-
-        stopGameTimer();
-
-      }
-
-    }
-  );
-
-
-  /* =========================================================
-     GESAMTSTUNDEN
-  ========================================================= */
-
-  function getTotalHours() {
-
-    const data =
-      getGameHours();
-
-    let total = 0;
-
-    gameDefinitions.forEach(game => {
-
-      total +=
-        Number(data[game.id] || 0);
-
-    });
-
-
-    return total;
-
-  }
-
-
-  /* =========================================================
-     ZEIT FORMATIERUNG
-  ========================================================= */
-
-  function formatTime(hours) {
-
-    const totalMinutes =
-      Math.floor(
-        hours * 60
-      );
-
-    const h =
-      Math.floor(
-        totalMinutes / 60
-      );
-
-    const min =
-      totalMinutes % 60;
-
-
-    if (h <= 0) {
-
-      return `${min}min`;
-
-    }
-
-
-    if (min <= 0) {
-
-      return `${h}h`;
-
-    }
-
-
-    return `${h}h ${min}min`;
-
-  }
-
-
-  function formatDecimalHours(hours) {
-
-    return (
-      Math.round(
-        hours * 10
-      ) / 10
-    ).toFixed(1);
-
-  }
-
-
-  /* =========================================================
-     SYMBOL-DATEN
-  ========================================================= */
-
-  function getUnlockedSymbols() {
-
-    let symbols = [];
-
-    try {
-
-      symbols =
-        JSON.parse(
-          localStorage.getItem(
-            STORAGE.unlockedSymbols
-          )
-        ) || [];
-
-    } catch {
-
-      symbols = [];
-
-    }
-
-
-    /*
-      Das normale Grundsymbol ist immer frei.
-    */
-
-    if (!symbols.includes("basic")) {
-
-      symbols.push("basic");
-
-    }
-
-
-    return symbols;
-
-  }
-
-
-  function saveUnlockedSymbols(symbols) {
-
-    localStorage.setItem(
-      STORAGE.unlockedSymbols,
-      JSON.stringify(symbols)
-    );
-
-  }
-
-
-  /* =========================================================
-     MEILENSTEIN-SYMBOL-ID
-  ========================================================= */
-
-  function getGameMilestoneSymbolId(
-    gameId,
-    milestoneId
-  ) {
-
-    return (
-      "game_" +
-      gameId +
-      "_" +
-      milestoneId
-    );
-
-  }
-
-
-  /* =========================================================
-     MEILENSTEINE PRÜFEN UND FREISCHALTEN
-  ========================================================= */
-
-  function unlockMilestones() {
-
-    let unlocked =
-      getUnlockedSymbols();
-
-    const gameHours =
-      getGameHours();
-
-
-    /*
-      MEILENSTEINE PRO SPIEL
-    */
-
-    gameDefinitions.forEach(game => {
-
-      const minutes =
-        (gameHours[game.id] || 0)
-        * 60;
-
-
-      gameMilestones.forEach(
-        milestone => {
-
-          if (
-            minutes >=
-            milestone.minutes
-          ) {
-
-            const symbolId =
-              getGameMilestoneSymbolId(
-                game.id,
-                milestone.id
-              );
-
-
-            if (
-              !unlocked.includes(
-                symbolId
-              )
-            ) {
-
-              unlocked.push(
-                symbolId
-              );
-
-            }
-
-          }
-
-        }
-      );
-
-    });
-
-
-    /*
-      GESAMT-MEILENSTEINE
-    */
-
-    const totalMinutes =
-      getTotalHours() * 60;
-
-
-    globalMilestones.forEach(
-      milestone => {
-
-        if (
-          totalMinutes >=
-          milestone.minutes
-        ) {
-
-          if (
-            !unlocked.includes(
-              milestone.id
-            )
-          ) {
-
-            unlocked.push(
-              milestone.id
-            );
-
-          }
-
-        }
-
-      }
-    );
-
-
-    saveUnlockedSymbols(
-      unlocked
-    );
-
-  }
-
-
-  /* =========================================================
-     SYMBOL-BEREICH RENDERN
-  ========================================================= */
-
-  function renderSymbols() {
-
-    const grid =
-      document.getElementById(
-        "symbolGrid"
-      );
-
-
-    const unlocked =
-      getUnlockedSymbols();
-
-
-    grid.innerHTML = "";
-
-
-    /*
-      GRUNDSYMBOL
-    */
-
-    addSymbolToGrid(
-      grid,
-      {
-        id: "basic",
-        icon: "🎮",
-        name: "Gamer",
-        unlocked: true
-      },
-      unlocked
-    );
-
-
-    /*
-      CODE-SYMBOLE
-    */
-
-    codeSymbols.forEach(
-      symbol => {
-
-        addSymbolToGrid(
-          grid,
-          {
-            ...symbol,
-            type: "code",
-            unlocked:
-              unlocked.includes(
-                symbol.id
-              )
-          },
-          unlocked
-        );
-
-      }
-    );
-
-
-    /*
-      GESAMT-MEILENSTEINE
-    */
-
-    globalMilestones.forEach(
-      milestone => {
-
-        addSymbolToGrid(
-          grid,
-          {
-            id: milestone.id,
-            icon: milestone.icon,
-            name: milestone.name,
-            unlocked:
-              unlocked.includes(
-                milestone.id
-              ),
-            type: "milestone"
-          },
-          unlocked
-        );
-
-      }
-    );
-
-
-    /*
-      SPIEL-MEILENSTEINE
-
-      Jedes Spiel bekommt eigene
-      passende Symbolnamen.
-    */
-
-    gameDefinitions.forEach(
-      game => {
-
-        gameMilestones.forEach(
-          milestone => {
-
-            const id =
-              getGameMilestoneSymbolId(
-                game.id,
-                milestone.id
-              );
-
-
-            addSymbolToGrid(
-              grid,
-              {
-                id: id,
-                icon: milestone.icon,
-                name:
-                  getGameSymbolName(
-                    game,
-                    milestone
-                  ),
-                unlocked:
-                  unlocked.includes(id),
-                type: "gameMilestone"
-              },
-              unlocked
-            );
-
-          }
-        );
-
-      }
-    );
-
-  }
-
-
-  /* =========================================================
-     COOLE SYMBOLNAMEN PASSEND ZUM SPIEL
-  ========================================================= */
-
-  function getGameSymbolName(
-    game,
-    milestone
-  ) {
-
-    const names = {
-
-      fakeorfakt: {
-        "10min": "Fakten-Fuchs",
-        "30min": "Fake-Jäger",
-        "1h": "Wahrheitsprofi",
-        "3h": "Fakten-Legende",
-        "5h": "Fake-König"
-      },
-
-      "10von10": {
-        "10min": "Rating-Rookie",
-        "30min": "10er-Kenner",
-        "1h": "Bewertungsprofi",
-        "3h": "10-von-10-Legende",
-        "5h": "Rating-Champion"
-      },
-
-      wop: {
-        "10min": "Wortakrobat",
-        "30min": "Pechvogel-Profi",
-        "1h": "Wort-Meister",
-        "3h": "Wort-Legende",
-        "5h": "Wort-Champion"
-      },
-
-      imposter: {
-        "10min": "Imposter-Spürnase",
-        "30min": "Lügenjäger",
-        "1h": "Imposter-Detektiv",
-        "3h": "Meisterdetektiv",
-        "5h": "Imposter-Legende"
-      },
-
-      imposterpremium: {
-        "10min": "Premium-Spürer",
-        "30min": "Lügenleser",
-        "1h": "Elite-Detektiv",
-        "3h": "Mastermind",
-        "5h": "Premium-Legende"
-      },
-
-      wort: {
-        "10min": "Wortfinder",
-        "30min": "Buchstabenjäger",
-        "1h": "Wortprofi",
-        "3h": "Wortmagier",
-        "5h": "Wort-Legende"
-      },
-
-      liste: {
-        "10min": "Listenstarter",
-        "30min": "Listenjäger",
-        "1h": "Listenprofi",
-        "3h": "Listenmeister",
-        "5h": "Listen-Legende"
-      },
-
-      tipptopf: {
-        "10min": "Tipp-Talent",
-        "30min": "Begriffe-Kenner",
-        "1h": "Tipp-Profi",
-        "3h": "Begriffe-Meister",
-        "5h": "Tipp-Legende"
-      },
-
-      stillepost: {
-        "10min": "Kritzel-Künstler",
-        "30min": "Zeichenprofi",
-        "1h": "Pinselmeister",
-        "3h": "Malkünstler",
-        "5h": "Stille-Post-Legende"
-      },
-
-      habnochnie: {
-        "10min": "Mutiger Starter",
-        "30min": "Geständnis-Profi",
-        "1h": "Ehrlichkeitsheld",
-        "3h": "Never-Have-I-Ever-Profi",
-        "5h": "Geständnis-Legende"
-      },
-
-      werbinich: {
-        "10min": "Rätsel-Rookie",
-        "30min": "Identitätsjäger",
-        "1h": "Wer-bin-ich-Profi",
-        "3h": "Menschenkenner",
-        "5h": "Identitäts-Legende"
-      },
-
-      superquiz: {
-        "10min": "Quizstarter",
-        "30min": "Quiz-Kenner",
-        "1h": "Quizprofi",
-        "3h": "Quizmeister",
-        "5h": "Quiz-Legende"
-      },
-
-      duoplay: {
-        "10min": "Duo-Starter",
-        "30min": "Teamplayer",
-        "1h": "Duo-Profi",
-        "3h": "Partner-Legende",
-        "5h": "Duo-Champion"
-      },
-
-      uberbieten: {
-        "10min": "Gebotsstarter",
-        "30min": "Überbieter",
-        "1h": "Bietprofi",
-        "3h": "Gebotsmeister",
-        "5h": "Biet-Legende"
-      },
-
-      these: {
-        "10min": "Meinungsstarter",
-        "30min": "These-Taktiker",
-        "1h": "Argumentationsprofi",
-        "3h": "Debattenmeister",
-        "5h": "These-Legende"
-      },
-
-      "100quiz": {
-        "10min": "Hundert-Fragen-Held",
-        "30min": "100er-Kenner",
-        "1h": "Quiz-Marathoner",
-        "3h": "100-Quiz-Profi",
-        "5h": "100-Quiz-Legende"
-      },
-
-      wolf: {
-        "10min": "Dorfwache",
-        "30min": "Nachtwächter",
-        "1h": "Wolfsspürer",
-        "3h": "Nachtfall-Profi",
-        "5h": "Dorf-Legende"
-      },
-
-      wm: {
-        "10min": "TeamMaster-Rookie",
-        "30min": "TeamMaster",
-        "1h": "TeamMaster-Profi",
-        "3h": "TeamMaster-Meister",
-        "5h": "TeamMaster-Legende"
-      },
-
-      wmhunter: {
-        "10min": "WM-Spürer",
-        "30min": "WM-Jäger",
-        "1h": "WM-Profi",
-        "3h": "WM-Hunter-Meister",
-        "5h": "WM-Jagd-Legende"
-      },
-
-      wmguess: {
-        "10min": "Fußball-Tipper",
-        "30min": "Match-Rater",
-        "1h": "Fußball-Orakel",
-        "3h": "MatchMaster",
-        "5h": "Fußball-Legende"
-      },
-
-      wmtop: {
-        "10min": "Ranking-Rookie",
-        "30min": "Toplisten-Kenner",
-        "1h": "Ranking-Profi",
-        "3h": "TopMaster",
-        "5h": "Ranking-Legende"
-      },
-
-      tictactoe: {
-        "10min": "Kreuzchen-Starter",
-        "30min": "Taktikspieler",
-        "1h": "Tic-Tac-Profi",
-        "3h": "Taktikmeister",
-        "5h": "Tic-Tac-Legende"
-      }
-
-    };
-
-
-    if (
-      names[game.id] &&
-      names[game.id][milestone.id]
-    ) {
-
-      return names[game.id][milestone.id];
-
-    }
-
-
-    return (
-      game.name +
-      " – " +
-      milestone.name
-    );
-
-  }
-
-
-  function addSymbolToGrid(
-    grid,
-    symbol,
-    unlocked
-  ) {
-
-    const item =
-      document.createElement(
-        "div"
-      );
-
-
-    const isUnlocked =
-      unlocked.includes(
-        symbol.id
-      );
-
-
-    item.className =
-      "symbol-item " +
-      (
-        isUnlocked
-          ? "unlocked"
-          : "locked"
-      );
-
-
-    if (
-      localStorage.getItem(
-        STORAGE.avatar
-      ) === symbol.id
-    ) {
-
-      item.classList.add(
-        "selected"
-      );
-
-    }
-
-
-    item.innerHTML = `
-
-      <div class="symbol-icon">
-        ${symbol.icon}
-      </div>
-
-      <div class="symbol-name">
-        ${symbol.name}
-      </div>
-
-      ${
-        isUnlocked
-          ? ""
-          : `<div class="symbol-lock">🔒</div>`
-      }
-
-    `;
-
-
-    item.onclick = () => {
-
-      if (isUnlocked) {
-
-        selectSymbol(
-          symbol.id,
-          symbol.icon
-        );
-
-      } else if (
-        symbol.type === "code"
-      ) {
-
-        openCodePopup(
-          symbol
-        );
-
-      }
-
-    };
-
-
-    grid.appendChild(
-      item
-    );
-
-  }
-
-
-  /* =========================================================
-     SYMBOL AUSWÄHLEN
-  ========================================================= */
-
-  function selectSymbol(
-    id,
-    icon
-  ) {
-
-    localStorage.setItem(
-      STORAGE.avatar,
-      id
-    );
-
-
-    document.getElementById(
-      "myAvatar"
-    ).textContent = icon;
-
-
-    const symbolName =
-      getSymbolNameById(id);
-
-
-    document.getElementById(
-      "mySymbolName"
-    ).textContent =
-      symbolName;
-
-
-    renderSymbols();
-
-  }
-
-
-  /* =========================================================
-     SYMBOL-NAME SUCHEN
-  ========================================================= */
-
-  function getSymbolNameById(id) {
-
-    if (!id || id === "basic") {
-
-      return "Gamer";
-
-    }
-
-
-    const code =
-      codeSymbols.find(
-        symbol =>
-          symbol.id === id
-      );
-
-
-    if (code) {
-
-      return code.name;
-
-    }
-
-
-    const global =
-      globalMilestones.find(
-        milestone =>
-          milestone.id === id
-      );
-
-
-    if (global) {
-
-      return global.name;
-
-    }
-
-
-    if (
-      id.startsWith("game_")
-    ) {
-
-      const parts =
-        id.split("_");
-
-
-      const milestoneId =
-        parts[
-          parts.length - 1
-        ];
-
-
-      const gameId =
-        parts
-          .slice(1, -1)
-          .join("_");
-
-
-      const game =
-        gameDefinitions.find(
-          game =>
-            game.id === gameId
-        );
-
-
-      const milestone =
-        gameMilestones.find(
-          milestone =>
-            milestone.id === milestoneId
-        );
-
-
-      if (
-        game &&
-        milestone
-      ) {
-
-        return getGameSymbolName(
-          game,
-          milestone
-        );
-
-      }
-
-    }
-
-
-    return "Gamer";
-
-  }
-
-
-  /* =========================================================
-     CODE POPUP
-  ========================================================= */
-
-  let selectedCodeSymbol =
-    null;
-
-
-  function openCodePopup(
-    symbol
-  ) {
-
-    selectedCodeSymbol =
-      symbol;
-
-
-    document.getElementById(
-      "codeDescription"
-    ).textContent =
-      `Gib den Code für „${symbol.name}“ ein.`;
-
-
-    document.getElementById(
-      "codeInput"
-    ).value = "";
-
-
-    document.getElementById(
-      "codePopup"
-    ).classList.add(
-      "active"
-    );
-
-
-    setTimeout(() => {
-
-      document.getElementById(
-        "codeInput"
-      ).focus();
-
-    }, 100);
-
-  }
-
-
-  function checkCode() {
-
-    if (!selectedCodeSymbol) {
-
-      return;
-
-    }
-
-
-    const input =
-      document.getElementById(
-        "codeInput"
-      ).value
-      .trim()
-      .toUpperCase();
-
-
-    if (
-      input ===
-      selectedCodeSymbol.code
-        .toUpperCase()
-    ) {
-
-      let unlocked =
-        getUnlockedSymbols();
-
-
-      if (
-        !unlocked.includes(
-          selectedCodeSymbol.id
-        )
-      ) {
-
-        unlocked.push(
-          selectedCodeSymbol.id
-        );
-
-      }
-
-
-      saveUnlockedSymbols(
-        unlocked
-      );
-
-
-      closePopup(
-        "codePopup"
-      );
-
-
-      renderSymbols();
-
-
-      alert(
-        `🎉 Das Symbol „${selectedCodeSymbol.name}“ wurde freigeschaltet!`
-      );
-
+  function checkInitialProfile() {
+    const existingId = localStorage.getItem(STORAGE.playerId);
+    if (!existingId) {
+      document.getElementById("createProfileModal").classList.add("active");
     } else {
-
-      alert(
-        "❌ Der Code ist falsch."
-      );
-
+      syncWithServer();
     }
-
   }
 
-
-  /* =========================================================
-     NAMEN ÄNDERN
-  ========================================================= */
-
-  function openNamePopup() {
-
-    if (
-      localStorage.getItem(
-        STORAGE.nameChanged
-      ) === "true"
-    ) {
-
+  function finishProfileCreation() {
+    const nameVal = document.getElementById("initialNameInput").value.trim();
+    if (!nameVal) {
+      alert("Bitte gib einen Nutzernamen ein!");
       return;
-
     }
 
+    const newId = generatePlayerId();
+    localStorage.setItem(STORAGE.playerId, newId);
+    localStorage.setItem(STORAGE.name, nameVal);
+    localStorage.setItem(STORAGE.avatar, "basic");
 
-    document.getElementById(
-      "nameInput"
-    ).value =
-      getPlayerName();
-
-
-    document.getElementById(
-      "namePopup"
-    ).classList.add(
-      "active"
-    );
-
-  }
-
-
-  function changeName() {
-
-    const input =
-      document.getElementById(
-        "nameInput"
-      ).value.trim();
-
-
-    if (!input) {
-
-      alert(
-        "Bitte gib einen Namen ein."
-      );
-
-      return;
-
-    }
-
-
-    localStorage.setItem(
-      STORAGE.name,
-      input
-    );
-
-
-    localStorage.setItem(
-      STORAGE.nameChanged,
-      "true"
-    );
-
-
-    closePopup(
-      "namePopup"
-    );
-
+    document.getElementById("createProfileModal").classList.remove("active");
 
     renderProfile();
-
+    syncWithServer(true);
   }
 
+  function generatePlayerId() {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let id = "CC";
+    for (let i = 0; i < 10; i++) {
+      id += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return id;
+  }
+
+  function getPlayerId() {
+    return localStorage.getItem(STORAGE.playerId) || "------------";
+  }
+
+  function getPlayerName() {
+    return localStorage.getItem(STORAGE.name) || "Spieler";
+  }
 
   /* =========================================================
-     POPUPS
+     FIREBASE SERVER-SYNCHRONISATION
   ========================================================= */
-
-  function closePopup(
-    id
-  ) {
-
-    document.getElementById(
-      id
-    ).classList.remove(
-      "active"
-    );
-
-  }
-
-
-  /* =========================================================
-     SYMBOL-BEREICH ÖFFNEN
-  ========================================================= */
-
-  function toggleSymbols() {
-
-    const section =
-      document.getElementById(
-        "symbolsSection"
-      );
-
-
-    section.classList.toggle(
-      "open"
-    );
-
-  }
-
-
-  function showSymbolSection() {
-
-    const section =
-      document.getElementById(
-        "symbolsSection"
-      );
-
-
-    section.classList.add(
-      "open"
-    );
-
-
-    setTimeout(() => {
-
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-
-    }, 100);
-
-  }
-
-
-  /* =========================================================
-     SPIELZEIT AUFKLAPPEN
-  ========================================================= */
-
-  function toggleHours() {
-
-    const section =
-      document.getElementById(
-        "hoursSection"
-      );
-
-
-    section.classList.toggle(
-      "open"
-    );
-
-  }
-
-
-  /* =========================================================
-     GESAMT-MEILENSTEINE AUFKLAPPEN
-  ========================================================= */
-
-  function toggleGlobalMilestones() {
-
-    const section =
-      document.getElementById(
-        "globalMilestoneSection"
-      );
-
-
-    section.classList.toggle(
-      "open"
-    );
-
-  }
-
-
-  /* =========================================================
-     SPIELZEIT RENDERN
-  ========================================================= */
-
-  function renderHours() {
-
-    const data =
-      getGameHours();
-
-
-    const total =
-      getTotalHours();
-
-
-    document.getElementById(
-      "totalHours"
-    ).textContent =
-      formatTime(total);
-
-
-    const grid =
-      document.getElementById(
-        "gameHoursGrid"
-      );
-
-
-    grid.innerHTML = "";
-
-
-    gameDefinitions.forEach(
-      game => {
-
-        const hours =
-          data[game.id] || 0;
-
-
-        const minutes =
-          hours * 60;
-
-
-        /*
-          Fortschritt bis zum nächsten
-          Spiel-Meilenstein
-        */
-
-        let next =
-          gameMilestones.find(
-            milestone =>
-              minutes <
-              milestone.minutes
-          );
-
-
-        let progress = 100;
-
-
-        if (next) {
-
-          const previous =
-            gameMilestones[
-              gameMilestones.indexOf(next) - 1
-            ];
-
-
-          const previousMinutes =
-            previous
-              ? previous.minutes
-              : 0;
-
-
-          progress =
-            (
-              (minutes - previousMinutes)
-              /
-              (next.minutes - previousMinutes)
-            ) * 100;
-
-
-          progress =
-            Math.max(
-              0,
-              Math.min(
-                100,
-                progress
-              )
-            );
-
-        }
-
-
-        const card =
-          document.createElement(
-            "div"
-          );
-
-
-        card.className =
-          "game-hour-card";
-
-
-        card.innerHTML = `
-
-          <div class="game-hour-top">
-
-            <div class="game-name">
-              ${game.name}
-            </div>
-
-            <div class="game-time">
-              ${formatTime(hours)}
-            </div>
-
-          </div>
-
-          <div class="progress-bar">
-
-            <div
-              class="progress-fill"
-              style="width:${progress}%"
-            ></div>
-
-          </div>
-
-          <div class="next-milestone">
-
-            ${
-              next
-                ? `Nächster Meilenstein:
-                   ${next.icon}
-                   ${formatMilestoneTime(next.minutes)}`
-                : "🏆 Alle Spiel-Meilensteine erreicht!"
-            }
-
-          </div>
-
-        `;
-
-
-        grid.appendChild(
-          card
-        );
-
-      }
-    );
-
-  }
-
-
-  function formatMilestoneTime(
-    minutes
-  ) {
-
-    if (minutes < 60) {
-
-      return minutes + " Minuten";
-
+  async function syncWithServer(force = false) {
+    const pId = getPlayerId();
+    if (pId === "------------" || !window.firebaseDB) return;
+
+    const name = getPlayerName();
+    const avatarId = localStorage.getItem(STORAGE.avatar) || "basic";
+    const icon = findSymbolIcon(avatarId);
+    const iconText = getSymbolNameById(avatarId);
+    const favGame = localStorage.getItem(STORAGE.favGame) || "";
+    const totalMins = Math.floor(getTotalHours() * 60);
+
+    const lastSynced = parseInt(localStorage.getItem(STORAGE.lastSyncedMinutes) || "0", 10);
+
+    // Aktualisiert Server-Spielzeit bei Erreichen der nächsten 10-Minuten-Marke
+    let timeToSync = lastSynced;
+    if (force || totalMins >= lastSynced + 10) {
+      timeToSync = Math.floor(totalMins / 10) * 10;
+      localStorage.setItem(STORAGE.lastSyncedMinutes, timeToSync.toString());
     }
 
+    const userRef = window.fbRef(window.firebaseDB, `users/${pId}`);
+    await window.fbSet(userRef, {
+      id: pId,
+      name: name,
+      icon: icon,
+      iconText: iconText,
+      totalMinutes: timeToSync,
+      favoriteGame: favGame,
+      lastOnline: Date.now()
+    });
 
-    return (
-      minutes / 60
-    ) + " Stunde" +
-      (
-        minutes === 60
-          ? ""
-          : "n"
-      );
+    const statusRef = window.fbRef(window.firebaseDB, `users/${pId}/status`);
+    window.fbSet(statusRef, { online: true, lastSeen: Date.now() });
+    window.fbOnDisconnect(statusRef).set({ online: false, lastSeen: Date.now() });
 
+    listenToFriendRequests();
+    loadFriendsList();
   }
 
-
   /* =========================================================
-     GESAMT-MEILENSTEINE RENDERN
+     LIEBLINGSPIEL
   ========================================================= */
+  function initFavGameSelect() {
+    const select = document.getElementById("favGameSelect");
+    select.innerHTML = `<option value="">Keines gewählt</option>`;
 
-  function renderGlobalMilestones() {
+    gameDefinitions.forEach(g => {
+      const opt = document.createElement("option");
+      opt.value = g.name;
+      opt.textContent = g.name;
+      select.appendChild(opt);
+    });
 
-    const container =
-      document.getElementById(
-        "globalMilestones"
-      );
-
-
-    const totalMinutes =
-      getTotalHours() * 60;
-
-
-    const unlocked =
-      getUnlockedSymbols();
-
-
-    container.innerHTML = "";
-
-
-    globalMilestones.forEach(
-      milestone => {
-
-        const isUnlocked =
-          unlocked.includes(
-            milestone.id
-          );
-
-
-        const item =
-          document.createElement(
-            "div"
-          );
-
-
-        item.className =
-          "milestone " +
-          (
-            isUnlocked
-              ? "unlocked"
-              : "locked"
-          );
-
-
-        item.innerHTML = `
-
-          <div class="milestone-icon">
-            ${milestone.icon}
-          </div>
-
-          <div class="milestone-name">
-            ${milestone.name}
-          </div>
-
-          <div class="milestone-time">
-            ${
-              isUnlocked
-                ? "✅ Freigeschaltet"
-                : "🔒 Noch gesperrt"
-            }
-          </div>
-
-          ${
-            !isUnlocked
-              ? `<div class="milestone-lock">🔒</div>`
-              : ""
-          }
-
-        `;
-
-
-        container.appendChild(
-          item
-        );
-
-      }
-    );
-
+    const currentFav = localStorage.getItem(STORAGE.favGame);
+    if (currentFav) select.value = currentFav;
   }
 
+  function updateFavoriteGame(val) {
+    localStorage.setItem(STORAGE.favGame, val);
+    syncWithServer(true);
+  }
 
   /* =========================================================
-     SPIEL-MEILENSTEINE RENDERN
+     FREUNDSCHAFTSANFRAGEN & LISTENER
   ========================================================= */
+  function listenToFriendRequests() {
+    const myId = getPlayerId();
+    if (!window.firebaseDB || myId === "------------") return;
 
-  function renderGameMilestones() {
+    const reqRef = window.fbRef(window.firebaseDB, `friendRequests/${myId}`);
+    window.fbOnValue(reqRef, async (snapshot) => {
+      const bannerContainer = document.getElementById("requestBannerContainer");
+      bannerContainer.innerHTML = "";
 
-    const container =
-      document.getElementById(
-        "gameMilestones"
-      );
+      if (!snapshot.exists()) return;
 
+      const requests = snapshot.val();
+      const senderIds = Object.keys(requests);
 
-    const data =
-      getGameHours();
-
-
-    const unlocked =
-      getUnlockedSymbols();
-
-
-    container.innerHTML = "";
-
-
-    gameDefinitions.forEach(
-      game => {
-
-        const group =
-          document.createElement(
-            "div"
-          );
-
-
-        group.className =
-          "milestone-group game-milestone-section";
-
-
-        const toggle =
-          document.createElement(
-            "button"
-          );
-
-
-        toggle.className =
-          "game-milestone-toggle";
-
-
-        toggle.innerHTML = `
-
-          <div class="milestone-toggle-left">
-
-            <span>🎮</span>
-
-            <span>
-              ${game.name}
-            </span>
-
-          </div>
-
-          <span class="milestone-toggle-arrow">
-            ▼
-          </span>
-
-        `;
-
-
-        const content =
-          document.createElement(
-            "div"
-          );
-
-
-        content.className =
-          "game-milestone-content";
-
-
-        const inner =
-          document.createElement(
-            "div"
-          );
-
-
-        inner.className =
-          "game-milestone-inner";
-
-
-        const grid =
-          document.createElement(
-            "div"
-          );
-
-
-        grid.className =
-          "milestone-grid";
-
-
-        const playedMinutes =
-          (data[game.id] || 0)
-          * 60;
-
-
-        gameMilestones.forEach(
-          milestone => {
-
-            const symbolId =
-              getGameMilestoneSymbolId(
-                game.id,
-                milestone.id
-              );
-
-
-            const isUnlocked =
-              unlocked.includes(
-                symbolId
-              );
-
-
-            const item =
-              document.createElement(
-                "div"
-              );
-
-
-            item.className =
-              "milestone " +
-              (
-                isUnlocked
-                  ? "unlocked"
-                  : "locked"
-              );
-
-
-            item.innerHTML = `
-
-              <div class="milestone-icon">
-                ${milestone.icon}
+      for (let senderId of senderIds) {
+        if (requests[senderId] === "pending") {
+          const senderSnap = await window.fbGet(window.fbRef(window.firebaseDB, `users/${senderId}`));
+          if (senderSnap.exists()) {
+            const senderData = senderSnap.val();
+            
+            const banner = document.createElement("div");
+            banner.className = "request-banner";
+            banner.innerHTML = `
+              <div><b>✉️ Freundschaftsanfrage:</b> ${senderData.name} (${senderId}) möchte dich als Freund hinzufügen!</div>
+              <div class="request-banner-btns">
+                <button class="request-btn req-accept" onclick="acceptFriend('${senderId}')">Annehmen</button>
+                <button class="request-btn req-deny" onclick="denyFriend('${senderId}')">Ablehnen</button>
+                <button class="request-btn req-view" onclick="inspectPlayer('${senderId}')">Profil ansehen</button>
               </div>
-
-              <div class="milestone-name">
-                ${getGameSymbolName(
-                  game,
-                  milestone
-                )}
-              </div>
-
-              <div class="milestone-time">
-                ${
-                  isUnlocked
-                    ? "✅ Freigeschaltet"
-                    : `${milestone.minutes < 60
-                        ? milestone.minutes + " Min."
-                        : (milestone.minutes / 60) + "h"
-                      } benötigt`
-                }
-              </div>
-
-              ${
-                !isUnlocked
-                  ? `<div class="milestone-lock">🔒</div>`
-                  : ""
-              }
-
             `;
-
-
-            grid.appendChild(
-              item
-            );
-
+            bannerContainer.appendChild(banner);
           }
-        );
-
-
-        inner.appendChild(
-          grid
-        );
-
-
-        content.appendChild(
-          inner
-        );
-
-
-        toggle.addEventListener(
-          "click",
-          () => {
-
-            group.classList.toggle(
-              "open"
-            );
-
-          }
-        );
-
-
-        group.appendChild(
-          toggle
-        );
-
-        group.appendChild(
-          content
-        );
-
-
-        container.appendChild(
-          group
-        );
-
+        }
       }
-    );
-
+    });
   }
 
-
-  /* =========================================================
-     PROFIL RENDERN
-  ========================================================= */
-
-  function renderProfile() {
-
-    /*
-      Name
-    */
-
-    document.getElementById(
-      "myName"
-    ).textContent =
-      getPlayerName();
-
-
-    /*
-      ID
-    */
-
-    document.getElementById(
-      "myId"
-    ).textContent =
-      getPlayerId();
-
-
-    /*
-      Name-Button
-    */
-
-    const nameChanged =
-      localStorage.getItem(
-        STORAGE.nameChanged
-      ) === "true";
-
-
-    const nameButton =
-      document.getElementById(
-        "changeNameBtn"
-      );
-
-
-    if (nameChanged) {
-
-      nameButton.disabled = true;
-
-      nameButton.textContent =
-        "🔒 Name bereits geändert";
-
+  async function sendFriendRequest(targetId) {
+    const myId = getPlayerId();
+    if (myId === targetId) {
+      alert("Du kannst dir nicht selbst eine Anfrage senden.");
+      return;
     }
 
+    const reqRef = window.fbRef(window.firebaseDB, `friendRequests/${targetId}/${myId}`);
+    await window.fbSet(reqRef, "pending");
 
-    /*
-      Avatar + Symbolname
-    */
-
-    const avatarId =
-      localStorage.getItem(
-        STORAGE.avatar
-      );
-
-
-    const avatar =
-      findSymbolIcon(
-        avatarId
-      );
-
-
-    document.getElementById(
-      "myAvatar"
-    ).textContent =
-      avatar || "🎮";
-
-
-    document.getElementById(
-      "mySymbolName"
-    ).textContent =
-      getSymbolNameById(
-        avatarId
-      );
-
-
-    /*
-      Meilensteine zuerst
-    */
-
-    unlockMilestones();
-
-
-    /*
-      Inhalte rendern
-    */
-
-    renderSymbols();
-
-    renderHours();
-
-    renderGlobalMilestones();
-
-    renderGameMilestones();
-
+    const area = document.getElementById("friendActionArea");
+    if (area) area.innerHTML = `<button class="popup-button" style="background:#e5e7eb; color:#555;" disabled>Anfrage gesendet 📩</button>`;
   }
 
+  async function acceptFriend(senderId) {
+    const myId = getPlayerId();
+    await window.fbSet(window.fbRef(window.firebaseDB, `friends/${myId}/${senderId}`), true);
+    await window.fbSet(window.fbRef(window.firebaseDB, `friends/${senderId}/${myId}`), true);
+    await window.fbRemove(window.fbRef(window.firebaseDB, `friendRequests/${myId}/${senderId}`));
+
+    loadFriendsList();
+  }
+
+  async function denyFriend(senderId) {
+    const myId = getPlayerId();
+    await window.fbRemove(window.fbRef(window.firebaseDB, `friendRequests/${myId}/${senderId}`));
+  }
 
   /* =========================================================
-     SYMBOL-ICON SUCHEN
+     FREUNDESLISTE LADEN
   ========================================================= */
+  function loadFriendsList() {
+    const myId = getPlayerId();
+    if (!window.firebaseDB || myId === "------------") return;
 
-  function findSymbolIcon(
-    id
-  ) {
+    const friendsRef = window.fbRef(window.firebaseDB, `friends/${myId}`);
+    window.fbOnValue(friendsRef, async (snapshot) => {
+      const grid = document.getElementById("friendsGrid");
+      grid.innerHTML = "";
 
-    if (!id) {
-
-      return "🎮";
-
-    }
-
-
-    if (id === "basic") {
-
-      return "🎮";
-
-    }
-
-
-    const code =
-      codeSymbols.find(
-        symbol =>
-          symbol.id === id
-      );
-
-
-    if (code) {
-
-      return code.icon;
-
-    }
-
-
-    const global =
-      globalMilestones.find(
-        milestone =>
-          milestone.id === id
-      );
-
-
-    if (global) {
-
-      return global.icon;
-
-    }
-
-
-    /*
-      Spiel-Meilenstein-ID
-      beginnt mit "game_"
-    */
-
-    if (
-      id.startsWith("game_")
-    ) {
-
-      const parts =
-        id.split("_");
-
-
-      const milestoneId =
-        parts[
-          parts.length - 1
-        ];
-
-
-      const milestoneIdWithoutPrefix =
-        milestoneId;
-
-
-      const milestone =
-        gameMilestones.find(
-          m =>
-            m.id ===
-            milestoneIdWithoutPrefix
-        );
-
-
-      if (milestone) {
-
-        return milestone.icon;
-
+      if (!snapshot.exists()) {
+        grid.innerHTML = `<div style="color: #777; font-size: 0.9rem;">Noch keine Freunde hinzugefügt.</div>`;
+        return;
       }
 
-    }
+      const friendIds = Object.keys(snapshot.val());
+      for (let fId of friendIds) {
+        const fSnap = await window.fbGet(window.fbRef(window.firebaseDB, `users/${fId}`));
+        if (fSnap.exists()) {
+          const fData = fSnap.val();
+          const isOnline = fData.status && fData.status.online;
 
+          const card = document.createElement("div");
+          card.className = "friend-card";
+          card.onclick = () => inspectPlayer(fId);
 
-    return "🎮";
-
+          card.innerHTML = `
+            <div class="friend-avatar">
+              ${fData.icon || "🎮"}
+              <div class="online-indicator ${isOnline ? 'online' : 'offline'}"></div>
+            </div>
+            <div class="friend-info">
+              <div class="friend-name">${fData.name}</div>
+              <div class="friend-status">${isOnline ? '🟢 Online' : '⚪ Offline'}</div>
+            </div>
+          `;
+          grid.appendChild(card);
+        }
+      }
+    });
   }
 
-
   /* =========================================================
-     SPIELERSUCHE
+     SPIELERSUCHE VIA FIREBASE SERVER
   ========================================================= */
-
-  function searchPlayer() {
-
-    const input =
-      document.getElementById(
-        "playerSearch"
-      ).value
-      .trim()
-      .toUpperCase();
-
-
-    const result =
-      document.getElementById(
-        "searchResult"
-      );
-
-
+  async function searchPlayer() {
+    const input = document.getElementById("playerSearch").value.trim().toUpperCase();
+    const result = document.getElementById("searchResult");
     result.innerHTML = "";
 
+    if (!input) return;
 
-    if (!input) {
-
+    if (!window.firebaseDB) {
+      result.innerHTML = `<div class="no-result">Verbindung zum Server fehlgeschlagen.</div>`;
       return;
-
     }
 
+    const userRef = window.fbRef(window.firebaseDB, `users/${input}`);
+    const snapshot = await window.fbGet(userRef);
 
-    /*
-      Eigenes Profil
-    */
-
-    const ownId =
-      getPlayerId();
-
-
-    if (
-      input === ownId
-    ) {
-
-      createSearchResult(
-        {
-          name:
-            getPlayerName(),
-
-          id:
-            ownId,
-
-          avatar:
-            findSymbolIcon(
-              localStorage.getItem(
-                STORAGE.avatar
-              )
-            ),
-
-          hours:
-            getTotalHours()
-
-        },
-        result
-      );
-
-
+    if (!snapshot.exists()) {
+      result.innerHTML = `<div class="no-result">❌ Kein Spieler mit dieser ID gefunden.</div>`;
       return;
-
     }
 
-
-    /*
-      3 fiktive Spieler
-    */
-
-    const player =
-      fakePlayers.find(
-        p =>
-          p.id.toUpperCase()
-          === input
-      );
-
-
-    if (!player) {
-
-      result.innerHTML = `
-
-        <div class="no-result">
-
-          ❌ Kein Spieler mit dieser ID gefunden.
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    createSearchResult(
-      player,
-      result
-    );
-
+    const player = snapshot.val();
+    inspectPlayer(player.id, player);
   }
 
+  async function inspectPlayer(targetId, preloadedData = null) {
+    let player = preloadedData;
+    if (!player) {
+      const snap = await window.fbGet(window.fbRef(window.firebaseDB, `users/${targetId}`));
+      if (snap.exists()) player = snap.val();
+    }
 
-  function createSearchResult(
-    player,
-    container
-  ) {
+    if (!player) return;
 
-    const card =
-      document.createElement(
-        "div"
-      );
+    document.getElementById("publicAvatar").textContent = player.icon || "🎮";
+    document.getElementById("publicName").textContent = player.name;
+    document.getElementById("publicId").textContent = "ID: " + player.id;
+    document.getElementById("publicSymbolText").textContent = "Symbol: " + (player.iconText || "Gamer");
+    
+    const hours = (player.totalMinutes || 0) / 60;
+    document.getElementById("publicHours").textContent = "⏱️ " + formatTime(hours) + " gespielt";
+    document.getElementById("publicFavGame").textContent = "❤️ Lieblingsspiel: " + (player.favoriteGame || "Keines");
 
+    const myId = getPlayerId();
+    const actionArea = document.getElementById("friendActionArea");
+    actionArea.innerHTML = "";
 
-    card.className =
-      "search-result-card";
+    if (myId !== player.id) {
+      const fSnap = await window.fbGet(window.fbRef(window.firebaseDB, `friends/${myId}/${player.id}`));
+      if (fSnap.exists()) {
+        actionArea.innerHTML = `<button class="popup-button" style="background:#2ed573; color:white;" disabled>Ihr seid Freunde 🤝</button>`;
+      } else {
+        const reqSnap = await window.fbGet(window.fbRef(window.firebaseDB, `friendRequests/${player.id}/${myId}`));
+        if (reqSnap.exists()) {
+          actionArea.innerHTML = `<button class="popup-button" style="background:#e5e7eb; color:#555;" disabled>Anfrage gesendet 📩</button>`;
+        } else {
+          actionArea.innerHTML = `<button class="popup-button popup-confirm" onclick="sendFriendRequest('${player.id}')">➕ Freund hinzufügen</button>`;
+        }
+      }
+    }
 
+    document.getElementById("publicProfilePopup").classList.add("active");
+  }
 
-    card.innerHTML = `
+  /* =========================================================
+     SPIELZEIT LOKAL
+  ========================================================= */
+  function getGameHours() {
+    let data = {};
+    try {
+      data = JSON.parse(localStorage.getItem(STORAGE.gameHours)) || {};
+    } catch { data = {}; }
 
-      <div class="search-result-avatar">
+    gameDefinitions.forEach(game => {
+      if (typeof data[game.id] !== "number") data[game.id] = 0;
+    });
 
-        ${player.avatar}
+    return data;
+  }
 
-      </div>
+  function saveGameHours(data) {
+    localStorage.setItem(STORAGE.gameHours, JSON.stringify(data));
+  }
 
-      <div>
+  function getTotalHours() {
+    const data = getGameHours();
+    let total = 0;
+    gameDefinitions.forEach(game => { total += Number(data[game.id] || 0); });
+    return total;
+  }
 
-        <div class="search-result-name">
+  function formatTime(hours) {
+    const totalMinutes = Math.floor(hours * 60);
+    const h = Math.floor(totalMinutes / 60);
+    const min = totalMinutes % 60;
+    if (h <= 0) return `${min}min`;
+    if (min <= 0) return `${h}h`;
+    return `${h}h ${min}min`;
+  }
 
-          ${player.name}
+  /* =========================================================
+     SYMBOLE & MEILENSTEINE
+  ========================================================= */
+  function getUnlockedSymbols() {
+    let symbols = [];
+    try {
+      symbols = JSON.parse(localStorage.getItem(STORAGE.unlockedSymbols)) || [];
+    } catch { symbols = []; }
+    if (!symbols.includes("basic")) symbols.push("basic");
+    return symbols;
+  }
 
-        </div>
+  function saveUnlockedSymbols(symbols) {
+    localStorage.setItem(STORAGE.unlockedSymbols, JSON.stringify(symbols));
+  }
 
-        <div class="search-result-id">
+  function getGameMilestoneSymbolId(gameId, milestoneId) {
+    return "game_" + gameId + "_" + milestoneId;
+  }
 
-          ${player.id}
+  function unlockMilestones() {
+    let unlocked = getUnlockedSymbols();
+    const gameHours = getGameHours();
 
-        </div>
+    gameDefinitions.forEach(game => {
+      const minutes = (gameHours[game.id] || 0) * 60;
+      gameMilestones.forEach(milestone => {
+        if (minutes >= milestone.minutes) {
+          const symbolId = getGameMilestoneSymbolId(game.id, milestone.id);
+          if (!unlocked.includes(symbolId)) unlocked.push(symbolId);
+        }
+      });
+    });
 
-      </div>
+    const totalMinutes = getTotalHours() * 60;
+    globalMilestones.forEach(milestone => {
+      if (totalMinutes >= milestone.minutes && !unlocked.includes(milestone.id)) {
+        unlocked.push(milestone.id);
+      }
+    });
 
+    saveUnlockedSymbols(unlocked);
+  }
+
+  function renderSymbols() {
+    const grid = document.getElementById("symbolGrid");
+    const unlocked = getUnlockedSymbols();
+    grid.innerHTML = "";
+
+    addSymbolToGrid(grid, { id: "basic", icon: "🎮", name: "Gamer", unlocked: true }, unlocked);
+
+    codeSymbols.forEach(symbol => {
+      addSymbolToGrid(grid, { ...symbol, type: "code", unlocked: unlocked.includes(symbol.id) }, unlocked);
+    });
+
+    globalMilestones.forEach(milestone => {
+      addSymbolToGrid(grid, { id: milestone.id, icon: milestone.icon, name: milestone.name, unlocked: unlocked.includes(milestone.id), type: "milestone" }, unlocked);
+    });
+
+    gameDefinitions.forEach(game => {
+      gameMilestones.forEach(milestone => {
+        const id = getGameMilestoneSymbolId(game.id, milestone.id);
+        addSymbolToGrid(grid, {
+          id: id, icon: milestone.icon, name: getGameSymbolName(game, milestone), unlocked: unlocked.includes(id), type: "gameMilestone"
+        }, unlocked);
+      });
+    });
+  }
+
+  function getGameSymbolName(game, milestone) {
+    return game.name + " – " + milestone.name;
+  }
+
+  function addSymbolToGrid(grid, symbol, unlocked) {
+    const item = document.createElement("div");
+    const isUnlocked = unlocked.includes(symbol.id);
+
+    item.className = "symbol-item " + (isUnlocked ? "unlocked" : "locked");
+    if (localStorage.getItem(STORAGE.avatar) === symbol.id) item.classList.add("selected");
+
+    item.innerHTML = `
+      <div class="symbol-icon">${symbol.icon}</div>
+      <div class="symbol-name">${symbol.name}</div>
+      ${isUnlocked ? "" : `<div class="symbol-lock">🔒</div>`}
     `;
 
-
-    card.onclick = () => {
-
-      showPublicProfile(
-        player
-      );
-
+    item.onclick = () => {
+      if (isUnlocked) selectSymbol(symbol.id, symbol.icon);
+      else if (symbol.type === "code") openCodePopup(symbol);
     };
 
-
-    container.appendChild(
-      card
-    );
-
+    grid.appendChild(item);
   }
 
-
-  /* =========================================================
-     ÖFFENTLICHES PROFIL
-  ========================================================= */
-
-  function showPublicProfile(
-    player
-  ) {
-
-    document.getElementById(
-      "publicAvatar"
-    ).textContent =
-      player.avatar;
-
-
-    document.getElementById(
-      "publicName"
-    ).textContent =
-      player.name;
-
-
-    document.getElementById(
-      "publicId"
-    ).textContent =
-      "ID: " + player.id;
-
-
-    document.getElementById(
-      "publicHours"
-    ).textContent =
-      "⏱️ " +
-      formatTime(
-        Number(player.hours || 0)
-      ) +
-      " gespielt";
-
-
-    document.getElementById(
-      "publicProfilePopup"
-    ).classList.add(
-      "active"
-    );
-
+  function selectSymbol(id, icon) {
+    localStorage.setItem(STORAGE.avatar, id);
+    document.getElementById("myAvatar").textContent = icon;
+    document.getElementById("mySymbolName").textContent = getSymbolNameById(id);
+    renderSymbols();
+    syncWithServer(true);
   }
 
+  function getSymbolNameById(id) {
+    if (!id || id === "basic") return "Gamer";
+    const code = codeSymbols.find(s => s.id === id);
+    if (code) return code.name;
+    const global = globalMilestones.find(m => m.id === id);
+    if (global) return global.name;
+    
+    // Ermittelt dynamische Namen für Spiel-Meilensteine
+    if (id.startsWith("game_")) {
+      for (let game of gameDefinitions) {
+        for (let m of gameMilestones) {
+          if (id === getGameMilestoneSymbolId(game.id, m.id)) {
+            return getGameSymbolName(game, m);
+          }
+        }
+      }
+    }
+    return "Gamer";
+  }
 
   /* =========================================================
-     ENTER-TASTE BEI SUCHE
+     NAMEN ÄNDERN & POPUPS
   ========================================================= */
+  function openNamePopup() {
+    if (localStorage.getItem(STORAGE.nameChanged) === "true") return;
+    document.getElementById("nameInput").value = getPlayerName();
+    document.getElementById("namePopup").classList.add("active");
+  }
 
-  document.getElementById(
-    "playerSearch"
-  ).addEventListener(
-    "keydown",
-    event => {
+  function changeName() {
+    const input = document.getElementById("nameInput").value.trim();
+    if (!input) return alert("Bitte gib einen Namen ein.");
 
-      if (
-        event.key === "Enter"
-      ) {
+    localStorage.setItem(STORAGE.name, input);
+    localStorage.setItem(STORAGE.nameChanged, "true");
+    closePopup("namePopup");
+    renderProfile();
+    syncWithServer(true);
+  }
 
-        searchPlayer();
+  function closePopup(id) {
+    document.getElementById(id).classList.remove("active");
+  }
 
+  function toggleSymbols() { document.getElementById("symbolsSection").classList.toggle("open"); }
+  function showSymbolSection() {
+    const sec = document.getElementById("symbolsSection");
+    sec.classList.add("open");
+    setTimeout(() => sec.scrollIntoView({ behavior: "smooth", block: "center" }), 100);
+  }
+  function toggleHours() { document.getElementById("hoursSection").classList.toggle("open"); }
+  function toggleGlobalMilestones() { document.getElementById("globalMilestoneSection").classList.toggle("open"); }
+
+  /* =========================================================
+     PROFIL & STUNDEN RENDERN
+  ========================================================= */
+  function renderHours() {
+    const data = getGameHours();
+    const total = getTotalHours();
+    document.getElementById("totalHours").textContent = formatTime(total);
+
+    const grid = document.getElementById("gameHoursGrid");
+    grid.innerHTML = "";
+
+    gameDefinitions.forEach(game => {
+      const hours = data[game.id] || 0;
+      const minutes = hours * 60;
+      let next = gameMilestones.find(m => minutes < m.minutes);
+      let progress = 100;
+
+      if (next) {
+        const prev = gameMilestones[gameMilestones.indexOf(next) - 1];
+        const prevMins = prev ? prev.minutes : 0;
+        progress = Math.max(0, Math.min(100, ((minutes - prevMins) / (next.minutes - prevMins)) * 100));
       }
 
+      const card = document.createElement("div");
+      card.className = "game-hour-card";
+      card.innerHTML = `
+        <div class="game-hour-top">
+          <div class="game-name">${game.name}</div>
+          <div class="game-time">${formatTime(hours)}</div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+        <div class="next-milestone">
+          ${next ? `Nächster Meilenstein: ${next.icon}${next.minutes} Min.` : "🏆 Alle Meilensteine erreicht!"}
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function renderGlobalMilestones() {
+    const container = document.getElementById("globalMilestones");
+    const unlocked = getUnlockedSymbols();
+    container.innerHTML = "";
+
+    globalMilestones.forEach(m => {
+      const isUnlocked = unlocked.includes(m.id);
+      const item = document.createElement("div");
+      item.className = "milestone " + (isUnlocked ? "unlocked" : "locked");
+      item.innerHTML = `
+        <div class="milestone-icon">${m.icon}</div>
+        <div class="milestone-name">${m.name}</div>
+        <div class="milestone-time">${isUnlocked ? "✅ Freigeschaltet" : "🔒 Gesperrt"}</div>
+      `;
+      container.appendChild(item);
+    });
+  }
+
+  function renderGameMilestones() {
+    const container = document.getElementById("gameMilestones");
+    const unlocked = getUnlockedSymbols();
+    container.innerHTML = "";
+
+    gameDefinitions.forEach(game => {
+      const group = document.createElement("div");
+      group.className = "milestone-group game-milestone-section";
+
+      const toggle = document.createElement("button");
+      toggle.className = "game-milestone-toggle";
+      toggle.innerHTML = `<div class="milestone-toggle-left"><span>🎮</span><span>${game.name}</span></div><span class="milestone-toggle-arrow">▼</span>`;
+
+      const content = document.createElement("div");
+      content.className = "game-milestone-content";
+      const inner = document.createElement("div");
+      inner.className = "game-milestone-inner";
+      const grid = document.createElement("div");
+      grid.className = "milestone-grid";
+
+      gameMilestones.forEach(m => {
+        const symbolId = getGameMilestoneSymbolId(game.id, m.id);
+        const isUnlocked = unlocked.includes(symbolId);
+        const item = document.createElement("div");
+        item.className = "milestone " + (isUnlocked ? "unlocked" : "locked");
+        item.innerHTML = `
+          <div class="milestone-icon">${m.icon}</div>
+          <div class="milestone-name">${getGameSymbolName(game, m)}</div>
+          <div class="milestone-time">${isUnlocked ? "✅ Freigeschaltet" : `${m.minutes} Min. benötigt`}</div>
+        `;
+        grid.appendChild(item);
+      });
+
+      inner.appendChild(grid);
+      content.appendChild(inner);
+      toggle.onclick = () => group.classList.toggle("open");
+      group.appendChild(toggle);
+      group.appendChild(content);
+      container.appendChild(group);
+    });
+  }
+
+  function renderProfile() {
+    document.getElementById("myName").textContent = getPlayerName();
+    document.getElementById("myId").textContent = getPlayerId();
+
+    const nameChanged = localStorage.getItem(STORAGE.nameChanged) === "true";
+    const nameBtn = document.getElementById("changeNameBtn");
+    if (nameChanged) {
+      nameBtn.disabled = true;
+      nameBtn.textContent = "🔒 Name bereits geändert";
     }
-  );
 
+    const avatarId = localStorage.getItem(STORAGE.avatar);
+    document.getElementById("myAvatar").textContent = findSymbolIcon(avatarId) || "🎮";
+    document.getElementById("mySymbolName").textContent = getSymbolNameById(avatarId);
 
-  /* =========================================================
-     INITIALISIERUNG
-  ========================================================= */
+    unlockMilestones();
+    renderSymbols();
+    renderHours();
+    renderGlobalMilestones();
+    renderGameMilestones();
+    initFavGameSelect();
+  }
 
-  document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-      renderProfile();
-
+  function findSymbolIcon(id) {
+    if (!id || id === "basic") return "🎮";
+    const code = codeSymbols.find(s => s.id === id);
+    if (code) return code.icon;
+    const global = globalMilestones.find(m => m.id === id);
+    if (global) return global.icon;
+    if (id.startsWith("game_")) {
+      const parts = id.split("_");
+      const milestone = gameMilestones.find(m => m.id === parts[parts.length - 1]);
+      if (milestone) return milestone.icon;
     }
-  );
+    return "🎮";
+  }
 
+  /* ENTER-TASTE BEI SUCHE */
+  document.getElementById("playerSearch").addEventListener("keydown", e => {
+    if (e.key === "Enter") searchPlayer();
+  });
+
+  /* INITIALISIERUNG */
+  document.addEventListener("DOMContentLoaded", () => {
+    checkInitialProfile();
+    renderProfile();
+  });
 
 </script>
 
