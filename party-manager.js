@@ -70,6 +70,9 @@ class PartyManager {
         this.playerName = hostName.trim();
         this.isHost = true;
 
+        // Spielernamen im SessionStorage sichern
+        sessionStorage.setItem("cc_player_name", this.playerName);
+
         const partyData = {
             partyCode: code,
             selectedGame: this.selectedGameId,
@@ -135,6 +138,9 @@ class PartyManager {
         this.playerName = playerName;
         this.isHost = false;
 
+        // Spielernamen im SessionStorage sichern
+        sessionStorage.setItem("cc_player_name", this.playerName);
+
         const playerRef = window.fbRef(window.firebaseDB, `parties/${code}/players/${this.playerId}`);
         await window.fbSet(playerRef, {
             name: this.playerName,
@@ -174,6 +180,10 @@ class PartyManager {
             if (data.status === "started") {
                 const gameConfig = window.CHALLENGE_CHAMP_CONFIG.multiplayerGames.find(g => g.id === data.selectedGame);
                 if (gameConfig) {
+                    // Disconnect Cleanup stornieren, damit der Spieler beim Wechsel zu imposter.html nicht aus der DB fliegt
+                    const playerRef = window.fbRef(window.firebaseDB, `parties/${this.currentPartyCode}/players/${this.playerId}`);
+                    window.fbOnDisconnect(playerRef).cancel();
+
                     window.location.href = `${gameConfig.url}?party=${this.currentPartyCode}&player=${this.playerId}`;
                 }
                 return;
