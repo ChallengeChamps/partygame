@@ -222,20 +222,38 @@
       cursor: pointer;
     }
 
-    .name-button {
+    .profile-action-btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .name-button, .logout-button {
       border: none;
       border-radius: 12px;
       padding: 10px 15px;
-      background: #111827;
       color: white;
       font-weight: 800;
       cursor: pointer;
       transition: .2s ease;
     }
 
+    .name-button {
+      background: #111827;
+    }
+
     .name-button:hover {
       transform: translateY(-2px);
       background: #374151;
+    }
+
+    .logout-button {
+      background: #ff4757;
+    }
+
+    .logout-button:hover {
+      transform: translateY(-2px);
+      background: #ff2e44;
     }
 
     .name-button:disabled {
@@ -433,22 +451,30 @@
     .search-button { border: none; border-radius: 14px; padding: 0 20px; background: #111827; color: white; font-weight: 900; cursor: pointer; }
     .search-result { margin-top: 18px; }
 
-    /* ---------------- POPUPS ---------------- */
+    /* ---------------- POPUPS & AUTH MODAL ---------------- */
 
     .popup-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,.65); display: none;
+      position: fixed; inset: 0; background: rgba(0,0,0,.75); display: none;
       align-items: center; justify-content: center; padding: 20px; z-index: 1000;
+      backdrop-filter: blur(5px);
     }
 
     .popup-overlay.active { display: flex; }
     .popup { width: 100%; max-width: 430px; background: white; border-radius: 25px; padding: 25px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
-    .popup h2 { margin-top: 0; margin-bottom: 15px; }
+    .popup h2 { margin-top: 0; margin-bottom: 15px; text-align: center; }
     .popup-input { width: 100%; border: 2px solid #ddd; border-radius: 12px; padding: 13px; font-size: 1rem; outline: none; margin-bottom: 12px; }
     .popup-input:focus { border-color: #111; }
     .popup-buttons { display: flex; gap: 10px; justify-content: flex-end; }
     .popup-button { border: none; border-radius: 12px; padding: 11px 16px; font-weight: 900; cursor: pointer; }
     .popup-cancel { background: #e5e7eb; color: #111; }
-    .popup-confirm { background: #111827; color: white; }
+    .popup-confirm { background: #111827; color: white; width: 100%; }
+
+    /* Auth Tab Switcher */
+    .auth-tabs { display: flex; gap: 10px; margin-bottom: 20px; background: #f3f4f6; padding: 5px; border-radius: 14px; }
+    .auth-tab { flex: 1; text-align: center; padding: 10px; font-weight: bold; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+    .auth-tab.active { background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+    .auth-error { color: #ff4757; font-size: 0.85rem; font-weight: bold; text-align: center; margin-bottom: 10px; display: none; }
 
     .public-profile { text-align: center; }
     .public-avatar { width: 95px; height: 95px; border-radius: 22px; background: #111827; color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 15px; }
@@ -512,7 +538,10 @@
           </select>
         </div>
 
-        <button class="name-button" id="changeNameBtn" onclick="openNamePopup()">✏️ Namen einmalig ändern</button>
+        <div class="profile-action-btns">
+          <button class="name-button" id="changeNameBtn" onclick="openNamePopup()">✏️ Namen einmalig ändern</button>
+          <button class="logout-button" onclick="logoutProfile()">🚪 Abmelden</button>
+        </div>
       </div>
     </div>
   </section>
@@ -609,14 +638,30 @@
 
 </div>
 
-<!-- MODAL: ERSTMALIGES ERSTELLEN -->
-<div class="popup-overlay" id="createProfileModal">
+<!-- MODAL: REGISTRIERUNG & LOGIN -->
+<div class="popup-overlay" id="authModal">
   <div class="popup">
-    <h2>🎭 Profil erstellen</h2>
-    <p>Willkommen! Bitte wähle deinen Namen, um zu beginnen.</p>
-    <input type="text" class="popup-input" id="initialNameInput" maxlength="20" placeholder="Dein Nutzername">
-    <div class="popup-buttons">
-      <button class="popup-button popup-confirm" onclick="finishProfileCreation()">Profil erstellen & weiter 👍</button>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tabRegister" onclick="switchAuthTab('register')">Profil erstellen</div>
+      <div class="auth-tab" id="tabLogin" onclick="switchAuthTab('login')">Einloggen</div>
+    </div>
+
+    <div id="authError" class="auth-error"></div>
+
+    <!-- FORMULAR: REGISTRIEREN -->
+    <div id="formRegister">
+      <h2>🎭 Neues Profil</h2>
+      <input type="text" class="popup-input" id="regName" maxlength="20" placeholder="Benutzername">
+      <input type="password" class="popup-input" id="regPassword" placeholder="Passwort ausdenken">
+      <button class="popup-button popup-confirm" onclick="processRegister()">Profil erstellen & starten 👍</button>
+    </div>
+
+    <!-- FORMULAR: LOGIN -->
+    <div id="formLogin" style="display: none;">
+      <h2>🔑 Anmelden</h2>
+      <input type="text" class="popup-input" id="loginName" maxlength="20" placeholder="Dein Benutzername">
+      <input type="password" class="popup-input" id="loginPassword" placeholder="Dein Passwort">
+      <button class="popup-button popup-confirm" onclick="processLogin()">Einloggen</button>
     </div>
   </div>
 </div>
@@ -630,19 +675,6 @@
     <div class="popup-buttons">
       <button class="popup-button popup-cancel" onclick="closePopup('namePopup')">Abbrechen</button>
       <button class="popup-button popup-confirm" onclick="changeName()">Speichern</button>
-    </div>
-  </div>
-</div>
-
-<!-- CODE POPUP -->
-<div class="popup-overlay" id="codePopup">
-  <div class="popup">
-    <h2>🔒 Symbol freischalten</h2>
-    <p id="codeDescription">Gib den Freischaltcode ein.</p>
-    <input type="text" class="popup-input" id="codeInput" placeholder="Freischaltcode" autocomplete="off">
-    <div class="popup-buttons">
-      <button class="popup-button popup-cancel" onclick="closePopup('codePopup')">Abbrechen</button>
-      <button class="popup-button popup-confirm" onclick="checkCode()">Freischalten</button>
     </div>
   </div>
 </div>
@@ -681,8 +713,6 @@
     avatar: "challengeChampAvatar",
     unlockedSymbols: "challengeChampUnlockedSymbols",
     gameHours: "challengeChampGameHours",
-    activeGame: "challengeChampActiveGame",
-    gameStart: "challengeChampGameStart",
     favGame: "challengeChampFavGame",
     lastSyncedMinutes: "challengeChampLastSyncedMinutes"
   };
@@ -741,33 +771,112 @@
   ];
 
   /* =========================================================
-     ERSTMALIGE PROFIL-ERSTELLUNG & CHECK
+     AUTH LOGIK (REGISTRIERUNG & LOGIN)
   ========================================================= */
   function checkInitialProfile() {
     const existingId = localStorage.getItem(STORAGE.playerId);
     if (!existingId) {
-      document.getElementById("createProfileModal").classList.add("active");
+      document.getElementById("authModal").classList.add("active");
     } else {
       syncWithServer();
     }
   }
 
-  function finishProfileCreation() {
-    const nameVal = document.getElementById("initialNameInput").value.trim();
-    if (!nameVal) {
-      alert("Bitte gib einen Nutzernamen ein!");
-      return;
+  function switchAuthTab(tab) {
+    document.getElementById("authError").style.display = "none";
+    if (tab === 'register') {
+      document.getElementById("tabRegister").classList.add("active");
+      document.getElementById("tabLogin").classList.remove("active");
+      document.getElementById("formRegister").style.display = "block";
+      document.getElementById("formLogin").style.display = "none";
+    } else {
+      document.getElementById("tabLogin").classList.add("active");
+      document.getElementById("tabRegister").classList.remove("active");
+      document.getElementById("formLogin").style.display = "block";
+      document.getElementById("formRegister").style.display = "none";
+    }
+  }
+
+  function showAuthError(msg) {
+    const err = document.getElementById("authError");
+    err.innerText = msg;
+    err.style.display = "block";
+  }
+
+  async function processRegister() {
+    const name = document.getElementById("regName").value.trim();
+    const pw = document.getElementById("regPassword").value;
+
+    if (!name || !pw) return showAuthError("Bitte fülle alle Felder aus.");
+    if (name.length < 3) return showAuthError("Der Name muss mindestens 3 Zeichen lang sein.");
+    if (pw.length < 4) return showAuthError("Das Passwort muss mindestens 4 Zeichen lang sein.");
+
+    const nameKey = name.toLowerCase();
+
+    // Server-Check: Existiert Benutzername bereits?
+    const accSnap = await window.fbGet(window.fbRef(window.firebaseDB, `accounts/${nameKey}`));
+    if (accSnap.exists()) {
+      return showAuthError("Dieser Benutzername ist bereits vergeben!");
     }
 
     const newId = generatePlayerId();
+
+    // Nutzerdaten im Server anlegen
+    await window.fbSet(window.fbRef(window.firebaseDB, `accounts/${nameKey}`), {
+      id: newId,
+      password: pw
+    });
+
     localStorage.setItem(STORAGE.playerId, newId);
-    localStorage.setItem(STORAGE.name, nameVal);
+    localStorage.setItem(STORAGE.name, name);
     localStorage.setItem(STORAGE.avatar, "basic");
 
-    document.getElementById("createProfileModal").classList.remove("active");
-
+    document.getElementById("authModal").classList.remove("active");
     renderProfile();
     syncWithServer(true);
+  }
+
+  async function processLogin() {
+    const name = document.getElementById("loginName").value.trim();
+    const pw = document.getElementById("loginPassword").value;
+
+    if (!name || !pw) return showAuthError("Bitte fülle alle Felder aus.");
+
+    const nameKey = name.toLowerCase();
+    const accSnap = await window.fbGet(window.fbRef(window.firebaseDB, `accounts/${nameKey}`));
+
+    if (!accSnap.exists()) {
+      return showAuthError("Benutzername nicht gefunden.");
+    }
+
+    const acc = accSnap.val();
+    if (acc.password !== pw) {
+      return showAuthError("Falsches Passwort!");
+    }
+
+    // Nutzerdaten aus dem Server laden & lokal wiederherstellen
+    const userSnap = await window.fbGet(window.fbRef(window.firebaseDB, `users/${acc.id}`));
+    if (userSnap.exists()) {
+      const uData = userSnap.val();
+      localStorage.setItem(STORAGE.playerId, uData.id);
+      localStorage.setItem(STORAGE.name, uData.name);
+      if (uData.favoriteGame) localStorage.setItem(STORAGE.favGame, uData.favoriteGame);
+    } else {
+      localStorage.setItem(STORAGE.playerId, acc.id);
+      localStorage.setItem(STORAGE.name, name);
+    }
+
+    document.getElementById("authModal").classList.remove("active");
+    renderProfile();
+    syncWithServer(true);
+  }
+
+  function logoutProfile() {
+    if (confirm("Möchtest du dich wirklich abmelden? Deine Daten bleiben im Server gespeichert.")) {
+      localStorage.removeItem(STORAGE.playerId);
+      localStorage.removeItem(STORAGE.name);
+      location.reload();
+    }
   }
 
   function generatePlayerId() {
@@ -803,7 +912,6 @@
 
     const lastSynced = parseInt(localStorage.getItem(STORAGE.lastSyncedMinutes) || "0", 10);
 
-    // Aktualisiert Server-Spielzeit bei Erreichen der nächsten 10-Minuten-Marke
     let timeToSync = lastSynced;
     if (force || totalMins >= lastSynced + 10) {
       timeToSync = Math.floor(totalMins / 10) * 10;
@@ -1154,7 +1262,6 @@
 
     item.onclick = () => {
       if (isUnlocked) selectSymbol(symbol.id, symbol.icon);
-      else if (symbol.type === "code") openCodePopup(symbol);
     };
 
     grid.appendChild(item);
@@ -1175,7 +1282,6 @@
     const global = globalMilestones.find(m => m.id === id);
     if (global) return global.name;
     
-    // Ermittelt dynamische Namen für Spiel-Meilensteine
     if (id.startsWith("game_")) {
       for (let game of gameDefinitions) {
         for (let m of gameMilestones) {
@@ -1197,9 +1303,22 @@
     document.getElementById("namePopup").classList.add("active");
   }
 
-  function changeName() {
+  async function changeName() {
     const input = document.getElementById("nameInput").value.trim();
     if (!input) return alert("Bitte gib einen Namen ein.");
+
+    const nameKey = input.toLowerCase();
+    const accSnap = await window.fbGet(window.fbRef(window.firebaseDB, `accounts/${nameKey}`));
+
+    if (accSnap.exists()) {
+      return alert("Dieser Name ist bereits vergeben.");
+    }
+
+    const oldNameKey = getPlayerName().toLowerCase();
+    await window.fbRemove(window.fbRef(window.firebaseDB, `accounts/${oldNameKey}`));
+
+    const myId = getPlayerId();
+    await window.fbSet(window.fbRef(window.firebaseDB, `accounts/${nameKey}`), { id: myId });
 
     localStorage.setItem(STORAGE.name, input);
     localStorage.setItem(STORAGE.nameChanged, "true");
