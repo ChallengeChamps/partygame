@@ -1,1493 +1,1036 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChallengeChamp – Profil</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(255,255,255,.12), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(255,255,255,.08), transparent 35%),
-        linear-gradient(135deg, #111827, #1f2937 50%, #111827);
-      color: #111;
-      padding: 25px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1050px;
-      margin: auto;
-    }
-
-    /* ---------------- HEADER ---------------- */
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-    }
-
-    .back-button,
-    .shop-button {
-      text-decoration: none;
-      border-radius: 14px;
-      padding: 12px 18px;
-      font-weight: 800;
-      transition: .2s ease;
-    }
-
-    .back-button {
-      background: white;
-      color: #111;
-      box-shadow: 0 5px 15px rgba(0,0,0,.2);
-    }
-
-    .shop-button {
-      background: linear-gradient(135deg, #ffd700, #ffae00);
-      color: #111;
-      box-shadow:
-        0 5px 18px rgba(0,0,0,.3),
-        0 0 15px rgba(255,215,0,.3);
-    }
-
-    .back-button:hover,
-    .shop-button:hover {
-      transform: translateY(-2px);
-    }
-
-    /* ---------------- TITEL ---------------- */
-
-    .page-title {
-      color: white;
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    .page-title h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      font-weight: 900;
-    }
-
-    .page-title p {
-      margin: 8px 0 0;
-      opacity: .8;
-      font-size: 1rem;
-      color: white;
-    }
-
-    /* ---------------- CARDS ---------------- */
-
-    .section-card {
-      background: rgba(255,255,255,.97);
-      border-radius: 24px;
-      padding: 25px;
-      margin-bottom: 22px;
-      box-shadow: 0 15px 40px rgba(0,0,0,.28);
-      backdrop-filter: blur(10px);
-    }
-
-    .section-title {
-      font-size: 1.45rem;
-      font-weight: 900;
-      margin-bottom: 6px;
-    }
-
-    .section-subtitle {
-      color: #666;
-      font-size: .95rem;
-      margin-bottom: 20px;
-    }
-
-    /* BANNER FÜR FREUNDSCHAFTSANFRAGEN */
-    .request-banner {
-      background: linear-gradient(135deg, #ff4081, #e91e63);
-      color: white;
-      border-radius: 20px;
-      padding: 18px 22px;
-      margin-bottom: 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      box-shadow: 0 10px 25px rgba(233,30,99,0.3);
-      flex-wrap: wrap;
-    }
-
-    .request-banner-btns {
-      display: flex;
-      gap: 8px;
-    }
-
-    .request-btn {
-      border: none;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-weight: 800;
-      cursor: pointer;
-      font-size: .85rem;
-    }
-
-    .req-accept { background: #2ed573; color: white; }
-    .req-deny { background: #ffffff; color: #111; }
-    .req-view { background: rgba(0,0,0,0.25); color: white; }
-
-    /* ---------------- PROFIL ---------------- */
-
-    .profile-card {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-    }
-
-    .avatar {
-      width: 105px;
-      height: 105px;
-      min-width: 105px;
-      border-radius: 24px;
-      background: linear-gradient(135deg, #111827, #374151);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 3.5rem;
-      cursor: pointer;
-      box-shadow: 0 8px 25px rgba(0,0,0,.25);
-      transition: .25s ease;
-    }
-
-    .avatar:hover {
-      transform: scale(1.05);
-    }
-
-    .profile-info {
-      flex: 1;
-    }
-
-    .profile-name {
-      font-size: 2rem;
-      font-weight: 900;
-      margin-bottom: 5px;
-      word-break: break-word;
-    }
-
-    .player-id {
-      color: #777;
-      font-size: .85rem;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
-      font-family: monospace;
-    }
-
-    .selected-symbol {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      font-size: .95rem;
-      font-weight: 900;
-      color: #374151;
-    }
-
-    .selected-symbol-label {
-      color: #777;
-      font-weight: 700;
-    }
-
-    .favorite-game-select {
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .favorite-game-select select {
-      padding: 8px 12px;
-      border-radius: 10px;
-      border: 2px solid #ddd;
-      font-weight: bold;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .profile-action-btns {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .name-button, .logout-button {
-      border: none;
-      border-radius: 12px;
-      padding: 10px 15px;
-      color: white;
-      font-weight: 800;
-      cursor: pointer;
-      transition: .2s ease;
-    }
-
-    .name-button {
-      background: #111827;
-    }
-
-    .name-button:hover {
-      transform: translateY(-2px);
-      background: #374151;
-    }
-
-    .logout-button {
-      background: #ff4757;
-    }
-
-    .logout-button:hover {
-      transform: translateY(-2px);
-      background: #ff2e44;
-    }
-
-    .name-button:disabled {
-      opacity: .45;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* ---------------- FREUNDESLISTE ---------------- */
-
-    .friends-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 12px;
-    }
-
-    .friend-card {
-      border: 2px solid #e5e7eb;
-      border-radius: 16px;
-      padding: 12px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: #fafafa;
-      cursor: pointer;
-      transition: .2s;
-    }
-
-    .friend-card:hover {
-      border-color: #111;
-      transform: translateY(-2px);
-    }
-
-    .friend-avatar {
-      width: 45px;
-      height: 45px;
-      border-radius: 12px;
-      background: #111827;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      position: relative;
-    }
-
-    .online-indicator {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      position: absolute;
-      bottom: -2px;
-      right: -2px;
-      border: 2px solid white;
-    }
-
-    .online-indicator.online { background: #2ed573; }
-    .online-indicator.offline { background: #a4b0be; }
-
-    .friend-info {
-      flex: 1;
-      overflow: hidden;
-    }
-
-    .friend-name {
-      font-weight: 900;
-      font-size: .95rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .friend-status {
-      font-size: .75rem;
-      color: #777;
-    }
-
-    /* ---------------- AUFKLAPPBARE SYMBOLE ---------------- */
-
-    .symbols-section { overflow: hidden; }
-
-    .symbols-toggle {
-      width: 100%; border: none; padding: 0; margin: 0;
-      background: transparent; display: flex; align-items: center;
-      justify-content: space-between; gap: 15px; text-align: left; cursor: pointer;
-    }
-
-    .toggle-arrow {
-      flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%;
-      background: #111; color: white; display: flex; align-items: center;
-      justify-content: center; font-size: 1rem; font-weight: 900; transition: transform .3s ease, background .2s ease;
-    }
-
-    .symbols-content {
-      display: grid; grid-template-rows: 0fr; opacity: 0;
-      transition: grid-template-rows .4s ease, opacity .3s ease, margin-top .4s ease;
-    }
-
-    .symbols-content > .symbol-grid { min-height: 0; overflow: hidden; }
-
-    .symbols-section.open .symbols-content { grid-template-rows: 1fr; opacity: 1; margin-top: 20px; }
-    .symbols-section.open .toggle-arrow { transform: rotate(180deg); }
-
-    /* ---------------- SYMBOL GRID ---------------- */
-
-    .symbol-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 12px;
-    }
-
-    .symbol-item {
-      min-height: 90px; border-radius: 18px; border: 2px solid #e5e7eb;
-      background: #f9fafb; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; cursor: pointer; transition: .2s ease; position: relative; user-select: none;
-    }
-
-    .symbol-item:hover { transform: translateY(-3px); border-color: #111; }
-    .symbol-item.selected { border-color: #111827; box-shadow: 0 0 0 3px rgba(17,24,39,.12); }
-    .symbol-icon { font-size: 2rem; margin-bottom: 5px; }
-    .symbol-name { font-size: .75rem; font-weight: 800; text-align: center; }
-    .symbol-item.locked { filter: grayscale(1); opacity: .42; cursor: pointer; }
-    .symbol-lock { position: absolute; top: 6px; right: 8px; font-size: .75rem; }
-
-    /* ---------------- SPIELZEIT ---------------- */
-
-    .total-hours-card {
-      border-radius: 20px; padding: 22px;
-      background: linear-gradient(135deg, #111827, #374151);
-      color: white; text-align: center; margin-bottom: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.25);
-    }
-
-    .total-hours-label { font-size: .9rem; opacity: .75; margin-bottom: 5px; }
-    .total-hours { font-size: 2.7rem; font-weight: 900; }
-
-    .hours-toggle {
-      width: 100%; border: none; background: #f3f4f6; border-radius: 16px;
-      padding: 15px 18px; display: flex; align-items: center; justify-content: space-between;
-      cursor: pointer; font-weight: 900; font-size: 1rem; transition: .2s ease;
-    }
-
-    .hours-toggle-left { display: flex; align-items: center; gap: 10px; }
-    .hours-toggle-arrow {
-      width: 32px; height: 32px; border-radius: 50%; background: #111827; color: white;
-      display: flex; align-items: center; justify-content: center; transition: transform .3s ease;
-    }
-
-    .hours-section.open .hours-toggle-arrow { transform: rotate(180deg); }
-    .hours-content { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .4s ease, opacity .3s ease, margin-top .4s ease; }
-    .hours-content-inner { min-height: 0; overflow: hidden; }
-    .hours-section.open .hours-content { grid-template-rows: 1fr; opacity: 1; margin-top: 14px; }
-    .game-hours-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
-    .game-hour-card { border: 2px solid #e5e7eb; border-radius: 18px; padding: 16px; background: #fafafa; }
-    .game-hour-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 10px; }
-    .game-name { font-weight: 900; }
-    .game-time { font-weight: 900; white-space: nowrap; }
-    .progress-bar { width: 100%; height: 9px; border-radius: 20px; background: #e5e7eb; overflow: hidden; margin-top: 10px; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, #111827, #6b7280); border-radius: 20px; transition: width .4s ease; }
-    .next-milestone { color: #777; font-size: .78rem; margin-top: 8px; }
-
-    /* ---------------- MEILENSTEINE ---------------- */
-
-    .milestone-group { margin-bottom: 25px; }
-    .milestone-group-title { font-size: 1.15rem; font-weight: 900; margin-bottom: 12px; }
-
-    .global-milestone-toggle, .game-milestone-toggle {
-      width: 100%; border: none; background: #f3f4f6; border-radius: 16px; padding: 14px 16px;
-      display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-weight: 900; transition: .2s ease;
-    }
-
-    .milestone-toggle-left { display: flex; align-items: center; gap: 10px; }
-    .milestone-toggle-arrow {
-      width: 30px; height: 30px; border-radius: 50%; background: #111827; color: white;
-      display: flex; align-items: center; justify-content: center; transition: transform .3s ease;
-    }
-
-    .global-milestone-section.open .milestone-toggle-arrow, .game-milestone-section.open .milestone-toggle-arrow { transform: rotate(180deg); }
-    .global-milestone-content, .game-milestone-content { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .4s ease, opacity .3s ease, margin-top .4s ease; }
-    .global-milestone-section.open .global-milestone-content, .game-milestone-section.open .game-milestone-content { grid-template-rows: 1fr; opacity: 1; margin-top: 12px; }
-    .global-milestone-inner, .game-milestone-inner { min-height: 0; overflow: hidden; }
-
-    .milestone-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-    .milestone { border-radius: 16px; padding: 15px; border: 2px solid #e5e7eb; background: #f9fafb; text-align: center; position: relative; }
-    .milestone.unlocked { border-color: #f0b400; background: linear-gradient(135deg, #fff8d6, #fff); box-shadow: 0 4px 15px rgba(255,190,0,.15); }
-    .milestone.locked { filter: grayscale(1); opacity: .45; }
-    .milestone-icon { font-size: 2rem; margin-bottom: 7px; }
-    .milestone-name { font-weight: 900; font-size: .85rem; }
-    .milestone-time { color: #777; font-size: .75rem; margin-top: 4px; }
-    .milestone-lock { position: absolute; top: 6px; right: 8px; font-size: .7rem; }
-
-    /* ---------------- SUCHE ---------------- */
-
-    .search-box { display: flex; gap: 10px; }
-    .search-input { flex: 1; border: 2px solid #ddd; border-radius: 14px; padding: 13px 15px; font-size: 1rem; outline: none; }
-    .search-input:focus { border-color: #111; }
-    .search-button { border: none; border-radius: 14px; padding: 0 20px; background: #111827; color: white; font-weight: 900; cursor: pointer; }
-    .search-result { margin-top: 18px; }
-
-    /* ---------------- POPUPS & AUTH MODAL ---------------- */
-
-    .popup-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,.75); display: none;
-      align-items: center; justify-content: center; padding: 20px; z-index: 1000;
-      backdrop-filter: blur(5px);
-    }
-
-    .popup-overlay.active { display: flex; }
-    .popup { width: 100%; max-width: 430px; background: white; border-radius: 25px; padding: 25px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
-    .popup h2 { margin-top: 0; margin-bottom: 15px; text-align: center; }
-    .popup-input { width: 100%; border: 2px solid #ddd; border-radius: 12px; padding: 13px; font-size: 1rem; outline: none; margin-bottom: 12px; }
-    .popup-input:focus { border-color: #111; }
-    .popup-buttons { display: flex; gap: 10px; justify-content: flex-end; }
-    .popup-button { border: none; border-radius: 12px; padding: 11px 16px; font-weight: 900; cursor: pointer; }
-    .popup-cancel { background: #e5e7eb; color: #111; }
-    .popup-confirm { background: #111827; color: white; width: 100%; }
-
-    /* Auth Tab Switcher */
-    .auth-tabs { display: flex; gap: 10px; margin-bottom: 20px; background: #f3f4f6; padding: 5px; border-radius: 14px; }
-    .auth-tab { flex: 1; text-align: center; padding: 10px; font-weight: bold; border-radius: 10px; cursor: pointer; transition: 0.2s; }
-    .auth-tab.active { background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-
-    .auth-error { color: #ff4757; font-size: 0.85rem; font-weight: bold; text-align: center; margin-bottom: 10px; display: none; }
-
-    .public-profile { text-align: center; }
-    .public-avatar { width: 95px; height: 95px; border-radius: 22px; background: #111827; color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 15px; }
-    .public-name { font-size: 1.7rem; font-weight: 900; }
-    .public-id { color: #777; font-family: monospace; margin: 6px 0 10px; }
-    .public-hours { border-radius: 16px; padding: 12px; background: #f3f4f6; font-weight: 800; margin-bottom: 10px; }
-    .public-fav { border-radius: 16px; padding: 12px; background: #eef2ff; color: #3730a3; font-weight: 800; margin-bottom: 15px; }
-
-    /* RESPONSIVE */
-    @media (max-width: 650px) {
-      body { padding: 15px; }
-      .page-title h1 { font-size: 2rem; }
-      .profile-card { align-items: flex-start; }
-      .avatar { width: 80px; height: 80px; min-width: 80px; font-size: 2.7rem; }
-      .profile-name { font-size: 1.5rem; }
-      .search-box { flex-direction: column; }
-      .search-button { padding: 13px; }
-      .milestone-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChallengeChamp 1.01</title>
+
+<style>
+/* -------------------- PROFIL BUTTON & BADGE -------------------- */
+.profile-button-container {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 17px;
+  background: #ffffff;
+  color: #111;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: 0.2s ease;
+}
+
+.profile-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+.badge-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ff4757;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+/* -------------------- GLOBAL -------------------- */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+h1 {
+  text-align: center;
+  color: #fff;
+  margin-top: 25px;
+  font-size: 2.4rem;
+  text-shadow: 2px 2px 6px #000;
+}
+
+/* -------------------- NEWS POPUP -------------------- */
+#premiumPopup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#premiumPopupContent {
+  background: #fff;
+  width: 90%;
+  max-width: 330px;
+  padding: 18px;
+  border-radius: 18px;
+  position: relative;
+  animation: popupIn 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+#premiumPopupClose {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: #ff4d4d;
+  color: #fff;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@keyframes popupIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* -------------------- MODERN PREMIUM POPUPS -------------------- */
+.popupOverlay {
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.65);
+  backdrop-filter: blur(6px);
+  z-index:99999;
+  justify-content:center;
+  align-items:center;
+}
+
+.popupBox {
+  background: linear-gradient(135deg, #ffffff, #f2f2f2);
+  padding:30px;
+  border-radius:22px;
+  width:90%;
+  max-width:360px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.35);
+  animation: fadeIn 0.25s ease;
+  position:relative;
+}
+
+.popupClose {
+  position:absolute;
+  top:10px; right:10px;
+  background:#ff4d4d;
+  color:#fff;
+  width:32px; height:32px;
+  border-radius:50%;
+  text-align:center;
+  line-height:32px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 3px 10px rgba(0,0,0,0.3);
+}
+
+.popupBox button {
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  margin-top:14px;
+  font-size:1.15rem;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.premiumBtn {
+  background:#00eaff;
+  color:#000;
+}
+
+.premiumBtn:hover {
+  background:#00c4d4;
+  transform:scale(1.03);
+}
+
+.premiumAlreadyBtn {
+  background:#FFD700;
+  color:#000;
+}
+
+.premiumAlreadyBtn:hover {
+  background:#FFC300;
+  transform:scale(1.03);
+}
+
+@keyframes fadeIn {
+  from { opacity:0; transform:scale(0.9); }
+  to { opacity:1; transform:scale(1); }
+}
+
+/* -------------------- PREMIUM UNLOCK – MODERN -------------------- */
+
+.premium-unlock {
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(12px);
+  z-index:999999;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  animation:unlockFadeIn 0.4s ease forwards;
+}
+
+/* Glow Hintergrund */
+.unlock-glow {
+  position:absolute;
+  width:420px;
+  height:420px;
+  background:radial-gradient(circle, rgba(0,234,255,0.8), rgba(0,0,0,0));
+  filter:blur(40px);
+  animation:glowPulse 2s infinite ease-in-out;
+}
+
+/* Ringe */
+.unlock-ring {
+  position:absolute;
+  width:260px;
+  height:260px;
+  border:4px solid #00eaff;
+  border-radius:50%;
+  animation:ringPulse 1.8s infinite ease-out;
+  opacity:0.7;
+}
+
+.unlock-ring.delay1 { animation-delay:0.4s; }
+.unlock-ring.delay2 { animation-delay:0.8s; }
+
+/* Diamant */
+.unlock-diamond {
+  width:80px;
+  height:80px;
+  background:linear-gradient(135deg,#00eaff,#00c4d4);
+  clip-path:polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  animation:diamondPop 0.8s ease forwards;
+  box-shadow:0 0 25px #00eaff;
+}
+
+/* Text */
+.unlock-text {
+  margin-top:20px;
+  font-size:2.4rem;
+  color:#00eaff;
+  text-shadow:0 0 20px #00eaff;
+  animation:textFade 1s ease forwards;
+}
+
+/* Konfetti */
+.premium-unlock .confetti {
+  position:absolute;
+  width:10px;
+  height:10px;
+  background:hsl(calc(360 * var(--i)), 80%, 60%);
+  top:-10px;
+  left:calc(100% * var(--j));
+  opacity:0.9;
+  animation:confettiFall 1.8s linear forwards;
+  border-radius:2px;
+}
+
+/* -------------------- KEYFRAMES -------------------- */
+
+@keyframes unlockFadeIn {
+  from { opacity:0; transform:scale(0.9); }
+  to { opacity:1; transform:scale(1); }
+}
+
+@keyframes glowPulse {
+  0% { transform:scale(0.9); opacity:0.7; }
+  100% { transform:scale(1.1); opacity:1; }
+}
+
+@keyframes ringPulse {
+  0% { transform:scale(0.7); opacity:0.8; }
+  100% { transform:scale(2.2); opacity:0; }
+}
+
+@keyframes diamondPop {
+  0% { transform:scale(0.3); opacity:0; }
+  100% { transform:scale(1); opacity:1; }
+}
+
+@keyframes textFade {
+  0% { opacity:0; transform:translateY(20px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+
+@keyframes confettiFall {
+  to { transform:translateY(110vh) rotate(720deg); }
+}
+
+/* SEARCH */
+.search-box {
+  width: 85%;
+  max-width: 280px;
+  margin: 15px auto;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 25px;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+}
+
+.search-results {
+  position: absolute;
+  top: 45px;
+  width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+  display: none;
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 999;
+}
+
+.search-results div {
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.search-results div:hover {
+  background: #f2f2f2;
+}
+
+/* BUTTONS */
+.instructions-button {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.instructions-button a {
+  display: inline-block;
+  background-color: #FFD700;
+  color: #000;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.instructions-button a:hover {
+  background-color: #FFC300;
+}
+
+/* Premium Button */
+.premium-button a {
+  display: inline-block;
+  background: linear-gradient(135deg, #00eaff, #00c4d4);
+  color: #000;
+  font-weight: bold;
+  padding: 12px 26px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  margin-top: 8px;
+  transition:0.2s;
+}
+
+.premium-button a:hover {
+  transform:scale(1.05);
+  background:linear-gradient(135deg,#00c4d4,#00eaff);
+}
+
+/* Premium Logout Button */
+.logout-button a {
+  display:inline-block;
+  background:linear-gradient(135deg,#ff4d4d,#ff2a2a);
+  color:#fff;
+  font-weight:bold;
+  padding:12px 26px;
+  border-radius:30px;
+  text-decoration:none;
+  font-size:1.1rem;
+  box-shadow:0 6px 20px rgba(0,0,0,0.3);
+  margin-top:8px;
+  transition:0.2s;
+}
+
+.logout-button a:hover {
+  transform:scale(1.05);
+}
+
+/* -------------------- GRID -------------------- */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  padding: 20px 12px;
+}
+
+@media (min-width: 700px) {
+  .card-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card {
+  width: 100%;
+  height: 150px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.6);
+}
+
+.card-content {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-size: 1.1rem;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+  text-shadow: 2px 2px 6px #000;
+}
+
+.player-count {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+/* STICKERS */
+.neuSticker {
+  position:absolute;
+  top:8px; left:8px;
+  background:#ffcc00;
+  padding:4px 10px;
+  font-size:0.8rem;
+  font-weight:bold;
+  border-radius:10px;
+  transform:rotate(-12deg);
+  z-index:3;
+}
+
+.premiumSticker {
+  position:absolute;
+  top:8px; right:8px;
+  background:#00eaff;
+  padding:4px 10px;
+  font-size:0.8rem;
+  font-weight:bold;
+  border-radius:10px;
+  transform:rotate(12deg);
+  z-index:3;
+}
+
+.sticker-wm {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: linear-gradient(135deg, #00ff66, #009944);
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(0, 255, 100, 0.6);
+  text-transform: uppercase;
+  animation: pulseWM 2s infinite;
+}
+
+@keyframes pulseWM {
+  0% { box-shadow: 0 0 8px rgba(0, 255, 100, 0.6); }
+  50% { box-shadow: 0 0 15px rgba(0, 255, 100, 1); }
+  100% { box-shadow: 0 0 8px rgba(0, 255, 100, 0.6); }
+}
+
+.bottom-help-button {
+  text-align: center;
+  margin: 25px 0;
+}
+
+.bottom-help-button a {
+  display: inline-block;
+  background-color: #ffffff;
+  color: #000;
+  font-weight: bold;
+  padding: 12px 26px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  transition: 0.2s;
+}
+
+.bottom-help-button a:hover {
+  background-color: #f2f2f2;
+  transform: scale(1.05);
+}
+
+/* CARD IMAGES */
+.fakeorfakt::before { background-image: url('index1.png'); }
+.zehnvonzehn::before { background-image: url('10von10.png'); }
+.wop::before { background-image: url('wop.png'); }
+.imposter::before { background-image: url('imposter.png'); }
+.imposterpremium::before { background-image: url('stillepost.png'); }
+.wort::before { background-image: url('wort.png'); }
+.topsort::before { background-image: url('liste.png'); }
+.tipptopf::before { background-image: url('tipptopf.png'); }
+.stillepost::before { background-image: url('stillepost.png'); }
+.habnochnie::before { background-image: url('habnochnie.png'); }
+.werbinich::before { background-image: url('werbinich.png'); }
+.superquiz::before { background-image: url('wop.png'); }
+.duoplay::before { background-image: url('liste.png'); }
+.uberbieten::before { background-image: url('imposter.png'); }
+.luge::before { background-image: url('index1.png'); }
+.quiz::before { background-image: url('10von10.png'); }
+.wmspiel::before { background-image: url('wm.png'); }
+.wmguess::before { background-image: url('wm.png'); }
+.wmtop::before { background-image: url('wm.png'); }
+.wolf::before { background-image: url('wolf.png'); }
+
+/* COINS + SHOP */
+.top-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 12px auto 5px auto;
+}
+
+.coins-display {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  height: 38px;
+  padding: 0 16px;
+  background: #fff;
+  color: #111;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-sizing: border-box;
+}
+
+.shop-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 17px;
+  background: linear-gradient(135deg, #ffd700, #ffae00);
+  color: #111;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: 0.2s ease;
+}
+
+.shop-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+/* -------------------- MULTIPLAYER PARTY BAR -------------------- */
+.party-bar {
+  background: rgba(255, 255, 255, 0.95);
+  max-width: 450px;
+  margin: 15px auto;
+  padding: 15px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.party-bar-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.party-btn {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: 0.2s;
+}
+
+.party-btn-create { background: #2ed573; color: white; }
+.party-btn-join { background: #1e90ff; color: white; }
+.party-btn-leave { background: #ff4757; color: white; }
+
+.party-box-info {
+  background: #f1f2f6;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.party-code-badge {
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #2f3542;
+}
+
+.party-players-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.party-player-tag {
+  background: #ffffff;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+</style>
+
+<!-- QRCode.js & Party Style -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
-
 <body>
 
-<div class="container">
-
-  <!-- HEADER -->
-  <div class="topbar">
-    <a href="startseite.html" class="back-button">← Zurück zur Startseite</a>
-    <a href="shop.html" class="shop-button">🛒 Shop</a>
-  </div>
-
-  <!-- TITEL -->
-  <div class="page-title">
-    <h1>👤 Mein Profil</h1>
-    <p>Deine Spielzeit, Symbole und Meilensteine</p>
-  </div>
-
-  <!-- FREUNDSCHAFTSANFRAGE BANNER (dynamisch) -->
-  <div id="requestBannerContainer"></div>
-
-  <!-- PROFIL CARD -->
-  <section class="section-card">
-    <div class="profile-card">
-      <div class="avatar" id="myAvatar" onclick="showSymbolSection()" title="Symbol auswählen">🎮</div>
-
-      <div class="profile-info">
-        <div class="profile-name" id="myName">Spieler</div>
-        <div class="player-id">ID: <span id="myId">------------</span></div>
-
-        <div class="selected-symbol">
-          <span class="selected-symbol-label">🏷️ Symbol:</span>
-          <span class="selected-symbol-name" id="mySymbolName">Gamer</span>
-        </div>
-
-        <!-- LIEBLINGSPIEL WÄHLEN -->
-        <div class="favorite-game-select">
-          <span style="font-weight: 700; color: #777;">❤️ Lieblingsspiel:</span>
-          <select id="favGameSelect" onchange="updateFavoriteGame(this.value)">
-            <option value="">Keines gewählt</option>
-          </select>
-        </div>
-
-        <div class="profile-action-btns">
-          <button class="name-button" id="changeNameBtn" onclick="openNamePopup()">✏️ Namen einmalig ändern</button>
-          <button class="logout-button" onclick="logoutProfile()">🚪 Abmelden</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FREUNDESLISTE -->
-  <section class="section-card">
-    <div class="section-title">👥 Meine Freunde</div>
-    <div class="section-subtitle">Aktivitäten und Online-Status deiner Freunde</div>
-    <div class="friends-grid" id="friendsGrid">
-      <div style="color: #777; font-size: 0.9rem;">Noch keine Freunde hinzugefügt.</div>
-    </div>
-  </section>
-
-  <!-- SYMBOLE -->
-  <section class="section-card symbols-section" id="symbolsSection">
-    <button class="symbols-toggle" onclick="toggleSymbols()">
-      <div>
-        <div class="section-title">🏷️ Deine Symbole</div>
-        <div class="section-subtitle">Symbole auswählen und freischalten</div>
-      </div>
-      <span class="toggle-arrow" id="symbolsArrow">▼</span>
-    </button>
-    <div class="symbols-content" id="symbolsContent">
-      <div class="symbol-grid" id="symbolGrid"></div>
-    </div>
-  </section>
-
-  <!-- SPIELERSUCHE -->
-  <section class="section-card">
-    <div class="section-title">🔎 Spieler suchen</div>
-    <div class="section-subtitle">Suche andere Spieler über ihre 12-stellige Spieler-ID.</div>
-    <div class="search-box">
-      <input type="text" class="search-input" id="playerSearch" maxlength="12" placeholder="z. B. CC7K4M9P2X1A" autocomplete="off">
-      <button class="search-button" onclick="searchPlayer()">Suchen</button>
-    </div>
-    <div class="search-result" id="searchResult"></div>
-  </section>
-
-  <!-- SPIELZEIT -->
-  <section class="section-card">
-    <div class="section-title">⏱️ Spielzeit</div>
-    <div class="section-subtitle">Deine Zeit wird für jedes Spiel separat gespeichert.</div>
-
-    <div class="total-hours-card">
-      <div class="total-hours-label">GESAMTE SPIELZEIT</div>
-      <div class="total-hours" id="totalHours">0h 0min</div>
-    </div>
-
-    <div class="hours-section" id="hoursSection">
-      <button class="hours-toggle" onclick="toggleHours()">
-        <div class="hours-toggle-left">
-          <span>🎮</span>
-          <span>Spielzeit pro Spiel</span>
-        </div>
-        <span class="hours-toggle-arrow">▼</span>
-      </button>
-
-      <div class="hours-content">
-        <div class="hours-content-inner">
-          <div class="game-hours-grid" id="gameHoursGrid"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MEILENSTEINE -->
-  <section class="section-card">
-    <div class="section-title">🏆 Meilensteine</div>
-    <div class="section-subtitle">Spiele länger und schalte neue Symbole frei.</div>
-
-    <div class="milestone-group">
-      <div class="milestone-group-title">🌍 Gesamtspielzeit</div>
-      <div class="global-milestone-section" id="globalMilestoneSection">
-        <button class="global-milestone-toggle" onclick="toggleGlobalMilestones()">
-          <div class="milestone-toggle-left">
-            <span>🏆</span>
-            <span>Meilensteine der Gesamtspielzeit</span>
-          </div>
-          <span class="milestone-toggle-arrow">▼</span>
-        </button>
-        <div class="global-milestone-content">
-          <div class="global-milestone-inner">
-            <div class="milestone-grid" id="globalMilestones"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="milestone-group">
-      <div class="milestone-group-title">🎮 Meilensteine pro Spiel</div>
-      <div id="gameMilestones"></div>
-    </div>
-  </section>
-
+<!-- Verbindungs-Status Banner -->
+<div id="connection-status-banner" class="connection-banner" style="display: none;">
+    ⚠️ Verbindung verloren. Wir versuchen, die Verbindung wiederherzustellen...
 </div>
 
-<!-- MODAL: REGISTRIERUNG & LOGIN -->
-<div class="popup-overlay" id="authModal">
-  <div class="popup">
-    <div class="auth-tabs">
-      <div class="auth-tab active" id="tabRegister" onclick="switchAuthTab('register')">Profil erstellen</div>
-      <div class="auth-tab" id="tabLogin" onclick="switchAuthTab('login')">Einloggen</div>
-    </div>
-
-    <div id="authError" class="auth-error"></div>
-
-    <!-- FORMULAR: REGISTRIEREN -->
-    <div id="formRegister">
-      <h2>🎭 Neues Profil</h2>
-      <input type="text" class="popup-input" id="regName" maxlength="20" placeholder="Benutzername">
-      <input type="password" class="popup-input" id="regPassword" placeholder="Passwort ausdenken">
-      <button class="popup-button popup-confirm" onclick="processRegister()">Profil erstellen & starten 👍</button>
-    </div>
-
-    <!-- FORMULAR: LOGIN -->
-    <div id="formLogin" style="display: none;">
-      <h2>🔑 Anmelden</h2>
-      <input type="text" class="popup-input" id="loginName" maxlength="20" placeholder="Dein Benutzername">
-      <input type="password" class="popup-input" id="loginPassword" placeholder="Dein Passwort">
-      <button class="popup-button popup-confirm" onclick="processLogin()">Einloggen</button>
-    </div>
+<!-- NEWS POPUP -->
+<div id="premiumPopup">
+  <div id="premiumPopupContent">
+    <div id="premiumPopupClose" onclick="document.getElementById('premiumPopup').style.display='none'">X</div>
+    <h2>🚀 ChallengeChamp Premium ist da!</h2>
+    <p><b>Neue Spiele:</b></p>
+    <ul>
+      <li>BattleBid 📈</li>
+      <li>Wer lügt am Besten 🔍</li>
+      <li>Lüge oder Wahrheit 🤥</li>
+      <li>TeamQuiz Board 🧾</li>
+      <li>Nightfall Village 🌙</li>
+      <li>5 WM-Special Spiele⚽</li>
+    </ul>
+    <p><b>Neuigkeiten:</b></p>
+    <ul>
+      <li>Spielsuche 🔍</li>
+      <li>Bugfixes 🔧</li>
+      <li>Sound- und Animationerweiterungen 🎶</li>
+    </ul>
   </div>
 </div>
 
-<!-- NAMEN POPUP (1x Ändern) -->
-<div class="popup-overlay" id="namePopup">
-  <div class="popup">
-    <h2>✏️ Namen ändern</h2>
-    <p>Du kannst deinen Spielernamen nur einmal ändern.</p>
-    <input type="text" class="popup-input" id="nameInput" maxlength="20" placeholder="Dein neuer Name">
-    <div class="popup-buttons">
-      <button class="popup-button popup-cancel" onclick="closePopup('namePopup')">Abbrechen</button>
-      <button class="popup-button popup-confirm" onclick="changeName()">Speichern</button>
-    </div>
+<!-- PREMIUM LOGIN POPUP -->
+<div id="premiumLoginPopup" class="popupOverlay">
+  <div class="popupBox">
+    <div class="popupClose" onclick="closePremiumLogin()">X</div>
+    <h3>ChallengeChamp Premium 💎</h3>
+    <button class="premiumAlreadyBtn" onclick="premiumAlready()">Ich habe Premium</button>
+    <button class="premiumBtn" onclick="window.location.href='premium.html'">Premium kostenlos erhalten</button>
   </div>
 </div>
 
-<!-- ÖFFENTLICHES PROFIL CARD (POPUP) -->
-<div class="popup-overlay" id="publicProfilePopup">
-  <div class="popup">
-    <div class="public-profile">
-      <div class="public-avatar" id="publicAvatar">🎮</div>
-      <div class="public-name" id="publicName">Spieler</div>
-      <div class="public-id" id="publicId">ID</div>
-      <div style="font-size: 0.85rem; font-weight: bold; color: #555; margin-bottom: 10px;" id="publicSymbolText">Symbol: Gamer</div>
-      <div class="public-hours" id="publicHours">⏱️ 0 Stunden gespielt</div>
-      <div class="public-fav" id="publicFavGame">❤️ Lieblingsspiel: Keines</div>
-
-      <div id="friendActionArea" style="margin-top: 15px;"></div>
-
-      <br>
-      <button class="popup-button popup-cancel" onclick="closePopup('publicProfilePopup')">Schließen</button>
-    </div>
+<!-- PREMIUM PASSWORD POPUP -->
+<div id="premiumPasswordPopup" class="popupOverlay">
+  <div class="popupBox">
+    <div class="popupClose" onclick="closePremiumPassword()">X</div>
+    <h3>Premium‑Passwort eingeben</h3>
+    <input id="premiumPasswordInput" placeholder="Premium‑PIN">
+    <p><a href="hilfe.html">Passwort verloren?</a></p>
+    <button class="premiumBtn" onclick="checkPremiumPassword()">Freischalten</button>
+    <p id="premiumError" style="color:red; display:none;">Premium‑PIN falsch!</p>
   </div>
+</div>
+
+<div id="premiumUnlocked" class="premium-unlock">
+  <div class="unlock-glow"></div>
+  <div class="unlock-ring"></div>
+  <div class="unlock-diamond"></div>
+  <div class="unlock-text">Premium aktiviert 💎</div>
+</div>
+
+<h1>Wähle dein Spiel</h1>
+
+<!-- COINS + SHOP + PROFIL -->
+<div class="top-actions">
+  <div class="coins-display">
+    🪙 <span id="coinAmount">0</span>
+  </div>
+
+  <a href="shop.html" class="shop-button">
+    🛒 Shop
+  </a>
+
+  <div class="profile-button-container">
+    <a href="profil.html" class="profile-button">
+      👤 Profil
+    </a>
+    <span id="friendRequestBadge" class="badge-count">0</span>
+  </div>
+</div>
+
+<!-- MULTIPLAYER PARTY BEREICH -->
+<div class="party-bar">
+  <div id="partyActionBtns" class="party-bar-btns">
+    <button class="party-btn party-btn-create" onclick="createParty()">🎉 Party erstellen</button>
+    <button class="party-btn party-btn-join" onclick="promptJoinParty()">🔑 Raum beitreten</button>
+  </div>
+
+  <div id="partyActiveBox" class="party-box-info" style="display: none;">
+    <div>Dein Party-Code:</div>
+    <div class="party-code-badge" id="partyCodeDisplay">------</div>
+    <div style="margin-top: 5px; font-size: 0.85rem; color: #555;">Mitspieler im Raum:</div>
+    <div class="party-players-list" id="partyPlayersList"></div>
+    <br>
+    <button class="party-btn party-btn-leave" onclick="leaveParty()">Raum verlassen</button>
+  </div>
+</div>
+
+<!-- SUCHFELD -->
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="🔍 Spiel suchen...">
+  <div class="search-results" id="searchResults"></div>
+</div>
+
+<!-- BUTTONS -->
+<div class="instructions-button">
+  <a href="spielanleitung.html">📘 Spielanleitung</a>
+</div>
+
+<div class="instructions-button premium-button">
+  <a href="#" onclick="openPremiumLogin()">💎 ChallengeChamp Premium</a>
+</div>
+
+<div class="instructions-button logout-button">
+  <a href="#" onclick="logoutPremium()">Premium abmelden</a>
+</div>
+
+<!-- GRID -->
+<div class="card-container">
+  <a href="index.html" class="card fakeorfakt"><div class="card-content">Fake or Fakt 🎭<div class="player-count">3–6</div></div></a>
+  <a href="10von10.html" class="card zehnvonzehn"><div class="card-content">10 von 10 💘<div class="player-count">2–6</div></div></a>
+  <a href="wop.html" class="card wop"><div class="card-content">Wahrheit oder Pflicht 🔥<div class="player-count">1–6</div></div></a>
+  <a href="imposter.html" class="card imposter"><div class="card-content">Finde den Imposter 🕵️‍♂️<div class="player-count">3–6</div></div></a>
+  <a href="imposterpremium.html" class="card imposterpremium"><div class="card-content">Wer lügt am Besten 🔍<div class="player-count">3–12</div></div></a>
+  <a href="wort.html" class="card wort"><div class="card-content">Verbotene Wörter 🙊<div class="player-count">2+</div></div></a>
+  <a href="liste.html" class="card topsort"><div class="card-content">TopSort 📜<div class="player-count">2–5</div></div></a>
+  <a href="tipptopf.html" class="card tipptopf"><div class="card-content">TippTopf 👆<div class="player-count">2–8</div></div></a>
+  <a href="stillepost.html" class="card stillepost"><div class="card-content">PinselPost 🖌️<div class="player-count">3–8</div></div></a>
+  <a href="habnochnie.html" class="card habnochnie"><div class="card-content">Ich hab noch nie 🚫<div class="player-count">1–12</div></div></a>
+  <a href="werbinich.html" class="card werbinich"><div class="card-content">Wer bin ich ⁉️<div class="player-count">2+</div></div></a>
+  <a href="superquiz.html" class="card superquiz"><div class="card-content">Superquiz 🧠<div class="player-count">1–8</div></div></a>
+  <a href="duoplay.html" class="card duoplay"><div class="card-content">Duo‑Pantomime 🎬<div class="player-count">3–10</div></div></a>
+  <a href="uberbieten.html" class="card uberbieten"><div class="card-content">BattleBid 📈<div class="player-count">2–10</div></div></a>
+  <a href="these.html" class="card zehnvonzehn"><div class="card-content">Lüge oder Wahrheit 🤥<div class="player-count">2–5</div></div></a>
+  <a href="100quiz.html" class="card quiz"><div class="card-content">TeamQuiz Board 🧾<div class="player-count">1+</div></div></a>
+  <a href="wolf.html" class="card wolf"><div class="card-content">Nightfall Village 🌙<div class="player-count">4-15</div></div></a>
+  <a href="wm.html" class="card wmspiel"><div class="sticker sticker-wm">WM‑Special</div><div class="card-content">MatchMaster ⚽<div class="player-count">2–5</div></div></a>
+  <a href="wmhunter.html" class="card wmspiel"><div class="sticker sticker-wm">WM‑Special</div><div class="card-content">PlayerMaster ⭐<div class="player-count">1+</div></div></a>
+  <a href="wmguess.html" class="card wmguess"><div class="sticker sticker-wm">WM‑Special</div><div class="card-content">Guess the Hype 📱<div class="player-count">1+</div></div></a>
+  <a href="wmtop.html" class="card wmtop"><div class="sticker sticker-wm">WM‑Special</div><div class="card-content">TeamMaster 👨<div class="player-count">1+</div></div></a>
+  <a href="tictactoe.html" class="card wmtop"><div class="sticker sticker-wm">WM‑Special</div><div class="card-content">Guess Grid 🧩<div class="player-count">2</div></div></a>
+</div>
+
+<div class="bottom-help-button">
+  <a href="hilfe.html">Hilfe</a>
 </div>
 
 <!-- FIREBASE SKRIPTE -->
 <script type="module" src="firebase-config.js"></script>
 
 <script>
+/* -------------------- PREMIUM LOGIK -------------------- */
+const premiumGames = ["imposterpremium", "wolf"];
+const newGames = ["imposterpremium", "uberbieten", "these", "100quiz", "wolf"];
 
-  /* =========================================================
-     STORAGE KEYS
-  ========================================================= */
-  const STORAGE = {
-    name: "challengeChampProfileName",
-    nameChanged: "challengeChampNameChanged",
-    playerId: "challengeChampPlayerId",
-    avatar: "challengeChampAvatar",
-    unlockedSymbols: "challengeChampUnlockedSymbols",
-    gameHours: "challengeChampGameHours",
-    favGame: "challengeChampFavGame",
-    lastSyncedMinutes: "challengeChampLastSyncedMinutes"
-  };
+function isPremium() {
+  return localStorage.getItem("premium") === "true";
+}
 
-  /* =========================================================
-     SPIELE DEFINITIONEN
-  ========================================================= */
-  const gameDefinitions = [
-    { id: "fakeorfakt", name: "Fake or Fakt" },
-    { id: "10von10", name: "10 von 10" },
-    { id: "wop", name: "Wahrheit oder Pflicht" },
-    { id: "imposter", name: "Finde den Imposter" },
-    { id: "imposterpremium", name: "Wer lügt am Besten" },
-    { id: "wort", name: "Verbotene Wörter" },
-    { id: "liste", name: "TopSort" },
-    { id: "tipptopf", name: "Tipptopf" },
-    { id: "stillepost", name: "PinselPost" },
-    { id: "habnochnie", name: "Ich hab noch nie" },
-    { id: "werbinich", name: "Wer bin ich?" },
-    { id: "superquiz", name: "Superquiz" },
-    { id: "duoplay", name: "Duo-Pantomime" },
-    { id: "uberbieten", name: "BattleBid" },
-    { id: "these", name: "Lüge oder Wahrheit" },
-    { id: "100quiz", name: "TeamQuiz Board" },
-    { id: "wolf", name: "Nightfall Village" },
-    { id: "wm", name: "MatchMaster" },
-    { id: "wmhunter", name: "PlayMaster" },
-    { id: "wmguess", name: "Guess the Hype" },
-    { id: "wmtop", name: "TeamMaster" },
-    { id: "tictactoe", name: "Guess Grid" }
-  ];
+function openPremiumLogin() { document.getElementById("premiumLoginPopup").style.display = "flex"; }
+function closePremiumLogin() { document.getElementById("premiumLoginPopup").style.display = "none"; }
+function premiumAlready() { closePremiumLogin(); document.getElementById("premiumPasswordPopup").style.display = "flex"; }
+function closePremiumPassword() { document.getElementById("premiumPasswordPopup").style.display = "none"; }
 
-  const codeSymbols = [
-    { id: "champion", icon: "🏆", name: "Goldener Champion", code: "CHAMP-2026" },
-    { id: "fire", icon: "🔥", name: "Feuersturm", code: "FIRE-777" },
-    { id: "crown", icon: "👑", name: "Königskrone", code: "CROWN-999" },
-    { id: "diamond", icon: "💎", name: "Diamant-Legende", code: "DIAMOND-CC" },
-    { id: "lightning", icon: "⚡", name: "Blitz-Champion", code: "BOLT-2026" }
-  ];
+function checkPremiumPassword() {
+  const pw = document.getElementById("premiumPasswordInput").value;
+  if (pw === "abc123") {
+    localStorage.setItem("premium", "true");
+    document.getElementById("premiumPasswordPopup").style.display = "none";
+    document.getElementById("premiumUnlocked").style.display = "flex";
+    setTimeout(() => { document.getElementById("premiumUnlocked").style.display = "none"; }, 2000);
+  } else {
+    document.getElementById("premiumError").style.display = "block";
+  }
+}
 
-  const gameMilestones = [
-    { id: "10min", minutes: 10, icon: "🕐", name: "Warm-up-Held" },
-    { id: "30min", minutes: 30, icon: "⏱️", name: "Challenge-Spieler" },
-    { id: "1h", minutes: 60, icon: "⭐", name: "Game-Profi" },
-    { id: "3h", minutes: 180, icon: "🔥", name: "Challenge-Bestie" },
-    { id: "5h", minutes: 300, icon: "🚀", name: "Spiel-Legende" }
-  ];
+function logoutPremium() {
+  localStorage.removeItem("premium");
+  alert("Premium wurde deaktiviert.");
+}
 
-  const globalMilestones = [
-    { id: "global_1h", minutes: 60, icon: "🌟", name: "Stundenstarter" },
-    { id: "global_5h", minutes: 300, icon: "🚀", name: "Challenge-Rakete" },
-    { id: "global_10h", minutes: 600, icon: "🏆", name: "Challenge-Champion" },
-    { id: "global_25h", minutes: 1500, icon: "💎", name: "Diamant-Spieler" },
-    { id: "global_50h", minutes: 3000, icon: "🐉", name: "Challenge-Drache" },
-    { id: "global_100h", minutes: 6000, icon: "👑", name: "Ultimate Champion" }
-  ];
+/* -------------------- STICKER & CARDS -------------------- */
+document.querySelectorAll(".card").forEach(card => {
+  const link = card.getAttribute("href");
+  if (!link) return;
+  const gameId = link.replace(".html", "");
 
-  /* =========================================================
-     AUTH LOGIK (REGISTRIERUNG & LOGIN)
-  ========================================================= */
-  function checkInitialProfile() {
-    const existingId = localStorage.getItem(STORAGE.playerId);
-    if (!existingId) {
-      document.getElementById("authModal").classList.add("active");
-    } else {
-      syncWithServer();
+  if (newGames.includes(gameId)) {
+    const neu = document.createElement("div");
+    neu.className = "neuSticker";
+    neu.innerText = "NEU";
+    card.appendChild(neu);
+  }
+
+  if (premiumGames.includes(gameId)) {
+    const prem = document.createElement("div");
+    prem.className = "premiumSticker";
+    prem.innerText = "PREMIUM";
+    card.appendChild(prem);
+  }
+
+  card.addEventListener("click", (e) => {
+    if (premiumGames.includes(gameId) && !isPremium()) {
+      e.preventDefault();
+      openPremiumLogin();
     }
-  }
+  });
+});
 
-  function switchAuthTab(tab) {
-    document.getElementById("authError").style.display = "none";
-    if (tab === 'register') {
-      document.getElementById("tabRegister").classList.add("active");
-      document.getElementById("tabLogin").classList.remove("active");
-      document.getElementById("formRegister").style.display = "block";
-      document.getElementById("formLogin").style.display = "none";
-    } else {
-      document.getElementById("tabLogin").classList.add("active");
-      document.getElementById("tabRegister").classList.remove("active");
-      document.getElementById("formLogin").style.display = "block";
-      document.getElementById("formRegister").style.display = "none";
+/* -------------------- SUCHE -------------------- */
+const games = [
+  { name: "Fake or Fakt 🎭", link: "index.html" },
+  { name: "10 von 10 💘", link: "10von10.html" },
+  { name: "Wahrheit oder Pflicht 🔥", link: "wop.html" },
+  { name: "Finde den Imposter 🕵️‍♂️", link: "imposter.html" },
+  { name: "Wer lügt am Besten 🔍", link: "imposterpremium.html" },
+  { name: "Verbotene Wörter 🙊", link: "wort.html" },
+  { name: "TopSort 📜", link: "liste.html" },
+  { name: "TippTopf 👆", link: "tipptopf.html" },
+  { name: "PinselPost 🖌️", link: "stillepost.html" },
+  { name: "Ich hab noch nie 🚫", link: "habnochnie.html" },
+  { name: "Wer bin ich ⁉️", link: "werbinich.html" },
+  { name: "Superquiz 🧠", link: "superquiz.html" },
+  { name: "Duo‑Pantomime 🎬", link: "duoplay.html" },
+  { name: "Lüge oder Wahrheit 🤥", link: "these.html" },
+  { name: "TeamQuiz Board 🧾", link: "100quiz.html" },
+  { name: "Nightfall Village 🌙", link: "wolf.html" },
+  { name: "MatchMaster ⚽", link: "wm.html" },
+  { name: "PlayerMaster ⭐", link: "wmhunter.html" },
+  { name: "Guess the Hype 📱", link: "wmguess.html" },
+  { name: "Guess Grid 🧩", link: "tictactoe.html" },
+  { name: "Hilfe 💬", link: "hilfe.html" }
+];
+
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
+
+searchInput.addEventListener("input", () => {
+  const value = searchInput.value.toLowerCase();
+  searchResults.innerHTML = "";
+  if (value.trim() === "") { searchResults.style.display = "none"; return; }
+
+  const filtered = games.filter(g => g.name.toLowerCase().includes(value));
+  if (filtered.length === 0) { searchResults.style.display = "none"; return; }
+
+  filtered.forEach(g => {
+    const div = document.createElement("div");
+    div.textContent = g.name;
+    div.onclick = () => window.location.href = g.link;
+    searchResults.appendChild(div);
+  });
+  searchResults.style.display = "block";
+});
+
+/* -------------------- MULTIPLAYER PARTY MANAGER -------------------- */
+let currentPartyCode = null;
+
+function getPlayerName() {
+  return localStorage.getItem("challengeChampProfileName") || "Spieler";
+}
+
+async function createParty() {
+  if (!window.firebaseDB) return alert("Fehler: Verbindung zum Server nicht bereit.");
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  const name = getPlayerName();
+
+  const partyRef = window.fbRef(window.firebaseDB, `parties/${code}`);
+  await window.fbSet(partyRef, {
+    created: Date.now(),
+    host: name,
+    players: {
+      p1: { name: name, host: true }
     }
-  }
+  });
 
-  function showAuthError(msg) {
-    const err = document.getElementById("authError");
-    err.innerText = msg;
-    err.style.display = "block";
-  }
+  localStorage.setItem("currentPartyCode", code);
+  initPartyListener(code);
+}
 
-  async function processRegister() {
-    const name = document.getElementById("regName").value.trim();
-    const pw = document.getElementById("regPassword").value;
+function promptJoinParty() {
+  const code = prompt("Gib den 6-stelligen Party-Code ein:");
+  if (code && code.length === 6) joinParty(code.trim());
+}
 
-    if (!name || !pw) return showAuthError("Bitte fülle alle Felder aus.");
-    if (name.length < 3) return showAuthError("Der Name muss mindestens 3 Zeichen lang sein.");
-    if (pw.length < 4) return showAuthError("Das Passwort muss mindestens 4 Zeichen lang sein.");
+async function joinParty(code) {
+  if (!window.firebaseDB) return;
+  const partyRef = window.fbRef(window.firebaseDB, `parties/${code}`);
+  const snap = await window.fbGet(partyRef);
 
-    const nameKey = name.toLowerCase();
+  if (!snap.exists()) return alert("Party nicht gefunden!");
 
-    // Server-Check: Existiert Benutzername bereits?
-    const accSnap = await window.fbGet(window.fbRef(window.firebaseDB, `accounts/${nameKey}`));
-    if (accSnap.exists()) {
-      return showAuthError("Dieser Benutzername ist bereits vergeben!");
+  const name = getPlayerName();
+  const pKey = "p_" + Date.now();
+  await window.fbSet(window.fbRef(window.firebaseDB, `parties/${code}/players/${pKey}`), { name: name });
+
+  localStorage.setItem("currentPartyCode", code);
+  initPartyListener(code);
+}
+
+function initPartyListener(code) {
+  currentPartyCode = code;
+  document.getElementById("partyActionBtns").style.display = "none";
+  document.getElementById("partyActiveBox").style.display = "block";
+  document.getElementById("partyCodeDisplay").innerText = code;
+
+  const partyRef = window.fbRef(window.firebaseDB, `parties/${code}/players`);
+  window.fbOnValue(partyRef, (snapshot) => {
+    const list = document.getElementById("partyPlayersList");
+    list.innerHTML = "";
+    if (snapshot.exists()) {
+      const players = snapshot.val();
+      Object.values(players).forEach(p => {
+        const tag = document.createElement("div");
+        tag.className = "party-player-tag";
+        tag.innerText = p.name + (p.host ? " 👑" : "");
+        list.appendChild(tag);
+      });
     }
+  });
+}
 
-    const newId = generatePlayerId();
-
-    // Nutzerdaten im Server anlegen
-    await window.fbSet(window.fbRef(window.firebaseDB, `accounts/${nameKey}`), {
-      id: newId,
-      password: pw
-    });
-
-    localStorage.setItem(STORAGE.playerId, newId);
-    localStorage.setItem(STORAGE.name, name);
-    localStorage.setItem(STORAGE.avatar, "basic");
-
-    document.getElementById("authModal").classList.remove("active");
-    renderProfile();
-    syncWithServer(true);
+async function leaveParty() {
+  if (currentPartyCode && window.firebaseDB) {
+    localStorage.removeItem("currentPartyCode");
+    document.getElementById("partyActionBtns").style.display = "flex";
+    document.getElementById("partyActiveBox").style.display = "none";
+    currentPartyCode = null;
   }
+}
 
-  async function processLogin() {
-    const name = document.getElementById("loginName").value.trim();
-    const pw = document.getElementById("loginPassword").value;
+/* -------------------- COINS & FREUNDE -------------------- */
+function updateCoinDisplay() {
+  const coinAmount = document.getElementById("coinAmount");
+  if (!coinAmount) return;
+  const coins = parseInt(localStorage.getItem("teamMasterCoins"), 10) || 0;
+  coinAmount.textContent = coins;
+}
 
-    if (!name || !pw) return showAuthError("Bitte fülle alle Felder aus.");
-
-    const nameKey = name.toLowerCase();
-    const accSnap = await window.fbGet(window.fbRef(window.firebaseDB, `accounts/${nameKey}`));
-
-    if (!accSnap.exists()) {
-      return showAuthError("Benutzername nicht gefunden.");
+document.addEventListener("DOMContentLoaded", () => {
+  updateCoinDisplay();
+  const activeCode = localStorage.getItem("currentPartyCode");
+  
+  const checkFB = setInterval(() => {
+    if (window.firebaseDB) {
+      clearInterval(checkFB);
+      if (activeCode) initPartyListener(activeCode);
+      listenForFriendRequests();
     }
+  }, 100);
+});
 
-    const acc = accSnap.val();
-    if (acc.password !== pw) {
-      return showAuthError("Falsches Passwort!");
-    }
+function listenForFriendRequests() {
+  const myId = localStorage.getItem("challengeChampPlayerId");
+  if (!myId) return;
 
-    // Nutzerdaten aus dem Server laden & lokal wiederherstellen
-    const userSnap = await window.fbGet(window.fbRef(window.firebaseDB, `users/${acc.id}`));
-    if (userSnap.exists()) {
-      const uData = userSnap.val();
-      localStorage.setItem(STORAGE.playerId, uData.id);
-      localStorage.setItem(STORAGE.name, uData.name);
-      if (uData.favoriteGame) localStorage.setItem(STORAGE.favGame, uData.favoriteGame);
-    } else {
-      localStorage.setItem(STORAGE.playerId, acc.id);
-      localStorage.setItem(STORAGE.name, name);
-    }
+  const reqRef = window.fbRef(window.firebaseDB, `friendRequests/${myId}`);
+  window.fbOnValue(reqRef, (snapshot) => {
+    const badge = document.getElementById("friendRequestBadge");
+    if (!badge) return;
 
-    document.getElementById("authModal").classList.remove("active");
-    renderProfile();
-    syncWithServer(true);
-  }
-
-  function logoutProfile() {
-    if (confirm("Möchtest du dich wirklich abmelden? Deine Daten bleiben im Server gespeichert.")) {
-      localStorage.removeItem(STORAGE.playerId);
-      localStorage.removeItem(STORAGE.name);
-      location.reload();
-    }
-  }
-
-  function generatePlayerId() {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let id = "CC";
-    for (let i = 0; i < 10; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
-
-  function getPlayerId() {
-    return localStorage.getItem(STORAGE.playerId) || "------------";
-  }
-
-  function getPlayerName() {
-    return localStorage.getItem(STORAGE.name) || "Spieler";
-  }
-
-  /* =========================================================
-     FIREBASE SERVER-SYNCHRONISATION
-  ========================================================= */
-  async function syncWithServer(force = false) {
-    const pId = getPlayerId();
-    if (pId === "------------" || !window.firebaseDB) return;
-
-    const name = getPlayerName();
-    const avatarId = localStorage.getItem(STORAGE.avatar) || "basic";
-    const icon = findSymbolIcon(avatarId);
-    const iconText = getSymbolNameById(avatarId);
-    const favGame = localStorage.getItem(STORAGE.favGame) || "";
-    const totalMins = Math.floor(getTotalHours() * 60);
-
-    const lastSynced = parseInt(localStorage.getItem(STORAGE.lastSyncedMinutes) || "0", 10);
-
-    let timeToSync = lastSynced;
-    if (force || totalMins >= lastSynced + 10) {
-      timeToSync = Math.floor(totalMins / 10) * 10;
-      localStorage.setItem(STORAGE.lastSyncedMinutes, timeToSync.toString());
-    }
-
-    const userRef = window.fbRef(window.firebaseDB, `users/${pId}`);
-    await window.fbSet(userRef, {
-      id: pId,
-      name: name,
-      icon: icon,
-      iconText: iconText,
-      totalMinutes: timeToSync,
-      favoriteGame: favGame,
-      lastOnline: Date.now()
-    });
-
-    const statusRef = window.fbRef(window.firebaseDB, `users/${pId}/status`);
-    window.fbSet(statusRef, { online: true, lastSeen: Date.now() });
-    window.fbOnDisconnect(statusRef).set({ online: false, lastSeen: Date.now() });
-
-    listenToFriendRequests();
-    loadFriendsList();
-  }
-
-  /* =========================================================
-     LIEBLINGSPIEL
-  ========================================================= */
-  function initFavGameSelect() {
-    const select = document.getElementById("favGameSelect");
-    select.innerHTML = `<option value="">Keines gewählt</option>`;
-
-    gameDefinitions.forEach(g => {
-      const opt = document.createElement("option");
-      opt.value = g.name;
-      opt.textContent = g.name;
-      select.appendChild(opt);
-    });
-
-    const currentFav = localStorage.getItem(STORAGE.favGame);
-    if (currentFav) select.value = currentFav;
-  }
-
-  function updateFavoriteGame(val) {
-    localStorage.setItem(STORAGE.favGame, val);
-    syncWithServer(true);
-  }
-
-  /* =========================================================
-     FREUNDSCHAFTSANFRAGEN & LISTENER
-  ========================================================= */
-  function listenToFriendRequests() {
-    const myId = getPlayerId();
-    if (!window.firebaseDB || myId === "------------") return;
-
-    const reqRef = window.fbRef(window.firebaseDB, `friendRequests/${myId}`);
-    window.fbOnValue(reqRef, async (snapshot) => {
-      const bannerContainer = document.getElementById("requestBannerContainer");
-      bannerContainer.innerHTML = "";
-
-      if (!snapshot.exists()) return;
-
+    if (snapshot.exists()) {
       const requests = snapshot.val();
-      const senderIds = Object.keys(requests);
+      const pendingCount = Object.values(requests).filter(status => status === "pending").length;
 
-      for (let senderId of senderIds) {
-        if (requests[senderId] === "pending") {
-          const senderSnap = await window.fbGet(window.fbRef(window.firebaseDB, `users/${senderId}`));
-          if (senderSnap.exists()) {
-            const senderData = senderSnap.val();
-            
-            const banner = document.createElement("div");
-            banner.className = "request-banner";
-            banner.innerHTML = `
-              <div><b>✉️ Freundschaftsanfrage:</b> ${senderData.name} (${senderId}) möchte dich als Freund hinzufügen!</div>
-              <div class="request-banner-btns">
-                <button class="request-btn req-accept" onclick="acceptFriend('${senderId}')">Annehmen</button>
-                <button class="request-btn req-deny" onclick="denyFriend('${senderId}')">Ablehnen</button>
-                <button class="request-btn req-view" onclick="inspectPlayer('${senderId}')">Profil ansehen</button>
-              </div>
-            `;
-            bannerContainer.appendChild(banner);
-          }
-        }
-      }
-    });
-  }
-
-  async function sendFriendRequest(targetId) {
-    const myId = getPlayerId();
-    if (myId === targetId) {
-      alert("Du kannst dir nicht selbst eine Anfrage senden.");
-      return;
-    }
-
-    const reqRef = window.fbRef(window.firebaseDB, `friendRequests/${targetId}/${myId}`);
-    await window.fbSet(reqRef, "pending");
-
-    const area = document.getElementById("friendActionArea");
-    if (area) area.innerHTML = `<button class="popup-button" style="background:#e5e7eb; color:#555;" disabled>Anfrage gesendet 📩</button>`;
-  }
-
-  async function acceptFriend(senderId) {
-    const myId = getPlayerId();
-    await window.fbSet(window.fbRef(window.firebaseDB, `friends/${myId}/${senderId}`), true);
-    await window.fbSet(window.fbRef(window.firebaseDB, `friends/${senderId}/${myId}`), true);
-    await window.fbRemove(window.fbRef(window.firebaseDB, `friendRequests/${myId}/${senderId}`));
-
-    loadFriendsList();
-  }
-
-  async function denyFriend(senderId) {
-    const myId = getPlayerId();
-    await window.fbRemove(window.fbRef(window.firebaseDB, `friendRequests/${myId}/${senderId}`));
-  }
-
-  /* =========================================================
-     FREUNDESLISTE LADEN
-  ========================================================= */
-  function loadFriendsList() {
-    const myId = getPlayerId();
-    if (!window.firebaseDB || myId === "------------") return;
-
-    const friendsRef = window.fbRef(window.firebaseDB, `friends/${myId}`);
-    window.fbOnValue(friendsRef, async (snapshot) => {
-      const grid = document.getElementById("friendsGrid");
-      grid.innerHTML = "";
-
-      if (!snapshot.exists()) {
-        grid.innerHTML = `<div style="color: #777; font-size: 0.9rem;">Noch keine Freunde hinzugefügt.</div>`;
-        return;
-      }
-
-      const friendIds = Object.keys(snapshot.val());
-      for (let fId of friendIds) {
-        const fSnap = await window.fbGet(window.fbRef(window.firebaseDB, `users/${fId}`));
-        if (fSnap.exists()) {
-          const fData = fSnap.val();
-          const isOnline = fData.status && fData.status.online;
-
-          const card = document.createElement("div");
-          card.className = "friend-card";
-          card.onclick = () => inspectPlayer(fId);
-
-          card.innerHTML = `
-            <div class="friend-avatar">
-              ${fData.icon || "🎮"}
-              <div class="online-indicator ${isOnline ? 'online' : 'offline'}"></div>
-            </div>
-            <div class="friend-info">
-              <div class="friend-name">${fData.name}</div>
-              <div class="friend-status">${isOnline ? '🟢 Online' : '⚪ Offline'}</div>
-            </div>
-          `;
-          grid.appendChild(card);
-        }
-      }
-    });
-  }
-
-  /* =========================================================
-     SPIELERSUCHE VIA FIREBASE SERVER
-  ========================================================= */
-  async function searchPlayer() {
-    const input = document.getElementById("playerSearch").value.trim().toUpperCase();
-    const result = document.getElementById("searchResult");
-    result.innerHTML = "";
-
-    if (!input) return;
-
-    if (!window.firebaseDB) {
-      result.innerHTML = `<div class="no-result">Verbindung zum Server fehlgeschlagen.</div>`;
-      return;
-    }
-
-    const userRef = window.fbRef(window.firebaseDB, `users/${input}`);
-    const snapshot = await window.fbGet(userRef);
-
-    if (!snapshot.exists()) {
-      result.innerHTML = `<div class="no-result">❌ Kein Spieler mit dieser ID gefunden.</div>`;
-      return;
-    }
-
-    const player = snapshot.val();
-    inspectPlayer(player.id, player);
-  }
-
-  async function inspectPlayer(targetId, preloadedData = null) {
-    let player = preloadedData;
-    if (!player) {
-      const snap = await window.fbGet(window.fbRef(window.firebaseDB, `users/${targetId}`));
-      if (snap.exists()) player = snap.val();
-    }
-
-    if (!player) return;
-
-    document.getElementById("publicAvatar").textContent = player.icon || "🎮";
-    document.getElementById("publicName").textContent = player.name;
-    document.getElementById("publicId").textContent = "ID: " + player.id;
-    document.getElementById("publicSymbolText").textContent = "Symbol: " + (player.iconText || "Gamer");
-    
-    const hours = (player.totalMinutes || 0) / 60;
-    document.getElementById("publicHours").textContent = "⏱️ " + formatTime(hours) + " gespielt";
-    document.getElementById("publicFavGame").textContent = "❤️ Lieblingsspiel: " + (player.favoriteGame || "Keines");
-
-    const myId = getPlayerId();
-    const actionArea = document.getElementById("friendActionArea");
-    actionArea.innerHTML = "";
-
-    if (myId !== player.id) {
-      const fSnap = await window.fbGet(window.fbRef(window.firebaseDB, `friends/${myId}/${player.id}`));
-      if (fSnap.exists()) {
-        actionArea.innerHTML = `<button class="popup-button" style="background:#2ed573; color:white;" disabled>Ihr seid Freunde 🤝</button>`;
+      if (pendingCount > 0) {
+        badge.innerText = pendingCount;
+        badge.style.display = "flex";
       } else {
-        const reqSnap = await window.fbGet(window.fbRef(window.firebaseDB, `friendRequests/${player.id}/${myId}`));
-        if (reqSnap.exists()) {
-          actionArea.innerHTML = `<button class="popup-button" style="background:#e5e7eb; color:#555;" disabled>Anfrage gesendet 📩</button>`;
-        } else {
-          actionArea.innerHTML = `<button class="popup-button popup-confirm" onclick="sendFriendRequest('${player.id}')">➕ Freund hinzufügen</button>`;
-        }
+        badge.style.display = "none";
       }
+    } else {
+      badge.style.display = "none";
     }
-
-    document.getElementById("publicProfilePopup").classList.add("active");
-  }
-
-  /* =========================================================
-     SPIELZEIT LOKAL
-  ========================================================= */
-  function getGameHours() {
-    let data = {};
-    try {
-      data = JSON.parse(localStorage.getItem(STORAGE.gameHours)) || {};
-    } catch { data = {}; }
-
-    gameDefinitions.forEach(game => {
-      if (typeof data[game.id] !== "number") data[game.id] = 0;
-    });
-
-    return data;
-  }
-
-  function saveGameHours(data) {
-    localStorage.setItem(STORAGE.gameHours, JSON.stringify(data));
-  }
-
-  function getTotalHours() {
-    const data = getGameHours();
-    let total = 0;
-    gameDefinitions.forEach(game => { total += Number(data[game.id] || 0); });
-    return total;
-  }
-
-  function formatTime(hours) {
-    const totalMinutes = Math.floor(hours * 60);
-    const h = Math.floor(totalMinutes / 60);
-    const min = totalMinutes % 60;
-    if (h <= 0) return `${min}min`;
-    if (min <= 0) return `${h}h`;
-    return `${h}h ${min}min`;
-  }
-
-  /* =========================================================
-     SYMBOLE & MEILENSTEINE
-  ========================================================= */
-  function getUnlockedSymbols() {
-    let symbols = [];
-    try {
-      symbols = JSON.parse(localStorage.getItem(STORAGE.unlockedSymbols)) || [];
-    } catch { symbols = []; }
-    if (!symbols.includes("basic")) symbols.push("basic");
-    return symbols;
-  }
-
-  function saveUnlockedSymbols(symbols) {
-    localStorage.setItem(STORAGE.unlockedSymbols, JSON.stringify(symbols));
-  }
-
-  function getGameMilestoneSymbolId(gameId, milestoneId) {
-    return "game_" + gameId + "_" + milestoneId;
-  }
-
-  function unlockMilestones() {
-    let unlocked = getUnlockedSymbols();
-    const gameHours = getGameHours();
-
-    gameDefinitions.forEach(game => {
-      const minutes = (gameHours[game.id] || 0) * 60;
-      gameMilestones.forEach(milestone => {
-        if (minutes >= milestone.minutes) {
-          const symbolId = getGameMilestoneSymbolId(game.id, milestone.id);
-          if (!unlocked.includes(symbolId)) unlocked.push(symbolId);
-        }
-      });
-    });
-
-    const totalMinutes = getTotalHours() * 60;
-    globalMilestones.forEach(milestone => {
-      if (totalMinutes >= milestone.minutes && !unlocked.includes(milestone.id)) {
-        unlocked.push(milestone.id);
-      }
-    });
-
-    saveUnlockedSymbols(unlocked);
-  }
-
-  function renderSymbols() {
-    const grid = document.getElementById("symbolGrid");
-    const unlocked = getUnlockedSymbols();
-    grid.innerHTML = "";
-
-    addSymbolToGrid(grid, { id: "basic", icon: "🎮", name: "Gamer", unlocked: true }, unlocked);
-
-    codeSymbols.forEach(symbol => {
-      addSymbolToGrid(grid, { ...symbol, type: "code", unlocked: unlocked.includes(symbol.id) }, unlocked);
-    });
-
-    globalMilestones.forEach(milestone => {
-      addSymbolToGrid(grid, { id: milestone.id, icon: milestone.icon, name: milestone.name, unlocked: unlocked.includes(milestone.id), type: "milestone" }, unlocked);
-    });
-
-    gameDefinitions.forEach(game => {
-      gameMilestones.forEach(milestone => {
-        const id = getGameMilestoneSymbolId(game.id, milestone.id);
-        addSymbolToGrid(grid, {
-          id: id, icon: milestone.icon, name: getGameSymbolName(game, milestone), unlocked: unlocked.includes(id), type: "gameMilestone"
-        }, unlocked);
-      });
-    });
-  }
-
-  function getGameSymbolName(game, milestone) {
-    return game.name + " – " + milestone.name;
-  }
-
-  function addSymbolToGrid(grid, symbol, unlocked) {
-    const item = document.createElement("div");
-    const isUnlocked = unlocked.includes(symbol.id);
-
-    item.className = "symbol-item " + (isUnlocked ? "unlocked" : "locked");
-    if (localStorage.getItem(STORAGE.avatar) === symbol.id) item.classList.add("selected");
-
-    item.innerHTML = `
-      <div class="symbol-icon">${symbol.icon}</div>
-      <div class="symbol-name">${symbol.name}</div>
-      ${isUnlocked ? "" : `<div class="symbol-lock">🔒</div>`}
-    `;
-
-    item.onclick = () => {
-      if (isUnlocked) selectSymbol(symbol.id, symbol.icon);
-    };
-
-    grid.appendChild(item);
-  }
-
-  function selectSymbol(id, icon) {
-    localStorage.setItem(STORAGE.avatar, id);
-    document.getElementById("myAvatar").textContent = icon;
-    document.getElementById("mySymbolName").textContent = getSymbolNameById(id);
-    renderSymbols();
-    syncWithServer(true);
-  }
-
-  function getSymbolNameById(id) {
-    if (!id || id === "basic") return "Gamer";
-    const code = codeSymbols.find(s => s.id === id);
-    if (code) return code.name;
-    const global = globalMilestones.find(m => m.id === id);
-    if (global) return global.name;
-    
-    if (id.startsWith("game_")) {
-      for (let game of gameDefinitions) {
-        for (let m of gameMilestones) {
-          if (id === getGameMilestoneSymbolId(game.id, m.id)) {
-            return getGameSymbolName(game, m);
-          }
-        }
-      }
-    }
-    return "Gamer";
-  }
-
-  /* =========================================================
-     NAMEN ÄNDERN & POPUPS
-  ========================================================= */
-  function openNamePopup() {
-    if (localStorage.getItem(STORAGE.nameChanged) === "true") return;
-    document.getElementById("nameInput").value = getPlayerName();
-    document.getElementById("namePopup").classList.add("active");
-  }
-
-  async function changeName() {
-    const input = document.getElementById("nameInput").value.trim();
-    if (!input) return alert("Bitte gib einen Namen ein.");
-
-    const nameKey = input.toLowerCase();
-    const accSnap = await window.fbGet(window.fbRef(window.firebaseDB, `accounts/${nameKey}`));
-
-    if (accSnap.exists()) {
-      return alert("Dieser Name ist bereits vergeben.");
-    }
-
-    const oldNameKey = getPlayerName().toLowerCase();
-    await window.fbRemove(window.fbRef(window.firebaseDB, `accounts/${oldNameKey}`));
-
-    const myId = getPlayerId();
-    await window.fbSet(window.fbRef(window.firebaseDB, `accounts/${nameKey}`), { id: myId });
-
-    localStorage.setItem(STORAGE.name, input);
-    localStorage.setItem(STORAGE.nameChanged, "true");
-    closePopup("namePopup");
-    renderProfile();
-    syncWithServer(true);
-  }
-
-  function closePopup(id) {
-    document.getElementById(id).classList.remove("active");
-  }
-
-  function toggleSymbols() { document.getElementById("symbolsSection").classList.toggle("open"); }
-  function showSymbolSection() {
-    const sec = document.getElementById("symbolsSection");
-    sec.classList.add("open");
-    setTimeout(() => sec.scrollIntoView({ behavior: "smooth", block: "center" }), 100);
-  }
-  function toggleHours() { document.getElementById("hoursSection").classList.toggle("open"); }
-  function toggleGlobalMilestones() { document.getElementById("globalMilestoneSection").classList.toggle("open"); }
-
-  /* =========================================================
-     PROFIL & STUNDEN RENDERN
-  ========================================================= */
-  function renderHours() {
-    const data = getGameHours();
-    const total = getTotalHours();
-    document.getElementById("totalHours").textContent = formatTime(total);
-
-    const grid = document.getElementById("gameHoursGrid");
-    grid.innerHTML = "";
-
-    gameDefinitions.forEach(game => {
-      const hours = data[game.id] || 0;
-      const minutes = hours * 60;
-      let next = gameMilestones.find(m => minutes < m.minutes);
-      let progress = 100;
-
-      if (next) {
-        const prev = gameMilestones[gameMilestones.indexOf(next) - 1];
-        const prevMins = prev ? prev.minutes : 0;
-        progress = Math.max(0, Math.min(100, ((minutes - prevMins) / (next.minutes - prevMins)) * 100));
-      }
-
-      const card = document.createElement("div");
-      card.className = "game-hour-card";
-      card.innerHTML = `
-        <div class="game-hour-top">
-          <div class="game-name">${game.name}</div>
-          <div class="game-time">${formatTime(hours)}</div>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
-        <div class="next-milestone">
-          ${next ? `Nächster Meilenstein: ${next.icon}${next.minutes} Min.` : "🏆 Alle Meilensteine erreicht!"}
-        </div>
-      `;
-      grid.appendChild(card);
-    });
-  }
-
-  function renderGlobalMilestones() {
-    const container = document.getElementById("globalMilestones");
-    const unlocked = getUnlockedSymbols();
-    container.innerHTML = "";
-
-    globalMilestones.forEach(m => {
-      const isUnlocked = unlocked.includes(m.id);
-      const item = document.createElement("div");
-      item.className = "milestone " + (isUnlocked ? "unlocked" : "locked");
-      item.innerHTML = `
-        <div class="milestone-icon">${m.icon}</div>
-        <div class="milestone-name">${m.name}</div>
-        <div class="milestone-time">${isUnlocked ? "✅ Freigeschaltet" : "🔒 Gesperrt"}</div>
-      `;
-      container.appendChild(item);
-    });
-  }
-
-  function renderGameMilestones() {
-    const container = document.getElementById("gameMilestones");
-    const unlocked = getUnlockedSymbols();
-    container.innerHTML = "";
-
-    gameDefinitions.forEach(game => {
-      const group = document.createElement("div");
-      group.className = "milestone-group game-milestone-section";
-
-      const toggle = document.createElement("button");
-      toggle.className = "game-milestone-toggle";
-      toggle.innerHTML = `<div class="milestone-toggle-left"><span>🎮</span><span>${game.name}</span></div><span class="milestone-toggle-arrow">▼</span>`;
-
-      const content = document.createElement("div");
-      content.className = "game-milestone-content";
-      const inner = document.createElement("div");
-      inner.className = "game-milestone-inner";
-      const grid = document.createElement("div");
-      grid.className = "milestone-grid";
-
-      gameMilestones.forEach(m => {
-        const symbolId = getGameMilestoneSymbolId(game.id, m.id);
-        const isUnlocked = unlocked.includes(symbolId);
-        const item = document.createElement("div");
-        item.className = "milestone " + (isUnlocked ? "unlocked" : "locked");
-        item.innerHTML = `
-          <div class="milestone-icon">${m.icon}</div>
-          <div class="milestone-name">${getGameSymbolName(game, m)}</div>
-          <div class="milestone-time">${isUnlocked ? "✅ Freigeschaltet" : `${m.minutes} Min. benötigt`}</div>
-        `;
-        grid.appendChild(item);
-      });
-
-      inner.appendChild(grid);
-      content.appendChild(inner);
-      toggle.onclick = () => group.classList.toggle("open");
-      group.appendChild(toggle);
-      group.appendChild(content);
-      container.appendChild(group);
-    });
-  }
-
-  function renderProfile() {
-    document.getElementById("myName").textContent = getPlayerName();
-    document.getElementById("myId").textContent = getPlayerId();
-
-    const nameChanged = localStorage.getItem(STORAGE.nameChanged) === "true";
-    const nameBtn = document.getElementById("changeNameBtn");
-    if (nameChanged) {
-      nameBtn.disabled = true;
-      nameBtn.textContent = "🔒 Name bereits geändert";
-    }
-
-    const avatarId = localStorage.getItem(STORAGE.avatar);
-    document.getElementById("myAvatar").textContent = findSymbolIcon(avatarId) || "🎮";
-    document.getElementById("mySymbolName").textContent = getSymbolNameById(avatarId);
-
-    unlockMilestones();
-    renderSymbols();
-    renderHours();
-    renderGlobalMilestones();
-    renderGameMilestones();
-    initFavGameSelect();
-  }
-
-  function findSymbolIcon(id) {
-    if (!id || id === "basic") return "🎮";
-    const code = codeSymbols.find(s => s.id === id);
-    if (code) return code.icon;
-    const global = globalMilestones.find(m => m.id === id);
-    if (global) return global.icon;
-    if (id.startsWith("game_")) {
-      const parts = id.split("_");
-      const milestone = gameMilestones.find(m => m.id === parts[parts.length - 1]);
-      if (milestone) return milestone.icon;
-    }
-    return "🎮";
-  }
-
-  /* ENTER-TASTE BEI SUCHE */
-  document.getElementById("playerSearch").addEventListener("keydown", e => {
-    if (e.key === "Enter") searchPlayer();
   });
-
-  /* INITIALISIERUNG */
-  document.addEventListener("DOMContentLoaded", () => {
-    checkInitialProfile();
-    renderProfile();
-  });
-
+}
 </script>
+
+<footer style="margin-top:20px; text-align: center; color: white;">
+  <a href="agb.html" style="color: white;">AGB</a> |
+  <a href="datenschutz.html" style="color: white;">Datenschutz</a> |
+  <a href="cookies.html" style="color: white;">Cookies</a> |
+  <a href="hilfe.html" style="color: white;">Hilfe</a>
+</footer>
 
 </body>
 </html>
