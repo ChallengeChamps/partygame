@@ -188,8 +188,7 @@ h1 {
   to { opacity:1; transform:scale(1); }
 }
 
-/* -------------------- PREMIUM UNLOCK – MODERN -------------------- */
-
+/* -------------------- PREMIUM UNLOCK -------------------- */
 .premium-unlock {
   display:none;
   position:fixed;
@@ -204,7 +203,6 @@ h1 {
   animation:unlockFadeIn 0.4s ease forwards;
 }
 
-/* Glow Hintergrund */
 .unlock-glow {
   position:absolute;
   width:420px;
@@ -214,7 +212,6 @@ h1 {
   animation:glowPulse 2s infinite ease-in-out;
 }
 
-/* Ringe */
 .unlock-ring {
   position:absolute;
   width:260px;
@@ -225,10 +222,6 @@ h1 {
   opacity:0.7;
 }
 
-.unlock-ring.delay1 { animation-delay:0.4s; }
-.unlock-ring.delay2 { animation-delay:0.8s; }
-
-/* Diamant */
 .unlock-diamond {
   width:80px;
   height:80px;
@@ -238,26 +231,12 @@ h1 {
   box-shadow:0 0 25px #00eaff;
 }
 
-/* Text */
 .unlock-text {
   margin-top:20px;
   font-size:2.4rem;
   color:#00eaff;
   text-shadow:0 0 20px #00eaff;
   animation:textFade 1s ease forwards;
-}
-
-/* Konfetti */
-.premium-unlock .confetti {
-  position:absolute;
-  width:10px;
-  height:10px;
-  background:hsl(calc(360 * var(--i)), 80%, 60%);
-  top:-10px;
-  left:calc(100% * var(--j));
-  opacity:0.9;
-  animation:confettiFall 1.8s linear forwards;
-  border-radius:2px;
 }
 
 /* KEYFRAMES */
@@ -284,10 +263,6 @@ h1 {
 @keyframes textFade {
   0% { opacity:0; transform:translateY(20px); }
   100% { opacity:1; transform:translateY(0); }
-}
-
-@keyframes confettiFall {
-  to { transform:translateY(110vh) rotate(720deg); }
 }
 
 @keyframes fadeInBG {
@@ -588,7 +563,7 @@ h1 {
   box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
 
-/* -------------------- MULTIPLAYER PARTY BAR -------------------- */
+/* -------------------- MULTIPLAYER PARTY BAR & QR CODE -------------------- */
 .party-bar {
   background: rgba(255, 255, 255, 0.95);
   max-width: 450px;
@@ -627,9 +602,9 @@ h1 {
 }
 
 .party-code-badge {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: #2f3542;
 }
 
@@ -643,15 +618,21 @@ h1 {
 
 .party-player-tag {
   background: #ffffff;
-  padding: 5px 12px;
+  padding: 6px 12px;
   border-radius: 15px;
   font-weight: bold;
   font-size: 0.85rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
+#qrcodeContainer {
+  display: flex;
+  justify-content: center;
+  margin: 12px auto;
+}
 </style>
 
-<!-- QRCode.js & Party Style -->
+<!-- QRCode.js Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
@@ -676,26 +657,9 @@ h1 {
        animation:fadeInBG 0.4s ease;
      ">
 
-  <h3 style="
-      margin:0 0 12px 0;
-      font-size:1.4rem;
-      color:#000;
-      font-weight:bold;
-      text-shadow:0 0 4px rgba(0,0,0,0.1);
-  ">
-    🎨 Premium Hintergrund wählen
-  </h3>
+  <h3 style="margin:0 0 12px 0; font-size:1.4rem; color:#000; font-weight:bold;">🎨 Premium Hintergrund wählen</h3>
 
-  <select id="bgSelect" style="
-      width:100%;
-      padding:12px;
-      border-radius:12px;
-      border:none;
-      font-size:1rem;
-      box-shadow:0 4px 12px rgba(0,0,0,0.15);
-      outline:none;
-      background:white;
-  ">
+  <select id="bgSelect" style="width:100%; padding:12px; border-radius:12px; border:none; font-size:1rem; outline:none; background:white;">
     <option value="dein-bild-url-hier.png">🚩 Standard</option>
     <option value="bg3.png">🌵 Natur</option>
     <option value="bg2.png">🌌 Galaxy</option>
@@ -707,21 +671,7 @@ h1 {
   </select>
 
   <button onclick="saveBackground(document.getElementById('bgSelect').value)" 
-          style="
-            margin-top:14px;
-            width:100%;
-            padding:12px;
-            border:none;
-            border-radius:14px;
-            background:linear-gradient(135deg,#00eaff,#00c4d4);
-            font-size:1.1rem;
-            font-weight:bold;
-            cursor:pointer;
-            box-shadow:0 6px 18px rgba(0,0,0,0.25);
-            transition:0.2s;
-          "
-          onmouseover="this.style.transform='scale(1.03)'"
-          onmouseout="this.style.transform='scale(1)'">
+          style="margin-top:14px; width:100%; padding:12px; border:none; border-radius:14px; background:linear-gradient(135deg,#00eaff,#00c4d4); font-size:1.1rem; font-weight:bold; cursor:pointer;">
     Speichern
   </button>
 </div>
@@ -738,13 +688,6 @@ h1 {
       <li>Lüge oder Wahrheit 🤥</li>
       <li>TeamQuiz Board 🧾</li>
       <li>Nightfall Village 🌙</li>
-      <li>5 WM-Special Spiele⚽</li>
-    </ul>
-    <p><b>Neuigkeiten:</b></p>
-    <ul>
-      <li>Spielsuche 🔍</li>
-      <li>Bugfixes 🔧</li>
-      <li>Sound- und Animationerweiterungen 🎶</li>
     </ul>
   </div>
 </div>
@@ -765,7 +708,6 @@ h1 {
     <div class="popupClose" onclick="closePremiumPassword()">X</div>
     <h3>Premium‑Passwort eingeben</h3>
     <input id="premiumPasswordInput" placeholder="Premium‑PIN">
-    <p><a href="hilfe.html">Passwort verloren?</a></p>
     <button class="premiumBtn" onclick="checkPremiumPassword()">Freischalten</button>
     <p id="premiumError" style="color:red; display:none;">Premium‑PIN falsch!</p>
   </div>
@@ -782,18 +724,10 @@ h1 {
 
 <!-- COINS + SHOP + PROFIL -->
 <div class="top-actions">
-  <div class="coins-display">
-    🪙 <span id="coinAmount">0</span>
-  </div>
-
-  <a href="shop.html" class="shop-button">
-    🛒 Shop
-  </a>
-
+  <div class="coins-display">🪙 <span id="coinAmount">0</span></div>
+  <a href="shop.html" class="shop-button">🛒 Shop</a>
   <div class="profile-button-container">
-    <a href="profil.html" class="profile-button">
-      👤 Profil
-    </a>
+    <a href="profil.html" class="profile-button">👤 Profil</a>
     <span id="friendRequestBadge" class="badge-count">0</span>
   </div>
 </div>
@@ -808,6 +742,9 @@ h1 {
   <div id="partyActiveBox" class="party-box-info" style="display: none;">
     <div>Dein Party-Code:</div>
     <div class="party-code-badge" id="partyCodeDisplay">------</div>
+    
+    <div id="qrcodeContainer"></div>
+
     <div style="margin-top: 5px; font-size: 0.85rem; color: #555;">Mitspieler im Raum:</div>
     <div class="party-players-list" id="partyPlayersList"></div>
     <br>
@@ -825,11 +762,9 @@ h1 {
 <div class="instructions-button">
   <a href="spielanleitung.html">📘 Spielanleitung</a>
 </div>
-
 <div class="instructions-button premium-button">
   <a href="#" onclick="openPremiumLogin()">💎 ChallengeChamp Premium</a>
 </div>
-
 <div class="instructions-button logout-button">
   <a href="#" onclick="logoutPremium()">Premium abmelden</a>
 </div>
@@ -872,10 +807,7 @@ h1 {
 const premiumGames = ["imposterpremium", "wolf"];
 const newGames = ["imposterpremium", "uberbieten", "these", "100quiz", "wolf"];
 
-function isPremium() {
-  return localStorage.getItem("premium") === "true";
-}
-
+function isPremium() { return localStorage.getItem("premium") === "true"; }
 function openPremiumLogin() { document.getElementById("premiumLoginPopup").style.display = "flex"; }
 function closePremiumLogin() { document.getElementById("premiumLoginPopup").style.display = "none"; }
 function premiumAlready() { closePremiumLogin(); document.getElementById("premiumPasswordPopup").style.display = "flex"; }
@@ -905,7 +837,6 @@ function logoutPremium() {
   alert("Premium wurde deaktiviert.");
 }
 
-/* -------------------- HINTERGRUND SYSTEM -------------------- */
 function saveBackground(bg) {
   if (!isPremium()) return;
   localStorage.setItem("premiumBackground", bg);
@@ -933,6 +864,12 @@ document.querySelectorAll(".card").forEach(card => {
   }
 
   card.addEventListener("click", (e) => {
+    // Falls Spieler in einer Party ist, Zielspiel in Firebase setzen
+    const activeCode = localStorage.getItem("currentPartyCode");
+    if (activeCode && window.firebaseDB) {
+      window.fbSet(window.fbRef(window.firebaseDB, `parties/${activeCode}/currentGame`), link);
+    }
+
     if (premiumGames.includes(gameId) && !isPremium()) {
       e.preventDefault();
       openPremiumLogin();
@@ -985,24 +922,41 @@ searchInput.addEventListener("input", () => {
   searchResults.style.display = "block";
 });
 
-/* -------------------- MULTIPLAYER PARTY MANAGER -------------------- */
+/* -------------------- ECHTES MULTIPLAYER PARTY SYSTEM -------------------- */
 let currentPartyCode = null;
+let qrCodeObj = null;
 
 function getPlayerName() {
   return localStorage.getItem("challengeChampProfileName") || "Spieler";
 }
 
+function getPlayerId() {
+  return localStorage.getItem("challengeChampPlayerId") || "CC" + Math.random().toString(36).substring(2, 10).toUpperCase();
+}
+
+// Prüfe beim Aufruf der Startseite ob URL einen Party-Code enthält (z. B. via QR-Code Scan)
+function checkUrlPartyCode() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const partyParam = urlParams.get("party");
+  if (partyParam && partyParam.length === 6) {
+    joinParty(partyParam);
+  }
+}
+
 async function createParty() {
-  if (!window.firebaseDB) return alert("Fehler: Verbindung zum Server nicht bereit.");
+  if (!window.firebaseDB) return alert("Fehler: Verbindung zum Firebase-Server nicht bereit.");
   const code = Math.floor(100000 + Math.random() * 900000).toString();
   const name = getPlayerName();
+  const myId = getPlayerId();
 
   const partyRef = window.fbRef(window.firebaseDB, `parties/${code}`);
   await window.fbSet(partyRef, {
     created: Date.now(),
     host: name,
+    hostId: myId,
+    currentGame: "",
     players: {
-      p1: { name: name, host: true }
+      [myId]: { name: name, host: true, id: myId }
     }
   });
 
@@ -1023,8 +977,9 @@ async function joinParty(code) {
   if (!snap.exists()) return alert("Party nicht gefunden!");
 
   const name = getPlayerName();
-  const pKey = "p_" + Date.now();
-  await window.fbSet(window.fbRef(window.firebaseDB, `parties/${code}/players/${pKey}`), { name: name });
+  const myId = getPlayerId();
+
+  await window.fbSet(window.fbRef(window.firebaseDB, `parties/${code}/players/${myId}`), { name: name, host: false, id: myId });
 
   localStorage.setItem("currentPartyCode", code);
   initPartyListener(code);
@@ -1036,8 +991,19 @@ function initPartyListener(code) {
   document.getElementById("partyActiveBox").style.display = "block";
   document.getElementById("partyCodeDisplay").innerText = code;
 
-  const partyRef = window.fbRef(window.firebaseDB, `parties/${code}/players`);
-  window.fbOnValue(partyRef, (snapshot) => {
+  // QR-Code generieren
+  const qrContainer = document.getElementById("qrcodeContainer");
+  qrContainer.innerHTML = "";
+  const joinUrl = window.location.origin + window.location.pathname + "?party=" + code;
+  qrCodeObj = new QRCode(qrContainer, {
+    text: joinUrl,
+    width: 128,
+    height: 128
+  });
+
+  // Listener für Spieler in der Party
+  const playersRef = window.fbRef(window.firebaseDB, `parties/${code}/players`);
+  window.fbOnValue(playersRef, (snapshot) => {
     const list = document.getElementById("partyPlayersList");
     list.innerHTML = "";
     if (snapshot.exists()) {
@@ -1050,10 +1016,23 @@ function initPartyListener(code) {
       });
     }
   });
+
+  // Listener für automatisches Starten von Spielen
+  const gameRef = window.fbRef(window.firebaseDB, `parties/${code}/currentGame`);
+  window.fbOnValue(gameRef, (snapshot) => {
+    if (snapshot.exists()) {
+      const gameUrl = snapshot.val();
+      if (gameUrl && gameUrl !== "") {
+        window.location.href = gameUrl;
+      }
+    }
+  });
 }
 
 async function leaveParty() {
   if (currentPartyCode && window.firebaseDB) {
+    const myId = getPlayerId();
+    await window.fbRemove(window.fbRef(window.firebaseDB, `parties/${currentPartyCode}/players/${myId}`));
     localStorage.removeItem("currentPartyCode");
     document.getElementById("partyActionBtns").style.display = "flex";
     document.getElementById("partyActiveBox").style.display = "none";
@@ -1061,7 +1040,7 @@ async function leaveParty() {
   }
 }
 
-/* -------------------- COINS & FREUNDE & INITIALISIERUNG -------------------- */
+/* -------------------- INITIALISIERUNG -------------------- */
 function updateCoinDisplay() {
   const coinAmount = document.getElementById("coinAmount");
   if (!coinAmount) return;
@@ -1072,7 +1051,6 @@ function updateCoinDisplay() {
 document.addEventListener("DOMContentLoaded", () => {
   updateCoinDisplay();
   
-  // Premium-Hintergrund beim Laden prüfen und anzeigen
   if (isPremium()) {
     const bgSelector = document.getElementById("premiumBackgroundSelector");
     if (bgSelector) bgSelector.style.display = "block";
@@ -1090,6 +1068,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const checkFB = setInterval(() => {
     if (window.firebaseDB) {
       clearInterval(checkFB);
+      checkUrlPartyCode();
       if (activeCode) initPartyListener(activeCode);
       listenForFriendRequests();
     }
