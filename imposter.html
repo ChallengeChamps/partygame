@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Finde den Imposter</title>
+  <title>Finde den Imposter - ChallengeChamp</title>
   <style>
     body {
       margin: 0;
@@ -20,35 +20,39 @@
       max-width: 600px;
       margin: auto;
       padding: 20px;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.75);
       border-radius: 20px;
       margin-top: 40px;
-      animation: fadeIn 1s ease;
+      animation: fadeIn 0.6s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
-    h1, h2 {
+    h1, h2, h3 {
       text-align: center;
       text-shadow: 2px 2px 6px #000;
     }
 
-    select, button {
+    select, button, input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin: 10px 0;
       border-radius: 10px;
       border: none;
       font-size: 1rem;
+      box-sizing: border-box;
     }
 
     button {
       background-color: #ff4081;
       color: white;
+      font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s, transform 0.2s;
     }
 
     button:hover {
       background-color: #e91e63;
+      transform: translateY(-2px);
     }
 
     .card {
@@ -58,12 +62,48 @@
       padding: 20px;
       margin: 20px 0;
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      animation: slideUp 0.8s ease;
+      animation: slideUp 0.6s ease;
       text-align: center;
     }
 
+    .secret-card-box {
+      background: linear-gradient(135deg, #2f3542, #57606f);
+      border: 2px dashed #00eaff;
+      border-radius: 16px;
+      padding: 30px 15px;
+      margin: 20px 0;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: bold;
+      user-select: none;
+      transition: transform 0.2s;
+      color: #fff;
+    }
+
+    .secret-card-box:active {
+      transform: scale(0.98);
+    }
+
+    .player-pill-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+    }
+
+    .player-pill-list li {
+      background: rgba(255,255,255,0.15);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: bold;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
     .hidden {
-      display: none;
+      display: none !important;
     }
 
     @keyframes fadeIn {
@@ -72,7 +112,7 @@
     }
 
     @keyframes slideUp {
-      from { transform: translateY(100px); opacity: 0; }
+      from { transform: translateY(50px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
 
@@ -85,29 +125,33 @@
       border-radius: 8px;
       cursor: pointer;
       margin-top: 20px;
-      transition: background-color 0.3s ease;
     }
 
     .menu-button:hover {
       background-color: #45a049;
     }
 
-    @media (max-width: 600px) {
-      .container {
-        margin: 20px;
-        padding: 15px;
-      }
+    footer {
+      text-align: center;
+      margin: 30px 0 15px 0;
+    }
 
-      h1 {
-        font-size: 1.5rem;
-      }
+    footer a {
+      color: #aaa;
+      text-decoration: none;
+      margin: 0 5px;
     }
   </style>
 </head>
 <body>
+
+  <!-- ONLINE MULTIPLAYER CONTAINER (wird bei Party-Session dynamisch befüllt) -->
+  <div class="container hidden" id="online-game-container"></div>
+
+  <!-- OFFLINE SETUP (Klassisches Spiel auf einem Handy) -->
   <div class="container" id="setup">
     <h1>🎭 Finde den Imposter</h1>
-    <h2>Spiel-Einstellungen</h2>
+    <h2>Spiel-Einstellungen (Offline)</h2>
 
     <select id="playerCount">
       <option value="">Spieleranzahl wählen</option>
@@ -125,12 +169,11 @@
       <option value="">Imposteranzahl wählen</option>
     </select>
 
-
     <button onclick="startGame()">Spiel starten</button>
-<button onclick="window.location.href='startseite.html'" class="menu-button">
-  Zurück zum Hauptmenü
+    <button onclick="window.location.href='startseite.html'" class="menu-button">Zurück zum Hauptmenü</button>
   </div>
 
+  <!-- OFFLINE SPIEL-BILDSCHIRME -->
   <div class="container hidden" id="game">
     <div id="playerCard">
       <div class="card">
@@ -150,214 +193,356 @@
 
   <div class="container hidden" id="result">
     <h2>🕵️‍♂️ Die Imposter sind:</h2>
-    <ul id="imposterList"></ul>
+    <ul id="imposterList" style="text-align: left; max-width: 250px; margin: auto;"></ul>
     <button onclick="location.reload()">🔄 Neues Spiel</button>
   </div>
 
+  <!-- FIREBASE & SKRIPTE (FÜR ONLINE MULTIPLAYER) -->
+  <script type="module" src="firebase-config.js"></script>
+  <script src="party-config.js"></script>
+
+  <!-- SKRIPT-LOGIK -->
   <script>
+    // Wortschatz Pool
     const wordPool = [
-  // 🍎 Essen & Trinken
-  { word: "Banane", hint: "krumm" },
-  { word: "Pizza", hint: "Italien" },
-  { word: "Sushi", hint: "Essen" },
-  { word: "Käse", hint: "Löcher" },
-  { word: "Cola", hint: "Zucker" },
-  { word: "Mango", hint: "Frucht" },
-  { word: "Spaghetti", hint: "Nudelgericht" },
+      { word: "Banane", hint: "krumm" },
+      { word: "Pizza", hint: "Italien" },
+      { word: "Sushi", hint: "Essen" },
+      { word: "Käse", hint: "Löcher" },
+      { word: "Cola", hint: "Zucker" },
+      { word: "Mango", hint: "Frucht" },
+      { word: "Spaghetti", hint: "Nudelgericht" },
+      { word: "Känguru", hint: "springt" },
+      { word: "Tiger", hint: "Raubkatze" },
+      { word: "Pinguin", hint: "Südpol" },
+      { word: "Gepard", hint: "schnell" },
+      { word: "Koala", hint: "Australien" },
+      { word: "Zebra", hint: "Streifen" },
+      { word: "Löwe", hint: "König" },
+      { word: "Pyramide", hint: "Ägypten" },
+      { word: "Eiffelturm", hint: "Eisen" },
+      { word: "Colosseum", hint: "Römer" },
+      { word: "Schule", hint: "Kinder" },
+      { word: "Krankenhaus", hint: "Hilfe" },
+      { word: "Flughafen", hint: "Urlaub" },
+      { word: "Bibliothek", hint: "Universität" },
+      { word: "Schach", hint: "Brettspiel" },
+      { word: "Monopoly", hint: "zeitintensiv" },
+      { word: "Skat", hint: "Kartenspiel" },
+      { word: "Fußball", hint: "Sport" },
+      { word: "Tennis", hint: "Ball" },
+      { word: "Klettern", hint: "Höhe" },
+      { word: "Yoga", hint: "Entspannung" },
+      { word: "Gitarre", hint: "Saiten" },
+      { word: "Klavier", hint: "Flügel" },
+      { word: "Trommel", hint: "Schlag" },
+      { word: "Flöte", hint: "Luft" },
+      { word: "Maler", hint: "Farbe" },
+      { word: "Skulptur", hint: "Kunst" },
+      { word: "Tanz", hint: "Bewegung" },
+      { word: "Schnee", hint: "kalt" },
+      { word: "Regen", hint: "nass" },
+      { word: "Sturm", hint: "Wind" },
+      { word: "Wind", hint: "Luft" },
+      { word: "Sonne", hint: "Strahlen" },
+      { word: "Blume", hint: "Blatt" },
+      { word: "Baum", hint: "Holz" },
+      { word: "Laptop", hint: "Tastatur" },
+      { word: "Handy", hint: "Apple" },
+      { word: "Fernseher", hint: "Sender" },
+      { word: "Tablet", hint: "Technik" },
+      { word: "Auto", hint: "Treibstoff" },
+      { word: "Bus", hint: "Transport" },
+      { word: "Motorrad", hint: "schnell" },
+      { word: "Taschenlampe", hint: "Licht" },
+      { word: "Brille", hint: "Hilfe" },
+      { word: "Uhr", hint: "Zahlen" },
+      { word: "Schlüssel", hint: "Tür" },
+      { word: "Arzt", hint: "krank" },
+      { word: "Lehrer", hint: "Schule" },
+      { word: "Polizist", hint: "Waffe" },
+      { word: "Feuerwehrmann", hint: "Flamme" },
+      { word: "Pilot", hint: "Flugzeug" },
+      { word: "Koch", hint: "Essen" },
+      { word: "Ingenieur", hint: "kreativ" },
+      { word: "Saturn", hint: "Ringe" },
+      { word: "Mars", hint: "Schokolade" },
+      { word: "Neptun", hint: "Meer" },
+      { word: "Alien", hint: "Weltall" },
+      { word: "Zauberer", hint: "Hut" },
+      { word: "Drache", hint: "Fantasie" },
+      { word: "Geist", hint: "Psyche" },
+      { word: "Liebe", hint: "Herz" },
+      { word: "Angst", hint: "Horrorfilm" },
+      { word: "Freunde", hint: "Spaß" },
+      { word: "Hochzeit", hint: "Liebe" },
+      { word: "Taschentuch", hint: "Krankheit" },
+      { word: "Geduld", hint: "Zeit" },
+      { word: "Fitnessstudio", hint: "Muskeln" },
+      { word: "Kühlschrank", hint: "Lebensmittel" },
+      { word: "Besen", hint: "sauber" },
+      { word: "Teller", hint: "Essen" },
+      { word: "Bett", hint: "weich" },
+      { word: "Stuhl", hint: "Beine" },
+      { word: "Lampe", hint: "Nachttisch" },
+      { word: "Spiegel", hint: "Glas" }
+    ];
 
-  // Tiere
-  { word: "Känguru", hint: "springt" },
-  { word: "Tiger", hint: "Raubkatze" },
-  { word: "Pinguin", hint: "Südpol" },
-  { word: "Gepard", hint: "schnell" },
-  { word: "Koala", hint: "Australien" },
-  { word: "Zebra", hint: "Streifen" },
-  { word: "Löwe", hint: "König" },
+    // =========================================================================
+    // ONLINE MULTIPLAYER ENGINE
+    // =========================================================================
+    class OnlineImposterManager {
+      constructor(partyCode, playerId) {
+        this.partyCode = partyCode;
+        this.playerId = playerId;
+        this.isHost = false;
+        this.partyData = null;
+        this.init();
+      }
 
-  // 🏛️ Orte & Bauwerke
-  { word: "Pyramide", hint: "Ägypten" },
-  { word: "Eiffelturm", hint: "Eisen" },
-  { word: "Colosseum", hint: "Römer" },
-  { word: "Schule", hint: "Kinder" },
-  { word: "Krankenhaus", hint: "Hilfe" },
-  { word: "Flughafen", hint: "Urlaub" },
-  { word: "Bibliothek", hint: "Universität" },
+      init() {
+        document.getElementById('setup').classList.add('hidden');
+        document.getElementById('online-game-container').classList.remove('hidden');
 
-  // 🎮 Spiele & Freizeit
-    { word: "Schach", hint: "Brettspiel" },
-    { word: "Monopoly", hint: "zeitintensiv" },
-    { word: "Skat", hint: "Kartenspiel" },
-    { word: "Fußball", hint: "Sport" },
-    { word: "Tennis", hint: "Ball" },
-    { word: "Klettern", hint: "Höhe" },
-    { word: "Yoga", hint: "Entspannung" },
+        const checkFB = setInterval(() => {
+          if (window.firebaseDB) {
+            clearInterval(checkFB);
+            this.listenToParty();
+          }
+        }, 100);
+      }
 
-  // 🎶 Musik & Kunst
-  { word: "Gitarre", hint: "Saiten" },
-  { word: "Klavier", hint: "Flügel" },
-  { word: "Trommel", hint: "Schlag" },
-  { word: "Flöte", hint: "Luft" },
-  { word: "Maler", hint: "Farbe" },
-  { word: "Skulptur", hint: "Kunst" },
-  { word: "Tanz", hint: "Bewegung" },
+      listenToParty() {
+        const partyRef = window.fbRef(window.firebaseDB, 'parties/' + this.partyCode);
+        window.fbOnValue(partyRef, (snapshot) => {
+          if (!snapshot.exists()) {
+            alert("Die Party wurde aufgelöst.");
+            window.location.href = "startseite.html";
+            return;
+          }
 
-  // 🌦️ Wetter & Natur
-  { word: "Schnee", hint: "kalt" },
-  { word: "Regen", hint: "nass" },
-  { word: "Sturm", hint: "Wind" },
-  { word: "Wind", hint: "Luft" },
-  { word: "Sonne", hint: "Strahlen" },
-  { word: "Blume", hint: "Blatt" },
-  { word: "Baum", hint: "Holz" },
+          this.partyData = snapshot.val();
+          this.isHost = (this.partyData.hostId === this.playerId);
+          this.renderState();
+        });
+      }
 
-  // 🚗 Technik & Objekte
-  { word: "Laptop", hint: "Tastatur" },
-  { word: "Handy", hint: "Apple" },
-  { word: "Fernseher", hint: "Sender" },
-  { word: "Tablet", hint: "Technik" },
-  { word: "Auto", hint: "Treibstoff" },
-  { word: "Bus", hint: "Transport" },
-  { word: "Motorrad", hint: "schnell" },
-  { word: "Taschenlampe", hint: "Licht" },
-  { word: "Brille", hint: "Hilfe" },
-  { word: "Uhr", hint: "Zahlen" },
-  { word: "Schlüssel", hint: "Tür" },
+      renderState() {
+        const state = this.partyData.gameState || { status: 'setup' };
+        const players = Object.values(this.partyData.players || {});
+        const container = document.getElementById('online-game-container');
 
-  // 🧠 Berufe & Rollen
-  { word: "Arzt", hint: "krank" },
-  { word: "Lehrer", hint: "Schule" },
-  { word: "Polizist", hint: "waffe" },
-  { word: "Feuerwehrmann", hint: "Flamme" },
-  { word: "Pilot", hint: "Flugzeug" },
-  { word: "Koch", hint: "Essen" },
-  { word: "Ingenieur", hint: "kreativ" },
+        // 1. ZUSTAND: SETUP (Wartescreen für Spieler, Einstellungen für Host)
+        if (state.status === 'setup') {
+          if (this.isHost) {
+            const maxImposters = Math.max(1, players.length - 2);
+            let options = '';
+            for (let i = 1; i <= maxImposters; i++) {
+              options += `<option value="${i}">${i} Imposter</option>`;
+            }
 
-  // 🌌 Weltall & Fantasie
-  { word: "Saturn", hint: "Ringe" },
-  { word: "Mars", hint: "Schokolade" },
-  { word: "Neptun", hint: "Meer" },
-  { word: "Alien", hint: "Weltall" },
-  { word: "Zauberer", hint: "Hut" },
-  { word: "Drache", hint: "Fantasie" },
-  { word: "Geist", hint: "Psyche" },
+            container.innerHTML = `
+              <h1>👑 Finde den Imposter (Host)</h1>
+              <p>Mitspieler in dieser Party (${players.length}):</p>
+              <ul class="player-pill-list">
+                ${players.map(p => `<li>${p.name}${p.isHost ? '👑' : ''}</li>`).join('')}
+              </ul>
 
-  // ❤️ Gefühle & Abstraktes
-  { word: "Liebe", hint: "Herz" },
-  { word: "Angst", hint: "Horrorfilm" },
-  { word: "Freunde", hint: "Spaß" },
-  { word: "Hochzeit", hint: "Liebe" },
-  { word: "Taschentuch", hint: "Krankheit" },
-  { word: "Geduld", hint: "Zeit" },
-  { word: "Fitnessstudio", hint: "Muskeln" },
+              <div style="margin: 20px 0;">
+                <label><b>Anzahl der Imposter wählen:</b></label>
+                <select id="onlineImposterSelect">${options}</select>
+              </div>
 
-  // 🧳 Alltag & Haushalt
-  { word: "Kühlschrank", hint: "Lebensmittel" },
-  { word: "Besen", hint: "sauber" },
-  { word: "Teller", hint: "Essen" },
-  { word: "Bett", hint: "weich" },
-  { word: "Stuhl", hint: "Beine" },
-  { word: "Lampe", hint: "Nachttisch" },
-  { word: "Spiegel", hint: "Glas" }
-];
+              <button onclick="onlineManager.startRound()">🎲 Rollen verteilen & Starten</button>
+            `;
+          } else {
+            container.innerHTML = `
+              <h1>⏳ Wartefenster</h1>
+              <p>Der Host wählt gerade die Imposter-Anzahl aus...</p>
+              <p style="opacity:0.7;">Beigetretene Spieler: ${players.length}</p>
+            `;
+          }
+        } 
+        // 2. ZUSTAND: KARTE AUFDECKEN (Für jeden auf seinem Handy)
+        else if (state.status === 'reveal_cards') {
+          const myRole = state.roles ? state.roles[this.playerId] : 'civilian';
+          
+          container.innerHTML = `
+            <h1>🂠 Deine Geheime Karte</h1>
+            <p>Tippe auf die Karte, um deine Rolle zu sehen:</p>
 
+            <div id="secret-card" class="secret-card-box" onclick="onlineManager.flipCard(this, '${myRole}', '${state.secretWord}', '${state.secretHint}')">
+              ❓ Karte aufdecken
+            </div>
 
-    // ==========================================
-    // ChallengeChamp Spielzeit-Tracking
-    // Spiel-ID: imposter
-    // ==========================================
+            <button id="btn-ready" class="hidden" onclick="onlineManager.confirmReady()">
+              Bereit / Weiter 👍
+            </button>
+          `;
+        }
+        // 3. ZUSTAND: DISKUSSION & SPIEL LÄUFT
+        else if (state.status === 'playing') {
+          container.innerHTML = `
+            <h1>🗣️ Das Spiel läuft!</h1>
+            <p>Diskutiert und stellt euch Fragen. Wer ist der Imposter?</p>
+
+            ${this.isHost ? `
+              <div style="margin-top: 30px;">
+                <button style="background: #ff4757; font-size: 1.2rem;" onclick="onlineManager.revealImposters()">
+                  🚨 Imposter auflösen
+                </button>
+              </div>
+            ` : `
+              <p style="margin-top: 25px; opacity: 0.8;">⏳ Der Host löst das Spiel auf, sobald ihr abgestimmt habt.</p>
+            `}
+          `;
+        }
+        // 4. ZUSTAND: AUFLÖSUNG (Auf allen Handys sichtbar)
+        else if (state.status === 'revealed') {
+          const imposterNames = state.imposterIds.map(id => this.partyData.players[id]?.name || "Unbekannt");
+
+          container.innerHTML = `
+            <h1>🎉 Auflösung!</h1>
+            <p>Das geheime Wort war: <b style="color:#FFD700; font-size:1.3rem;">${state.secretWord}</b></p>
+            <p>Hinweis für Imposter war: <i>${state.secretHint}</i></p>
+
+            <div style="margin: 20px 0; padding: 15px; background: rgba(255,71,87,0.25); border-radius: 12px; border: 1px solid #ff4757;">
+              <h3>🕵️‍♂️ Imposter war(en):</h3>
+              <h2 style="color: #ff4757; margin: 5px 0;">${imposterNames.join(", ")}</h2>
+            </div>
+
+            ${this.isHost ? `
+              <button onclick="onlineManager.resetToSetup()">🔄 Nächste Runde starten</button>
+            ` : `
+              <p style="opacity: 0.8;">Warte darauf, dass der Host die nächste Runde startet...</p>
+            `}
+          `;
+        }
+      }
+
+      async startRound() {
+        const imposterCount = parseInt(document.getElementById("onlineImposterSelect").value, 10);
+        const playerIds = Object.keys(this.partyData.players);
+        
+        const randomItem = wordPool[Math.floor(Math.random() * wordPool.length)];
+        const shuffled = [...playerIds].sort(() => 0.5 - Math.random());
+        const imposters = shuffled.slice(0, imposterCount);
+
+        const roles = {};
+        playerIds.forEach(id => {
+          roles[id] = imposters.includes(id) ? 'imposter' : 'civilian';
+        });
+
+        const partyRef = window.fbRef(window.firebaseDB, 'parties/' + this.partyCode + '/gameState');
+        await window.fbSet(partyRef, {
+          status: 'reveal_cards',
+          secretWord: randomItem.word,
+          secretHint: randomItem.hint,
+          roles: roles,
+          imposterIds: imposters
+        });
+      }
+
+      flipCard(element, role, word, hint) {
+        if (role === 'imposter') {
+          element.innerHTML = `<h2 style="color: #ff4757; margin:0;">🤫 DU BIST DER IMPOSTER!</h2><p style="margin-top:10px;">Tipp: ${hint}</p>`;
+        } else {
+          element.innerHTML = `<p style="margin:0; opacity:0.8;">Geheimes Wort:</p><h1 style="color: #FFD700; margin:5px 0;">${word}</h1>`;
+        }
+        element.style.background = "#1e272e";
+        document.getElementById("btn-ready").classList.remove("hidden");
+      }
+
+      confirmReady() {
+        if (this.isHost) {
+          const partyRef = window.fbRef(window.firebaseDB, 'parties/' + this.partyCode + '/gameState/status');
+          window.fbSet(partyRef, 'playing');
+        } else {
+          document.getElementById('online-game-container').innerHTML = `
+            <h1>⏳ Bitte warten...</h1>
+            <p>Warte darauf, dass der Host die Diskussion freigibt.</p>
+          `;
+        }
+      }
+
+      async revealImposters() {
+        const partyRef = window.fbRef(window.firebaseDB, 'parties/' + this.partyCode + '/gameState/status');
+        await window.fbSet(partyRef, 'revealed');
+      }
+
+      async resetToSetup() {
+        const partyRef = window.fbRef(window.firebaseDB, 'parties/' + this.partyCode + '/gameState');
+        await window.fbSet(partyRef, { status: 'setup' });
+      }
+    }
+
+    // MULTIPLAYER PRÜFUNG BEIM LADEN DER SEITE
+    let onlineManager = null;
+    const urlParams = new URLSearchParams(window.location.search);
+    const partyCode = urlParams.get('party');
+    const playerId = urlParams.get('player');
+
+    if (partyCode && playerId) {
+      onlineManager = new OnlineImposterManager(partyCode, playerId);
+    }
+
+    // =========================================================================
+    // OFFLINE SPIEL-LOGIK (PASS & PLAY)
+    // =========================================================================
     const PLAYTIME_GAME_ID = "imposter";
     const PLAYTIME_STORAGE_KEY = "challengeChampGameHours";
-
     let playtimeRunning = false;
     let playtimeLastTimestamp = null;
     let playtimeInterval = null;
 
     function getChallengeChampGameHours() {
-      try {
-        return JSON.parse(
-          localStorage.getItem(PLAYTIME_STORAGE_KEY)
-        ) || {};
-      } catch (error) {
-        return {};
-      }
+      try { return JSON.parse(localStorage.getItem(PLAYTIME_STORAGE_KEY)) || {}; } 
+      catch (error) { return {}; }
     }
 
     function saveChallengeChampGameHours(data) {
-      localStorage.setItem(
-        PLAYTIME_STORAGE_KEY,
-        JSON.stringify(data)
-      );
+      localStorage.setItem(PLAYTIME_STORAGE_KEY, JSON.stringify(data));
     }
 
     function saveCurrentPlaytime() {
       if (!playtimeRunning || playtimeLastTimestamp === null) return;
-
       const now = Date.now();
       const elapsedMilliseconds = now - playtimeLastTimestamp;
       playtimeLastTimestamp = now;
-
       if (elapsedMilliseconds <= 0) return;
-
       const elapsedHours = elapsedMilliseconds / 3600000;
       const data = getChallengeChampGameHours();
-
-      if (typeof data[PLAYTIME_GAME_ID] !== "number") {
-        data[PLAYTIME_GAME_ID] = 0;
-      }
-
+      if (typeof data[PLAYTIME_GAME_ID] !== "number") data[PLAYTIME_GAME_ID] = 0;
       data[PLAYTIME_GAME_ID] += elapsedHours;
       saveChallengeChampGameHours(data);
     }
 
     function startPlaytimeTracking() {
       if (playtimeRunning) return;
-
       playtimeRunning = true;
       playtimeLastTimestamp = Date.now();
-
       playtimeInterval = setInterval(() => {
-        if (
-          playtimeRunning &&
-          document.visibilityState === "visible"
-        ) {
-          saveCurrentPlaytime();
-        }
+        if (playtimeRunning && document.visibilityState === "visible") saveCurrentPlaytime();
       }, 5000);
     }
 
     function pausePlaytimeTracking() {
       if (!playtimeRunning) return;
-
       saveCurrentPlaytime();
-
       playtimeRunning = false;
       playtimeLastTimestamp = null;
-
       if (playtimeInterval) {
         clearInterval(playtimeInterval);
         playtimeInterval = null;
       }
     }
 
-    function resumePlaytimeTracking() {
-      if (playtimeRunning) return;
-
-      if (document.visibilityState === "visible") {
-        startPlaytimeTracking();
-      }
-    }
-
     document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") {
-        pausePlaytimeTracking();
-      } else {
-        resumePlaytimeTracking();
-      }
+      if (document.visibilityState === "hidden") pausePlaytimeTracking();
+      else if (!onlineManager && document.visibilityState === "visible") startPlaytimeTracking();
     });
 
-    window.addEventListener("pagehide", () => {
-      saveCurrentPlaytime();
-    });
+    window.addEventListener("pagehide", () => saveCurrentPlaytime());
 
     let players = [];
     let currentPlayer = 0;
@@ -401,9 +586,7 @@
       document.getElementById('setup').classList.add('hidden');
       document.getElementById('game').classList.remove('hidden');
 
-      // Spielzeit starten
       startPlaytimeTracking();
-
       showPlayer();
     }
 
@@ -414,30 +597,27 @@
       document.getElementById('revealBtn').style.opacity = 1;
     }
 
-function revealCard() {
-  const isImposter = players[currentPlayer] === selectedHint;
-  const cardContent = document.getElementById('cardContent');
+    function revealCard() {
+      const isImposter = players[currentPlayer] === selectedHint;
+      const cardContent = document.getElementById('cardContent');
 
-  if (isImposter) {
-    cardContent.innerHTML = `<strong>Du bist der Imposter! 🤫</strong><br>Tipp: ${selectedHint}`;
-  } else {
-    cardContent.innerHTML = `Geheimes Wort: ${selectedWord}`;
-  }
+      if (isImposter) {
+        cardContent.innerHTML = `<strong>Du bist der Imposter! 🤫</strong><br>Tipp: ${selectedHint}`;
+      } else {
+        cardContent.innerHTML = `Geheimes Wort: ${selectedWord}`;
+      }
 
-  cardContent.classList.remove('hidden');
-  document.getElementById('revealBtn').disabled = true;
-  document.getElementById('revealBtn').style.opacity = 0.6;
-}
-
+      cardContent.classList.remove('hidden');
+      document.getElementById('revealBtn').disabled = true;
+      document.getElementById('revealBtn').style.opacity = 0.6;
+    }
 
     function nextPlayer() {
       currentPlayer++;
       if (currentPlayer < players.length) {
         showPlayer();
       } else {
-        // Spielzeit stoppen, sobald die Spielerphase beendet ist
         pausePlaytimeTracking();
-
         document.getElementById('game').classList.add('hidden');
         document.getElementById('reveal').classList.remove('hidden');
 
@@ -466,5 +646,4 @@ function revealCard() {
   <a href="cookies.html">Cookies</a> |
   <a href="hilfe.html">Hilfe</a>
 </footer>
-
 </html>
