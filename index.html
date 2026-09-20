@@ -3,535 +3,585 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fake or Fakt 🎭</title>
+  <title>Fake or Fakt - ChallengeChamp</title>
   <style>
-  /* Grundlayout */
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background-image: url('index1.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    overflow-x: hidden;
-    color: #fff;
-  }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('index1.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      color: #fff;
+    }
 
-  .container {
-    max-width: 600px;
-    margin: auto;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 20px;
-    margin-top: 40px;
-    animation: fadeIn 1s ease;
-  }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.75);
+      border-radius: 20px;
+      margin-top: 40px;
+      animation: fadeIn 0.6s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
 
-  h1, h2 {
-    text-align: center;
-    text-shadow: 2px 2px 6px #000;
-  }
+    h1, h2, h3 {
+      text-align: center;
+      text-shadow: 2px 2px 6px #000;
+    }
 
-  select, input, button {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 10px;
-    border: none;
-    font-size: 1rem;
-  }
+    select, button, input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
 
-  button {
-    background-color: #ff4081;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
+    button {
+      background-color: #ff4081;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
 
-  button:hover {
-    background-color: #e91e63;
-  }
+    button:hover {
+      background-color: #e91e63;
+      transform: translateY(-2px);
+    }
 
-  .card {
-    background: #fff;
-    color: #000;
-    border-radius: 20px;
-    padding: 20px;
-    margin: 20px 0;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    animation: slideUp 0.8s ease;
-  }
+    .card {
+      background: #fff;
+      color: #000;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: slideUp 0.6s ease;
+      text-align: center;
+    }
 
-  .options button {
-    margin: 10px 5px;
-    background-color: #673ab7;
-  }
+    .secret-card-box {
+      background: linear-gradient(135deg, #2f3542, #57606f);
+      border: 2px dashed #00eaff;
+      border-radius: 16px;
+      padding: 25px 15px;
+      margin: 20px 0;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: bold;
+      user-select: none;
+      transition: transform 0.2s;
+      color: #fff;
+    }
 
-  .hidden {
-    display: none;
-  }
+    .option-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      text-align: left;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
 
-  h1 {
-    font-size: 1.5rem;
-  }
+    .option-btn:hover, .option-btn.selected {
+      background: #00eaff;
+      color: #000;
+      font-weight: bold;
+    }
 
-  .menu-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 24px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
-  }
+    .player-pill-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+    }
 
-  .menu-button:hover {
-    background-color: #45a049;
-  }
+    .player-pill-list li {
+      background: rgba(255,255,255,0.15);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: bold;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
 
-  h1 {
-    font-size: 1.5rem;
-  }
+    .hidden {
+      display: none !important;
+    }
 
-  @media (max-width: 600px) {
-  body {
-    font-size: 0.6rem;
-  }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
 
-  .container {
-    margin: 10px;
-    padding: 12px;
-    border-radius: 8px;
-  }
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
 
-  h1, h2 {
-    font-size: 1.2rem;
-    line-height: 1.4rem;
-    text-align: center;
-    text-shadow: 1px 1px 3px #000;
-  }
+    .menu-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
 
-  select, input, button {
-    width: 100%;
-    font-size: 0.6rem;
-    padding: 8px;
-    margin: 6px 0;
-    border-radius: 6px;
-    border: none;
-  }
+    .menu-button:hover {
+      background-color: #45a049;
+    }
 
-  button {
-    background-color: #ff4081;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
+    footer {
+      text-align: center;
+      margin: 30px 0 15px 0;
+    }
 
-  button:hover {
-    background-color: #e91e63;
-  }
-
-  .card {
-    background: #fff;
-    color: #000;
-    border-radius: 10px;
-    padding: 12px;
-    margin: 12px 0;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    font-size: 0.6rem;
-    animation: slideUp 0.8s ease;
-  }
-
-  .options button {
-    margin: 6px 3px;
-    background-color: #673ab7;
-    font-size: 0.6rem;
-    padding: 8px 10px;
-    border-radius: 6px;
-  }
-
-  .menu-button {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    font-size: 0.7rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-  }
-
-  .menu-button:hover {
-    background-color: #45a049;
-  }
-}
-
-</style>
-
+    footer a {
+      color: #aaa;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+  </style>
 </head>
 <body>
-<div class="background"></div>
 
-  <div id="setup" class="container">
+  <!-- ONLINE MULTIPLAYER CONTAINER -->
+  <div class="container hidden" id="online-game-container"></div>
+
+  <!-- OFFLINE SETUP (Klassisch) -->
+  <div class="container" id="setup">
     <h1>🎭 Fake or Fakt</h1>
-    <p>Wähle die Anzahl der Spieler 👥</p>
+    <h2>Spiel-Einstellungen (Offline)</h2>
 
-    <label>Spieleranzahl:
-      <select id="playerCount">
-        <option value="3" selected>3 Spieler</option>
-        <option value="4">4 Spieler</option>
-        <option value="5">5 Spieler</option>
-        <option value="6">6 Spieler</option>
-      </select>
-    </label><br>
+    <select id="playerCount">
+      <option value="">Spieleranzahl wählen</option>
+      <option value="3">3 Spieler</option>
+      <option value="4">4 Spieler</option>
+      <option value="5">5 Spieler</option>
+      <option value="6">6 Spieler</option>
+      <option value="7">7 Spieler</option>
+      <option value="8">8 Spieler</option>
+    </select>
 
-    <button onclick="generatePlayerInputs()">📝 Namen eingeben</button>
-    <div id="playerInputs" class="hidden"></div>
-<button onclick="window.location.href='startseite.html'" class="menu-button">
-  Zurück zum Hauptmenü
-</button>
+    <select id="liarCount">
+      <option value="">Lügneranzahl wählen</option>
+      <option value="1">1 Lügner</option>
+      <option value="2">2 Lügner</option>
+    </select>
 
+    <button onclick="startGame()">Spiel starten</button>
+    <button onclick="window.location.href='startseite.html'" class="menu-button">Zurück zum Hauptmenü</button>
+  </div>
 
-
-    <div id="liarSelection" class="hidden">
-      <label>Lügneranzahl:
-        <select id="liarCount">
-          <!-- Optionen werden dynamisch eingefügt -->
-        </select>
-      </label><br>
+  <!-- OFFLINE SPIEL-BILDSCHIRME -->
+  <div class="container hidden" id="game">
+    <div id="playerCard">
+      <div class="card">
+        <h2>Spieler <span id="playerNumber"></span></h2>
+        <button onclick="revealCard()" id="revealBtn">Karte aufdecken</button>
+        <h3 id="cardContent" class="hidden"></h3>
+      </div>
     </div>
-
-    <button onclick="startGame()" class="hidden" id="startBtn">▶️ Spiel starten</button>
+    <button onclick="nextPlayer()" id="nextBtn">Nächster Spieler</button>
   </div>
 
-  <div id="game" class="container hidden">
-    <h2 id="currentPlayer"></h2>
-    <div class="card" id="card" onclick="revealCard()">📄 Karte ziehen</div>
-    <p id="cardText"></p>
-    <button onclick="nextCard()">➡️ Nächste Karte</button>
+  <div class="container hidden" id="reveal">
+    <h2>Alle Karten wurden gezeigt!</h2>
+    <p id="starterInfo"></p>
+    <button onclick="showLiars()">Lügner auflösen</button>
   </div>
 
-  <div id="end" class="container hidden">
-    <h2>🎉 Alle Karten wurden gespielt!</h2>
-    <button onclick="revealLiars()">🔍 Lügner aufdecken</button>
-    <div id="liarList"></div>
-    <button onclick="restartGame()">🔁 Erneut spielen</button>
+  <div class="container hidden" id="result">
+    <h2>🕵️‍♂️ Die Lügner waren:</h2>
+    <ul id="liarList" style="text-align: left; max-width: 250px; margin: auto;"></ul>
+    <button onclick="location.reload()">🔄 Neues Spiel</button>
   </div>
 
+  <!-- FIREBASE & SKRIPTE -->
+  <script type="module" src="firebase-config.js"></script>
+  <script src="party-config.js"></script>
+
+  <!-- SKRIPT-LOGIK -->
   <script>
-    let players = [];
-    let liars = [];
-    let currentIndex = 0;
-
-    // ================================
-    // ChallengeChamp Spielzeit-Tracking
-    // ================================
-    const PLAYTIME_GAME_ID = "fakeorfakt";
-    const PLAYTIME_STORAGE_KEY = "challengeChampGameHours";
-
-    let playtimeRunning = false;
-    let playtimeLastTimestamp = null;
-    let playtimeInterval = null;
-
-    function getChallengeChampGameHours() {
-      try {
-        return JSON.parse(localStorage.getItem(PLAYTIME_STORAGE_KEY)) || {};
-      } catch (error) {
-        return {};
+    // Themen- und Faktenpool für Fake or Fakt
+    const factPool = [
+      {
+        topic: "Bananen",
+        realFact: "Bananen sind botanisch gesehen Beeren, während Erdbeeren keine sind.",
+        fakeOption1: "Bananen wachsen unter der Erde und werden erst am Licht gelb.",
+        fakeOption2: "Die Schale von Bananen enthält natürliche Magnetteilchen."
+      },
+      {
+        topic: "Pinguine",
+        realFact: "Kaiserpinguine können bis zu 500 Meter tief tauchen.",
+        fakeOption1: "Pinguine trinken ausschließlich Salzwasser, da Süßwasser sie vergiftet.",
+        fakeOption2: "Pinguine haben Zähne auf der Zunge, um Fische festzuhalten."
+      },
+      {
+        topic: "Eiffelturm",
+        realFact: "Der Eiffelturm ist im Sommer durch die Hitzeausdehnung bis zu 15 cm höher.",
+        fakeOption1: "Der Eiffelturm sollte ursprünglich nach 20 Jahren wieder abgerissen werden.",
+        fakeOption2: "Im Fundament des Eiffelturms sind alte Eisenbahnwaggons verbaut."
+      },
+      {
+        topic: "Essen & Trinken",
+        realFact: "Honig wird niemals schlecht und kann nach Tausenden von Jahren noch essbar sein.",
+        fakeOption1: "Schokolade wurde im Mittelalter als Wundsalbe in Apotheken verkauft.",
+        fakeOption2: "Karotten enthalten einen Stoff, der die Zähne nachts im Dunkeln leuchten lässt."
+      },
+      {
+        topic: "Weltall",
+        realFact: "Ein Tag auf der Venus dauert länger als ein ganzes Jahr auf der Venus.",
+        fakeOption1: "Auf dem Saturn gibt es Winde, die Geräusche wie Walgesänge erzeugen.",
+        fakeOption2: "Der Mond entfernt sich jedes Jahr um 10 Meter von der Erde."
       }
-    }
+    ];
 
-    function saveChallengeChampGameHours(data) {
-      localStorage.setItem(PLAYTIME_STORAGE_KEY, JSON.stringify(data));
-    }
-
-    function saveCurrentPlaytime() {
-      if (!playtimeRunning || playtimeLastTimestamp === null) return;
-
-      const now = Date.now();
-      const elapsedMilliseconds = now - playtimeLastTimestamp;
-      playtimeLastTimestamp = now;
-
-      if (elapsedMilliseconds <= 0) return;
-
-      const elapsedHours = elapsedMilliseconds / 3600000;
-      const data = getChallengeChampGameHours();
-
-      if (typeof data[PLAYTIME_GAME_ID] !== "number") {
-        data[PLAYTIME_GAME_ID] = 0;
+    // =========================================================================
+    // ONLINE MULTIPLAYER ENGINE FOR FAKE OR FAKT
+    // =========================================================================
+    class OnlineFakeOrFaktManager {
+      constructor(partyCode, playerId) {
+        this.partyCode = partyCode;
+        this.playerId = playerId;
+        this.isHost = false;
+        this.partyData = null;
+        this.selectedFakeText = "";
+        this.init();
       }
 
-      data[PLAYTIME_GAME_ID] += elapsedHours;
-      saveChallengeChampGameHours(data);
-    }
+      init() {
+        document.getElementById('setup').classList.add('hidden');
+        document.getElementById('online-game-container').classList.remove('hidden');
 
-    function startPlaytimeTracking() {
-      if (playtimeRunning) return;
+        const checkFB = setInterval(() => {
+          if (window.firebaseDB) {
+            clearInterval(checkFB);
+            this.listenToParty();
+          }
+        }, 100);
+      }
 
-      playtimeRunning = true;
-      playtimeLastTimestamp = Date.now();
+      listenToParty() {
+        const partyRef = window.fbRef(window.firebaseDB, 'parties/' + this.partyCode);
+        const playerRef = window.fbRef(window.firebaseDB, `parties/${this.partyCode}/players/${this.playerId}`);
 
-      playtimeInterval = setInterval(() => {
-        if (playtimeRunning && document.visibilityState === "visible") {
-          saveCurrentPlaytime();
+        window.fbOnDisconnect(playerRef).remove();
+
+        window.fbOnValue(partyRef, (snapshot) => {
+          if (!snapshot.exists()) {
+            alert("Die Party wurde aufgelöst.");
+            window.location.href = "startseite.html";
+            return;
+          }
+
+          this.partyData = snapshot.val();
+          this.isHost = (this.partyData.hostId === this.playerId);
+
+          if (this.partyData.players && !this.partyData.players[this.playerId]) {
+            const storedName = sessionStorage.getItem("cc_player_name") || "Spieler";
+            window.fbSet(playerRef, {
+              name: storedName,
+              isHost: this.isHost,
+              joinedAt: Date.now()
+            });
+            return;
+          }
+
+          this.renderState();
+        });
+      }
+
+      renderState() {
+        const state = this.partyData.gameState || { status: 'setup' };
+        const players = Object.values(this.partyData.players || {});
+        const container = document.getElementById('online-game-container');
+
+        // 1. ZUSTAND: SETUP (Lügneranzahl wählen)
+        if (state.status === 'setup') {
+          if (this.isHost) {
+            const maxLiars = Math.max(1, players.length - 2);
+            let options = '';
+            for (let i = 1; i <= maxLiars; i++) {
+              options += `<option value="${i}">${i} Lügner</option>`;
+            }
+
+            container.innerHTML = `
+              <h1>👑 Fake or Fakt (Host)</h1>
+              <p>Mitspieler in dieser Party (${players.length}):</p>
+              <ul class="player-pill-list">
+                ${players.map(p => `<li>${p.name}${p.isHost ? ' 👑' : ''}</li>`).join('')}
+              </ul>
+
+              <div style="margin: 20px 0;">
+                <label><b>Anzahl der Lügner wählen:</b></label>
+                <select id="onlineLiarSelect">${options}</select>
+              </div>
+
+              <button onclick="onlineManager.startRound()">🎲 Rollen verteilen & Starten</button>
+            `;
+          } else {
+            container.innerHTML = `
+              <h1>⏳ Wartefenster</h1>
+              <p>Der Host wählt gerade die Lügner-Anzahl aus...</p>
+              <p style="opacity:0.8;">Beigetretene Spieler (${players.length}):</p>
+              <ul class="player-pill-list">
+                ${players.map(p => `<li>${p.name}${p.isHost ? ' 👑' : ''}</li>`).join('')}
+              </ul>
+            `;
+          }
         }
-      }, 5000);
-    }
+        // 2. ZUSTAND: KARTE / FAKE WAHL
+        else if (state.status === 'reveal_cards') {
+          const myRole = state.roles ? state.roles[this.playerId] : 'fact';
 
-    function pausePlaytimeTracking() {
-      if (!playtimeRunning) return;
+          if (myRole === 'liar') {
+            container.innerHTML = `
+              <h1>🤫 DU BIST DER LÜGNER!</h1>
+              <p>Thema: <b>${state.item.topic}</b></p>
+              <p>Wähle eine vorgeschlagene Lüge ODER tippe eine eigene ein:</p>
 
-      saveCurrentPlaytime();
-      playtimeRunning = false;
-      playtimeLastTimestamp = null;
+              <button class="option-btn" id="opt1" onclick="onlineManager.selectOption(1, '${state.item.fakeOption1}')">
+                1️⃣ ${state.item.fakeOption1}
+              </button>
+              <button class="option-btn" id="opt2" onclick="onlineManager.selectOption(2, '${state.item.fakeOption2}')">
+                2️⃣ ${state.item.fakeOption2}
+              </button>
 
-      if (playtimeInterval) {
-        clearInterval(playtimeInterval);
-        playtimeInterval = null;
+              <p style="margin-top:15px; font-weight:bold;">ODER eigene Lüge eingeben:</p>
+              <input type="text" id="customFakeInput" placeholder="Deine eigene Lüge..." oninput="onlineManager.selectCustomOption(this.value)">
+
+              <button id="btn-submit-fake" style="margin-top:20px;" onclick="onlineManager.submitFakeChoice()">
+                Lüge bestätigen & Weiter 👍
+              </button>
+            `;
+          } else {
+            container.innerHTML = `
+              <h1>📜 DEIN FAKT (Echt)</h1>
+              <p>Thema: <b>${state.item.topic}</b></p>
+              
+              <div class="secret-card-box" style="border-color:#2ed573;">
+                ${state.item.realFact}
+              </div>
+
+              <button onclick="onlineManager.confirmFactReady()">
+                Gelesen & Bereit 👍
+              </button>
+            `;
+          }
+        }
+        // 3. ZUSTAND: DISKUSSION
+        else if (state.status === 'playing') {
+          container.innerHTML = `
+            <h1>🗣️ Diskutiert!</h1>
+            <p>Jeder trägt seine Aussage vor. Wer tischt eine Lüge auf?</p>
+
+            ${this.isHost ? `
+              <div style="margin-top: 30px;">
+                <button style="background: #ff4757; font-size: 1.2rem;" onclick="onlineManager.revealLiars()">
+                  🚨 Lügner auflösen
+                </button>
+              </div>
+            ` : `
+              <p style="margin-top: 25px; opacity: 0.8;">⏳ Der Host löst das Spiel auf, sobald ihr abgestimmt habt.</p>
+            `}
+          `;
+        }
+        // 4. ZUSTAND: AUFLÖSUNG
+        else if (state.status === 'revealed') {
+          const liarNames = state.liarIds.map(id => this.partyData.players[id]?.name || "Unbekannt");
+
+          container.innerHTML = `
+            <h1>🎉 Auflösung!</h1>
+            <p>Echter Fakt war: <b style="color:#2ed573;">${state.item.realFact}</b></p>
+
+            <div style="margin: 20px 0; padding: 15px; background: rgba(255,71,87,0.25); border-radius: 12px; border: 1px solid #ff4757;">
+              <h3>🕵️‍♂️ Lügner war(en):</h3>
+              <h2 style="color: #ff4757; margin: 5px 0;">${liarNames.join(", ")}</h2>
+            </div>
+
+            ${this.isHost ? `
+              <button onclick="onlineManager.resetToSetup()">🔄 Nächste Runde starten</button>
+            ` : `
+              <p style="opacity: 0.8;">Warte darauf, dass der Host die nächste Runde startet...</p>
+            `}
+          `;
+        }
+      }
+
+      async startRound() {
+        const liarCount = parseInt(document.getElementById("onlineLiarSelect").value, 10);
+        const playerIds = Object.keys(this.partyData.players);
+
+        const randomItem = factPool[Math.floor(Math.random() * factPool.length)];
+        const shuffled = [...playerIds].sort(() => 0.5 - Math.random());
+        const liars = shuffled.slice(0, liarCount);
+
+        const roles = {};
+        playerIds.forEach(id => {
+          roles[id] = liars.includes(id) ? 'liar' : 'fact';
+        });
+
+        const partyRef = window.fbRef(window.firebaseDB, 'parties/' + this.partyCode + '/gameState');
+        await window.fbSet(partyRef, {
+          status: 'reveal_cards',
+          item: randomItem,
+          roles: roles,
+          liarIds: liars
+        });
+      }
+
+      selectOption(num, text) {
+        this.selectedFakeText = text;
+        document.getElementById("customFakeInput").value = "";
+        document.querySelectorAll(".option-btn").forEach(btn => btn.classList.remove("selected"));
+        document.getElementById("opt" + num).classList.add("selected");
+      }
+
+      selectCustomOption(val) {
+        this.selectedFakeText = val;
+        document.querySelectorAll(".option-btn").forEach(btn => btn.classList.remove("selected"));
+      }
+
+      async submitFakeChoice() {
+        if (!this.selectedFakeText.trim()) {
+          alert("Bitte wähle eine Lüge oder gib eine ein!");
+          return;
+        }
+
+        const choiceRef = window.fbRef(window.firebaseDB, `parties/${this.partyCode}/gameState/fakeChoices/${this.playerId}`);
+        await window.fbSet(choiceRef, this.selectedFakeText);
+
+        if (this.isHost) {
+          const statusRef = window.fbRef(window.firebaseDB, `parties/${this.partyCode}/gameState/status`);
+          window.fbSet(statusRef, 'playing');
+        } else {
+          document.getElementById('online-game-container').innerHTML = `
+            <h1>⏳ Bitte warten...</h1>
+            <p>Deine Lüge wurde gespeichert. Warte darauf, dass der Host die Diskussion freigibt.</p>
+          `;
+        }
+      }
+
+      async confirmFactReady() {
+        if (this.isHost) {
+          const statusRef = window.fbRef(window.firebaseDB, `parties/${this.partyCode}/gameState/status`);
+          window.fbSet(statusRef, 'playing');
+        } else {
+          document.getElementById('online-game-container').innerHTML = `
+            <h1>⏳ Bitte warten...</h1>
+            <p>Warte darauf, dass der Host die Diskussion freigibt.</p>
+          `;
+        }
+      }
+
+      async revealLiars() {
+        const partyRef = window.fbRef(window.firebaseDB, 'parties/' + this.partyCode + '/gameState/status');
+        await window.fbSet(partyRef, 'revealed');
+      }
+
+      async resetToSetup() {
+        const partyRef = window.fbRef(window.firebaseDB, 'parties/' + this.partyCode + '/gameState');
+        await window.fbSet(partyRef, { status: 'setup' });
       }
     }
 
-    function resumePlaytimeTracking() {
-      if (!playtimeRunning && document.visibilityState === "visible") {
-        startPlaytimeTracking();
-      }
+    // MULTIPLAYER CHECK
+    let onlineManager = null;
+    const urlParams = new URLSearchParams(window.location.search);
+    const partyCode = urlParams.get('party');
+    const playerId = urlParams.get('player');
+
+    if (partyCode && playerId) {
+      onlineManager = new OnlineFakeOrFaktManager(partyCode, playerId);
     }
 
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") {
-        pausePlaytimeTracking();
-      } else {
-        resumePlaytimeTracking();
-      }
-    });
-
-    window.addEventListener("pagehide", () => {
-      saveCurrentPlaytime();
-    });
-
-
-    let factsPool = [
-  "🌕 Auf der Venus ist ein Tag länger als ein Jahr. ",
-  "🌍 Die Erde ist nicht perfekt rund.",
-  "💧 Wasser kann unter bestimmten Bedingungen bei über 100°C flüssig bleiben.",
-  "🗼 Der Eiffelturm wird im Sommer bis zu 15 cm höher.",
-  "🐘 Elefanten können Infraschall nutzen, um über Kilometer zu kommunizieren.",
-  "🧠 Das menschliche Gehirn verbraucht etwa 20 % der gesamten Energie des Körpers.",
-  "🐬 Delfine schlafen mit nur einer Gehirnhälfte gleichzeitig.",
-  "🐦 Tauben können sich selbst im Spiegel erkennen.",
-  "🐢 Schildkröten können durch ihre Kloake Sauerstoff aufnehmen.",
-  "🐝 Bienen erkennen menschliche Gesichter und erinnern sich daran.",
-  "🐍 Einige Schlangenarten können mehrere Monate ohne Nahrung überleben.",
-  "🐳 Wale singen in Dialekten, die sich regional unterscheiden.",
-  "🐜 Ameisen können komplexe Entscheidungen kollektiv treffen – ähnlich wie ein Gehirn.",
-  "🐠 Manche Fische können ihr Geschlecht im Laufe ihres Lebens ändern.",
-  "🐧 Pinguine haben eine Drüse, mit der sie Salzwasser in Trinkwasser umwandeln.",
-  "🐌 Schnecken haben über 14.000 Zähne.",
-  "🐕 Hunde können bestimmte Krankheiten wie Krebs durch Geruch erkennen.",
-  "🦑 Tintenfische haben drei Herzen und blaues Blut.",
-  "🐛 Raupen lösen sich beim Verpuppen fast vollständig auf und bauen sich neu.",
-  "🐦 Kolibris schlagen ihre Flügel bis zu 80-mal pro Sekunde.",
-  "🐕‍🦺 Hunde können den emotionalen Zustand eines Menschen am Geruch erkennen.",
-  "🐓 Hühner träumen im REM-Schlaf – genau wie Menschen.",
-  "🐈 Katzen können Vibrationen im Boden spüren, bevor Erdbeben eintreten.",
-  "🐀 Ratten können sich an komplexe Labyrinthe erinnern – auch nach Wochen.",
-  "🐬 Delfine helfen verletzten Artgenossen und zeigen Mitgefühl.",
-  "🐘 Elefanten beerdigen ihre Toten und zeigen Trauerverhalten.",
-  "🐝 Bienen kommunizieren durch Tanzrichtungen und -winkel, um Futterquellen zu zeigen.",
-  "🐠 Goldfische können Farben unterscheiden und einfache Tricks lernen.",
-  "🐦 Vögel nutzen das Magnetfeld der Erde zur Navigation – manche mit dem Schnabel.",
-  "🐢 Manche Schildkrötenarten überleben monatelang ohne Nahrung oder Wasser.",
-  "🐎 Pferde können Gesichtsausdrücke von Menschen lesen.",
-  "🐬 Delfine erkennen sich selbst im Spiegel.",
-  "🐜 Ameisen können sich gegenseitig als Individuen erkennen.",
-  "🐍 Schlangen hören mit dem Kieferknochen – nicht mit Ohren.",
-  "🐘 Elefanten können Wasserquellen unter der Erde erschnüffeln.",
-  "🐦 Einige Vögel können über 200 verschiedene Lieder imitieren.",
-  "🐕 Hunde können den Herzschlag eines Menschen hören.",
-  "🐛 Manche Insektenarten können sich selbst klonen.",
-  "🐙 Oktopusse haben neuronale Steuerung in ihren Armen – sie denken teilweise lokal.",
-  "🐝 Bienen können zählen."
-    ];
-
-    let fakesPool = [
-  "🐙 Oktopusse haben drei Herzen, aber nur zwei schlagen gleichzeitig.",
-  "🧊 In Island gibt es mehr Schafe als Menschen.",
-  "🐘 Elefanten können Farben erkennen, aber sind farbenblind bei Rot.",
-  "🕷️ Spinnen können ihre Beine bewusst abwerfen wie Eidechsen ihren Schwanz.",
-  "🐦 Tauben erkennen sich selbst im Spiegel – aber nur in Japan.",
-  "🧠 Das menschliche Gehirn ist aktiver im Schlaf als im Wachzustand.",
-  "🐬 Delfine geben sich gegenseitig Namen durch Pfeiflaute.",
-  "🌋 Der Vesuv ist der einzige Vulkan, der regelmäßig Schnee produziert.",
-  "🐍 Schlangen können träumen.",
-  "🦜 Papageien können Dialekte lernen, je nachdem wo sie leben.",
-  "🐢 Schildkröten können durch ihren Hintern atmen.",
-  "🐼 Pandas sind biologisch Fleischfresser, essen aber fast nur Pflanzen.",
-  "🐎 Pferde können nicht kotzen.",
-  "🦘 Kängurus können rückwärts springen – aber nur auf Sand.",
-  "🐜 Ameisen schlafen nie, sondern machen Mikro-Pausen.",
-  "🐳 Wale können Sonnenbrand bekommen.",
-  "🐓 Hühner erkennen über 100 Gesichter anderer Hühner.",
-  "🐕 Hunde träumen von ihren Besitzern.",
-  "🐈 Katzen können über 100 verschiedene Laute erzeugen.",
-  "🐀 Ratten lachen, wenn man sie kitzelt.",
-  "🐝 Bienen können Fußball spielen in Laborexperimenten.",
-  "🐸 Frösche können durch ihre Haut trinken.",
-  "🐠 Goldfische haben ein Gedächtnis von mehreren Monaten.",
-  "🐧 Pinguine schenken sich Kieselsteine als Liebesbeweis.",
-  "🐌 Schnecken können bis zu drei Jahre schlafen.",
-  "🐦 Kolibris wiegen weniger als eine 1-Euro-Münze.",
-  "🐕‍🦺 Hunde können Krankheiten wie Krebs erschnüffeln.",
-  "🐍 Einige Schlangenarten können fliegen – zumindest gleiten.",
-  "🐘 Elefanten können mit Infraschall über Kilometer kommunizieren.",
-  "🦑 Tintenfische können ihre DNA verändern, um sich anzupassen.",
-  "🐬 Delfine schlafen mit nur einer Gehirnhälfte gleichzeitig.",
-  "🐜 Ameisen können sich gegenseitig als „Freunde“ markieren.",
-  "🐢 Manche Schildkrötenarten können 150 Jahre alt werden.",
-  "🐦 Vögel orientieren sich am Magnetfeld der Erde – manche sogar mit dem Schnabel.",
-  "🐠 Manche Fische können ihr Geschlecht wechseln.",
-  "🐕 Hunde können Zeit riechen – z. B. ob jemand vor Stunden da war.",
-  "🐛 Raupen haben mehr Muskeln als Menschen.",
-  "🐙 Oktopusse können Werkzeuge benutzen.",
-  "🐝 Bienen erkennen menschliche Gesichter.",
-  "🐸 Manche Frösche frieren im Winter komplett ein und tauen im Frühling wieder auf."
-    ];
-
-    let usedFacts = [...factsPool];
-    let usedFakes = [...fakesPool];
-
-    function generatePlayerInputs() {
-      const count = parseInt(document.getElementById("playerCount").value);
-      const container = document.getElementById("playerInputs");
-      container.innerHTML = "";
-      container.classList.remove("hidden");
-
-      for (let i = 0; i < count; i++) {
-        container.innerHTML += `<input type="text" placeholder="Spieler ${i + 1}" id="player${i}"><br>`;
-      }
-
-      updateLiarOptions();
-      document.getElementById("liarSelection").classList.remove("hidden");
-      document.getElementById("startBtn").classList.remove("hidden");
-    }
-
-    function updateLiarOptions() {
-      const playerCount = parseInt(document.getElementById("playerCount").value);
-      const liarSelect = document.getElementById("liarCount");
-      liarSelect.innerHTML = "";
-
-      const maxLiars = Math.min(3, playerCount - 2);
-      for (let i = 1; i <= maxLiars; i++) {
-        const option = document.createElement("option");
-        option.value = i;
-        option.textContent = `${i} Lügner`;
-        liarSelect.appendChild(option);
-      }
-    }
+    // =========================================================================
+    // OFFLINE SPIEL-LOGIK (PASS & PLAY)
+    // =========================================================================
+    let players = [];
+    let currentPlayer = 0;
+    let liars = [];
+    let selectedItem = null;
 
     function startGame() {
-      const count = parseInt(document.getElementById("playerCount").value);
-      const liarCount = parseInt(document.getElementById("liarCount").value);
-      players = [];
-      liars = [];
-      currentIndex = 0;
-      usedFacts = [...factsPool];
-      usedFakes = [...fakesPool];
+      const playerCount = parseInt(document.getElementById('playerCount').value);
+      const liarCount = parseInt(document.getElementById('liarCount').value);
 
-      for (let i = 0; i < count; i++) {
-        const name = document.getElementById(`player${i}`).value || `Spieler ${i + 1}`;
-        players.push(name);
+      if (!playerCount || !liarCount) {
+        alert("Bitte Spieleranzahl und Lügneranzahl wählen.");
+        return;
       }
+
+      selectedItem = factPool[Math.floor(Math.random() * factPool.length)];
+      players = Array(playerCount).fill(selectedItem.realFact);
+      liars = [];
 
       while (liars.length < liarCount) {
-        const liar = players[Math.floor(Math.random() * players.length)];
-        if (!liars.includes(liar)) liars.push(liar);
+        const index = Math.floor(Math.random() * playerCount);
+        if (!liars.includes(index)) {
+          liars.push(index);
+          players[index] = "DU BIST DER LÜGNER! Erfinde einen Fake-Fakt zum Thema: " + selectedItem.topic;
+        }
       }
 
-      document.getElementById("setup").classList.add("hidden");
-      document.getElementById("game").classList.remove("hidden");
-
-      // Spielzeit erst ab dem tatsächlichen Spielstart zählen
-      startPlaytimeTracking();
-
-      showCard();
+      document.getElementById('setup').classList.add('hidden');
+      document.getElementById('game').classList.remove('hidden');
+      showPlayer();
     }
 
-    function showCard() {
-      document.getElementById("cardText").innerText = "";
-      document.getElementById("card").classList.remove("dragging");
-      document.getElementById("currentPlayer").innerText = `🎯 Karte für: ${players[currentIndex]}`;
+    function showPlayer() {
+      document.getElementById('playerNumber').innerText = currentPlayer + 1;
+      document.getElementById('cardContent').classList.add('hidden');
+      document.getElementById('revealBtn').disabled = false;
+      document.getElementById('revealBtn').style.opacity = 1;
     }
 
     function revealCard() {
-      document.getElementById("card").classList.add("dragging");
-      const isLiar = liars.includes(players[currentIndex]);
+      const cardContent = document.getElementById('cardContent');
+      cardContent.innerText = players[currentPlayer];
+      cardContent.classList.remove('hidden');
+      document.getElementById('revealBtn').disabled = true;
+      document.getElementById('revealBtn').style.opacity = 0.6;
+    }
 
-      if (isLiar) {
-        if (usedFakes.length < 2) usedFakes = [...fakesPool];
-        const index1 = Math.floor(Math.random() * usedFakes.length);
-        const fake1 = usedFakes.splice(index1, 1)[0];
-        const index2 = Math.floor(Math.random() * usedFakes.length);
-        const fake2 = usedFakes.splice(index2, 1)[0];
-        document.getElementById("cardText").innerHTML = `
-          ❌ Fake: Wähle eine Aussage<br><br>
-          <button onclick="selectFake('${fake1.replace(/'/g, "\\'")}')">${fake1}</button><br><br>
-          <button onclick="selectFake('${fake2.replace(/'/g, "\\'")}')">${fake2}</button>
-        `;
+    function nextPlayer() {
+      currentPlayer++;
+      if (currentPlayer < players.length) {
+        showPlayer();
       } else {
-        if (usedFacts.length === 0) usedFacts = [...factsPool];
-        const index = Math.floor(Math.random() * usedFacts.length);
-        const text = usedFacts.splice(index, 1)[0];
-        document.getElementById("cardText").innerText = `✅ Fakt: ${text}`;
+        document.getElementById('game').classList.add('hidden');
+        document.getElementById('reveal').classList.remove('hidden');
+        const starter = Math.floor(Math.random() * players.length) + 1;
+        document.getElementById('starterInfo').innerText = `Spieler ${starter} beginnt mit der ersten Aussage.`;
       }
     }
 
-    function selectFake(text) {
-      document.getElementById("cardText").innerText = `❌ Fake: ${text}`;
+    function showLiars() {
+      document.getElementById('reveal').classList.add('hidden');
+      document.getElementById('result').classList.remove('hidden');
+      const list = document.getElementById('liarList');
+      list.innerHTML = '';
+      liars.forEach(i => {
+        const li = document.createElement('li');
+        li.textContent = `Spieler ${i + 1}`;
+        list.appendChild(li);
+      });
     }
-
-    function nextCard() {
-      currentIndex++;
-      if (currentIndex >= players.length) {
-        // Spiel beendet: Zeitmessung sauber stoppen
-        pausePlaytimeTracking();
-
-        document.getElementById("game").classList.add("hidden");
-        document.getElementById("end").classList.remove("hidden");
-      } else {
-        showCard();
-      }
-    }
-
-    function revealLiars() {
-      const list = document.getElementById("liarList");
-      list.innerHTML = "<h3>🤥 Die Lügner sind:</h3><ul>" + liars.map(name => `<li>${name}</li>`).join("") + "</ul>";
-    }
-
-    function restartGame() {
-      // Falls das Spiel über "Erneut spielen" neu gestartet wird,
-      // darf die alte Messung nicht weiterlaufen.
-      pausePlaytimeTracking();
-
-      document.getElementById("setup").classList.remove("hidden");
-      document.getElementById("end").classList.add("hidden");
-      document.getElementById("playerInputs").innerHTML = "";
-      document.getElementById("liarSelection").classList.add("hidden");
-      document.getElementById("startBtn").classList.add("hidden");
-
-      players = [];
-      liars = [];
-      currentIndex = 0;
-      usedFacts = [...factsPool];
-      usedFakes = [...fakesPool];
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      updateLiarOptions();
-    });
   </script>
 </body>
 <footer>
