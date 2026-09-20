@@ -551,7 +551,6 @@ h1 {
 .party-btn-create { background: #2ed573; color: white; }
 .party-btn-join { background: #1e90ff; color: white; }
 .party-btn-leave { background: #ff4757; color: white; }
-.party-btn-start { background: linear-gradient(135deg, #2ed573, #11998e); color: white; font-size: 1.1rem; width: 100%; margin-top: 15px; }
 
 .party-box-info {
   background: #f1f2f6;
@@ -589,16 +588,6 @@ h1 {
   display: flex;
   justify-content: center;
   margin: 12px auto;
-}
-
-.game-select-dropdown {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: 2px solid #ddd;
-  font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 12px;
 }
 </style>
 
@@ -682,19 +671,6 @@ h1 {
   </div>
 </div>
 
-<!-- POPUP MODAL: SPIEL FÜR PARTY WÄHLEN -->
-<div id="partyGameSelectModal" class="popupOverlay">
-  <div class="popupBox">
-    <div class="popupClose" onclick="document.getElementById('partyGameSelectModal').style.display='none'">X</div>
-    <h3>🎉 Spiel für Party wählen</h3>
-    <p style="font-size: 0.9rem; color: #555;">Welches Spiel wollt ihr zusammen spielen?</p>
-    
-    <select id="partyGameSelectDropdown" class="game-select-dropdown"></select>
-
-    <button class="premiumBtn" onclick="confirmCreateParty()">Lobby erstellen 🚀</button>
-  </div>
-</div>
-
 <div id="premiumUnlocked" class="premium-unlock">
   <div class="unlock-glow"></div>
   <div class="unlock-ring"></div>
@@ -717,12 +693,12 @@ h1 {
 <!-- MULTIPLAYER PARTY BEREICH -->
 <div class="party-bar">
   <div id="partyActionBtns" class="party-bar-btns">
-    <button class="party-btn party-btn-create" onclick="openPartyGameSelect()">🎉 Party erstellen</button>
+    <button class="party-btn party-btn-create" onclick="createParty()">🎉 Party erstellen</button>
     <button class="party-btn party-btn-join" onclick="promptJoinParty()">🔑 Raum beitreten</button>
   </div>
 
   <div id="partyActiveBox" class="party-box-info" style="display: none;">
-    <div style="font-weight: bold;" id="selectedPartyGameText">Ausgewähltes Spiel: -</div>
+    <div style="margin-top: 4px; font-weight: bold; color: #2ed573;">Aktiv im Party-Modus!</div>
     <div style="margin-top: 8px;">Party-Code:</div>
     <div class="party-code-badge" id="partyCodeDisplay">------</div>
     
@@ -730,18 +706,10 @@ h1 {
 
     <div style="margin-top: 5px; font-size: 0.85rem; color: #555;">Mitspieler in der Lobby:</div>
     <div class="party-players-list" id="partyPlayersList"></div>
-    
-    <!-- Nur der Host sieht den Start-Button -->
-    <div id="hostControls" style="display: none;">
-      <button class="party-btn party-btn-start" onclick="hostStartGame()">🚀 Spiel jetzt für alle starten!</button>
-    </div>
 
-    <div id="clientWaitingText" style="display: none; margin-top: 10px; color: #ff9f43; font-weight: bold;">
-      ⏳ Warten, bis der Host das Spiel startet...
-    </div>
+    <p style="font-size:0.85rem; color:#555; margin-top:10px;">Wähle unten einfach ein Spiel aus, um zusammen zu spielen!</p>
 
-    <br>
-    <button class="party-btn party-btn-leave" onclick="leaveParty()">Lobby verlassen</button>
+    <button class="party-btn party-btn-leave" onclick="leaveParty()">Party verlassen</button>
   </div>
 </div>
 
@@ -796,32 +764,6 @@ h1 {
 <script type="module" src="firebase-config.js"></script>
 
 <script>
-/* -------------------- SPIELE-LISTE (MIT ONLINE-VERSIONS-PFADEN) -------------------- */
-const gamesList = [
-  { name: "Fake or Fakt 🎭 (Online)", link: "index-online.html" },
-  { name: "Finde den Imposter 🕵️‍♂️ (Online)", link: "imposter-online.html" },
-  { name: "10 von 10 💘", link: "10von10.html" },
-  { name: "Wahrheit oder Pflicht 🔥", link: "wop.html" },
-  { name: "Wer lügt am Besten 🔍", link: "imposterpremium.html" },
-  { name: "Verbotene Wörter 🙊", link: "wort.html" },
-  { name: "TopSort 📜", link: "liste.html" },
-  { name: "TippTopf 👆", link: "tipptopf.html" },
-  { name: "PinselPost 🖌️", link: "stillepost.html" },
-  { name: "Ich hab noch nie 🚫", link: "habnochnie.html" },
-  { name: "Wer bin ich ⁉️", link: "werbinich.html" },
-  { name: "Superquiz 🧠", link: "superquiz.html" },
-  { name: "Duo‑Pantomime 🎬", link: "duoplay.html" },
-  { name: "BattleBid 📈", link: "uberbieten.html" },
-  { name: "Lüge oder Wahrheit 🤥", link: "these.html" },
-  { name: "TeamQuiz Board 🧾", link: "100quiz.html" },
-  { name: "Nightfall Village 🌙", link: "wolf.html" },
-  { name: "MatchMaster ⚽", link: "wm.html" },
-  { name: "PlayerMaster ⭐", link: "wmhunter.html" },
-  { name: "Guess the Hype 📱", link: "wmguess.html" },
-  { name: "TeamMaster 👨", link: "wmtop.html" },
-  { name: "Guess Grid 🧩", link: "tictactoe.html" }
-];
-
 /* -------------------- PREMIUM LOGIK -------------------- */
 const premiumGames = ["imposterpremium", "wolf"];
 const newGames = ["imposterpremium", "uberbieten", "these", "100quiz", "wolf"];
@@ -883,14 +825,54 @@ document.querySelectorAll(".card").forEach(card => {
   }
 
   card.addEventListener("click", (e) => {
+    // Prüfe Premium
     if (premiumGames.includes(gameId) && !isPremium()) {
       e.preventDefault();
       openPremiumLogin();
+      return;
+    }
+
+    // Falls in Party: Leite auf Online-Versionen weiter wenn vorhanden!
+    const activeCode = localStorage.getItem("currentPartyCode");
+    if (activeCode && window.firebaseDB) {
+      e.preventDefault();
+      let targetUrl = link;
+      
+      // Online-Pfade für Fake or Fakt & Imposter
+      if (link === "index.html") targetUrl = "index-online.html";
+      if (link === "imposter.html") targetUrl = "imposter-online.html";
+
+      window.fbSet(window.fbRef(window.firebaseDB, `parties/${activeCode}/currentGame`), targetUrl);
     }
   });
 });
 
 /* -------------------- SUCHE -------------------- */
+const gamesList = [
+  { name: "Fake or Fakt 🎭", link: "index.html" },
+  { name: "10 von 10 💘", link: "10von10.html" },
+  { name: "Wahrheit oder Pflicht 🔥", link: "wop.html" },
+  { name: "Finde den Imposter 🕵️‍♂️", link: "imposter.html" },
+  { name: "Wer lügt am Besten 🔍", link: "imposterpremium.html" },
+  { name: "Verbotene Wörter 🙊", link: "wort.html" },
+  { name: "TopSort 📜", link: "liste.html" },
+  { name: "TippTopf 👆", link: "tipptopf.html" },
+  { name: "PinselPost 🖌️", link: "stillepost.html" },
+  { name: "Ich hab noch nie 🚫", link: "habnochnie.html" },
+  { name: "Wer bin ich ⁉️", link: "werbinich.html" },
+  { name: "Superquiz 🧠", link: "superquiz.html" },
+  { name: "Duo‑Pantomime 🎬", link: "duoplay.html" },
+  { name: "BattleBid 📈", link: "uberbieten.html" },
+  { name: "Lüge oder Wahrheit 🤥", link: "these.html" },
+  { name: "TeamQuiz Board 🧾", link: "100quiz.html" },
+  { name: "Nightfall Village 🌙", link: "wolf.html" },
+  { name: "MatchMaster ⚽", link: "wm.html" },
+  { name: "PlayerMaster ⭐", link: "wmhunter.html" },
+  { name: "Guess the Hype 📱", link: "wmguess.html" },
+  { name: "TeamMaster 👨", link: "wmtop.html" },
+  { name: "Guess Grid 🧩", link: "tictactoe.html" }
+];
+
 const searchInput = document.getElementById("searchInput");
 const searchResults = document.getElementById("searchResults");
 
@@ -927,27 +909,8 @@ function getPlayerId() {
   return pId;
 }
 
-// Öffnet das Modal zum Wählen des Spiels
-function openPartyGameSelect() {
-  const dropdown = document.getElementById("partyGameSelectDropdown");
-  dropdown.innerHTML = "";
-  gamesList.forEach(g => {
-    const opt = document.createElement("option");
-    opt.value = JSON.stringify(g);
-    opt.textContent = g.name;
-    dropdown.appendChild(opt);
-  });
-  document.getElementById("partyGameSelectModal").style.display = "flex";
-}
-
-// Host bestätigt Spielauswahl & erstellt Firebase-Party
-async function confirmCreateParty() {
+async function createParty() {
   if (!window.firebaseDB) return alert("Fehler: Verbindung zum Server nicht bereit.");
-
-  const dropdown = document.getElementById("partyGameSelectDropdown");
-  const selectedGame = JSON.parse(dropdown.value);
-
-  document.getElementById("partyGameSelectModal").style.display = "none";
 
   const code = Math.floor(100000 + Math.random() * 900000).toString();
   const name = getPlayerName();
@@ -958,9 +921,7 @@ async function confirmCreateParty() {
     created: Date.now(),
     host: name,
     hostId: myId,
-    targetGame: selectedGame.link,
-    gameName: selectedGame.name,
-    gameStarted: false,
+    currentGame: "",
     players: {
       [myId]: { name: name, host: true, id: myId }
     }
@@ -982,9 +943,6 @@ async function joinParty(code) {
 
   if (!snap.exists()) return alert("Party nicht gefunden!");
 
-  const partyData = snap.val();
-  if (partyData.gameStarted) return alert("Dieses Spiel wurde bereits gestartet.");
-
   const name = getPlayerName();
   const myId = getPlayerId();
 
@@ -996,19 +954,18 @@ async function joinParty(code) {
 
 function initPartyListener(code) {
   currentPartyCode = code;
-  const myId = getPlayerId();
 
   document.getElementById("partyActionBtns").style.display = "none";
   document.getElementById("partyActiveBox").style.display = "block";
   document.getElementById("partyCodeDisplay").innerText = code;
 
-  // QR-Code generieren
+  // QR-Code
   const qrContainer = document.getElementById("qrcodeContainer");
   qrContainer.innerHTML = "";
   const joinUrl = window.location.origin + window.location.pathname + "?party=" + code;
-  new QRCode(qrContainer, { text: joinUrl, width: 128, height: 128 });
+  new QRCode(qrContainer, { text: joinUrl, width: 120, height: 120 });
 
-  // Listener für Party-Daten
+  // Realtime Listener
   const partyRef = window.fbRef(window.firebaseDB, `parties/${code}`);
   window.fbOnValue(partyRef, (snapshot) => {
     if (!snapshot.exists()) {
@@ -1017,9 +974,8 @@ function initPartyListener(code) {
     }
 
     const data = snapshot.val();
-    document.getElementById("selectedPartyGameText").innerText = "🎮 Spiel: " + (data.gameName || "Ausgewählt");
 
-    // Spielerliste aktualisieren
+    // Spielerliste
     const list = document.getElementById("partyPlayersList");
     list.innerHTML = "";
     if (data.players) {
@@ -1031,22 +987,11 @@ function initPartyListener(code) {
       });
     }
 
-    const isHost = (data.hostId === myId);
-    document.getElementById("hostControls").style.display = isHost ? "block" : "none";
-    document.getElementById("clientWaitingText").style.display = isHost ? "none" : "block";
-
-    // Reagiere auf den Spielstart durch den Host -> Leite alle zur Online-Version weiter!
-    if (data.gameStarted && data.targetGame) {
-      window.location.href = data.targetGame;
+    // Wenn Host ein Spiel startet, alle mitnehmen
+    if (data.currentGame && data.currentGame !== "") {
+      window.location.href = data.currentGame;
     }
   });
-}
-
-// Host drückt auf "Spiel starten"
-async function hostStartGame() {
-  if (currentPartyCode && window.firebaseDB) {
-    await window.fbSet(window.fbRef(window.firebaseDB, `parties/${currentPartyCode}/gameStarted`), true);
-  }
 }
 
 async function leaveParty(silent = false) {
@@ -1058,15 +1003,7 @@ async function leaveParty(silent = false) {
   document.getElementById("partyActionBtns").style.display = "flex";
   document.getElementById("partyActiveBox").style.display = "none";
   currentPartyCode = null;
-  if (!silent) alert("Lobby verlassen.");
-}
-
-function checkUrlPartyCode() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const partyParam = urlParams.get("party");
-  if (partyParam && partyParam.length === 6) {
-    joinParty(partyParam);
-  }
+  if (!silent) alert("Party verlassen.");
 }
 
 /* -------------------- COINS & INITIALISIERUNG -------------------- */
@@ -1095,7 +1032,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const checkFB = setInterval(() => {
     if (window.firebaseDB) {
       clearInterval(checkFB);
-      checkUrlPartyCode();
       if (activeCode) initPartyListener(activeCode);
       listenForFriendRequests();
     }
