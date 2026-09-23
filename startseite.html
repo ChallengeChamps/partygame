@@ -292,6 +292,7 @@ h1 {
 .search-results div {
   padding: 10px 14px;
   font-size: 0.9rem;
+  color: #111;
   cursor: pointer;
 }
 
@@ -383,6 +384,7 @@ h1 {
   box-shadow: 0 6px 16px rgba(0,0,0,0.25);
   cursor: pointer;
   transition: transform 0.25s ease;
+  text-decoration: none;
 }
 
 .card:hover {
@@ -407,11 +409,13 @@ h1 {
   top: 50%;
   transform: translateY(-50%);
   text-shadow: 2px 2px 6px #000;
+  font-weight: bold;
 }
 
 .player-count {
   font-size: 0.8rem;
   opacity: 0.9;
+  font-weight: normal;
 }
 
 /* STICKERS */
@@ -419,6 +423,7 @@ h1 {
   position:absolute;
   top:8px; left:8px;
   background:#ffcc00;
+  color:#000;
   padding:4px 10px;
   font-size:0.8rem;
   font-weight:bold;
@@ -431,6 +436,7 @@ h1 {
   position:absolute;
   top:8px; right:8px;
   background:#00eaff;
+  color:#000;
   padding:4px 10px;
   font-size:0.8rem;
   font-weight:bold;
@@ -452,6 +458,7 @@ h1 {
   box-shadow: 0 0 8px rgba(0, 255, 100, 0.6);
   text-transform: uppercase;
   animation: pulseWM 2s infinite;
+  z-index: 3;
 }
 
 @keyframes pulseWM {
@@ -504,6 +511,7 @@ h1 {
 .wmguess::before { background-image: url('wm.png'); }
 .wmtop::before { background-image: url('wm.png'); }
 .wolf::before { background-image: url('wolf.png'); }
+.prozent::before { background-image: url('10von10.png'); }
 
 /* -------------------- COINS + SHOP -------------------- */
 .top-actions {
@@ -549,6 +557,11 @@ h1 {
 .shop-button:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+footer a {
+  color: #fff;
+  text-decoration: none;
 }
 </style>
 
@@ -719,7 +732,7 @@ h1 {
       <div class="card-content">TeamQuiz Board 🧾<div class="player-count">1+</div></div>
     </a>
 
-    <a href="prozent.html" class="card imposter">
+    <a href="prozent.html" class="card prozent">
       <div class="card-content">Prozent-Rätzer 🎯<div class="player-count">2+</div></div>
     </a>
 
@@ -776,6 +789,7 @@ h1 {
       <li>Wer lügt am Besten 🔍</li>
       <li>Lüge oder Wahrheit 🤥</li>
       <li>TeamQuiz Board 🧾</li>
+      <li>Prozent-Rätzer 🎯</li>
       <li>Nightfall Village 🌙</li>
       <li>5 WM-Special Spiele⚽</li>
     </ul>
@@ -904,7 +918,7 @@ h1 {
 <script>
 /* -------------------- PREMIUM LOGIK -------------------- */
 const premiumGames = ["imposterpremium", "wolf"];
-const newGames = ["imposterpremium", "uberbieten", "these", "100quiz", "wolf"];
+const newGames = ["imposterpremium", "uberbieten", "these", "100quiz", "prozent", "wolf"];
 
 function isPremium() {
   return localStorage.getItem("premium") === "true";
@@ -995,12 +1009,12 @@ const games = [
   { name: "Duo‑Pantomime 🎬", link: "duoplay.html" },
   { name: "Lüge oder Wahrheit 🤥", link: "these.html" },
   { name: "TeamQuiz Board 🧾", link: "100quiz.html" },
+  { name: "Prozent-Rätzer 🎯", link: "prozent.html" },
   { name: "Nightfall Village 🌙", link: "wolf.html" },
   { name: "MatchMaster ⚽", link: "wm.html" },
   { name: "PlayerMaster ⭐", link: "wmhunter.html" },
   { name: "Guess the Hype 📱", link: "wmguess.html" },
   { name: "Guess Grid 🧩", link: "tictactoe.html" },
-  { name: "Prozent-Rätzer 🎯", link: "prozent.html" },
   { name: "Hilfe 💬", link: "hilfe.html" }
 ];
 
