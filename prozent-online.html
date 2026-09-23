@@ -28,6 +28,7 @@ h1 { text-align: center; color: #fff; margin-top: 25px; font-size: 2.2rem; }
   background: linear-gradient(135deg, #00eaff, #00c4d4);
   color: #000; border: none; padding: 14px 20px; border-radius: 16px;
   font-size: 1.1rem; font-weight: 900; cursor: pointer; width: 100%; margin-top: 12px;
+  box-sizing: border-box;
 }
 
 .btn-danger { background: linear-gradient(135deg, #ff4d4d, #ff2a2a); color: #fff; }
@@ -147,6 +148,7 @@ input[type=range]::-webkit-slider-thumb {
   <button class="btn btn-secondary" onclick="leaveOnlineGame()">Beenden / Startseite</button>
 </div>
 
+<!-- FIREBASE SKRIPT -->
 <script type="module" src="firebase-config.js"></script>
 
 <script>
@@ -196,34 +198,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function initOnlineGame() {
   const partyRef = window.fbRef(window.firebaseDB, `parties/${partyCode}`);
-  window.fbOnValue(partyRef, (snapshot) => {
-    if (!snapshot.exists()) {
-      alert("Party aufgelöst.");
+
+  window.fbGet(partyRef).then(snap => {
+    if (!snap.exists()) {
+      alert("Party nicht gefunden.");
       window.location.href = "startseite.html";
       return;
     }
 
-    const party = snapshot.val();
+    const party = snap.val();
     isHost = (party.hostId === myId);
 
-    if (party.players) {
-      onlinePlayersList = Object.keys(party.players).map(key => ({
-        id: key,
-        name: party.players[key].name,
-        score: (party.prozentState && party.prozentState.scores && party.prozentState.scores[key]) || 0
-      }));
-    }
-
-    if (isHost && !party.prozentState) {
+    // SOFORT den Einrichtungs-Screen anzeigen, um den Lade-Screen zu verhindern!
+    if (isHost && (!party.prozentState || party.prozentState.phase === "setup")) {
+      hideAllScreens();
+      document.getElementById("screenSetupHost").style.display = "block";
+      
+      // Zustand initialisieren, falls noch nicht vorhanden
       window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`), {
         phase: "setup",
         rounds: 5
       });
+    } else if (!isHost && (!party.prozentState || party.prozentState.phase === "setup")) {
+      hideAllScreens();
+      document.getElementById("screenOnlineWait").style.display = "block";
     }
 
-    if (party.prozentState) {
-      handleOnlineState(party.prozentState, party.players);
-    }
+    // Listener für Live-Updates
+    window.fbOnValue(partyRef, (snapshot) => {
+      if (!snapshot.exists()) {
+        alert("Party aufgelöst.");
+        window.location.href = "startseite.html";
+        return;
+      }
+
+      const pData = snapshot.val();
+      isHost = (pData.hostId === myId);
+
+      if (pData.players) {
+        onlinePlayersList = Object.keys(pData.players).map(key => ({
+          id: key,
+          name: pData.players[key].name,
+          score: (pData.prozentState && pData.prozentState.scores && pData.prozentState.scores[key]) || 0
+        }));
+      }
+
+      if (pData.prozentState) {
+        handleOnlineState(pData.prozentState, pData.players);
+      }
+    });
   });
 }
 
