@@ -287,7 +287,6 @@ input[type=range]::-webkit-slider-thumb {
 
   <h3 id="questionText" style="margin: 20px 0; font-size:1.25rem;">Frage wird geladen...</h3>
 
-  <!-- Host skip Button (Nur Online) -->
   <button id="btnSkipQuestion" class="btn btn-danger" style="display:none; padding:8px; font-size:0.85rem; margin-bottom:15px;" onclick="skipQuestionOnline()">Frage überspringen (Skip) ⏩</button>
 
   <div class="slider-container">
@@ -339,7 +338,6 @@ input[type=range]::-webkit-slider-thumb {
   <button class="btn btn-secondary" onclick="exitGame()">Beenden / Startseite</button>
 </div>
 
-<!-- FIREBASE MODUL SKRIPT -->
 <script type="module" src="firebase-config.js"></script>
 
 <script>
@@ -385,7 +383,6 @@ document.addEventListener("DOMContentLoaded", () => {
   generateNameInputs();
   document.getElementById("funFactText").innerText = funFacts[Math.floor(Math.random() * funFacts.length)];
 
-  // 1. Party-Code aus der URL oder aus dem LocalStorage abrufen
   const urlParams = new URLSearchParams(window.location.search);
   const partyParam = urlParams.get("party");
 
@@ -399,20 +396,17 @@ document.addEventListener("DOMContentLoaded", () => {
   myId = localStorage.getItem("challengeChampPlayerId") || "CC_" + Math.random().toString(36).substr(2, 8);
   myName = localStorage.getItem("challengeChampProfileName") || "Spieler";
 
-  // Falls ein Party-Code vorliegt, versuche den Online-Modus zu starten
   if (partyCode) {
     let attempts = 0;
     const checkFB = setInterval(() => {
       attempts++;
       if (window.firebaseDB) {
         clearInterval(checkFB);
-        // Prüfen, ob die Party in Firebase tatsächlich existiert
         window.fbGet(window.fbRef(window.firebaseDB, `parties/${partyCode}`)).then(snap => {
           if (snap.exists()) {
             isOnline = true;
             initOnlineMode();
           } else {
-            // Veralteter Party-Code -> Bereinigen und Offline anzeigen
             localStorage.removeItem("currentPartyCode");
             partyCode = null;
             isOnline = false;
@@ -422,7 +416,7 @@ document.addEventListener("DOMContentLoaded", () => {
           showOfflineSetup();
         });
       }
-      if (attempts > 30) { // Timeout nach 3 Sekunden
+      if (attempts > 30) {
         clearInterval(checkFB);
         showOfflineSetup();
       }
@@ -730,38 +724,55 @@ function exitGame() {
 
 /* -------------------- ONLINE MULTIPLAYER (FIREBASE) -------------------- */
 function initOnlineMode() {
-  document.getElementById("offlineSetupGroup").style.display = "none";
-
   const partyRef = window.fbRef(window.firebaseDB, `parties/${partyCode}`);
-  window.fbOnValue(partyRef, (snapshot) => {
-    if (!snapshot.exists()) {
-      alert("Party aufgelöst.");
-      localStorage.removeItem("currentPartyCode");
-      window.location.href = "startseite.html";
-      return;
-    }
-
+  
+  window.fbGet(partyRef).then(snapshot => {
+    if (!snapshot.exists()) return;
     const party = snapshot.val();
     isHost = (party.hostId === myId);
 
-    if (party.players) {
-      onlinePlayersList = Object.keys(party.players).map(key => ({
-        id: key,
-        name: party.players[key].name,
-        score: (party.prozentState && party.prozentState.scores && party.prozentState.scores[key]) || 0
-      }));
+    // Sofort richtige UI anzeigen noch bevor die Listener reagieren
+    hideAllScreens();
+    if (isHost) {
+      document.getElementById("screenSetup").style.display = "block";
+      document.getElementById("offlineSetupGroup").style.display = "none";
+      document.getElementById("setupTitle").innerText = "Party-Einstellungen (Host)";
+      document.getElementById("btnStartGame").innerText = "Party-Spiel Starten 🚀";
+    } else {
+      document.getElementById("screenOnlineWait").style.display = "block";
     }
 
-    if (isHost && !party.prozentState) {
-      window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`), {
-        phase: "setup",
-        rounds: 5
-      });
-    }
+    // Listener aktivieren
+    window.fbOnValue(partyRef, (snap) => {
+      if (!snap.exists()) {
+        alert("Party aufgelöst.");
+        localStorage.removeItem("currentPartyCode");
+        window.location.href = "startseite.html";
+        return;
+      }
 
-    if (party.prozentState) {
-      handleOnlineState(party.prozentState, party.players);
-    }
+      const pData = snap.val();
+      isHost = (pData.hostId === myId);
+
+      if (pData.players) {
+        onlinePlayersList = Object.keys(pData.players).map(key => ({
+          id: key,
+          name: pData.players[key].name,
+          score: (pData.prozentState && pData.prozentState.scores && pData.prozentState.scores[key]) || 0
+        }));
+      }
+
+      if (isHost && !pData.prozentState) {
+        window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`), {
+          phase: "setup",
+          rounds: 5
+        });
+      }
+
+      if (pData.prozentState) {
+        handleOnlineState(pData.prozentState, pData.players);
+      }
+    });
   });
 }
 
@@ -772,6 +783,7 @@ function handleOnlineState(state, players) {
     hideAllScreens();
     if (isHost) {
       document.getElementById("screenSetup").style.display = "block";
+      document.getElementById("offlineSetupGroup").style.display = "none";
       document.getElementById("setupTitle").innerText = "Party-Einstellungen (Host)";
       document.getElementById("btnStartGame").innerText = "Party-Spiel Starten 🚀";
     } else {
