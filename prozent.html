@@ -128,13 +128,8 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 /* -------------------- ANIMATIONEN -------------------- */
-.anim-fade-in {
-  animation: fadeIn 0.5s ease forwards;
-}
-
-.anim-pop {
-  animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
+.anim-fade-in { animation: fadeIn 0.5s ease forwards; }
+.anim-pop { animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(15px); }
@@ -146,7 +141,7 @@ input[type=range]::-webkit-slider-thumb {
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* -------------------- LISTENTYPEN -------------------- */
+/* -------------------- RESULT LIST -------------------- */
 .result-item {
   background: #334155;
   padding: 12px 16px;
@@ -156,13 +151,6 @@ input[type=range]::-webkit-slider-thumb {
   justify-content: space-between;
   align-items: center;
   font-weight: bold;
-  opacity: 0;
-  transform: translateX(-20px);
-  animation: slideIn 0.4s forwards;
-}
-
-@keyframes slideIn {
-  to { opacity: 1; transform: translateX(0); }
 }
 
 .rank-badge {
@@ -194,7 +182,6 @@ input[type=range]::-webkit-slider-thumb {
   align-items: center;
   justify-content: space-between;
   border-left: 6px solid #3b82f6;
-  transition: all 0.5s ease;
 }
 
 .kahoot-row:nth-child(1) { border-left-color: #ffd700; background: rgba(255,215,0,0.1); }
@@ -222,11 +209,6 @@ input[type=range]::-webkit-slider-thumb {
   padding-bottom: 10px;
   font-weight: bold;
   position: relative;
-  animation: riseUp 0.8s ease forwards;
-}
-
-@keyframes riseUp {
-  from { height: 0; opacity: 0; }
 }
 
 .podium-1 { height: 160px; background: linear-gradient(180deg, #ffd700, #b39700); color: #000; }
@@ -254,9 +236,9 @@ input[type=range]::-webkit-slider-thumb {
 
 <h1>Prozent-Rätzer 🎯</h1>
 
-<!-- SCREEN: EINSTELLUNGEN (OFFLINE) -->
-<div id="screenSetup" class="card-box anim-fade-in">
-  <h2>Spiel-Einstellungen</h2>
+<!-- SCREEN 1: EINSTELLUNGEN -->
+<div id="screenSetup" class="card-box anim-fade-in" style="display: none;">
+  <h2 id="setupTitle">Spiel-Einstellungen</h2>
   
   <div id="offlineSetupGroup">
     <label>Anzahl der Spieler:</label>
@@ -281,14 +263,14 @@ input[type=range]::-webkit-slider-thumb {
     </select>
   </div>
 
-  <button class="btn" onclick="startOfflineGame()">Spiel Starten 🚀</button>
-  <button class="btn btn-secondary" onclick="window.location.href='startseite.html'">Zurück zur Startseite</button>
+  <button class="btn" id="btnStartGame" onclick="startGame()">Spiel Starten 🚀</button>
+  <button class="btn btn-secondary" onclick="exitGame()">Zurück zur Startseite</button>
 </div>
 
-<!-- SCREEN: ONLINE WARTEN (FÜR CLIENTS ODER HOST VOR START) -->
+<!-- SCREEN 2: ONLINE WARTEN (FÜR CLIENTS) -->
 <div id="screenOnlineWait" class="card-box anim-fade-in" style="display: none;">
-  <h2 id="waitTitle">Warten auf den Host... ⏳</h2>
-  <p id="waitSubtitle">Der Host stellt die Runden ein.</p>
+  <h2>Warten auf den Host... ⏳</h2>
+  <p>Der Host wählt gerade die Runden-Anzahl aus.</p>
 
   <div class="funfact-box">
     <b>💡 Wusstest du schon?</b>
@@ -296,16 +278,16 @@ input[type=range]::-webkit-slider-thumb {
   </div>
 </div>
 
-<!-- SCREEN: FRAGE / SCHÄTZEN -->
+<!-- SCREEN 3: FRAGE / SCHÄTZEN -->
 <div id="screenGuess" class="card-box anim-fade-in" style="display: none;">
   <div style="display:flex; justify-content:space-between; color:#94a3b8; font-size:0.9rem;">
-    <span id="roundIndicator">Runde 1/5</span>
-    <span id="turnIndicator">Spieler 1 ist dran</span>
+    <span id="roundIndicator">Frage 1/5</span>
+    <span id="turnIndicator" style="color:#00eaff; font-weight:bold;">Spieler 1 ist dran</span>
   </div>
 
   <h3 id="questionText" style="margin: 20px 0; font-size:1.25rem;">Frage wird geladen...</h3>
 
-  <!-- Host controls online (Skip) -->
+  <!-- Host skip Button (Nur Online) -->
   <button id="btnSkipQuestion" class="btn btn-danger" style="display:none; padding:8px; font-size:0.85rem; margin-bottom:15px;" onclick="skipQuestionOnline()">Frage überspringen (Skip) ⏩</button>
 
   <div class="slider-container">
@@ -314,10 +296,10 @@ input[type=range]::-webkit-slider-thumb {
   </div>
 
   <button class="btn" id="btnSubmitGuess" onclick="submitGuess()">Antwort einloggen 🔒</button>
-  <p id="waitOtherPlayersMsg" style="display:none; color:#ffd700; font-weight:bold; margin-top:15px;">Warten, bis alle Spieler geantwortet haben... ⏳</p>
+  <p id="waitOtherPlayersMsg" style="display:none; color:#ffd700; font-weight:bold; margin-top:15px;">Warten, bis alle geantwortet haben... ⏳</p>
 </div>
 
-<!-- SCREEN: RUNDEN-AUSWERTUNG (STÜCK FÜR STÜCK) -->
+<!-- SCREEN 4: RUNDEN-AUSWERTUNG -->
 <div id="screenRoundResult" class="card-box anim-fade-in" style="display: none;">
   <h2>Runden-Ergebnis</h2>
   <h4 id="resultQuestionTitle" style="color:#94a3b8; font-weight:normal;"></h4>
@@ -331,7 +313,7 @@ input[type=range]::-webkit-slider-thumb {
   <button id="btnNextToTable" class="btn" style="display:none;" onclick="showLeaderboard()">Zur Tabelle 📊</button>
 </div>
 
-<!-- SCREEN: KAHOOT TABELLE -->
+<!-- SCREEN 5: KAHOOT TABELLE -->
 <div id="screenLeaderboard" class="card-box anim-fade-in" style="display: none;">
   <h2>Gesamtwertung 📊</h2>
   <p style="font-size:0.85rem; color:#94a3b8;">Weniger Punkte (Differenz) ist besser!</p>
@@ -341,7 +323,7 @@ input[type=range]::-webkit-slider-thumb {
   <button id="btnNextQuestion" class="btn" onclick="nextRound()">Nächste Frage ⏩</button>
 </div>
 
-<!-- SCREEN: ENDE & PODEST -->
+<!-- SCREEN 6: ENDE & PODEST -->
 <div id="screenGameOver" class="card-box anim-fade-in" style="display: none;">
   <h2>🏆 Endplatzierung 🏆</h2>
 
@@ -349,19 +331,19 @@ input[type=range]::-webkit-slider-thumb {
 
   <div id="remainingLeaderboard"></div>
 
-  <div id="coinRewardBox" style="background:rgba(255,215,0,0.15); border:1px solid #ffd700; padding:12px; border-radius:14px; margin: 15px 0; color:#ffd700; font-weight:bold;">
+  <div style="background:rgba(255,215,0,0.15); border:1px solid #ffd700; padding:12px; border-radius:14px; margin: 15px 0; color:#ffd700; font-weight:bold;">
     🪙 Belohnung: <span id="coinsEarnedText">+0</span> Coins erhalten!
   </div>
 
   <button id="btnReplay" class="btn" onclick="restartGame()">Erneut Spielen 🔄</button>
-  <button class="btn btn-secondary" onclick="leaveGame()">Beenden / Startseite</button>
+  <button class="btn btn-secondary" onclick="exitGame()">Beenden / Startseite</button>
 </div>
 
-<!-- FIREBASE SKRIPTE -->
+<!-- FIREBASE MODUL SKRIPT -->
 <script type="module" src="firebase-config.js"></script>
 
 <script>
-/* -------------------- FRAGEN DATABASE -------------------- */
+/* -------------------- FRAGEN & FUN FACTS -------------------- */
 const questionBank = [
   { q: "Wie viel Prozent der Weltbevölkerung sind Linkshänder?", a: 10 },
   { q: "Wie viel Prozent der Erdoberfläche sind mit Wasser bedeckt?", a: 71 },
@@ -381,42 +363,49 @@ const funFacts = [
   "Bienen können Höhen von bis zu 9.000 Metern fliegen – höher als der Mount Everest!",
   "Bananen sind krumm, weil sie der Sonne entgegenwachsen.",
   "Ein Flamingo kann nur fressen, wenn sein Kopf auf dem Kopf steht.",
-  "Das Herz eines Blauwals ist so groß wie ein VW Käfer.",
-  "Einhörner sind das offizielle Nationaltier von Schottland."
+  "Das Herz eines Blauwals ist so groß wie ein VW Käfer."
 ];
 
-/* -------------------- KERN-VARIABLEN -------------------- */
+/* -------------------- VARIABLEN -------------------- */
 let isOnline = false;
 let isHost = false;
 let partyCode = null;
 let myId = null;
 let myName = "";
 
-let offlinePlayers = []; // [{id, name, score: 0, currentGuess: 0, currentDiff: 0}]
+let offlinePlayers = [];
+let onlinePlayersList = [];
 let currentQuestionIndex = 0;
 let selectedQuestions = [];
 let maxRounds = 5;
 let currentTurnPlayerIdx = 0;
 
-/* -------------------- INITIALISIERUNG -------------------- */
+/* -------------------- BOOTSTRAP / DETEKTION -------------------- */
 document.addEventListener("DOMContentLoaded", () => {
   generateNameInputs();
-  
-  // Prüfen ob Online/Party-Modus vorliegt
+  document.getElementById("funFactText").innerText = funFacts[Math.floor(Math.random() * funFacts.length)];
+
   partyCode = localStorage.getItem("currentPartyCode");
   myId = localStorage.getItem("challengeChampPlayerId") || "CC_" + Math.random().toString(36).substr(2, 8);
   myName = localStorage.getItem("challengeChampProfileName") || "Spieler";
 
+  let fbChecked = false;
   const checkFB = setInterval(() => {
     if (window.firebaseDB && partyCode) {
       clearInterval(checkFB);
+      fbChecked = true;
       isOnline = true;
       initOnlineMode();
-    } else if (!window.firebaseDB) {
-      // Wenn nach 1 Sekunde kein Firebase -> Offline
-      setTimeout(() => clearInterval(checkFB), 1000);
     }
   }, 100);
+
+  // Nach 1.2s ohne aktive Party -> Zeige rein Offline
+  setTimeout(() => {
+    if (!fbChecked && !isOnline) {
+      clearInterval(checkFB);
+      showOfflineSetup();
+    }
+  }, 1200);
 });
 
 function generateNameInputs() {
@@ -433,8 +422,20 @@ function generateNameInputs() {
   }
 }
 
-function getRandomFunFact() {
-  return funFacts[Math.floor(Math.random() * funFacts.length)];
+function showOfflineSetup() {
+  hideAllScreens();
+  document.getElementById("screenSetup").style.display = "block";
+  document.getElementById("offlineSetupGroup").style.display = "block";
+  document.getElementById("setupTitle").innerText = "Spiel-Einstellungen (Offline)";
+  document.getElementById("btnStartGame").innerText = "Spiel Starten 🚀";
+}
+
+function startGame() {
+  if (isOnline) {
+    if (isHost) startOnlineGameHost();
+  } else {
+    startOfflineGame();
+  }
 }
 
 /* -------------------- OFFLINE SPIEL-LOGIK -------------------- */
@@ -448,10 +449,8 @@ function startOfflineGame() {
     offlinePlayers.push({ id: "p_" + i, name: pName, score: 0, currentGuess: 50, currentDiff: 0 });
   }
 
-  // Fragen zufällig mischen
   selectedQuestions = [...questionBank].sort(() => 0.5 - Math.random()).slice(0, maxRounds);
   currentQuestionIndex = 0;
-
   startOfflineTurn();
 }
 
@@ -480,7 +479,6 @@ function submitGuess() {
   const val = parseInt(document.getElementById("guessSlider").value);
 
   if (!isOnline) {
-    // OFFLINE LOGIK
     offlinePlayers[currentTurnPlayerIdx].currentGuess = val;
     currentTurnPlayerIdx++;
 
@@ -490,7 +488,6 @@ function submitGuess() {
       processOfflineRoundResults();
     }
   } else {
-    // ONLINE LOGIK
     document.getElementById("btnSubmitGuess").style.display = "none";
     document.getElementById("waitOtherPlayersMsg").style.display = "block";
 
@@ -504,10 +501,9 @@ function submitGuess() {
 function processOfflineRoundResults() {
   const q = selectedQuestions[currentQuestionIndex];
 
-  // Differenzen berechnen & Punkte aufaddieren
   offlinePlayers.forEach(p => {
     p.currentDiff = Math.abs(p.currentGuess - q.a);
-    p.score += p.currentDiff; // Weniger Differenz = Besser
+    p.score += p.currentDiff;
   });
 
   showRoundResultAnimation([...offlinePlayers], q.a, q.q);
@@ -524,16 +520,12 @@ function showRoundResultAnimation(playersArray, correctAnswer, questionText) {
   document.getElementById("correctAnswerBox").style.display = "none";
   document.getElementById("btnNextToTable").style.display = "none";
 
-  // Sortiere Spieler nach bester Differenz in DIESER Runde
   const roundRanked = [...playersArray].sort((a, b) => a.currentDiff - b.currentDiff);
 
-  // Nacheinander einblenden
   roundRanked.forEach((p, idx) => {
     setTimeout(() => {
       const item = document.createElement("div");
-      item.className = "result-item";
-      item.style.animationDelay = "0.2s";
-
+      item.className = "result-item anim-pop";
       item.innerHTML = `
         <div>
           <span class="rank-badge">${idx + 1}</span>
@@ -548,7 +540,6 @@ function showRoundResultAnimation(playersArray, correctAnswer, questionText) {
     }, (idx + 1) * 800);
   });
 
-  // Danach Lösung einblenden
   const totalDelay = (roundRanked.length + 1) * 800;
   setTimeout(() => {
     document.getElementById("correctPercentText").innerText = correctAnswer + "%";
@@ -560,7 +551,7 @@ function showRoundResultAnimation(playersArray, correctAnswer, questionText) {
   }, totalDelay);
 }
 
-/* -------------------- KAHOOT TABELLE -------------------- */
+/* -------------------- TABELLE -------------------- */
 function showLeaderboard() {
   if (isOnline && isHost) {
     window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState/phase`), "leaderboard");
@@ -577,7 +568,6 @@ function renderLeaderboardUI() {
   table.innerHTML = "";
 
   const playersList = isOnline ? onlinePlayersList : offlinePlayers;
-  // Sortieren nach Gesamtpunkten (Niedrigste Punkte stehen oben!)
   const sorted = [...playersList].sort((a, b) => a.score - b.score);
 
   sorted.forEach((p, idx) => {
@@ -612,12 +602,20 @@ function renderLeaderboardUI() {
   }
 }
 
+function nextRound() {
+  if (isOnline && isHost) {
+    hostNextRoundOnline();
+  } else if (!isOnline) {
+    nextOfflineRound();
+  }
+}
+
 function nextOfflineRound() {
   currentQuestionIndex++;
   startOfflineTurn();
 }
 
-/* -------------------- GAME OVER & PODEST -------------------- */
+/* -------------------- ENDE & PODEST -------------------- */
 function finishGame() {
   if (isOnline && isHost) {
     window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState/phase`), "gameover");
@@ -636,7 +634,6 @@ function renderGameOverUI() {
   const podiumBox = document.getElementById("podiumBox");
   podiumBox.innerHTML = "";
 
-  // Podest Plätze 2, 1, 3 aufbauen
   const podiumOrder = [sorted[1], sorted[0], sorted[2]];
   const classes = ["podium-2", "podium-1", "podium-3"];
   const crowns = ["🥈", "👑", "🥉"];
@@ -654,7 +651,6 @@ function renderGameOverUI() {
     }
   });
 
-  // Restliche Plätze
   const remainingBox = document.getElementById("remainingLeaderboard");
   remainingBox.innerHTML = "";
   if (sorted.length > 3) {
@@ -666,33 +662,28 @@ function renderGameOverUI() {
     });
   }
 
-  // Coin Belohnung verrechnen
   let coinsEarned = 0;
   if (!isOnline) {
     coinsEarned = maxRounds * 15;
   } else {
-    coinsEarned = 10; // Basis
+    coinsEarned = 10;
     const myRank = sorted.findIndex(p => p.id === myId) + 1;
     if (myRank === 1) coinsEarned += 25;
     else if (myRank === 2) coinsEarned += 20;
     else if (myRank === 3) coinsEarned += 15;
   }
 
-  addCoins(coinsEarned);
+  let currentCoins = parseInt(localStorage.getItem("teamMasterCoins") || "0", 10);
+  currentCoins += coinsEarned;
+  localStorage.setItem("teamMasterCoins", currentCoins);
+
   document.getElementById("coinsEarnedText").innerText = "+" + coinsEarned;
 
-  // Buttons Online anpassen
   if (isOnline) {
     document.getElementById("btnReplay").style.display = isHost ? "block" : "none";
   } else {
     document.getElementById("btnReplay").style.display = "block";
   }
-}
-
-function addCoins(amount) {
-  let currentCoins = parseInt(localStorage.getItem("teamMasterCoins") || "0", 10);
-  currentCoins += amount;
-  localStorage.setItem("teamMasterCoins", currentCoins);
 }
 
 function restartGame() {
@@ -703,28 +694,24 @@ function restartGame() {
     });
     return;
   }
-  hideAllScreens();
-  document.getElementById("screenSetup").style.display = "block";
+  showOfflineSetup();
 }
 
-function leaveGame() {
+function exitGame() {
   if (isOnline && isHost) {
     window.fbRemove(window.fbRef(window.firebaseDB, `parties/${partyCode}`));
   }
   window.location.href = "startseite.html";
 }
 
-/* -------------------- ONLINE MULTIPLAYER LOGIK (FIREBASE) -------------------- */
-let onlinePlayersList = [];
-
+/* -------------------- ONLINE MULTIPLAYER (FIREBASE) -------------------- */
 function initOnlineMode() {
   document.getElementById("offlineSetupGroup").style.display = "none";
-  document.getElementById("funFactText").innerText = getRandomFunFact();
 
   const partyRef = window.fbRef(window.firebaseDB, `parties/${partyCode}`);
   window.fbOnValue(partyRef, (snapshot) => {
     if (!snapshot.exists()) {
-      alert("Die Party wurde aufgelöst.");
+      alert("Party aufgelöst.");
       window.location.href = "startseite.html";
       return;
     }
@@ -732,7 +719,6 @@ function initOnlineMode() {
     const party = snapshot.val();
     isHost = (party.hostId === myId);
 
-    // Spielerliste synchronisieren
     if (party.players) {
       onlinePlayersList = Object.keys(party.players).map(key => ({
         id: key,
@@ -741,7 +727,6 @@ function initOnlineMode() {
       }));
     }
 
-    // Falls Host, State initialisieren
     if (isHost && !party.prozentState) {
       window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`), {
         phase: "setup",
@@ -762,9 +747,8 @@ function handleOnlineState(state, players) {
     hideAllScreens();
     if (isHost) {
       document.getElementById("screenSetup").style.display = "block";
-      document.querySelector("#screenSetup h2").innerText = "Party-Einstellungen (Host)";
-      document.querySelector("#screenSetup .btn").innerText = "Party-Spiel Starten 🚀";
-      document.querySelector("#screenSetup .btn").onclick = startOnlineGameHost;
+      document.getElementById("setupTitle").innerText = "Party-Einstellungen (Host)";
+      document.getElementById("btnStartGame").innerText = "Party-Spiel Starten 🚀";
     } else {
       document.getElementById("screenOnlineWait").style.display = "block";
     }
@@ -779,7 +763,6 @@ function handleOnlineState(state, players) {
     document.getElementById("turnIndicator").innerText = `Alle Spieler raten 🌐`;
     document.getElementById("questionText").innerText = q.q;
 
-    // Prüfen ob bereits geantwortet
     const myGuessObj = state.guesses && state.guesses[myId];
     if (myGuessObj) {
       document.getElementById("btnSubmitGuess").style.display = "none";
@@ -792,7 +775,6 @@ function handleOnlineState(state, players) {
       document.getElementById("btnSubmitGuess").innerText = "Antwort einloggen 🔒";
     }
 
-    // Prüfen ob Host zur Auswertung übergehen kann (alle geantwortet)
     if (isHost && state.guesses) {
       const answeredCount = Object.keys(state.guesses).length;
       const totalCount = Object.keys(players).length;
@@ -817,8 +799,6 @@ function handleOnlineState(state, players) {
 
 function startOnlineGameHost() {
   maxRounds = parseInt(document.getElementById("roundCountSelect").value);
-  
-  // Fragen-Reihenfolge generieren
   const questionIndices = Array.from(Array(questionBank.length).keys()).sort(() => 0.5 - Math.random());
 
   window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`), {
@@ -834,7 +814,6 @@ function startOnlineGameHost() {
 
 function skipQuestionOnline() {
   if (!isHost) return;
-  
   window.fbGet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`)).then(snap => {
     const state = snap.val();
     const nextQIdx = (state.currentQIdx + 1) % questionBank.length;
