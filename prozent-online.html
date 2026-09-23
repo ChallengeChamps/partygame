@@ -6,15 +6,26 @@
 <title>Prozent-Rätzer Online 🎯 - ChallengeChamp</title>
 
 <style>
+/* -------------------- GLOBAL & DESIGNS -------------------- */
 body {
   margin: 0; padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #0f172a; color: #fff;
+  background-image: url('imposter.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #fff;
   min-height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
 }
 
-h1 { text-align: center; color: #fff; margin-top: 25px; font-size: 2.2rem; }
+h1 { 
+  text-align: center; 
+  color: #fff; 
+  margin-top: 25px; 
+  font-size: 2.2rem; 
+  text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
 
 .card-box {
   background: rgba(30, 41, 59, 0.9);
@@ -22,35 +33,70 @@ h1 { text-align: center; color: #fff; margin-top: 25px; font-size: 2.2rem; }
   border-radius: 22px; padding: 25px; width: 90%; max-width: 450px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin: 20px auto; text-align: center;
   box-sizing: border-box;
+  border: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
 }
 
+/* -------------------- BUTTONS & INPUTS -------------------- */
 .btn {
   background: linear-gradient(135deg, #00eaff, #00c4d4);
   color: #000; border: none; padding: 14px 20px; border-radius: 16px;
   font-size: 1.1rem; font-weight: 900; cursor: pointer; width: 100%; margin-top: 12px;
   box-sizing: border-box;
+  box-shadow: 0 4px 15px rgba(0,234,255,0.3);
+  transition: all 0.2s ease;
 }
 
-.btn-danger { background: linear-gradient(135deg, #ff4d4d, #ff2a2a); color: #fff; }
-.btn-secondary { background: #334155; color: #fff; }
+.btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0,234,255,0.5);
+}
+
+.btn-danger { background: linear-gradient(135deg, #ff4d4d, #ff2a2a); color: #fff; box-shadow: 0 4px 15px rgba(255,77,77,0.3); }
+.btn-secondary { background: #334155; color: #fff; box-shadow: none; }
 
 select {
   width: 100%; padding: 12px; border-radius: 12px;
   border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 1rem; margin-top: 8px;
+  outline: none;
+  text-align: center;
 }
 
-.slider-val { font-size: 2.8rem; font-weight: 900; color: #00eaff; margin: 10px 0; }
+.slider-container { margin: 25px 0; }
+
+.slider-val { 
+  font-size: 2.8rem; font-weight: 900; color: #00eaff; 
+  text-shadow: 0 0 15px rgba(0,234,255,0.6);
+  margin: 10px 0; 
+}
 
 input[type=range] {
-  -webkit-appearance: none; width: 100%; background: #334155; height: 12px; border-radius: 6px;
+  -webkit-appearance: none; width: 100%; background: #334155; height: 12px; border-radius: 6px; outline: none;
 }
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #00eaff; cursor: pointer;
+  box-shadow: 0 0 10px #00eaff;
 }
 
+/* -------------------- ANIMATIONEN -------------------- */
+.anim-fade-in { animation: fadeIn 0.5s ease forwards; }
+.anim-pop { animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popUp {
+  0% { opacity: 0; transform: scale(0.6); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* -------------------- ERGEBNISSE & TABELLE -------------------- */
 .result-item {
-  background: #334155; padding: 12px; border-radius: 12px; margin: 10px 0;
-  display: flex; justify-content: space-between; font-weight: bold;
+  background: #334155; padding: 12px 16px; border-radius: 12px; margin: 10px 0;
+  display: flex; justify-content: space-between; align-items: center; font-weight: bold;
 }
 
 .kahoot-row {
@@ -58,13 +104,18 @@ input[type=range]::-webkit-slider-thumb {
   display: flex; align-items: center; justify-content: space-between; border-left: 6px solid #3b82f6;
 }
 
+.kahoot-row:nth-child(1) { border-left-color: #ffd700; background: rgba(255,215,0,0.1); }
+.kahoot-row:nth-child(2) { border-left-color: #c0c0c0; background: rgba(192,192,192,0.1); }
+.kahoot-row:nth-child(3) { border-left-color: #cd7f32; background: rgba(205,127,50,0.1); }
+
+/* -------------------- PODEST -------------------- */
 .podium-container { display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin: 30px 0 20px 0; height: 180px; }
-.podium-step { width: 30%; background: #334155; border-radius: 12px 12px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 10px; font-weight: bold; }
+.podium-step { width: 30%; background: linear-gradient(180deg, #334155, #1e293b); border-radius: 12px 12px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 10px; font-weight: bold; position: relative; }
 .podium-1 { height: 160px; background: linear-gradient(180deg, #ffd700, #b39700); color: #000; }
 .podium-2 { height: 120px; background: linear-gradient(180deg, #c0c0c0, #7f7f7f); color: #000; }
 .podium-3 { height: 90px; background: linear-gradient(180deg, #cd7f32, #8c5622); color: #fff; }
 
-.funfact-box { background: rgba(0, 234, 255, 0.1); border: 1px dashed #00eaff; padding: 15px; border-radius: 14px; margin-top: 15px; }
+.funfact-box { background: rgba(0, 234, 255, 0.1); border: 1px dashed #00eaff; padding: 15px; border-radius: 14px; margin-top: 15px; font-size: 0.95rem; line-height: 1.4; }
 </style>
 </head>
 <body>
@@ -72,7 +123,7 @@ input[type=range]::-webkit-slider-thumb {
 <h1>Prozent-Rätzer Online 🌐</h1>
 
 <!-- SCREEN 1: EINSTELLUNGEN (NUR HOST) -->
-<div id="screenSetupHost" class="card-box" style="display: none;">
+<div id="screenSetupHost" class="card-box anim-fade-in" style="display: none;">
   <h2>Party-Einstellungen (Host)</h2>
   <label>Runden-Anzahl (Fragen):</label>
   <select id="roundCountSelect">
@@ -84,8 +135,8 @@ input[type=range]::-webkit-slider-thumb {
   <button class="btn" onclick="startOnlineGameHost()">Party-Spiel Starten 🚀</button>
 </div>
 
-<!-- SCREEN 2: WARTEN (NUR MITSSPIELER) -->
-<div id="screenOnlineWait" class="card-box" style="display: none;">
+<!-- SCREEN 2: WARTEN (NUR MITSPIELER) -->
+<div id="screenOnlineWait" class="card-box anim-fade-in" style="display: none;">
   <h2>Warten auf den Host... ⏳</h2>
   <p>Der Host wählt gerade die Runden-Anzahl aus.</p>
   <div class="funfact-box">
@@ -95,7 +146,7 @@ input[type=range]::-webkit-slider-thumb {
 </div>
 
 <!-- SCREEN 3: FRAGE / SCHÄTZEN -->
-<div id="screenGuess" class="card-box" style="display: none;">
+<div id="screenGuess" class="card-box anim-fade-in" style="display: none;">
   <div style="display:flex; justify-content:space-between; color:#94a3b8; font-size:0.9rem;">
     <span id="roundIndicator">Frage 1/5</span>
     <span>Alle Spieler raten 🌐</span>
@@ -115,13 +166,13 @@ input[type=range]::-webkit-slider-thumb {
 </div>
 
 <!-- SCREEN 4: RUNDEN-AUSWERTUNG -->
-<div id="screenRoundResult" class="card-box" style="display: none;">
+<div id="screenRoundResult" class="card-box anim-fade-in" style="display: none;">
   <h2>Runden-Ergebnis</h2>
   <h4 id="resultQuestionTitle" style="color:#94a3b8; font-weight:normal;"></h4>
 
   <div id="answersList" style="margin: 20px 0;"></div>
 
-  <div id="correctAnswerBox" style="display:none; background:rgba(0,234,255,0.15); border:2px solid #00eaff; padding:15px; border-radius:16px;">
+  <div id="correctAnswerBox" class="anim-pop" style="display:none; background:rgba(0,234,255,0.15); border:2px solid #00eaff; padding:15px; border-radius:16px;">
     Tatsächliche Lösung: <b id="correctPercentText" style="font-size:1.8rem; color:#00eaff;">0%</b>
   </div>
 
@@ -129,14 +180,14 @@ input[type=range]::-webkit-slider-thumb {
 </div>
 
 <!-- SCREEN 5: KAHOOT TABELLE -->
-<div id="screenLeaderboard" class="card-box" style="display: none;">
+<div id="screenLeaderboard" class="card-box anim-fade-in" style="display: none;">
   <h2>Gesamtwertung 📊</h2>
   <div id="kahootTable" style="margin: 20px 0;"></div>
   <button id="btnNextQuestion" class="btn" style="display:none;" onclick="hostNextRoundOnline()">Nächste Frage ⏩</button>
 </div>
 
 <!-- SCREEN 6: ENDE & PODEST -->
-<div id="screenGameOver" class="card-box" style="display: none;">
+<div id="screenGameOver" class="card-box anim-fade-in" style="display: none;">
   <h2>🏆 Endplatzierung 🏆</h2>
   <div class="podium-container" id="podiumBox"></div>
   <div id="remainingLeaderboard"></div>
@@ -187,7 +238,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   partyCode = urlParams.get("party") || localStorage.getItem("currentPartyCode");
   
-  // Player ID aus der URL oder SessionStorage
   myId = urlParams.get("player") || sessionStorage.getItem("cc_player_id") || localStorage.getItem("challengeChampPlayerId");
   myName = sessionStorage.getItem("cc_player_name") || localStorage.getItem("challengeChampProfileName") || "Spieler";
 
@@ -210,11 +260,8 @@ function initOnlineGame() {
     }
 
     const party = snap.val();
-    
-    // EXAKTER CHECK OB HOST:
     isHost = (party.hostId === myId);
 
-    // SOFORT DIE RICHTIGE MASKE ANZEIGEN (Vortäuschen des Lade-Zustands vermeiden)
     hideAllScreens();
     if (isHost) {
       document.getElementById("screenSetupHost").style.display = "block";
@@ -222,7 +269,6 @@ function initOnlineGame() {
       document.getElementById("screenOnlineWait").style.display = "block";
     }
 
-    // LIVE LISTENER AKTIVIEREN
     window.fbOnValue(partyRef, (snapshot) => {
       if (!snapshot.exists()) {
         alert("Party aufgelöst.");
@@ -241,7 +287,6 @@ function initOnlineGame() {
         }));
       }
 
-      // Zustand verarbeiten falls gestartet
       if (pData.prozentState && pData.prozentState.phase !== "setup") {
         handleOnlineState(pData.prozentState, pData.players);
       }
@@ -272,7 +317,6 @@ function handleOnlineState(state, players) {
       document.getElementById("sliderValue").innerText = "50%";
     }
 
-    // Wenn Host & alle geantwortet haben -> Automatisch auswerten
     if (isHost && state.guesses) {
       const answeredCount = Object.keys(state.guesses).length;
       const totalCount = Object.keys(players).length;
@@ -370,7 +414,7 @@ function showRoundResultUI(playersArray, correctAnswer, questionText) {
   roundRanked.forEach((p, idx) => {
     setTimeout(() => {
       const item = document.createElement("div");
-      item.className = "result-item";
+      item.className = "result-item anim-pop";
       item.innerHTML = `<div>#${idx + 1} ${p.name}</div><div><b>${p.currentGuess}%</b> <span style="color:#ff4757;">(-${p.currentDiff})</span></div>`;
       answersList.appendChild(item);
     }, (idx + 1) * 800);
@@ -398,7 +442,8 @@ function renderLeaderboardUI(currentRound) {
 
   sorted.forEach((p, idx) => {
     const row = document.createElement("div");
-    row.className = "kahoot-row";
+    row.className = "kahoot-row anim-pop";
+    row.style.animationDelay = (idx * 0.15) + "s";
     row.innerHTML = `<div><b>#${idx + 1}</b> ${p.name}</div><b>${p.score} Pkt.</b>`;
     table.appendChild(row);
   });
