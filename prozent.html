@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prozent-Rätzer 🎯</title>
+<title>Prozent-Rätzer 🎯 - ChallengeChamp</title>
 
 <style>
 /* -------------------- GLOBAL & DESIGNS -------------------- */
@@ -385,27 +385,51 @@ document.addEventListener("DOMContentLoaded", () => {
   generateNameInputs();
   document.getElementById("funFactText").innerText = funFacts[Math.floor(Math.random() * funFacts.length)];
 
-  partyCode = localStorage.getItem("currentPartyCode");
+  // 1. Party-Code aus der URL oder aus dem LocalStorage abrufen
+  const urlParams = new URLSearchParams(window.location.search);
+  const partyParam = urlParams.get("party");
+
+  if (partyParam) {
+    partyCode = partyParam;
+    localStorage.setItem("currentPartyCode", partyParam);
+  } else {
+    partyCode = localStorage.getItem("currentPartyCode");
+  }
+
   myId = localStorage.getItem("challengeChampPlayerId") || "CC_" + Math.random().toString(36).substr(2, 8);
   myName = localStorage.getItem("challengeChampProfileName") || "Spieler";
 
-  let fbChecked = false;
-  const checkFB = setInterval(() => {
-    if (window.firebaseDB && partyCode) {
-      clearInterval(checkFB);
-      fbChecked = true;
-      isOnline = true;
-      initOnlineMode();
-    }
-  }, 100);
-
-  // Nach 1.2s ohne aktive Party -> Zeige rein Offline
-  setTimeout(() => {
-    if (!fbChecked && !isOnline) {
-      clearInterval(checkFB);
-      showOfflineSetup();
-    }
-  }, 1200);
+  // Falls ein Party-Code vorliegt, versuche den Online-Modus zu starten
+  if (partyCode) {
+    let attempts = 0;
+    const checkFB = setInterval(() => {
+      attempts++;
+      if (window.firebaseDB) {
+        clearInterval(checkFB);
+        // Prüfen, ob die Party in Firebase tatsächlich existiert
+        window.fbGet(window.fbRef(window.firebaseDB, `parties/${partyCode}`)).then(snap => {
+          if (snap.exists()) {
+            isOnline = true;
+            initOnlineMode();
+          } else {
+            // Veralteter Party-Code -> Bereinigen und Offline anzeigen
+            localStorage.removeItem("currentPartyCode");
+            partyCode = null;
+            isOnline = false;
+            showOfflineSetup();
+          }
+        }).catch(() => {
+          showOfflineSetup();
+        });
+      }
+      if (attempts > 30) { // Timeout nach 3 Sekunden
+        clearInterval(checkFB);
+        showOfflineSetup();
+      }
+    }, 100);
+  } else {
+    showOfflineSetup();
+  }
 });
 
 function generateNameInputs() {
@@ -712,6 +736,7 @@ function initOnlineMode() {
   window.fbOnValue(partyRef, (snapshot) => {
     if (!snapshot.exists()) {
       alert("Party aufgelöst.");
+      localStorage.removeItem("currentPartyCode");
       window.location.href = "startseite.html";
       return;
     }
