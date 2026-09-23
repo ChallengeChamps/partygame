@@ -20,12 +20,12 @@ window.CHALLENGE_CHAMP_CONFIG = {
     },
     {
       id: "spiel3",
-      title: "Ich habe noch nie...",
-      description: "Enthülle die lustigsten Geheimnisse deiner Gruppe.",
-      icon: "🍹",
+      title: "Prozent-Rätzer",
+      description: "Enthülle wer von euch am besten Schätzen kann.",
+      icon: "🎯",
       minPlayers: 2,
       maxPlayers: 12,
-      url: "habnochnie.html"
+      url: "prozent.html"
     }
   ]
 };
