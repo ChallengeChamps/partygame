@@ -25,7 +25,7 @@ window.CHALLENGE_CHAMP_CONFIG = {
       icon: "🎯",
       minPlayers: 2,
       maxPlayers: 12,
-      url: "prozent.html"
+      url: "prozent-online.html"
     }
   ]
 };
