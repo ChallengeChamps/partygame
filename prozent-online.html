@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prozent-Rätzer Online 🎯 - ChallengeChamp</title>
+<title>Prozent-Rätzer Online 🎯</title>
 
 <style>
 /* -------------------- GLOBAL & DESIGNS -------------------- */
@@ -214,7 +214,7 @@ const questionBank = [
   { q: "Wie viel Prozent aller Katzen sind weiß?", a: 5 },
   { q: "Wie viel Prozent des geernteten Kaffees weltweit ist Arabica-Kaffee?", a: 60 },
   { q: "Wie viel Prozent der Bevölkerung hat die Blutgruppe 0 Positiv?", a: 38 },
-  { q: "Wie viel Prozent des Sauerstoffs auf der Erde erzeugen die Ozeane?", a: 50 },
+  { q: "Wie viel Prozent der Bevölkerung erzeugen die Ozeane?", a: 50 },
   { q: "Wie viel Prozent der Bevölkerung träumt manchmal in Schwarz-Weiß?", a: 12 },
   { q: "Wie viel Prozent der Eisberge befinden sich unter der Wasseroberfläche?", a: 90 }
 ];
@@ -231,6 +231,7 @@ let myName = "";
 let isHost = false;
 let onlinePlayersList = [];
 let maxRounds = 5;
+let currentPhaseTracker = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("funFactText").innerText = funFacts[Math.floor(Math.random() * funFacts.length)];
@@ -271,7 +272,7 @@ function initOnlineGame() {
 
     window.fbOnValue(partyRef, (snapshot) => {
       if (!snapshot.exists()) {
-        alert("Party aufgelöst.");
+        alert("Party wurde aufgelöst.");
         window.location.href = "startseite.html";
         return;
       }
@@ -298,6 +299,9 @@ function handleOnlineState(state, players) {
   maxRounds = state.rounds || 5;
 
   if (state.phase === "guess") {
+    const isNewPhase = (currentPhaseTracker !== "guess_" + state.currentRound);
+    currentPhaseTracker = "guess_" + state.currentRound;
+
     hideAllScreens();
     document.getElementById("screenGuess").style.display = "block";
     document.getElementById("btnSkipQuestion").style.display = isHost ? "block" : "none";
@@ -313,8 +317,12 @@ function handleOnlineState(state, players) {
     } else {
       document.getElementById("btnSubmitGuess").style.display = "block";
       document.getElementById("waitOtherPlayersMsg").style.display = "none";
-      document.getElementById("guessSlider").value = 50;
-      document.getElementById("sliderValue").innerText = "50%";
+      
+      // FIX: Nur wenn eine komplett NEUE Runde beginnt, stellen wir den Slider auf 50%
+      if (isNewPhase) {
+        document.getElementById("guessSlider").value = 50;
+        document.getElementById("sliderValue").innerText = "50%";
+      }
     }
 
     if (isHost && state.guesses) {
@@ -327,12 +335,15 @@ function handleOnlineState(state, players) {
     }
   }
   else if (state.phase === "roundResult") {
+    currentPhaseTracker = "roundResult_" + state.currentRound;
     showRoundResultUI(state.lastRoundPlayers, state.lastCorrectAns, state.lastQuestionText);
   }
   else if (state.phase === "leaderboard") {
+    currentPhaseTracker = "leaderboard_" + state.currentRound;
     renderLeaderboardUI(state.currentRound);
   }
   else if (state.phase === "gameover") {
+    currentPhaseTracker = "gameover";
     renderGameOverUI();
   }
 }
@@ -529,10 +540,9 @@ function restartOnlineGameHost() {
   });
 }
 
+// FIX: Beim Verlassen schmeißen JEDER (Host oder Mitspieler) die Party raus
 function leaveOnlineGame() {
-  if (isHost) {
-    window.fbRemove(window.fbRef(window.firebaseDB, `parties/${partyCode}`));
-  }
+  window.fbRemove(window.fbRef(window.firebaseDB, `parties/${partyCode}`));
   window.location.href = "startseite.html";
 }
 
