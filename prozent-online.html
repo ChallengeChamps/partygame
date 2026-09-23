@@ -71,7 +71,7 @@ input[type=range]::-webkit-slider-thumb {
 
 <h1>Prozent-Rätzer Online 🌐</h1>
 
-<!-- SCREEN: EINSTELLUNGEN (HOST) -->
+<!-- SCREEN 1: EINSTELLUNGEN (NUR HOST) -->
 <div id="screenSetupHost" class="card-box" style="display: none;">
   <h2>Party-Einstellungen (Host)</h2>
   <label>Runden-Anzahl (Fragen):</label>
@@ -79,21 +79,22 @@ input[type=range]::-webkit-slider-thumb {
     <option value="3">3 Runden</option>
     <option value="5" selected>5 Runden</option>
     <option value="7">7 Runden</option>
+    <option value="10">10 Runden</option>
   </select>
   <button class="btn" onclick="startOnlineGameHost()">Party-Spiel Starten 🚀</button>
 </div>
 
-<!-- SCREEN: WARTEN (MITSSPIELER) -->
+<!-- SCREEN 2: WARTEN (NUR MITSSPIELER) -->
 <div id="screenOnlineWait" class="card-box" style="display: none;">
   <h2>Warten auf den Host... ⏳</h2>
-  <p>Der Host wählt gerade die Runden-Anzahl.</p>
+  <p>Der Host wählt gerade die Runden-Anzahl aus.</p>
   <div class="funfact-box">
     <b>💡 Wusstest du schon?</b>
     <p id="funFactText">Lade Fun Fact...</p>
   </div>
 </div>
 
-<!-- SCREEN: FRAGE / SCHÄTZEN -->
+<!-- SCREEN 3: FRAGE / SCHÄTZEN -->
 <div id="screenGuess" class="card-box" style="display: none;">
   <div style="display:flex; justify-content:space-between; color:#94a3b8; font-size:0.9rem;">
     <span id="roundIndicator">Frage 1/5</span>
@@ -113,7 +114,7 @@ input[type=range]::-webkit-slider-thumb {
   <p id="waitOtherPlayersMsg" style="display:none; color:#ffd700; font-weight:bold; margin-top:15px;">Warten, bis alle geantwortet haben... ⏳</p>
 </div>
 
-<!-- SCREEN: RUNDEN-AUSWERTUNG -->
+<!-- SCREEN 4: RUNDEN-AUSWERTUNG -->
 <div id="screenRoundResult" class="card-box" style="display: none;">
   <h2>Runden-Ergebnis</h2>
   <h4 id="resultQuestionTitle" style="color:#94a3b8; font-weight:normal;"></h4>
@@ -127,14 +128,14 @@ input[type=range]::-webkit-slider-thumb {
   <button id="btnNextToTable" class="btn" style="display:none;" onclick="showLeaderboardHost()">Zur Tabelle 📊</button>
 </div>
 
-<!-- SCREEN: KAHOOT TABELLE -->
+<!-- SCREEN 5: KAHOOT TABELLE -->
 <div id="screenLeaderboard" class="card-box" style="display: none;">
   <h2>Gesamtwertung 📊</h2>
   <div id="kahootTable" style="margin: 20px 0;"></div>
   <button id="btnNextQuestion" class="btn" style="display:none;" onclick="hostNextRoundOnline()">Nächste Frage ⏩</button>
 </div>
 
-<!-- SCREEN: ENDE & PODEST -->
+<!-- SCREEN 6: ENDE & PODEST -->
 <div id="screenGameOver" class="card-box" style="display: none;">
   <h2>🏆 Endplatzierung 🏆</h2>
   <div class="podium-container" id="podiumBox"></div>
@@ -185,8 +186,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const urlParams = new URLSearchParams(window.location.search);
   partyCode = urlParams.get("party") || localStorage.getItem("currentPartyCode");
-  myId = localStorage.getItem("challengeChampPlayerId");
-  myName = localStorage.getItem("challengeChampProfileName") || "Spieler";
+  
+  // Player ID aus der URL oder SessionStorage
+  myId = urlParams.get("player") || sessionStorage.getItem("cc_player_id") || localStorage.getItem("challengeChampPlayerId");
+  myName = sessionStorage.getItem("cc_player_name") || localStorage.getItem("challengeChampProfileName") || "Spieler";
 
   const checkFB = setInterval(() => {
     if (window.firebaseDB && partyCode) {
@@ -207,24 +210,19 @@ function initOnlineGame() {
     }
 
     const party = snap.val();
+    
+    // EXAKTER CHECK OB HOST:
     isHost = (party.hostId === myId);
 
-    // SOFORT den Einrichtungs-Screen anzeigen, um den Lade-Screen zu verhindern!
-    if (isHost && (!party.prozentState || party.prozentState.phase === "setup")) {
-      hideAllScreens();
+    // SOFORT DIE RICHTIGE MASKE ANZEIGEN (Vortäuschen des Lade-Zustands vermeiden)
+    hideAllScreens();
+    if (isHost) {
       document.getElementById("screenSetupHost").style.display = "block";
-      
-      // Zustand initialisieren, falls noch nicht vorhanden
-      window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`), {
-        phase: "setup",
-        rounds: 5
-      });
-    } else if (!isHost && (!party.prozentState || party.prozentState.phase === "setup")) {
-      hideAllScreens();
+    } else {
       document.getElementById("screenOnlineWait").style.display = "block";
     }
 
-    // Listener für Live-Updates
+    // LIVE LISTENER AKTIVIEREN
     window.fbOnValue(partyRef, (snapshot) => {
       if (!snapshot.exists()) {
         alert("Party aufgelöst.");
@@ -243,7 +241,8 @@ function initOnlineGame() {
         }));
       }
 
-      if (pData.prozentState) {
+      // Zustand verarbeiten falls gestartet
+      if (pData.prozentState && pData.prozentState.phase !== "setup") {
         handleOnlineState(pData.prozentState, pData.players);
       }
     });
@@ -253,15 +252,7 @@ function initOnlineGame() {
 function handleOnlineState(state, players) {
   maxRounds = state.rounds || 5;
 
-  if (state.phase === "setup") {
-    hideAllScreens();
-    if (isHost) {
-      document.getElementById("screenSetupHost").style.display = "block";
-    } else {
-      document.getElementById("screenOnlineWait").style.display = "block";
-    }
-  } 
-  else if (state.phase === "guess") {
+  if (state.phase === "guess") {
     hideAllScreens();
     document.getElementById("screenGuess").style.display = "block";
     document.getElementById("btnSkipQuestion").style.display = isHost ? "block" : "none";
@@ -281,6 +272,7 @@ function handleOnlineState(state, players) {
       document.getElementById("sliderValue").innerText = "50%";
     }
 
+    // Wenn Host & alle geantwortet haben -> Automatisch auswerten
     if (isHost && state.guesses) {
       const answeredCount = Object.keys(state.guesses).length;
       const totalCount = Object.keys(players).length;
