@@ -413,7 +413,7 @@
     .progress-fill { height: 100%; background: linear-gradient(90deg, #111827, #6b7280); border-radius: 20px; transition: width .4s ease; }
     .next-milestone { color: #777; font-size: .78rem; margin-top: 8px; }
 
-    /* ---------------- MEILENSTEINE ---------------- */
+    /* ---------------- MEILENSTEINE & ERFOLGE ---------------- */
 
     .milestone-group { margin-bottom: 25px; }
     .milestone-group-title { font-size: 1.15rem; font-weight: 900; margin-bottom: 12px; }
@@ -435,12 +435,14 @@
     .global-milestone-inner, .game-milestone-inner { min-height: 0; overflow: hidden; }
 
     .milestone-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-    .milestone { border-radius: 16px; padding: 15px; border: 2px solid #e5e7eb; background: #f9fafb; text-align: center; position: relative; }
+    .milestone { border-radius: 16px; padding: 15px; border: 2px solid #e5e7eb; background: #f9fafb; text-align: center; position: relative; cursor: pointer; transition: transform .2s ease; }
+    .milestone:hover { transform: translateY(-2px); }
     .milestone.unlocked { border-color: #f0b400; background: linear-gradient(135deg, #fff8d6, #fff); box-shadow: 0 4px 15px rgba(255,190,0,.15); }
-    .milestone.locked { filter: grayscale(1); opacity: .45; }
-    .milestone-icon { font-size: 2rem; margin-bottom: 7px; }
+    .milestone.locked { filter: grayscale(1); opacity: .55; }
+    .milestone-game-tag { font-size: .75rem; font-weight: 900; color: #4b5563; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .milestone-icon { font-size: 2rem; margin-bottom: 5px; }
     .milestone-name { font-weight: 900; font-size: .85rem; }
-    .milestone-time { color: #777; font-size: .75rem; margin-top: 4px; }
+    .milestone-time { color: #777; font-size: .75rem; margin-top: 6px; }
     .milestone-lock { position: absolute; top: 6px; right: 8px; font-size: .7rem; }
 
     /* ---------------- SUCHE ---------------- */
@@ -607,13 +609,13 @@
     </div>
   </section>
 
-  <!-- MEILENSTEINE -->
+  <!-- MEILENSTEINE & ERFOLGE -->
   <section class="section-card">
-    <div class="section-title">🏆 Meilensteine</div>
-    <div class="section-subtitle">Spiele länger und schalte neue Symbole frei.</div>
+    <div class="section-title">🏆 Meilensteine & Erfolge</div>
+    <div class="section-subtitle">Spiele länger, schaffe Erfolge und schalte Symbole frei.</div>
 
     <div class="milestone-group">
-      <div class="milestone-group-title">🌍 Gesamtspielzeit</div>
+      <div class="milestone-group-title">🌍 Gesamtspielzeit (Automatisch per Spielzeit)</div>
       <div class="global-milestone-section" id="globalMilestoneSection">
         <button class="global-milestone-toggle" onclick="toggleGlobalMilestones()">
           <div class="milestone-toggle-left">
@@ -631,7 +633,12 @@
     </div>
 
     <div class="milestone-group">
-      <div class="milestone-group-title">🎮 Meilensteine pro Spiel</div>
+      <div class="milestone-group-title">🎮 Digital messbare Spiel-Erfolge</div>
+      <div class="milestone-grid" id="gameAchievementsGrid"></div>
+    </div>
+
+    <div class="milestone-group">
+      <div class="milestone-group-title">⏱️ Meilensteine pro Spiel</div>
       <div id="gameMilestones"></div>
     </div>
   </section>
@@ -679,6 +686,30 @@
   </div>
 </div>
 
+<!-- CODE EINGABE POPUP (Ausschließlich für Code-Symbole) -->
+<div class="popup-overlay" id="codeModal">
+  <div class="popup">
+    <h2 id="codeModalTitle">🔑 Code eingeben</h2>
+    <p id="codeModalDesc" style="font-size:0.9rem; color:#555; text-align:center;">Gib deinen Freischalt-Code ein.</p>
+    <input type="text" class="popup-input" id="codeModalInput" placeholder="Code eingeben...">
+    <div class="popup-buttons">
+      <button class="popup-button popup-cancel" onclick="closePopup('codeModal')">Abbrechen</button>
+      <button class="popup-button popup-confirm" onclick="submitCode()">Freischalten 🔓</button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP: ERFOLG-ERKLÄRUNG -->
+<div class="popup-overlay" id="achievementInfoModal">
+  <div class="popup" style="text-align: center;">
+    <div id="achInfoIcon" style="font-size: 3.5rem; margin-bottom: 10px;">🏆</div>
+    <div id="achInfoGame" style="font-size: 0.85rem; font-weight: 900; color: #6b7280; text-transform: uppercase;">SPIEL</div>
+    <h2 id="achInfoTitle" style="margin-bottom: 10px;">Erfolg-Name</h2>
+    <p id="achInfoDesc" style="font-size: 1rem; color: #374151; line-height: 1.5; margin-bottom: 20px;">Hier steht genau, wie man den Erfolg freischaltet.</p>
+    <button class="popup-button popup-cancel" style="width: 100%;" onclick="closePopup('achievementInfoModal')">Alles klar!</button>
+  </div>
+</div>
+
 <!-- ÖFFENTLICHES PROFIL CARD (POPUP) -->
 <div class="popup-overlay" id="publicProfilePopup">
   <div class="popup">
@@ -714,7 +745,8 @@
     unlockedSymbols: "challengeChampUnlockedSymbols",
     gameHours: "challengeChampGameHours",
     favGame: "challengeChampFavGame",
-    lastSyncedMinutes: "challengeChampLastSyncedMinutes"
+    lastSyncedMinutes: "challengeChampLastSyncedMinutes",
+    achievements: "challengeChampAchievements"
   };
 
   /* =========================================================
@@ -742,9 +774,11 @@
     { id: "wmhunter", name: "PlayMaster" },
     { id: "wmguess", name: "Guess the Hype" },
     { id: "wmtop", name: "TeamMaster" },
-    { id: "tictactoe", name: "Guess Grid" }
+    { id: "tictactoe", name: "Guess Grid" },
+    { id: "prozentraetzer", name: "Prozent-Rätzer" }
   ];
 
+  /* Nur noch Symbole, die man ausschließlich über Codes freischalten kann */
   const codeSymbols = [
     { id: "champion", icon: "🏆", name: "Goldener Champion", code: "CHAMP-2026" },
     { id: "fire", icon: "🔥", name: "Feuersturm", code: "FIRE-777" },
@@ -753,14 +787,14 @@
     { id: "lightning", icon: "⚡", name: "Blitz-Champion", code: "BOLT-2026" }
   ];
 
+  /* Genau 3 Meilensteine pro Spiel */
   const gameMilestones = [
-    { id: "10min", minutes: 10, icon: "🕐", name: "Warm-up-Held" },
     { id: "30min", minutes: 30, icon: "⏱️", name: "Challenge-Spieler" },
     { id: "1h", minutes: 60, icon: "⭐", name: "Game-Profi" },
-    { id: "3h", minutes: 180, icon: "🔥", name: "Challenge-Bestie" },
-    { id: "5h", minutes: 300, icon: "🚀", name: "Spiel-Legende" }
+    { id: "3h", minutes: 180, icon: "🔥", name: "Challenge-Bestie" }
   ];
 
+  /* Globale Meilensteine (Automatisch nach Gesamtspielzeit) */
   const globalMilestones = [
     { id: "global_1h", minutes: 60, icon: "🌟", name: "Stundenstarter" },
     { id: "global_5h", minutes: 300, icon: "🚀", name: "Challenge-Rakete" },
@@ -769,6 +803,16 @@
     { id: "global_50h", minutes: 3000, icon: "🐉", name: "Challenge-Drache" },
     { id: "global_100h", minutes: 6000, icon: "👑", name: "Ultimate Champion" }
   ];
+
+  /* Ausschließlich digital messbare Erfolge (Spiele mit überprüfbaren Antworten/Punkten) */
+  const measurableAchievements = [
+    { id: "ach_prozent_god", gameName: "Prozent-Rätzer", name: "Prozent-Gott", icon: "🎯", desc: "Gewinne eine Partie Prozent-Rätzer mit einer Gesamtabweichung von unter 15 Differenzpunkten.", key: "prozentBestDiff", target: 15, condition: "less" },
+    { id: "ach_superquiz_king", gameName: "Superquiz", name: "Quiz-König", icon: "🧠", desc: "Beantworte in einer einzigen Superquiz-Partie mindestens 10 Fragen richtig.", key: "superquizCorrect", target: 10, condition: "greater" },
+    { id: "ach_tictactoe_master", gameName: "Guess Grid", name: "Grid-Master", icon: "❌", desc: "Gewinne 3 Partien Guess Grid gegen deine Freunde.", key: "tictactoeWins", target: 3, condition: "greater" },
+    { id: "ach_fakefakt_perfect", gameName: "Fake or Fakt", name: "Fakten-Guru", icon: "📑", desc: "Schließe eine Runde Fake or Fakt ab, ohne einen einzigen Fehler zu machen (mindestens 5/5 richtig).", key: "fakefaktPerfect", target: 1, condition: "equal" }
+  ];
+
+  let currentCodeTarget = null;
 
   /* =========================================================
      AUTH LOGIK (REGISTRIERUNG & LOGIN)
@@ -813,7 +857,6 @@
 
     const nameKey = name.toLowerCase();
 
-    // Server-Check: Existiert Benutzername bereits?
     const accSnap = await window.fbGet(window.fbRef(window.firebaseDB, `accounts/${nameKey}`));
     if (accSnap.exists()) {
       return showAuthError("Dieser Benutzername ist bereits vergeben!");
@@ -821,7 +864,6 @@
 
     const newId = generatePlayerId();
 
-    // Nutzerdaten im Server anlegen
     await window.fbSet(window.fbRef(window.firebaseDB, `accounts/${nameKey}`), {
       id: newId,
       password: pw
@@ -854,7 +896,6 @@
       return showAuthError("Falsches Passwort!");
     }
 
-    // Nutzerdaten aus dem Server laden & lokal wiederherstellen
     const userSnap = await window.fbGet(window.fbRef(window.firebaseDB, `users/${acc.id}`));
     if (userSnap.exists()) {
       const uData = userSnap.val();
@@ -1198,6 +1239,7 @@
     let unlocked = getUnlockedSymbols();
     const gameHours = getGameHours();
 
+    // 1. Automatische Freischaltung für Einzelspiele nach Zeit
     gameDefinitions.forEach(game => {
       const minutes = (gameHours[game.id] || 0) * 60;
       gameMilestones.forEach(milestone => {
@@ -1208,6 +1250,7 @@
       });
     });
 
+    // 2. Automatische Freischaltung für Gesamtspielzeit
     const totalMinutes = getTotalHours() * 60;
     globalMilestones.forEach(milestone => {
       if (totalMinutes >= milestone.minutes && !unlocked.includes(milestone.id)) {
@@ -1226,7 +1269,7 @@
     addSymbolToGrid(grid, { id: "basic", icon: "🎮", name: "Gamer", unlocked: true }, unlocked);
 
     codeSymbols.forEach(symbol => {
-      addSymbolToGrid(grid, { ...symbol, type: "code", unlocked: unlocked.includes(symbol.id) }, unlocked);
+      addSymbolToGrid(grid, { ...symbol, unlocked: unlocked.includes(symbol.id), type: "code" }, unlocked);
     });
 
     globalMilestones.forEach(milestone => {
@@ -1261,7 +1304,11 @@
     `;
 
     item.onclick = () => {
-      if (isUnlocked) selectSymbol(symbol.id, symbol.icon);
+      if (isUnlocked) {
+        selectSymbol(symbol.id, symbol.icon);
+      } else if (symbol.type === "code") {
+        openCodeModal(symbol);
+      }
     };
 
     grid.appendChild(item);
@@ -1292,6 +1339,49 @@
       }
     }
     return "Gamer";
+  }
+
+  /* =========================================================
+     CODE-EINGABE POPUP LOGIK
+  ========================================================= */
+  function openCodeModal(targetObj) {
+    currentCodeTarget = targetObj;
+    document.getElementById("codeModalTitle").innerText = `🔑 Code für "${targetObj.name}"`;
+    document.getElementById("codeModalDesc").innerText = `Gib den Freischalt-Code für ${targetObj.name} (${targetObj.icon}) ein:`;
+    document.getElementById("codeModalInput").value = "";
+    document.getElementById("codeModal").classList.add("active");
+  }
+
+  function submitCode() {
+    const input = document.getElementById("codeModalInput").value.trim().toUpperCase();
+    if (!currentCodeTarget) return;
+
+    if (input === currentCodeTarget.code.toUpperCase()) {
+      let unlocked = getUnlockedSymbols();
+      if (!unlocked.includes(currentCodeTarget.id)) {
+        unlocked.push(currentCodeTarget.id);
+        saveUnlockedSymbols(unlocked);
+      }
+      alert(`🎉 Glückwunsch! "${currentCodeTarget.name}" wurde freigeschaltet!`);
+      closePopup("codeModal");
+      renderProfile();
+      syncWithServer(true);
+    } else {
+      alert("❌ Falscher Code! Bitte überprüfe deine Eingabe.");
+    }
+  }
+
+  /* =========================================================
+     ERFOLGS-INFO POPUP LOGIK
+  ========================================================= */
+  function openAchievementInfo(ach, isUnlocked) {
+    document.getElementById("achInfoIcon").textContent = ach.icon;
+    document.getElementById("achInfoGame").textContent = ach.gameName;
+    document.getElementById("achInfoTitle").textContent = ach.name;
+    document.getElementById("achInfoDesc").innerHTML = isUnlocked 
+      ? `<b>✅ Bereits freigeschaltet!</b><br><br>${ach.desc}`
+      : `<b>🎯 Deine Aufgabe:</b><br>${ach.desc}`;
+    document.getElementById("achievementInfoModal").classList.add("active");
   }
 
   /* =========================================================
@@ -1388,10 +1478,50 @@
       const isUnlocked = unlocked.includes(m.id);
       const item = document.createElement("div");
       item.className = "milestone " + (isUnlocked ? "unlocked" : "locked");
+
       item.innerHTML = `
         <div class="milestone-icon">${m.icon}</div>
         <div class="milestone-name">${m.name}</div>
-        <div class="milestone-time">${isUnlocked ? "✅ Freigeschaltet" : "🔒 Gesperrt"}</div>
+        <div class="milestone-time">${isUnlocked ? "✅ Freigeschaltet" : `${m.minutes / 60}h benötigt`}</div>
+      `;
+      container.appendChild(item);
+    });
+  }
+
+  function renderGameAchievements() {
+    const container = document.getElementById("gameAchievementsGrid");
+    const unlocked = getUnlockedSymbols();
+    container.innerHTML = "";
+
+    let userStats = {};
+    try {
+      userStats = JSON.parse(localStorage.getItem(STORAGE.achievements)) || {};
+    } catch { userStats = {}; }
+
+    measurableAchievements.forEach(ach => {
+      let isUnlocked = unlocked.includes(ach.id);
+
+      if (!isUnlocked && userStats[ach.key] !== undefined) {
+        const val = userStats[ach.key];
+        if (ach.condition === "less" && val <= ach.target) isUnlocked = true;
+        if (ach.condition === "greater" && val >= ach.target) isUnlocked = true;
+        if (ach.condition === "equal" && val === ach.target) isUnlocked = true;
+
+        if (isUnlocked && !unlocked.includes(ach.id)) {
+          unlocked.push(ach.id);
+          saveUnlockedSymbols(unlocked);
+        }
+      }
+
+      const item = document.createElement("div");
+      item.className = "milestone " + (isUnlocked ? "unlocked" : "locked");
+      item.onclick = () => openAchievementInfo(ach, isUnlocked);
+
+      item.innerHTML = `
+        <div class="milestone-game-tag">[${ach.gameName}]</div>
+        <div class="milestone-icon">${ach.icon}</div>
+        <div class="milestone-name">${ach.name}</div>
+        <div class="milestone-time">${isUnlocked ? "✅ Freigeschaltet" : "🔒 Klick für Info"}</div>
       `;
       container.appendChild(item);
     });
@@ -1458,6 +1588,7 @@
     renderSymbols();
     renderHours();
     renderGlobalMilestones();
+    renderGameAchievements();
     renderGameMilestones();
     initFavGameSelect();
   }
@@ -1468,6 +1599,8 @@
     if (code) return code.icon;
     const global = globalMilestones.find(m => m.id === id);
     if (global) return global.icon;
+    const ach = measurableAchievements.find(a => a.id === id);
+    if (ach) return ach.icon;
     if (id.startsWith("game_")) {
       const parts = id.split("_");
       const milestone = gameMilestones.find(m => m.id === parts[parts.length - 1]);
