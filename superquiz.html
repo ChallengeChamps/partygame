@@ -539,9 +539,6 @@
   { q: "Was ist ein Black Hole?", a: ["Ein Objekt mit so starker Gravitation, dass nichts entkommt", "Ein Planet", "Ein Stern"], correct: 0 },
   { q: "Was ist ein Neuron?", a: ["Eine Nervenzelle", "Ein Muskel", "Ein Blutkörperchen"], correct: 0 }
 ]
-
-
-
   };
 
   const categories = Object.keys(questionPool);
@@ -553,6 +550,7 @@
 
   let players = [];
   let scores = {};
+  let playerCurrentGameCorrect = {}; // Zählt absolut richtige Antworten pro Spieler
   let currentPlayerIndex = 0;
   let currentRound = 1;
   const maxRounds = 5;
@@ -575,12 +573,14 @@
     startBtn.onclick = () => {
       players = [];
       scores = {};
+      playerCurrentGameCorrect = {};
       gameHasStarted = true;
       startPlaytimeTracking();
       for (let i = 0; i < count; i++) {
         const name = document.getElementById(`player${i}`).value || `Spieler ${i + 1}`;
         players.push(name);
         scores[name] = 0;
+        playerCurrentGameCorrect[name] = 0;
       }
       document.getElementById("setup").classList.add("hidden");
       animateCategory();
@@ -650,6 +650,7 @@
       btn.onclick = () => {
         if (i === q.correct) {
           scores[player]++;
+          playerCurrentGameCorrect[player] = (playerCurrentGameCorrect[player] || 0) + 1;
           showPlusOne(btn);
         } else {
           showMinusOne(btn);
@@ -692,6 +693,17 @@
     pausePlaytimeTracking();
     gameHasStarted = false;
 
+    /* ---------------------------------------------------------
+       ERFOLG-FORTSCHRITT SPEICHERN (Quiz-König für Superquiz)
+    --------------------------------------------------------- */
+    let maxCorrectInThisGame = 0;
+    players.forEach(p => {
+      const c = playerCurrentGameCorrect[p] || 0;
+      if (c > maxCorrectInThisGame) maxCorrectInThisGame = c;
+    });
+
+    saveSuperquizAchievementScore(maxCorrectInThisGame);
+
     document.getElementById("quizRound").classList.add("hidden");
     document.getElementById("results").classList.remove("hidden");
     const board = document.getElementById("winnerBoard");
@@ -714,6 +726,20 @@
         board.appendChild(div);
       }
     });
+  }
+
+  function saveSuperquizAchievementScore(correctCount) {
+    let achievements = {};
+    try {
+      achievements = JSON.parse(localStorage.getItem("challengeChampAchievements")) || {};
+    } catch(e) { achievements = {}; }
+
+    const currentBest = achievements["superquizCorrect"] || 0;
+    
+    if (correctCount > currentBest) {
+      achievements["superquizCorrect"] = correctCount;
+      localStorage.setItem("challengeChampAchievements", JSON.stringify(achievements));
+    }
   }
 </script>
 </body>
