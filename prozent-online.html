@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prozent-Rätzer Online 🎯 - ChallengeChamp</title>
+<title>Prozent-Rätzer 🎯 - ChallengeChamp</title>
 
 <style>
 /* -------------------- GLOBAL & DESIGNS -------------------- */
 body {
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   font-family: 'Segoe UI', sans-serif;
   background-image: url('imposter.png');
   background-size: cover;
@@ -16,24 +17,32 @@ body {
   background-attachment: fixed;
   color: #fff;
   min-height: 100vh;
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-h1 { 
-  text-align: center; 
-  color: #fff; 
-  margin-top: 25px; 
-  font-size: 2.2rem; 
+h1 {
+  text-align: center;
+  color: #fff;
+  margin-top: 25px;
+  font-size: 2.2rem;
   text-shadow: 0 4px 12px rgba(0,0,0,0.8);
 }
 
 .card-box {
   background: rgba(15, 23, 42, 0.9);
   backdrop-filter: blur(12px);
-  border-radius: 22px; padding: 25px; width: 90%; max-width: 450px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.7); margin: 20px auto; text-align: center;
-  box-sizing: border-box;
+  border-radius: 22px;
+  padding: 25px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+  margin: 20px auto;
   border: 1px solid rgba(255,255,255,0.15);
+  box-sizing: border-box;
+  text-align: center;
   position: relative;
   overflow: hidden;
 }
@@ -41,8 +50,15 @@ h1 {
 /* -------------------- BUTTONS & INPUTS -------------------- */
 .btn {
   background: linear-gradient(135deg, #8a2be2, #ff007f);
-  color: #fff; border: none; padding: 14px 20px; border-radius: 16px;
-  font-size: 1.1rem; font-weight: 900; cursor: pointer; width: 100%; margin-top: 12px;
+  color: #fff;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 900;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 12px;
   box-sizing: border-box;
   box-shadow: 0 4px 15px rgba(255,0,127,0.4);
   transition: all 0.2s ease;
@@ -53,55 +69,106 @@ h1 {
   box-shadow: 0 6px 20px rgba(255,0,127,0.6);
 }
 
-.btn-danger { background: linear-gradient(135deg, #ff4757, #ff6b81); color: #fff; box-shadow: 0 4px 15px rgba(255,71,87,0.4); }
-.btn-secondary { background: #334155; color: #fff; box-shadow: none; }
+.btn-secondary {
+  background: #334155;
+  color: #fff;
+  box-shadow: none;
+}
 
-select {
-  width: 100%; padding: 12px; border-radius: 12px;
-  border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 1rem; margin-top: 8px;
+input, select {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: #fff;
+  font-size: 1rem;
+  margin-top: 8px;
+  box-sizing: border-box;
   outline: none;
   text-align: center;
 }
 
 .slider-container { margin: 25px 0; }
 
-.slider-val { 
-  font-size: 2.8rem; font-weight: 900; color: #ff007f; 
+.slider-val {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #ff007f;
   text-shadow: 0 0 15px rgba(255,0,127,0.8);
-  margin: 10px 0; 
+  margin: 10px 0;
 }
 
 input[type=range] {
-  -webkit-appearance: none; width: 100%; background: #334155; height: 12px; border-radius: 6px; outline: none;
+  -webkit-appearance: none;
+  width: 100%;
+  background: #334155;
+  height: 12px;
+  border-radius: 6px;
+  outline: none;
 }
+
 input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none; appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #ff007f; cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ff007f;
+  cursor: pointer;
   box-shadow: 0 0 10px #ff007f;
 }
 
 /* -------------------- ANIMATIONEN -------------------- */
-.anim-fade-in { animation: fadeIn 0.5s ease forwards; }
-.anim-pop { animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+.anim-fade-in { animation: fadeIn 0.4s ease forwards; }
+.anim-pop { animation: popUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes popUp {
-  0% { opacity: 0; transform: scale(0.6); }
+  0% { opacity: 0; transform: scale(0.7); }
   100% { opacity: 1; transform: scale(1); }
 }
 
 /* -------------------- ERGEBNISSE & TABELLE -------------------- */
 .result-item {
-  background: #334155; padding: 12px 16px; border-radius: 12px; margin: 10px 0;
-  display: flex; justify-content: space-between; align-items: center; font-weight: bold;
+  background: #334155;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
 }
 
+.rank-badge {
+  background: #ff007f;
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  margin-right: 10px;
+}
+
+.diff-tag { color: #ff4757; font-size: 0.95rem; margin-left: 8px; }
+
 .kahoot-row {
-  background: #1e293b; border-radius: 14px; padding: 12px 18px; margin: 8px 0;
-  display: flex; align-items: center; justify-content: space-between; border-left: 6px solid #8a2be2;
+  background: #1e293b;
+  border-radius: 14px;
+  padding: 12px 18px;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-left: 6px solid #8a2be2;
 }
 
 .kahoot-row:nth-child(1) { border-left-color: #ffd700; background: rgba(255,215,0,0.1); }
@@ -109,325 +176,300 @@ input[type=range]::-webkit-slider-thumb {
 .kahoot-row:nth-child(3) { border-left-color: #cd7f32; background: rgba(205,127,50,0.1); }
 
 /* -------------------- PODEST -------------------- */
-.podium-container { display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin: 30px 0 20px 0; height: 180px; }
-.podium-step { width: 30%; background: linear-gradient(180deg, #334155, #1e293b); border-radius: 12px 12px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 10px; font-weight: bold; position: relative; }
+.podium-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  margin: 30px 0 20px 0;
+  height: 180px;
+}
+
+.podium-step {
+  width: 30%;
+  background: linear-gradient(180deg, #334155, #1e293b);
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+  font-weight: bold;
+  position: relative;
+}
+
 .podium-1 { height: 160px; background: linear-gradient(180deg, #ffd700, #b39700); color: #000; }
 .podium-2 { height: 120px; background: linear-gradient(180deg, #c0c0c0, #7f7f7f); color: #000; }
 .podium-3 { height: 90px; background: linear-gradient(180deg, #cd7f32, #8c5622); color: #fff; }
 
-.funfact-box { background: rgba(255, 0, 127, 0.1); border: 1px dashed #ff007f; padding: 15px; border-radius: 14px; margin-top: 15px; font-size: 0.95rem; line-height: 1.4; }
+.podium-crown { position: absolute; top: -28px; font-size: 1.5rem; }
 </style>
 </head>
 <body>
 
-<h1>Prozent-Rätzer Online 🌐</h1>
+<h1>Prozent-Rätzer 🎯</h1>
 
-<!-- SCREEN 1: EINSTELLUNGEN (NUR HOST) -->
-<div id="screenSetupHost" class="card-box anim-fade-in" style="display: none;">
-  <h2>Party-Einstellungen (Host)</h2>
-  <label>Runden-Anzahl (Fragen):</label>
-  <select id="roundCountSelect">
-    <option value="3">3 Runden</option>
-    <option value="5" selected>5 Runden</option>
-    <option value="7">7 Runden</option>
-    <option value="10">10 Runden</option>
+<!-- SCREEN 1: EINSTELLUNGEN -->
+<div id="screenSetup" class="card-box anim-fade-in">
+  <h2>Spiel-Einstellungen (Offline)</h2>
+  
+  <label>Anzahl der Spieler:</label>
+  <select id="playerCountSelect" onchange="generateNameInputs()">
+    <option value="2">2 Spieler</option>
+    <option value="3" selected>3 Spieler</option>
+    <option value="4">4 Spieler</option>
+    <option value="5">5 Spieler</option>
+    <option value="6">6 Spieler</option>
   </select>
-  <button class="btn" onclick="startOnlineGameHost()">Party-Spiel Starten 🚀</button>
-</div>
 
-<!-- SCREEN 2: WARTEN (NUR MITSPIELER) -->
-<div id="screenOnlineWait" class="card-box anim-fade-in" style="display: none;">
-  <h2>Warten auf den Host... ⏳</h2>
-  <p>Der Host wählt gerade die Runden-Anzahl aus.</p>
-  <div class="funfact-box">
-    <b>💡 Wusstest du schon?</b>
-    <p id="funFactText">Lade Fun Fact...</p>
+  <div id="nameInputsContainer" style="margin-top: 15px;"></div>
+
+  <div style="margin-top: 15px;">
+    <label>Runden-Anzahl (Fragen):</label>
+    <select id="roundCountSelect">
+      <option value="3">3 Runden</option>
+      <option value="5" selected>5 Runden</option>
+      <option value="7">7 Runden</option>
+      <option value="10">10 Runden</option>
+    </select>
   </div>
+
+  <button class="btn" onclick="startOfflineGame()">Spiel Starten 🚀</button>
+  <button class="btn btn-secondary" onclick="window.location.href='startseite.html'">Zurück zur Startseite</button>
 </div>
 
-<!-- SCREEN 3: FRAGE / SCHÄTZEN -->
+<!-- SCREEN 2: SCHÄTZEN / HANDY WEITERGEBEN -->
 <div id="screenGuess" class="card-box anim-fade-in" style="display: none;">
   <div style="display:flex; justify-content:space-between; color:#94a3b8; font-size:0.9rem;">
     <span id="roundIndicator">Frage 1/5</span>
-    <span>Alle Spieler raten 🌐</span>
+    <span id="turnIndicator" style="color:#ff007f; font-weight:bold;">Spieler 1 ist dran</span>
   </div>
 
-  <h3 id="questionText" style="margin: 20px 0;"></h3>
-
-  <button id="btnSkipQuestion" class="btn btn-danger" style="display:none; padding:8px; font-size:0.85rem; margin-bottom:15px;" onclick="skipQuestionOnline()">Frage überspringen (Skip) ⏩</button>
+  <h3 id="questionText" style="margin: 20px 0; font-size:1.25rem;">Frage wird geladen...</h3>
 
   <div class="slider-container">
     <div id="sliderValue" class="slider-val">50%</div>
     <input type="range" id="guessSlider" min="0" max="100" value="50" oninput="document.getElementById('sliderValue').innerText = this.value + '%'">
   </div>
 
-  <button class="btn" id="btnSubmitGuess" onclick="submitOnlineGuess()">Antwort einloggen 🔒</button>
-  <p id="waitOtherPlayersMsg" style="display:none; color:#ffd700; font-weight:bold; margin-top:15px;">Warten, bis alle geantwortet haben... ⏳</p>
+  <button class="btn" id="btnSubmitGuess" onclick="submitOfflineGuess()">Antwort einloggen 🔒</button>
 </div>
 
-<!-- SCREEN 4: RUNDEN-AUSWERTUNG -->
+<!-- SCREEN 3: RUNDEN-AUSWERTUNG -->
 <div id="screenRoundResult" class="card-box anim-fade-in" style="display: none;">
   <h2>Runden-Ergebnis</h2>
   <h4 id="resultQuestionTitle" style="color:#94a3b8; font-weight:normal;"></h4>
 
   <div id="answersList" style="margin: 20px 0;"></div>
 
-  <div id="correctAnswerBox" class="anim-pop" style="display:none; background:rgba(255,0,127,0.15); border:2px solid #ff007f; padding:15px; border-radius:16px;">
+  <div id="correctAnswerBox" class="anim-pop" style="display:none; background:rgba(255,0,127,0.15); border:2px solid #ff007f; padding:15px; border-radius:16px; margin-top:15px;">
     Tatsächliche Lösung: <b id="correctPercentText" style="font-size:1.8rem; color:#ff007f;">0%</b>
   </div>
 
-  <button id="btnNextToTable" class="btn" style="display:none;" onclick="showLeaderboardHost()">Zur Tabelle 📊</button>
+  <button id="btnNextToTable" class="btn" style="display:none;" onclick="showLeaderboard()">Zur Tabelle 📊</button>
 </div>
 
-<!-- SCREEN 5: KAHOOT TABELLE -->
+<!-- SCREEN 4: TABELLE -->
 <div id="screenLeaderboard" class="card-box anim-fade-in" style="display: none;">
   <h2>Gesamtwertung 📊</h2>
+  <p style="font-size:0.85rem; color:#94a3b8;">Weniger Punkte (Differenz) ist besser!</p>
+
   <div id="kahootTable" style="margin: 20px 0;"></div>
-  <button id="btnNextQuestion" class="btn" style="display:none;" onclick="hostNextRoundOnline()">Nächste Frage ⏩</button>
+
+  <button id="btnNextQuestion" class="btn" onclick="nextOfflineRound()">Nächste Frage ⏩</button>
 </div>
 
-<!-- SCREEN 6: ENDE & PODEST -->
+<!-- SCREEN 5: ENDE & PODEST -->
 <div id="screenGameOver" class="card-box anim-fade-in" style="display: none;">
   <h2>🏆 Endplatzierung 🏆</h2>
+
   <div class="podium-container" id="podiumBox"></div>
+
   <div id="remainingLeaderboard"></div>
 
   <div style="background:rgba(255,215,0,0.15); border:1px solid #ffd700; padding:12px; border-radius:14px; margin: 15px 0; color:#ffd700; font-weight:bold;">
     🪙 Belohnung: <span id="coinsEarnedText">+0</span> Coins erhalten!
   </div>
 
-  <button id="btnReplayHost" class="btn" style="display:none;" onclick="restartOnlineGameHost()">Erneut Spielen 🔄</button>
-  <button class="btn btn-secondary" onclick="leaveOnlineGame()">Beenden / Startseite</button>
+  <button class="btn" onclick="restartOfflineGame()">Erneut Spielen 🔄</button>
+  <button class="btn btn-secondary" onclick="window.location.href='startseite.html'">Startseite</button>
 </div>
-
-<!-- FIREBASE SKRIPT -->
-<script type="module" src="firebase-config.js"></script>
 
 <script>
 const questionBank = [
-  { q: "Wie viel Prozent des Gehalts sollte man idealerweise für die Kaltmiete ausgeben?", a: 30 },
-  { q: "Wie viel Prozent der Arbeitszeit verbringen Büroangestellte im Schnitt in Meetings?", a: 28 },
-  { q: "Wie viel Prozent der Autofahrer nutzen laut Studien während der Fahrt das Smartphone?", a: 53 },
-  { q: "Wie viel Prozent der Kleidung im Kleiderschrank tragen Menschen regelmäßig?", a: 22 },
-  { q: "Wie viel Prozent der gekauften Lebensmittel landen im Müll?", a: 32 },
-  { q: "Wie viel Prozent der Menschen halten ihre Neujahrsvorsätze länger als ein Jahr durch?", a: 9 },
-  { q: "Wie viel Prozent der Deutschen nutzen mindestens mehrmals pro Woche das Fahrrad?", a: 37 },
-  { q: "Wie viel Prozent der Haushaltsenergie entfallen im Schnitt auf Heizung und Warmwasser?", a: 88 },
-  { q: "Wie viel Prozent der Arbeitnehmer arbeiten regelmäßig im Homeoffice?", a: 16 },
-  { q: "Wie viel Prozent der Online-Einkäufe im Modebereich werden zurückgeschickt?", a: 47 },
-
-  { q: "Wie viel Prozent Trinkgeld gilt in Deutschland im Restaurant als angemessen?", a: 10 },
-  { q: "Wie viel Prozent der Erwachsenen treiben mindestens einmal pro Woche Sport?", a: 54 },
-  { q: "Wie viel Prozent des Tages verbringen Menschen im Schnitt im Sitzzustand?", a: 64 },
-  { q: "Wie viel Prozent der Autobahnstrecken in Deutschland haben kein Tempolimit?", a: 74 },
-  { q: "Wie viel Prozent der Deutschen trinken täglich mindestens eine Tasse Kaffee?", a: 72 },
-  { q: "Wie viel Prozent der Menschen geben an, unter Einschlafproblemen zu leiden?", a: 41 },
-  { q: "Wie viel Prozent der Verträge (wie Abos oder Versicherungen) werden ungenutzt weiterbezahlt?", a: 33 },
-  { q: "Wie viel Prozent der deutschen Haushalte besitzen ein Haustier?", a: 45 },
-  { q: "Wie viel Prozent der Urlauber buchen ihre Reisen mittlerweile komplett online?", a: 79 },
-  { q: "Wie viel Prozent der Handynutzer schauen innerhalb von 15 Minuten nach dem Aufstehen aufs Display?", a: 83 },
-
-  { q: "Wie viel Prozent des Tages verbringen wir durchschnittlich vor Bildschirmen?", a: 37 },
-  { q: "Wie viel Prozent der Menschen kochen täglich frisch zu Hause?", a: 38 },
-  { q: "Wie viel Prozent der Autofahrten in Städten sind kürzer als 5 Kilometer?", a: 52 },
-  { q: "Wie viel Prozent der Beschäftigten fühlen sich im Job regelmäßig gestresst?", a: 60 },
-  { q: "Wie viel Prozent der monatlichen Ausgaben entfallen im Schnitt auf Wohnen und Energie?", a: 36 },
-  { q: "Wie viel Prozent der Menschen vergessen den Namen einer Person direkt nach dem Vorstellen?", a: 85 },
-  { q: "Wie viel Prozent der Kündigungen in Unternehmen erfolgen wegen des direkten Vorgesetzten?", a: 52 },
-  { q: "Wie viel Prozent der Pakete werden beim ersten Zustellversuch erfolgreich übergeben?", a: 81 },
-  { q: "Wie viel Prozent der Menschen lesen vor dem Kauf von Produkten Kundenbewertungen?", a: 86 },
-  { q: "Wie viel Prozent der Akkuladung sollte ein Smartphone-Akku für maximale Lebensdauer idealerweise haben?", a: 80 },
-
-  { q: "Wie viel Prozent der Deutschen wohnen zur Miete statt im Eigenheim?", a: 53 },
-  { q: "Wie viel Prozent der Rechnungen werden pünktlich innerhalb der Zahlungsfrist beglichen?", a: 82 },
-  { q: "Wie viel Prozent der Beschäftigten nutzen den ÖPNV für den täglichen Arbeitsweg?", a: 14 },
-  { q: "Wie viel Prozent der Menschen geben zu, im Job gelegentlich zu prokrastinieren?", a: 88 },
-  { q: "Wie viel Prozent der Deutschen haben mindestens ein Buch im letzten Jahr gelesen?", a: 71 },
-  { q: "Wie viel Prozent der Autofahrer vergessen beim Abbiegen oder Spurwechsel regelmäßig den Blinker?", a: 22 },
-  { q: "Wie viel Prozent des monatlichen Nettoeinkommens sollten idealerweise gespart werden?", a: 20 },
-  { q: "Wie viel Prozent der Urlaubsreisen der Deutschen finden im Inland statt?", a: 35 },
-  { q: "Wie viel Prozent der Menschen nutzen im Alltag Bargeld als bevorzugtes Zahlungsmittel?", a: 38 },
-  { q: "Wie viel Prozent der Heimwerker-Projekte dauern länger als ursprünglich geplant?", a: 67 },
-
-  { q: "Wie viel Prozent der Smartphone-Besitzer haben einen Displayschaden an ihrem Gerät?", a: 21 },
-  { q: "Wie viel Prozent der Supermarkteinkäufe sind Spontankäufe?", a: 62 },
-  { q: "Wie viel Prozent der Bevölkerung nutzen regelmäßig Streaming-Dienste für Filme und Serien?", a: 71 },
-  { q: "Wie viel Prozent der Menschen drücken morgens die Snooze-Taste des Weckers?", a: 57 },
-  { q: "Wie viel Prozent des Mülls im gelben Sack wird tatsächlich stofflich recycelt?", a: 52 },
-  { q: "Wie viel Prozent der Berufstätigen machen in der Mittagspause tatsächlich Pause vom Bildschirm?", a: 38 },
-  { q: "Wie viel Prozent der Menschen nehmen ihr Smartphone mit auf die Toilette?", a: 77 },
-  { q: "Wie viel Prozent der Restaurantreservierungen werden ohne Absage einfach verfallen gelassen?", a: 16 },
-  { q: "Wie viel Prozent der Neuwagen in Deutschland werden von Firmen oder gewerblich zugelassen?", a: 66 },
-  { q: "Wie viel Prozent der Menschen trinken über den Tag verteilt ausreichend Wasser?", a: 24 },
   { q: "Wie viel Prozent der Weltbevölkerung sind Linkshänder?", a: 11 },
   { q: "Wie viel Prozent der Erdoberfläche sind mit Wasser bedeckt?", a: 71 },
   { q: "Wie viel Prozent der Menschen weltweit haben braune Augen?", a: 79 },
   { q: "Wie viel Prozent der Erde ist von Wüsten bedeckt?", a: 33 },
-  { q: "Wie viel Prozent des menschlichen Körpers bestehen aus Wasser?", a: 60 },
-  { q: "Wie viel Prozent der Menschen können ihre Ohren wackeln lassen?", a: 9 },
-  { q: "Wie viel Prozent aller Katzen sind weiß?", a: 4 },
-  { q: "Wie viel Prozent des geernteten Kaffees weltweit ist Arabica-Kaffee?", a: 62 },
-  { q: "Wie viel Prozent der Bevölkerung hat die Blutgruppe 0 Positiv?", a: 38 },
-  { q: "Wie viel Prozent der Bevölkerung träumt manchmal in Schwarz-Weiß?", a: 6 },
-  { q: "Wie viel Prozent der Eisberge befinden sich unter der Wasseroberfläche?", a: 91 },
-  { q: "Wie viel Prozent des weltweiten Süßwassers ist in Eis und Gletschern gebunden?", a: 68 },
+  { q: "Wie viel Prozent des menschlichen Körpers bestehen aus Wasser?", a: 57 },
+  { q: "Wie viel Prozent der Menschen können ihre Ohren wackeln lassen?", a: 13 },
+  { q: "Wie viel Prozent aller Katzen sind weiß?", a: 5 },
+  { q: "Wie viel Prozent des geernteten Kaffees weltweit ist Arabica-Kaffee?", a: 63 },
+  { q: "Wie viel Prozent der Bevölkerung hat die Blutgruppe 0 Positiv?", a: 37 },
+  { q: "Wie viel Prozent des Sauerstoffs auf der Erde erzeugen die Ozeane?", a: 53 },
+  { q: "Wie viel Prozent der Bevölkerung träumt manchmal in Schwarz-Weiß?", a: 12 },
+  { q: "Wie viel Prozent der Eisberge befinden sich unter der Wasseroberfläche?", a: 89 },
+  { q: "Wie viel Prozent des weltweiten Süßwassers ist in Eis und Gletschern gebunden?", a: 69 },
   { q: "Wie viel Prozent der Erdatmosphäre bestehen aus Stickstoff?", a: 78 },
   { q: "Wie viel Prozent der Erdatmosphäre bestehen aus Sauerstoff?", a: 21 },
   { q: "Wie viel Prozent des weltweiten Wassers ist Salzwasser?", a: 97 },
-  { q: "Wie viel Prozent der Insektenarten weltweit sind Käfer?", a: 41 },
+  { q: "Wie viel Prozent der Insektenarten weltweit sind Käfer?", a: 39 },
   { q: "Wie viel Prozent des Amazonischen Regenwaldes sind bereits abgeholzt worden?", a: 17 },
-  { q: "Wie viel Prozent aller bekannten Tierarten sind Wirbellose?", a: 94 },
-  { q: "Wie viel Prozent der Sonnenenergie werden von der Erde ins All reflektiert?", a: 30 },
+  { q: "Wie viel Prozent aller bekannten Tierarten sind Wirbellose?", a: 95 },
+  { q: "Wie viel Prozent der Sonnenenergie werden von der Erde ins All reflektiert?", a: 29 },
   { q: "Wie viel Prozent des Erdmantels bestehen aus festem Gestein?", a: 84 },
   { q: "Wie viel Prozent der Meeresoberfläche sind von Eis bedeckt (durchschnittlich)?", a: 7 },
   { q: "Wie viel Prozent des weltweiten Plastikmülls wird recycled?", a: 9 },
   { q: "Wie viel Prozent der Landfläche der Erde sind mit Wald bedeckt?", a: 31 },
-  { q: "Wie viel Prozent der Sahara bestehen aus Sanddünen?", a: 19 },
-  { q: "Wie viel Prozent des Sauerstoffs wird durch den Regenwald produziert?", a: 22 },
-  { q: "Wie viel Prozent aller Pflanzenernährung stammen aus den Tropen?", a: 78 },
-  { q: "Wie viel Prozent aller Vulkanausbrüche finden unter Wasser statt?", a: 81 },
-  { q: "Wie viel Prozent der Erdoberfläche sind von Permafrostboden bedeckt?", a: 24 },
+  { q: "Wie viel Prozent der Sahara bestehen aus Sanddünen?", a: 21 },
+  { q: "Wie viel Prozent des Sauerstoffs wird durch den Regenwald produziert?", a: 19 },
+  { q: "Wie viel Prozent aller Pflanzenernährung stammen aus den Tropen?", a: 81 },
+  { q: "Wie viel Prozent aller Vulkanausbrüche finden unter Wasser statt?", a: 77 },
+  { q: "Wie viel Prozent der Erdoberfläche sind von Permafrostboden bedeckt?", a: 23 },
   { q: "Wie viel Prozent der weltweiten Landwirtschaftsfläche werden für Viehzucht genutzt?", a: 77 },
   { q: "Wie viel Prozent der Antarktis sind von Eis bedeckt?", a: 98 },
-  { q: "Wie viel Prozent der Weltbevölkerung leben nördlich des Äquators?", a: 89 },
+  { q: "Wie viel Prozent der Weltbevölkerung leben nördlich des Äquators?", a: 88 },
 
-  { q: "Wie viel Prozent der Weltbevölkerung haben blaue Augen?", a: 8 },
+  { q: "Wie viel Prozent der Weltbevölkerung haben blaue Augen?", a: 9 },
   { q: "Wie viel Prozent der Menschen weltweit haben rote Haare?", a: 2 },
   { q: "Wie viel Prozent der Menschen sind Laktoseintolerant?", a: 65 },
   { q: "Wie viel Prozent der Menschen haben ein drittes Augenlid (Rudiment)?", a: 99 },
   { q: "Wie viel Prozent der menschlichen DNA teilen wir mit Schimpansen?", a: 98 },
-  { q: "Wie viel Prozent der menschlichen DNA teilen wir mit einer Banane?", a: 49 },
+  { q: "Wie viel Prozent der menschlichen DNA teilen wir mit einer Banane?", a: 50 },
   { q: "Wie viel Prozent des menschlichen Gehirns bestehen aus Fett?", a: 61 },
   { q: "Wie viel Prozent der Menschen haben die Blutgruppe AB negativ?", a: 1 },
   { q: "Wie viel Prozent der Menschen werden mit einem zusätzlichen Rippenpaar geboren?", a: 1 },
-  { q: "Wie viel Prozent des Körpergewichts macht das Blut aus?", a: 8 },
-  { q: "Wie viel Prozent des Sauerstoffverbrauchs im Körper entfallen auf das Gehirn?", a: 18 },
-  { q: "Wie viel Prozent der Knochen des menschlichen Körpers befinden sich in den Füßen?", a: 24 },
+  { q: "Wie viel Prozent des Körpergewichts macht das Blut aus?", a: 7 },
+  { q: "Wie viel Prozent des Sauerstoffverbrauchs im Körper entfallen auf das Gehirn?", a: 21 },
+  { q: "Wie viel Prozent der Knochen des menschlichen Körpers befinden sich in den Füßen?", a: 25 },
   { q: "Wie viel Prozent des Körpers bestehen aus Calcium?", a: 2 },
-  { q: "Wie viel Prozent der Menschen haben die Sehschärfe 20/20 (normale Sehrkraft) ohne Sehhilfe?", a: 37 },
-  { q: "Wie viel Prozent der Weltbevölkerung leidet unter Kurzsichtigkeit?", a: 32 },
-  { q: "Wie viel Prozent der Menschen erleben mindestens einmal im Leben eine Schlafparalyse?", a: 8 },
+  { q: "Wie viel Prozent der Menschen haben die Sehschärfe 20/20 ohne Sehhilfe?", a: 33 },
+  { q: "Wie viel Prozent der Weltbevölkerung leidet unter Kurzsichtigkeit?", a: 31 },
+  { q: "Wie viel Prozent der Menschen erleben mindestens einmal im Leben eine Schlafparalyse?", a: 7 },
   { q: "Wie viel Prozent der Männer weltweit sind farbenblind?", a: 8 },
   { q: "Wie viel Prozent der Frauen weltweit sind farbenblind?", a: 0.5 },
-  { q: "Wie viel Prozent des menschlichen Urins bestehen aus Wasser?", a: 96 },
+  { q: "Wie viel Prozent des menschlichen Urins bestehen aus Wasser?", a: 95 },
   { q: "Wie viel Prozent des menschlichen Gehirns nutzen wir aktiv?", a: 100 },
 
-  { q: "Wie viel Prozent der Hunde schlafen am liebsten auf dem Rücken?", a: 12 },
+  { q: "Wie viel Prozent der Katzen verbringen ihren Tag mit Schlafen?", a: 67 },
+  { q: "Wie viel Prozent der Hunde schlafen am liebsten auf dem Rücken?", a: 13 },
   { q: "Wie viel Prozent der DNA teilt der Mensch mit der Stubenfliege?", a: 61 },
   { q: "Wie viel Prozent aller Vogelarten sind Zugvögel?", a: 19 },
   { q: "Wie viel Prozent des Körpergewichts eines Elefanten macht sein Gehirn aus?", a: 0.1 },
   { q: "Wie viel Prozent aller Säugetierarten weltweit sind Fledermäuse?", a: 21 },
-  { q: "Wie viel Prozent des Tages verbringen Koalas mit Schlafen?", a: 82 },
+  { q: "Wie viel Prozent des Tages verbringen Koalas mit Schlafen?", a: 83 },
   { q: "Wie viel Prozent aller Ameisen in einer Kolonie sind Arbeiterinnen?", a: 99 },
   { q: "Wie viel Prozent der Haiarten sind für den Menschen gefährlich?", a: 3 },
-  { q: "Wie viel Prozent aller Insektenarten können fliegen?", a: 91 },
-  { q: "Wie viel Prozent der Energie eines Kolibris wird für den Flug verbraucht?", a: 83 },
+  { q: "Wie viel Prozent aller Insektenarten können fliegen?", a: 89 },
+  { q: "Wie viel Prozent der Energie eines Kolibris wird für den Flug verbraucht?", a: 81 },
   { q: "Wie viel Prozent der Gepardenjagden sind erfolgreich?", a: 53 },
-  { q: "Wie viel Prozent der Löwenjagden werden von den Weibchen ausgeführt?", a: 94 },
-  { q: "Wie viel Prozent des Gewichts eines Blauwals macht sein Fett aus?", a: 28 },
-  { q: "Wie viel Prozent aller Schildkrötenarten sind vom Aussterben bedroht?", a: 46 },
+  { q: "Wie viel Prozent der Löwenjagden werden von den Weibchen ausgeführt?", a: 87 },
+  { q: "Wie viel Prozent der Pandas verbringen ihren Tag mit Fressen?", a: 58 },
+  { q: "Wie viel Prozent des Gewichts eines Blauwals macht sein Fett aus?", a: 29 },
+  { q: "Wie viel Prozent aller Schildkrötenarten sind vom Aussterben bedroht?", a: 51 },
   { q: "Wie viel Prozent der Erdmännchen-Gruppen werden von einem dominanten Paar angeführt?", a: 99 },
-  { q: "Wie viel Prozent des Körpergewichts einer Qualle besteht aus Wasser?", a: 96 },
+  { q: "Wie viel Prozent des Körpergewichts einer Qualle besteht aus Wasser?", a: 95 },
   { q: "Wie viel Prozent der Krokodilbabys überleben das erste Lebensjahr?", a: 1 },
   { q: "Wie viel Prozent der Eisbärenjagden auf Robben sind erfolgreich?", a: 11 },
 
-  { q: "Wie viel Prozent der Weltbevölkerung leben in Asien?", a: 62 },
-  { q: "Wie viel Prozent der Weltbevölkerung leben in Städten?", a: 56 },
+  { q: "Wie viel Prozent der Weltbevölkerung leben in Asien?", a: 59 },
+  { q: "Wie viel Prozent der Weltbevölkerung leben in Städten?", a: 57 },
   { q: "Wie viel Prozent der Menschen weltweit nutzen das Internet?", a: 67 },
   { q: "Wie viel Prozent der Weltbevölkerung sprechen Englisch als Erst- oder Zweitsprache?", a: 17 },
   { q: "Wie viel Prozent der Weltbevölkerung leben in Armut (unter $2.15/Tag)?", a: 9 },
-  { q: "Wie viel Prozent der Weltbevölkerung sind unter 15 Jahre alt?", a: 24 },
+  { q: "Wie viel Prozent der Weltbevölkerung sind unter 15 Jahre alt?", a: 25 },
   { q: "Wie viel Prozent der Menschen weltweit sind übergewichtig?", a: 39 },
   { q: "Wie viel Prozent der Weltbevölkerung leben in der Europäischen Union?", a: 6 },
-  { q: "Wie viel Prozent der Menschheit leben auf der Südhalbkugel?", a: 10 },
-  { q: "Wie viel Prozent der Weltbevölkerung haben keinen Zugang zu sauberem Trinkwasser?", a: 25 },
+  { q: "Wie viel Prozent der Menschheit leben auf der Südhalbkugel?", a: 11 },
+  { q: "Wie viel Prozent der Weltbevölkerung haben keinen Zugang zu sauberem Trinkwasser?", a: 26 },
   { q: "Wie viel Prozent der Bevölkerung in Deutschland sind über 65 Jahre alt?", a: 22 },
   { q: "Wie viel Prozent der Weltbevölkerung sind Muslimen?", a: 25 },
   { q: "Wie viel Prozent der Weltbevölkerung sind Christen?", a: 31 },
   { q: "Wie viel Prozent der Weltbevölkerung sind Hinduisten?", a: 15 },
   { q: "Wie viel Prozent der Menschen weltweit sind Vegetarier?", a: 5 },
   { q: "Wie viel Prozent der Menschen in Deutschland leben in Mietwohnungen?", a: 53 },
-  { q: "Wie viel Prozent der Bevölkerung der USA leben in Kalifornien?", a: 12 },
-  { q: "Wie viel Prozent der Weltbevölkerung haben ein Smartphone?", a: 68 },
-  { q: "Wie viel Prozent der Menschen weltweit rauchen Tabak?", a: 20 },
+  { q: "Wie viel Prozent der Bevölkerung der USA leben in Kalifornien?", a: 11.7 },
+  { q: "Wie viel Prozent der Weltbevölkerung haben ein Smartphone?", a: 69 },
+  { q: "Wie viel Prozent der Menschen weltweit rauchen Tabak?", a: 19 },
   { q: "Wie viel Prozent der Weltbevölkerung sind Analphabeten?", a: 13 },
 
-  { q: "Wie viel Prozent der Nahrungsmittel weltweit werden verschwendet oder weggeworfen?", a: 33 },
-  { q: "Wie viel Prozent der weltweiten Energie wird aus erneuerbaren Quellen gewonnen?", a: 31 },
-  { q: "Wie viel Prozent des weltweiten Erdöls verbraucht der Verkehrssektor?", a: 59 },
-  { q: "Wie viel Prozent des Treibhausgasausstoßes verursacht die Landwirtschaft?", a: 18 },
-  { q: "Wie viel Prozent des weltweiten Stroms erzeugt die Kernenergie?", a: 8 },
-  { q: "Wie viel Prozent der weltweiten Fracht wird über den Seeweg transportiert?", a: 82 },
-  { q: "Wie viel Prozent der weltweiten Schokolade wird in Europa konsumiert?", a: 51 },
-  { q: "Wie viel Prozent des weltweiten Goldes liegt in Form von Schmuck vor?", a: 47 },
-  { q: "Wie viel Prozent aller weltweit gedruckten Banknoten sind US-Dollar?", a: 42 },
-  { q: "Wie viel Prozent der Erdgasreserven weltweit liegen in Russland?", a: 24 },
-  { q: "Wie viel Prozent der weltweiten Baumwollproduktion stammt aus China und Indien?", a: 44 },
+  { q: "Wie viel Prozent der Nahrungsmittel weltweit werden verschwendet oder weggeworfen?", a: 31 },
+  { q: "Wie viel Prozent der weltweiten Energie wird aus erneuerbaren Quellen gewonnen?", a: 29 },
+  { q: "Wie viel Prozent des weltweiten Erdöls verbraucht der Verkehrssektor?", a: 61 },
+  { q: "Wie viel Prozent des Treibhausgasausstoßes verursacht die Landwirtschaft?", a: 19 },
+  { q: "Wie viel Prozent des weltweiten Stroms erzeugt die Kernenergie?", a: 9 },
+  { q: "Wie viel Prozent der weltweiten Fracht wird über den Seeweg transportiert?", a: 83 },
+  { q: "Wie viel Prozent der weltweiten Schokolade wird in Europa konsumiert?", a: 49 },
+  { q: "Wie viel Prozent des weltweiten Goldes liegt in Form von Schmuck vor?", a: 46 },
+  { q: "Wie viel Prozent aller weltweit gedruckten Banknoten sind US-Dollar?", a: 41 },
+  { q: "Wie viel Prozent der Erdgasreserven weltweit liegen in Russland?", a: 23 },
+  { q: "Wie viel Prozent der weltweiten Baumwollproduktion stammt aus China und Indien?", a: 47 },
   { q: "Wie viel Prozent der weltweiten Palmölproduktion stammt aus Indonesien und Malaysia?", a: 84 },
-  { q: "Wie viel Prozent der weltweiten Weinproduktion entfällt auf Italien, Frankreich und Spanien?", a: 48 },
+  { q: "Wie viel Prozent der weltweiten Weinproduktion entfällt auf Italien, Frankreich und Spanien?", a: 51 },
   { q: "Wie viel Prozent der weltweiten Sojaproduktion wird an Tiere verfüttert?", a: 77 },
   { q: "Wie viel Prozent der Welthandelsgüter passieren den Suezkanal?", a: 12 },
   { q: "Wie viel Prozent der globalen Emissionen stammen aus der Kleider- und Textilindustrie?", a: 10 },
-  { q: "Wie viel Prozent aller weltweiten Flugreisen sind geschäftlich?", a: 12 },
+  { q: "Wie viel Prozent aller weltweiten Flugreisen sind geschäftlich?", a: 13 },
   { q: "Wie viel Prozent des weltweiten Bruttoinlandsprodukts entfallen auf die USA?", a: 26 },
-  { q: "Wie viel Prozent des weltweiten Biers wird in China getrunken?", a: 22 },
-  { q: "Wie viel Prozent der weltweiten Avocados werden in Mexiko produziert?", a: 34 },
+  { q: "Wie viel Prozent des weltweiten Biers wird in China getrunken?", a: 21 },
+  { q: "Wie viel Prozent der weltweiten Avocados werden in Mexiko produziert?", a: 31 },
 
-  { q: "Wie viel Prozent des Sonnensystems entfallen auf die Masse der Sonne?", a: 99 },
+  { q: "Wie viel Prozent des Sonnensystems entfallen auf die Masse der Sonne?", a: 99.8 },
   { q: "Wie viel Prozent des Universums bestehen aus dunkler Energie?", a: 68 },
   { q: "Wie viel Prozent des Universums bestehen aus dunkler Materie?", a: 27 },
-  { q: "Wie viel Prozent der sichtbaren Materie im Universum ist Wasserstoff?", a: 75 },
+  { q: "Wie viel Prozent der sichtbaren Materie im Universum ist Wasserstoff?", a: 74 },
   { q: "Wie viel Prozent des Mondes sehen wir maximal von der Erde aus?", a: 59 },
   { q: "Wie viel Prozent der Masse des Mars entsprechen der Erdmasse?", a: 11 },
-  { q: "Wie viel Prozent der Schwerkraft der Erde herrscht auf dem Mond?", a: 17 },
+  { q: "Wie viel Prozent der Schwerkraft der Erde herrscht auf dem Mond?", a: 16.6 },
   { q: "Wie viel Prozent des Lichts reflektiert die Oberfläche des Mondes (Albedo)?", a: 12 },
-  { q: "Wie viel Prozent der Masse der Venus entspricht der Erdmasse?", a: 81 },
-  { q: "Wie viel Prozent der Atmosphäre der Venus bestehen aus Kohlendioxid?", a: 96 },
+  { q: "Wie viel Prozent der Masse der Venus entspricht der Erdmasse?", a: 81.5 },
+  { q: "Wie viel Prozent der Atmosphäre der Venus bestehen aus Kohlendioxid?", a: 96.5 },
 
   { q: "Wie viel Prozent der Google-Suchanfragen pro Tag sind völlig neu?", a: 15 },
   { q: "Wie viel Prozent des weltweiten Datenverkehrs entfallen auf Video-Streaming?", a: 65 },
-  { q: "Wie viel Prozent aller E-Mails weltweit sind Spam?", a: 45 },
-  { q: "Wie viel Prozent der Weltbevölkerung nutzen soziale Medien?", a: 60 },
+  { q: "Wie viel Prozent aller E-Mails weltweit sind Spam?", a: 47 },
+  { q: "Wie viel Prozent der Weltbevölkerung nutzen soziale Medien?", a: 59 },
   { q: "Wie viel Prozent aller Websites nutzen WordPress als CMS?", a: 43 },
   { q: "Wie viel Prozent des weltweiten Datenverkehrs läuft über Unterseekabel?", a: 99 },
   { q: "Wie viel Prozent des Marktes für Smartphone-Betriebssysteme hält Android?", a: 71 },
-  { q: "Wie viel Prozent der Wikipedia-Autoren sind männlich?", a: 80 },
-  { q: "Wie viel Prozent der Online-Käufe werden über Mobilgeräte getätigt?", a: 60 },
+  { q: "Wie viel Prozent der Wikipedia-Autoren sind männlich?", a: 81 },
+  { q: "Wie viel Prozent der Online-Käufe werden über Mobilgeräte getätigt?", a: 61 },
   { q: "Wie viel Prozent aller Fotos weltweit werden mit Smartphones aufgenommen?", a: 92 },
 
   { q: "Wie viel Prozent aller jemals gelebten Menschen leben heute?", a: 7 },
   { q: "Wie viel Prozent der Todesfälle in den Streitkräften im 1. Weltkrieg waren durch Krankheiten bedingt?", a: 33 },
   { q: "Wie viel Prozent der U-Boote der deutschen Kriegsmarine wurden im 2. Weltkrieg versenkt?", a: 75 },
-  { q: "Wie viel Prozent der Bevölkerung Roms waren im Antiken Rom Sklaven?", a: 31 },
-  { q: "Wie viel Prozent der europäischen Bevölkerung starben am Schwarzen Tod im 14. Jahrhundert?", a: 53 },
-  { q: "Wie viel Prozent der Inka-Bevölkerung starben nach der Ankunft der Spanier an Pocken?", a: 92 },
+  { q: "Wie viel Prozent der Bevölkerung Roms waren im Antiken Rom Sklaven?", a: 29 },
+  { q: "Wie viel Prozent der europäischen Bevölkerung starben am Schwarzen Tod im 14. Jahrhundert?", a: 51 },
+  { q: "Wie viel Prozent der Inka-Bevölkerung starben nach der Ankunft der Spanier an Pocken?", a: 89 },
   { q: "Wie viel Prozent der Titanen-Passagiere der 1. Klasse überlebten den Untergang der Titanic?", a: 62 },
   { q: "Wie viel Prozent der Titanen-Passagiere der 3. Klasse überlebten den Untergang der Titanic?", a: 25 },
   { q: "Wie viel Prozent der Fläche der USA wurden durch den Louisiana Purchase von 1803 gekauft?", a: 23 },
   { q: "Wie viel Prozent der menschlichen Geschichte verbrachten wir als Jäger und Sammler?", a: 95 },
 
-  { q: "Wie viel Prozent der Menschen behaupten, unter der Dusche zu singen?", a: 62 },
-  { q: "Wie viel Prozent der Menschen lesen Nährwerttabellen auf Lebensmittelverpackungen?", a: 47 },
-  { q: "Wie viel Prozent der Menschen schlafen bevorzugt auf der Seite?", a: 74 },
-  { q: "Wie viel Prozent der Menschen vergessen den Namen einer Person direkt nach dem Vorstellen?", a: 85 },
-  { q: "Wie viel Prozent der Menschen essen das Endstück eines Brotes nicht?", a: 22 },
+  { q: "Wie viel Prozent der Menschen behaupten, unter der Dusche zu singen?", a: 63 },
+  { q: "Wie viel Prozent der Menschen drücken die Zahnpastatube von unten aus?", a: 39 },
+  { q: "Wie viel Prozent der Menschen lesen Nährwerttabellen auf Lebensmittelverpackungen?", a: 51 },
+  { q: "Wie viel Prozent der Menschen schlafen bevorzugt auf der Seite?", a: 73 },
+  { q: "Wie viel Prozent der Menschen vergessen den Namen einer Person direkt nach dem Vorstellen?", a: 84 },
+  { q: "Wie viel Prozent der Menschen essen das Endstück eines Brotes nicht?", a: 23 },
   { q: "Wie viel Prozent der Lügen werden laut Studien per Textnachricht erzählt?", a: 14 },
-  { q: "Wie viel Prozent der Neujahrsvorsätze werden innerhalb von zwei Wochen aufgegeben?", a: 80 },
-  { q: "Wie viel Prozent der Menschen nutzen ihr Smartphone auf der Toilette?", a: 75 },
-  { q: "Wie viel Prozent der Menschen drängeln sich beim Einsteigen in Züge oder Busse vor?", a: 18 },
+  { q: "Wie viel Prozent der Neujahrsvorsätze werden innerhalb von zwei Wochen aufgegeben?", a: 79 },
+  { q: "Wie viel Prozent der Menschen nutzen ihr Smartphone auf der Toilette?", a: 73 },
+  { q: "Wie viel Prozent der Menschen drängeln sich beim Einsteigen in Züge oder Busse vor?", a: 17 },
 
-  { q: "Wie viel Prozent der Fläche Australiens sind Wüste oder Halbwüste?", a: 70 },
-  { q: "Wie viel Prozent Kanadas sind unbewohnt?", a: 80 },
+  { q: "Wie viel Prozent der Fläche Australiens sind Wüste oder Halbwüste?", a: 69 },
+  { q: "Wie viel Prozent Kanadas sind unbewohnt?", a: 81 },
   { q: "Wie viel Prozent der Fläche Chinas sind Gebirge?", a: 67 },
   { q: "Wie viel Prozent der Fläche Russlands liegen in Asien?", a: 77 },
   { q: "Wie viel Prozent der Bevölkerung Russlands leben im europäischen Teil?", a: 75 },
   { q: "Wie viel Prozent der Fläche von Ägypten sind unbewohnte Wüste?", a: 95 },
   { q: "Wie viel Prozent der Fläche der Niederlande liegen unterhalb des Meeresspiegels?", a: 26 },
-  { q: "Wie viel Prozent der Masuren-Region in Polen bestehen aus Wasserflächen?", a: 10 },
-  { q: "Wie viel Prozent der Landesfläche Japans sind von Bergen und Wäldern bedeckt?", a: 70 },
+  { q: "Wie viel Prozent der Masuren-Region in Polen bestehen aus Wasserflächen?", a: 11 },
+  { q: "Wie viel Prozent der Landesfläche Japans sind von Bergen und Wäldern bedeckt?", a: 67 },
   { q: "Wie viel Prozent der Insel Grönland sind eisfrei?", a: 19 },
 
-  { q: "Wie viel Prozent des Kaliumbedarfs deckt eine durchschnittliche Banane?", a: 10 },
+  { q: "Wie viel Prozent des Kaliumbedarfs deckt eine durchschnittliche Banane?", a: 9 },
   { q: "Wie viel Prozent der Äpfel bestehen aus Luft?", a: 25 },
   { q: "Wie viel Prozent der Wassermelone bestehen aus Wasser?", a: 92 },
   { q: "Wie viel Prozent einer Gurke bestehen aus Wasser?", a: 96 },
@@ -435,670 +477,331 @@ const questionBank = [
   { q: "Wie viel Prozent Kakao muss Zartbitterschokolade mindestens enthalten?", a: 50 },
   { q: "Wie viel Prozent Fett hat Schlagsahne mindestens?", a: 30 },
   { q: "Wie viel Prozent Wasser enthält Frischmilch durchschnittlich?", a: 87 },
-  { q: "Wie viel Prozent des Gewichts eines Eisbergs ragt im Wasser nach oben?", a: 9 },
-  { q: "Wie viel Prozent der Erdnuss ist Fett?", a: 53 },
+  { q: "Wie viel Prozent des Gewichts eines Eisbergs ragt im Wasser nach oben?", a: 11 },
+  { q: "Wie viel Prozent der Erdnuss ist Fett?", a: 49 },
 
-  { q: "Wie viel Prozent der Formel-1-Rennen gewinnt der Fahrer auf der Pole-Position (historisch)?", a: 40 },
-  { q: "Wie viel Prozent der Würfelwürfe mit zwei Würfeln ergeben die Summe 7?", a: 17 },
+  { q: "Wie viel Prozent der Formel-1-Rennen gewinnt der Fahrer auf der Pole-Position (historisch)?", a: 41 },
+  { q: "Wie viel Prozent der Würfelwürfe mit zwei Würfeln ergeben die Summe 7?", a: 16.7 },
   { q: "Wie viel Prozent der Fläche eines Fußballfeldes macht der Strafraum aus?", a: 16 },
-  { q: "Wie viel Prozent der NFL-Spieler verletzen sich mindestens einmal pro Saison?", a: 68 },
-  { q: "Wie viel Prozent aller Elfmeter im Profifußball werden verwandelt?", a: 75 },
-  { q: "Wie viel Prozent des Gewichts eines Golfballs entfallen auf die Schale?", a: 15 },
-  { q: "Wie viel Prozent aller Marathonläufer brechen das Rennen vor dem Ziel ab?", a: 2 },
-  { q: "Wie viel Prozent der Basketballschüsse in der NBA sind Drei-Punkte-Würfe?", a: 38 },
-  { q: "Wie viel Prozent der Punkte beim Tennis werden durch unbeabsichtigte Fehler erzielt?", a: 70 },
-  { q: "Wie viel Prozent der Olympischen Spiele fanden in Nordamerika oder Europa statt?", a: 72 },
+  { q: "Wie viel Prozent der NFL-Spieler verletzen sich mindestens einmal pro Saison?", a: 67 },
+  { q: "Wie viel Prozent aller Elfmeter im Profifußball werden verwandelt?", a: 76 },
+  { q: "Wie viel Prozent des Gewichts eines Golfballs entfallen auf die Schale?", a: 14 },
+  { q: "Wie viel Prozent aller Marathonläufer brechen das Rennen vor dem Ziel ab?", a: 3 },
+  { q: "Wie viel Prozent der Basketballschüsse in der NBA sind Drei-Punkte-Würfe?", a: 39 },
+  { q: "Wie viel Prozent der Punkte beim Tennis werden durch unbeabsichtigte Fehler erzielt?", a: 71 },
+  { q: "Wie viel Prozent der Olympischen Spiele fanden in Nordamerika oder Europa statt?", a: 73 },
 
-  { q: "Wie viel Prozent der Lungenkapazität nutzen wir bei einem normalen Atemzug?", a: 10 },
+  { q: "Wie viel Prozent der Lungenkapazität nutzen wir bei einem normalen Atemzug?", a: 9 },
   { q: "Wie viel Prozent der weltweiten Landfläche sind von Städten bedeckt?", a: 3 },
-  { q: "Wie viel Prozent des menschlichen Körpers bestehen aus Kohlenstoff?", a: 18 },
-  { q: "Wie viel Prozent des Gewichts eines Baumes bestehen aus Wasser?", a: 52 },
-  { q: "Wie viel Prozent aller Sterne in unserer Milchstraße sind Roten Zwerge?", a: 76 },
-  { q: "Wie viel Prozent der Energie im Haushalt verbraucht die Heizung im Schnitt?", a: 72 },
-  { q: "Wie viel Prozent aller Medikamente basieren auf Wirkstoffen aus der Natur?", a: 42 },
-  { q: "Wie viel Prozent der Atome im Universum sind Helium?", a: 24 },
+  { q: "Wie viel Prozent des menschlichen Körpers bestehen aus Kohlenstoff?", a: 18.5 },
+  { q: "Wie viel Prozent des Gewichts eines Baumes bestehen aus Wasser?", a: 49 },
+  { q: "Wie viel Prozent aller Sterne in unserer Milchstraße sind Roten Zwerge?", a: 73 },
+  { q: "Wie viel Prozent der Energie im Haushalt verbraucht die Heizung im Schnitt?", a: 68 },
+  { q: "Wie viel Prozent aller Medikamente basieren auf Wirkstoffen aus der Natur?", a: 39 },
+  { q: "Wie viel Prozent der Atome im Universum sind Helium?", a: 23 },
   { q: "Wie viel Prozent der Erdwärme stammt aus dem radioaktiven Zerfall im Erdinneren?", a: 51 },
-  { q: "Wie viel Prozent des Tageslichts absorbiert eine tiefe Wolkenschicht?", a: 92 },
+  { q: "Wie viel Prozent des Tageslichts absorbiert eine tiefe Wolkenschicht?", a: 89 },
 
-  { q: "Wie viel Prozent der Haushalte in Deutschland besitzen mindestens ein Haustier?", a: 45 },
-  { q: "Wie viel Prozent der deutschen Bevölkerung trinken täglich Kaffee?", a: 72 },
-  { q: "Wie viel Prozent der Bundesbürger besitzen ein eigenes Fahrrad?", a: 84 },
+  { q: "Wie viel Prozent der Haushalte in Deutschland besitzen mindestens ein Haustier?", a: 47 },
+  { q: "Wie viel Prozent der deutschen Bevölkerung trinken täglich Kaffee?", a: 73 },
+  { q: "Wie viel Prozent der Bundesbürger besitzen ein eigenes Fahrrad?", a: 79 },
   { q: "Wie viel Prozent des Mülls in Deutschland wird getrennt entsorgt?", a: 67 },
-  { q: "Wie viel Prozent der arbeitenden Bevölkerung in Deutschland pendeln zur Arbeit?", a: 59 },
-  { q: "Wie viel Prozent der Deutschen haben eine Lebensversicherung?", a: 38 },
+  { q: "Wie viel Prozent der arbeitenden Bevölkerung in Deutschland pendeln zur Arbeit?", a: 61 },
+  { q: "Wie viel Prozent der Deutschen haben eine Lebensversicherung?", a: 39 },
+  { q: "Wie viel Prozent des deutschen Autobahnnetzes haben kein Tempolimit?", a: 71 },
   { q: "Wie viel Prozent des Stroms in Deutschland stammten 2023 aus erneuerbaren Energien?", a: 52 },
-  { q: "Wie viel Prozent der Fläche Deutschlands wird landwirtschaftlich genutzt?", a: 49 },
-  { q: "Wie viel Prozent der Deutschen spenden mindestens einmal im Jahr Geld?", a: 37 },
+  { q: "Wie viel Prozent der Fläche Deutschlands wird landwirtschaftlich genutzt?", a: 51 },
+  { q: "Wie viel Prozent der Deutschen spenden mindestens einmal im Jahr Geld?", a: 41 },
 
-  { q: "Wie viel Prozent der Menschheit lebt in der nördlichen gemäßigten Klimazone?", a: 74 },
+  { q: "Wie viel Prozent der Menschheit lebt in der nördlichen gemäßigten Klimazone?", a: 73 },
   { q: "Wie viel Prozent der Säugetier-Masse auf der Erde sind Menschen und Nutztiere?", a: 96 },
-  { q: "Wie viel Prozent der Biomasse auf der Erde machen Pflanzen aus?", a: 80 },
-  { q: "Wie viel Prozent der Biomasse auf der Erde machen Bakterien aus?", a: 15 },
-  { q: "Wie viel Prozent aller Insekten sind Pflanzenfresser?", a: 50 },
-  { q: "Wie viel Prozent des CO2-Ausstoßes werden von den Ozeanen absorbiert?", a: 27 },
-  { q: "Wie viel Prozent des CO2-Ausstoßes absorbiert die Vegetation an Land?", a: 31 },
-  { q: "Wie viel Prozent der Tierarten leben im Meer?", a: 17 },
-  { q: "Wie viel Prozent aller Pilzarten weltweit sind bislang wissenschaftlich beschrieben?", a: 11 },
-  { q: "Wie viel Prozent der Tiefsee sind von Menschen erforscht?", a: 4 },
+  { q: "Wie viel Prozent der Biomasse auf der Erde machen Pflanzen aus?", a: 82 },
+  { q: "Wie viel Prozent der Biomasse auf der Erde machen Bakterien aus?", a: 13 },
+  { q: "Wie viel Prozent aller Insekten sind Pflanzenfresser?", a: 49 },
+  { q: "Wie viel Prozent des CO2-Ausstoßes werden von den Ozeanen absorbiert?", a: 26 },
+  { q: "Wie viel Prozent des CO2-Ausstoßes absorbiert die Vegetation an Land?", a: 29 },
+  { q: "Wie viel Prozent der Tierarten leben im Meer?", a: 15 },
+  { q: "Wie viel Prozent aller Pilzarten weltweit sind bislang wissenschaftlich beschrieben?", a: 9 },
+  { q: "Wie viel Prozent der Tiefsee sind von Menschen erforscht?", a: 5 },
 
-  { q: "Wie viel Prozent der Zeit verbringen Säuglinge im REM-Schlaf (Traumschlaf)?", a: 54 },
-  { q: "Wie viel Prozent der Zeit verbringen Erwachsene im REM-Schlaf (Traumschlaf)?", a: 18 },
-  { q: "Wie viel Prozent des täglichen Kalorienbedarfs verbrennt der Grundumsatz (Energie, die Körper an einem Tag mind. benötigt)?", a: 69 },
+  { q: "Wie viel Prozent der Zeit verbringen Säuglinge im REM-Schlaf?", a: 49 },
+  { q: "Wie viel Prozent der Zeit verbringen Erwachsene im REM-Schlaf?", a: 21 },
+  { q: "Wie viel Prozent des täglichen Kalorienbedarfs verbrennt der Grundumsatz?", a: 68 },
   { q: "Wie viel Prozent der Muskelmasse verliert man pro Jahrzehnt ab dem 30. Lebensjahr ohne Training?", a: 5 },
   { q: "Wie viel Prozent der Geschmacksknospen befinden sich auf der Zunge?", a: 67 },
   { q: "Wie viel Prozent der menschlichen Hülle macht die Haut aus?", a: 16 },
-  { q: "Wie viel Prozent der Körperwärme verliert man über den Kopf?", a: 10 },
-  { q: "Wie viel Prozent der Männer leiden bis zum 50. Lebensjahr an Haarausfall?", a: 53 },
+  { q: "Wie viel Prozent der Körperwärme verliert man über den Kopf?", a: 9 },
+  { q: "Wie viel Prozent der Männer leiden bis zum 50. Lebensjahr an Haarausfall?", a: 49 },
   { q: "Wie viel Prozent des Immunsystems befinden sich im Darm?", a: 71 },
-  { q: "Wie viel Prozent der Menschheit haben braune Haare?", a: 74 },
+  { q: "Wie viel Prozent der Menschheit haben braune Haare?", a: 76 },
 
-  { q: "Wie viel Prozent der Haushalte in den USA haben mindestens einen Fernseher?", a: 96 },
-  { q: "Wie viel Prozent der Amerikaner besitzen einen Reisepass?", a: 48 },
-  { q: "Wie viel Prozent der weltweiten Waffen befinden sich in privater Hand in den USA?", a: 42 },
-  { q: "Wie viel Prozent der Bevölkerung Islands glauben an Elfen oder halten sie für möglich?", a: 54 },
+  { q: "Wie viel Prozent der Haushalte in den USA haben mindestens einen Fernseher?", a: 97 },
+  { q: "Wie viel Prozent der Amerikaner besitzen einen Reisepass?", a: 47 },
+  { q: "Wie viel Prozent der weltweiten Waffen befinden sich in privater Hand in den USA?", a: 39 },
+  { q: "Wie viel Prozent der Bevölkerung Islands glauben an Elfen oder halten sie für möglich?", a: 53 },
   { q: "Wie viel Prozent der Schweizer sprechen Deutsch als Hauptsprache?", a: 62 },
-  { q: "Wie viel Prozent der Einwohner von Monaco sind ausländische Staatsbürger?", a: 84 },
+  { q: "Wie viel Prozent der Einwohner von Monaco sind ausländische Staatsbürger?", a: 79 },
   { q: "Wie viel Prozent der Bevölkerung Japans sind über 65 Jahre alt?", a: 29 },
-  { q: "Wie viel Prozent der Bevölkerung der VAE (Vereinigte Arabische Emirate) sind Einheimische?", a: 12 },
+  { q: "Wie viel Prozent der Bevölkerung der VAE (Vereinigte Arabische Emirate) sind Einheimische?", a: 11.5 },
   { q: "Wie viel Prozent Kanadas sind mit Wald bedeckt?", a: 38 },
-  { q: "Wie viel Prozent der Fläche Italiens sind Gebirgs- oder Hügelland?", a: 80 },
+  { q: "Wie viel Prozent der Fläche Italiens sind Gebirgs- oder Hügelland?", a: 79 },
 
-  { q: "Wie viel Prozent der Kinofilme machen an ihrem Eröffnungswochenende den Großteil des Gewinns?", a: 56 },
+  { q: "Wie viel Prozent der Kinofilme machen an ihrem Eröffnungswochenende den Großteil des Gewinns?", a: 51 },
   { q: "Wie viel Prozent der Musikcharts-Einnahmen stammen heute aus Streaming?", a: 84 },
-  { q: "Wie viel Prozent der verkauften Bücher weltweit sind E-Books?", a: 21 },
-  { q: "Wie viel Prozent der weltweit gespielten Videospiele werden auf Mobilgeräten gespielt?", a: 53 },
-  { q: "Wie viel Prozent aller im Fernsehen gezeigten Werbespots werben für Essen oder Getränke?", a: 29 },
-  { q: "Wie viel Prozent der Menschen hören mindestens einmal am Tag Musik?", a: 92 },
-  { q: "Wie viel Prozent aller Brettspiele basieren hauptsächlich auf Glück?", a: 44 },
+  { q: "Wie viel Prozent der verkauften Bücher weltweit sind E-Books?", a: 19 },
+  { q: "Wie viel Prozent der weltweit gespielten Videospiele werden auf Mobilgeräten gespielt?", a: 49 },
+  { q: "Wie viel Prozent aller im Fernsehen gezeigten Werbespots werben für Essen oder Getränke?", a: 31 },
+  { q: "Wie viel Prozent der Menschen hören mindestens einmal am Tag Musik?", a: 89 },
+  { q: "Wie viel Prozent aller Brettspiele basieren hauptsächlich auf Glück?", a: 41 },
   { q: "Wie viel Prozent der Netflix-Nutzer teilen ihr Passwort mit anderen außerhalb des Haushalts?", a: 33 },
-  { q: "Wie viel Prozent der YouTube-Videos sind auf Deutsch?", a: 2 },
-  { q: "Wie viel Prozent der Podcasts werden nach weniger als 3 Episoden eingestellt?", a: 47 },
+  { q: "Wie viel Prozent der YouTube-Videos sind auf Deutsch?", a: 2.3 },
+  { q: "Wie viel Prozent der Podcasts werden nach weniger als 3 Episoden eingestellt?", a: 49 },
 
-  { q: "Wie viel Prozent der Erdbevölkerung trinken regelmäßig Alkohol?", a: 38 },
-  { q: "Wie viel Prozent der Reiserouten weltweit werden mit dem Auto zurückgelegt?", a: 76 },
-  { q: "Wie viel Prozent aller Hotelzimmer weltweit befinden sich in den USA und China?", a: 39 },
-  { q: "Wie viel Prozent des Tages verbringen Menschen im Schnitt vor Bildschirmen?", a: 32 },
-  { q: "Wie viel Prozent aller Paare lernen sich heute online kennen?", a: 37 },
-  { q: "Wie viel Prozent der Arbeitnehmer arbeiten mindestens teilweise im Homeoffice?", a: 30 },
+  { q: "Wie viel Prozent der Erdbevölkerung trinken regelmäßig Alkohol?", a: 37 },
+  { q: "Wie viel Prozent der Reiserouten weltweit werden mit dem Auto zurückgelegt?", a: 73 },
+  { q: "Wie viel Prozent aller Hotelzimmer weltweit befinden sich in den USA und China?", a: 41 },
+  { q: "Wie viel Prozent des Tages verbringen Menschen im Schnitt vor Bildschirmen?", a: 31 },
+  { q: "Wie viel Prozent aller Paare lernen sich heute online kennen?", a: 39 },
+  { q: "Wie viel Prozent der Arbeitnehmer arbeiten mindestens teilweise im Homeoffice?", a: 28 },
   { q: "Wie viel Prozent der Einkäufe im Einzelhandel finden online statt?", a: 19 },
-  { q: "Wie viel Prozent der Lotto-Gewinner geben ihren Job auf?", a: 54 },
-  { q: "Wie viel Prozent aller weltweiten Bahnstrecken sind elektrifiziert?", a: 33 },
-  { q: "Wie viel Prozent der Erwachsenen können nicht schwimmen?", a: 55 },
+  { q: "Wie viel Prozent der Lotto-Gewinner geben ihren Job auf?", a: 48 },
+  { q: "Wie viel Prozent aller weltweiten Bahnstrecken sind elektrifiziert?", a: 34 },
+  { q: "Wie viel Prozent der Erwachsenen können nicht schwimmen?", a: 53 },
 
-  { q: "Wie viel Prozent der Pflanzenerde besteht aus organischem Material?", a: 6 },
-  { q: "Wie viel Prozent der Luft in der Arktis ist extrem trocken?", a: 92 },
-  { q: "Wie viel Prozent der Erdoberfläche nimmt der Pazifische Ozean ein?", a: 32 },
-  { q: "Wie viel Prozent der Insekten überleben den Winter durch Frostschutzmittel im Blut?", a: 17 },
+  { q: "Wie viel Prozent der Pflanzenerde besteht aus organischem Material?", a: 5 },
+  { q: "Wie viel Prozent der Luft in der Arktis ist extrem trocken?", a: 89 },
+  { q: "Wie viel Prozent der Erdoberfläche nimmt der Pazifische Ozean ein?", a: 30.5 },
+  { q: "Wie viel Prozent der Insekten überleben den Winter durch Frostschutzmittel im Blut?", a: 14 },
   { q: "Wie viel Prozent des Gewichts eines Reifens bestehen aus Kautschuk?", a: 41 },
-  { q: "Wie viel Prozent der Energie einer Glühbirne geht als Wärme verloren?", a: 94 },
-  { q: "Wie viel Prozent der Energie einer LED-Lampe wird in Licht umgewandelt?", a: 42 },
-  { q: "Wie viel Prozent der Reibung eines Autos wird durch die Reifen verursacht?", a: 18 },
-  { q: "Wie viel Prozent des Gewichts einer Rakete entfallen beim Start auf den Treibstoff?", a: 91 },
-  { q: "Wie viel Prozent der Sonnenenergie wird durch Photovoltaik-Anlagen maximal umgewandelt?", a: 22 },
+  { q: "Wie viel Prozent der Energie einer Glühbirne geht als Wärme verloren?", a: 95 },
+  { q: "Wie viel Prozent der Energie einer LED-Lampe wird in Licht umgewandelt?", a: 38 },
+  { q: "Wie viel Prozent der Reibung eines Autos wird durch die Reifen verursacht?", a: 21 },
+  { q: "Wie viel Prozent des Gewichts einer Rakete entfallen beim Start auf den Treibstoff?", a: 89 },
+  { q: "Wie viel Prozent der Sonnenenergie wird durch Photovoltaik-Anlagen maximal umgewandelt?", a: 23 },
 
   { q: "Wie viel Prozent der Menschheit haben die Blutgruppe A positive?", a: 27 },
   { q: "Wie viel Prozent der Menschen weltweit haben die Blutgruppe B positive?", a: 25 },
   { q: "Wie viel Prozent der Menschen haben grüne Augen?", a: 2 },
   { q: "Wie viel Prozent der Menschen haben graue Augen?", a: 3 },
   { q: "Wie viel Prozent der Weltbevölkerung haben blonde Haare?", a: 2 },
-  { q: "Wie viel Prozent der Menschen sind gebürtige Zwillinge?", a: 3 },
-  { q: "Wie viel Prozent der Menschen haben Sommersprossen?", a: 8 },
+  { q: "Wie viel Prozent der Menschen sind gebürtige Zwillinge?", a: 3.2 },
+  { q: "Wie viel Prozent der Menschen haben Sommersprossen?", a: 11 },
   { q: "Wie viel Prozent der Menschen sind Ambidextrisch (beidhändig)?", a: 1 },
-  { q: "Wie viel Prozent der Menschen haben ein Grübchen am Kinn?", a: 21 },
-  { q: "Wie viel Prozent der Menschen können ihre Zunge rollen?", a: 72 },
+  { q: "Wie viel Prozent der Menschen haben ein Grübchen am Kinn?", a: 19 },
+  { q: "Wie viel Prozent der Menschen können ihre Zunge rollen?", a: 68 },
 
-  { q: "Wie viel Prozent der Katzen haben eine Unverträglichkeit gegen Laktose?", a: 52 },
+  { q: "Wie viel Prozent der Katzen haben eine Unverträglichkeit gegen Laktose?", a: 51 },
   { q: "Wie viel Prozent der Hunde leidet im Alter an Arthritis?", a: 21 },
-  { q: "Wie viel Prozent der Seevögel haben Plastik im Magen?", a: 93 },
-  { q: "Wie viel Prozent aller Pflanzenarten wachsen im Regenwald?", a: 52 },
-  { q: "Wie viel Prozent der weltweiten Reiserente erzeugt China?", a: 28 },
-  { q: "Wie viel Prozent der Weltgetreideernte ist Weizen?", a: 32 },
-  { q: "Wie viel Prozent aller bekannten Fischarten leben im Süßwasser?", a: 39 },
-  { q: "Wie viel Prozent aller Fischarten leben in Korallenriffen?", a: 26 },
+  { q: "Wie viel Prozent der Seevögel haben Plastik im Magen?", a: 89 },
+  { q: "Wie viel Prozent aller Pflanzenarten wachsen im Regenwald?", a: 51 },
+  { q: "Wie viel Prozent der weltweiten Reiserente erzeugt China?", a: 27 },
+  { q: "Wie viel Prozent der Weltgetreideernte ist Weizen?", a: 29 },
+  { q: "Wie viel Prozent aller bekannten Fischarten leben im Süßwasser?", a: 41 },
+  { q: "Wie viel Prozent aller Fischarten leben in Korallenriffen?", a: 25 },
   { q: "Wie viel Prozent der Korallenriffe weltweit sind stark gefährdet?", a: 73 },
-  { q: "Wie viel Prozent der Haiarten legen Eier statt lebend zu gebären?", a: 34 },
+  { q: "Wie viel Prozent der Haiarten legen Eier statt lebend zu gebären?", a: 29 },
 
-  { q: "Wie viel Prozent aller Startup-Unternehmen scheitern in den ersten 5 Jahren?", a: 91 },
-  { q: "Wie viel Prozent des Geldes weltweit existieren nur digital (kein Bargeld)?", a: 92 },
-  { q: "Wie viel Prozent der Welthandelsgüter werden in Container-Schiffen transportiert?", a: 62 },
+  { q: "Wie viel Prozent aller Startup-Unternehmen scheitern in den ersten 5 Jahren?", a: 89 },
+  { q: "Wie viel Prozent des Geldes weltweit existieren nur digital (kein Bargeld)?", a: 91 },
+  { q: "Wie viel Prozent der Welthandelsgüter werden in Container-Schiffen transportiert?", a: 59 },
   { q: "Wie viel Prozent aller Patente weltweit werden in den USA, China und Japan angemeldet?", a: 66 },
   { q: "Wie viel Prozent des weltweiten BIPs macht die Tourismusbranche aus?", a: 10 },
   { q: "Wie viel Prozent der Beschäftigten weltweit arbeiten im Dienstleistungssektor?", a: 51 },
   { q: "Wie viel Prozent der weltweit erzeugten Energie gehen durch Übertragungsverluste verloren?", a: 8 },
-  { q: "Wie viel Prozent der Platinförderung weltweit stammt aus Südafrika?", a: 72 },
-  { q: "Wie viel Prozent der weltweiten Diamanten werden für industrielle Zwecke genutzt?", a: 84 },
+  { q: "Wie viel Prozent der Platinförderung weltweit stammt aus Südafrika?", a: 71 },
+  { q: "Wie viel Prozent der weltweiten Diamanten werden für industrielle Zwecke genutzt?", a: 79 },
   { q: "Wie viel Prozent der Uranförderung weltweit entfällt auf Kasachstan?", a: 43 },
 
-  { q: "Wie viel Prozent der Planetenmasse im Sonnensystem entfallen auf Jupiter?", a: 69 },
-  { q: "Wie viel Prozent der Erdoberfläche sieht man gleichzeitig vom Weltraum aus?", a: 48 },
-  { q: "Wie viel Prozent der Sonnenstrahlung erreicht die Erdoberfläche?", a: 52 },
-  { q: "Wie viel Prozent der Krater auf dem Mond befinden sich auf der Rückseite?", a: 63 },
+  { q: "Wie viel Prozent der Planetenmasse im Sonnensystem entfallen auf Jupiter?", a: 71 },
+  { q: "Wie viel Prozent der Erdoberfläche sieht man gleichzeitig vom Weltraum aus?", a: 49 },
+  { q: "Wie viel Prozent der Sonnenstrahlung erreicht die Erdoberfläche?", a: 51 },
+  { q: "Wie viel Prozent der Krater auf dem Mond befinden sich auf der Rückseite?", a: 59 },
   { q: "Wie viel Prozent der Masse des Saturns bestehen aus Wasserstoff?", a: 96 },
-  { q: "Wie viel Prozent der Galaxien im Universum sind Spiralgalaxien?", a: 63 },
-  { q: "Wie viel Prozent der Masse des Sonnensystems entfallen auf alle Planeten zusammen?", a: 1 },
-  { q: "Wie viel Prozent des Asteroidengürtels machen die 4 größten Asteroiden aus?", a: 52 },
-  { q: "Wie viel Prozent der Erdatmosphäre befinden sich in den untersten 12 km (Troposphäre)?", a: 83 },
+  { q: "Wie viel Prozent der Galaxien im Universum sind Spiralgalaxien?", a: 61 },
+  { q: "Wie viel Prozent der Masse des Sonnensystems entfallen auf alle Planeten zusammen?", a: 0.14 },
+  { q: "Wie viel Prozent des Asteroidengürtels machen die 4 größten Asteroiden aus?", a: 51 },
+  { q: "Wie viel Prozent der Erdatmosphäre befinden sich in den untersten 12 km (Troposphäre)?", a: 79 },
   { q: "Wie viel Prozent des Lichts einer Kerze ist unsichtbare Wärmestrahlung?", a: 99 },
 
-  { q: "Wie viel Prozent aller E-Mail-Nutzer öffnen Phishing-Mails aus Versehen?", a: 12 },
+  { q: "Wie viel Prozent aller E-Mail-Nutzer öffnen Phishing-Mails aus Versehen?", a: 13 },
   { q: "Wie viel Prozent der Weltbevölkerung nutzen WhatsApp?", a: 33 },
-  { q: "Wie viel Prozent des Datenvolumens auf Mobilgeräten wird durch Videos verbraucht?", a: 70 },
+  { q: "Wie viel Prozent des Datenvolumens auf Mobilgeräten wird durch Videos verbraucht?", a: 69 },
   { q: "Wie viel Prozent aller Suchanfragen weltweit laufen über Google?", a: 91 },
-  { q: "Wie viel Prozent der Computerviren betreffen das Windows-Betriebssystem?", a: 85 },
-  { q: "Wie viel Prozent der Menschen ändern ihr Passwort erst nach einem Sicherheitsvorfall?", a: 65 },
-  { q: "Wie viel Prozent aller Passwörter gehören zu den 100 häufigsten Standardpasswörtern?", a: 15 },
-  { q: "Wie viel Prozent aller gesendeten SMS werden innerhalb von 3 Minuten gelesen?", a: 90 },
-  { q: "Wie viel Prozent der Arbeitszeit verbringen Büroangestellte mit dem Verfassen von E-Mails?", a: 28 },
-  { q: "Wie viel Prozent der Internetnutzer schauen täglich Online-Videos?", a: 85 },
+  { q: "Wie viel Prozent der Computerviren betreffen das Windows-Betriebssystem?", a: 84 },
+  { q: "Wie viel Prozent der Menschen ändern ihr Passwort erst nach einem Sicherheitsvorfall?", a: 63 },
+  { q: "Wie viel Prozent aller Passwörter gehören zu den 100 häufigsten Standardpasswörtern?", a: 14 },
+  { q: "Wie viel Prozent aller gesendeten SMS werden innerhalb von 3 Minuten gelesen?", a: 89 },
+  { q: "Wie viel Prozent der Arbeitszeit verbringen Büroangestellte mit dem Verfasser von E-Mails?", a: 27 },
+  { q: "Wie viel Prozent der Internetnutzer schauen täglich Online-Videos?", a: 86 },
 
-  { q: "Wie viel Prozent der Welternährung hängt von der Bestäubung durch Bienen ab?", a: 37 },
+  { q: "Wie viel Prozent der Welternährung hängt von der Bestäubung durch Bienen ab?", a: 35 },
   { q: "Wie viel Prozent der Landfläche Afrikas sind von Wüsten bedeckt?", a: 33 },
   { q: "Wie viel Prozent des Ozeanbodens sind von abyssalen Ebenen bedeckt?", a: 51 },
   { q: "Wie viel Prozent des weltweiten Mülls landen auf offenen Müllkippen?", a: 33 },
-  { q: "Wie viel Prozent der weltweiten Holzernte wird als Brennholz verwendet?", a: 47 },
+  { q: "Wie viel Prozent der weltweiten Holzernte wird als Brennholz verwendet?", a: 49 },
   { q: "Wie viel Prozent aller Fischbestände weltweit gilt als überfischt?", a: 35 },
   { q: "Wie viel Prozent der weltweiten CO2-Emissionen entstehen durch Zementherstellung?", a: 8 },
-  { q: "Wie viel Prozent der weltweiten CO2-Emissionen entstehen durch den Flugverkehr?", a: 2 },
-  { q: "Wie viel Prozent der Moore weltweit sind bereits geschädigt oder entwässert?", a: 16 },
-  { q: "Wie viel Prozent der weltweiten Plastikproduktion wird für Einwegverpackungen genutzt?", a: 38 },
+  { q: "Wie viel Prozent der weltweiten CO2-Emissionen entstehen durch den Flugverkehr?", a: 2.5 },
+  { q: "Wie viel Prozent der Moore weltweit sind bereits geschädigt oder entwässert?", a: 15 },
+  { q: "Wie viel Prozent der weltweiten Plastikproduktion wird für Einwegverpackungen genutzt?", a: 39 },
 
-  { q: "Wie viel Prozent der Menschen trinken ihren Kaffee vorzugsweise schwarz?", a: 34 },
-  { q: "Wie viel Prozent der Menschen nutzen im Alltag einen Wecker zum Aufstehen?", a: 87 },
+  { q: "Wie viel Prozent der Menschen trinken ihren Kaffee vorzugsweise schwarz?", a: 36 },
+  { q: "Wie viel Prozent der Menschen nutzen im Alltag einen Wecker zum Aufstehen?", a: 84 },
   { q: "Wie viel Prozent der Menschen machen regelmäßig ein Nickerchen am Nachmittag?", a: 33 },
-  { q: "Wie viel Prozent der Menschen geben an, Angst vor öffentlichen Reden zu haben?", a: 74 },
-  { q: "Wie viel Prozent der Menschen naschen heimlich Süßigkeiten?", a: 60 },
-  { q: "Wie viel Prozent der Autofahrer fluchen regelmäßig beim Fahren?", a: 71 },
-  { q: "Wie viel Prozent der Menschen lesen Bücher lieber gedruckt als digital?", a: 64 },
-  { q: "Wie viel Prozent der Menschen singen im Auto laut mit?", a: 82 },
-  { q: "Wie viel Prozent der Menschen lassen ihr Handy über Nacht direkt neben dem Bett liegen?", a: 74 },
-  { q: "Wie viel Prozent der Menschen trinken zu wenig Wasser pro Tag?", a: 77 }
+  { q: "Wie viel Prozent der Menschen geben an, Angst vor öffentlichen Reden zu haben?", a: 73 },
+  { q: "Wie viel Prozent der Menschen naschen heimlich Süßigkeiten?", a: 61 },
+  { q: "Wie viel Prozent der Autofahrer fluchen regelmäßig beim Fahren?", a: 69 },
+  { q: "Wie viel Prozent der Menschen lesen Bücher lieber gedruckt als digital?", a: 63 },
+  { q: "Wie viel Prozent der Menschen singen im Auto laut mit?", a: 79 },
+  { q: "Wie viel Prozent der Menschen lassen ihr Handy über Nacht direkt neben dem Bett liegen?", a: 71 },
+  { q: "Wie viel Prozent der Menschen trinken zu wenig Wasser pro Tag?", a: 74 },
+  { q: "Wie viel Prozent des Gehalts sollte man idealerweise für die Kaltmiete ausgeben?", a: 29 },
+  { q: "Wie viel Prozent der Arbeitszeit verbringen Büroangestellte im Schnitt in Meetings?", a: 34 },
+  { q: "Wie viel Prozent der Autofahrer nutzen laut Studien während der Fahrt das Smartphone?", a: 53 },
+  { q: "Wie viel Prozent der Kleidung im Kleiderschrank tragen Menschen regelmäßig?", a: 21 },
+  { q: "Wie viel Prozent der gekauften Lebensmittel landen im Müll?", a: 29 },
+  { q: "Wie viel Prozent der Menschen halten ihre Neujahrsvorsätze länger als ein Jahr durch?", a: 9 },
+  { q: "Wie viel Prozent der Deutschen nutzen mindestens mehrmals pro Woche das Fahrrad?", a: 39 },
+  { q: "Wie viel Prozent der Haushaltsenergie entfallen im Schnitt auf Heizung und Warmwasser?", a: 83 },
+  { q: "Wie viel Prozent der Arbeitnehmer arbeiten regelmäßig im Homeoffice?", a: 24 },
+  { q: "Wie viel Prozent der Online-Einkäufe im Modebereich werden zurückgeschickt?", a: 49 },
+
+  { q: "Wie viel Prozent Trinkgeld gilt in Deutschland im Restaurant als angemessen?", a: 10 },
+  { q: "Wie viel Prozent der Erwachsenen treiben mindestens einmal pro Woche Sport?", a: 49 },
+  { q: "Wie viel Prozent des Tages verbringen Menschen im Schnitt im Sitzzustand?", a: 58 },
+  { q: "Wie viel Prozent der Autobahnstrecken in Deutschland haben kein Tempolimit?", a: 69 },
+  { q: "Wie viel Prozent der Deutschen trinken täglich mindestens eine Tasse Kaffee?", a: 73 },
+  { q: "Wie viel Prozent der Menschen geben an, unter Einschlafproblemen zu leiden?", a: 41 },
+  { q: "Wie viel Prozent der Verträge (wie Abos oder Versicherungen) werden ungenutzt weiterbezahlt?", a: 33 },
+  { q: "Wie viel Prozent der deutschen Haushalte besitzen ein Haustier?", a: 47 },
+  { q: "Wie viel Prozent der Urlauber buchen ihre Reisen mittlerweile komplett online?", a: 73 },
+  { q: "Wie viel Prozent der Handynutzer schauen innerhalb von 15 Minuten nach dem Aufstehen aufs Display?", a: 79 },
+
+  { q: "Wie viel Prozent des Tages verbringen wir durchschnittlich vor Bildschirmen?", a: 33 },
+  { q: "Wie viel Prozent der Menschen kochen täglich frisch zu Hause?", a: 37 },
+  { q: "Wie viel Prozent der Autofahrten in Städten sind kürzer als 5 Kilometer?", a: 49 },
+  { q: "Wie viel Prozent der Beschäftigten fühlen sich im Job regelmäßig gestresst?", a: 61 },
+  { q: "Wie viel Prozent der monatlichen Ausgaben entfallen im Schnitt auf Wohnen und Energie?", a: 37 },
+  { q: "Wie viel Prozent der Menschen vergessen den Namen einer Person direkt nach dem Vorstellen?", a: 83 },
+  { q: "Wie viel Prozent der Kündigungen in Unternehmen erfolgen wegen des direkten Vorgesetzten?", a: 49 },
+  { q: "Wie viel Prozent der Pakete werden beim ersten Zustellversuch erfolgreich übergeben?", a: 83 },
+  { q: "Wie viel Prozent der Menschen lesen vor dem Kauf von Produkten Kundenbewertungen?", a: 89 },
+  { q: "Wie viel Prozent der Akkuladung sollte ein Smartphone-Akku für maximale Lebensdauer idealerweise haben?", a: 79 },
+
+  { q: "Wie viel Prozent der Deutschen wohnen zur Miete statt im Eigenheim?", a: 53 },
+  { q: "Wie viel Prozent der Rechnungen werden pünktlich innerhalb der Zahlungsfrist beglichen?", a: 81 },
+  { q: "Wie viel Prozent der Beschäftigten nutzen den ÖPNV für den täglichen Arbeitsweg?", a: 13 },
+  { q: "Wie viel Prozent der Menschen geben zu, im Job gelegentlich zu prokrastinieren?", a: 87 },
+  { q: "Wie viel Prozent der Deutschen haben mindestens ein Buch im letzten Jahr gelesen?", a: 69 },
+  { q: "Wie viel Prozent der Autofahrer vergessen beim Abbiegen oder Spurwechsel regelmäßig den Blinker?", a: 23 },
+  { q: "Wie viel Prozent des monatlichen Nettoeinkommens sollten idealerweise gespart werden?", a: 19 },
+  { q: "Wie viel Prozent der Urlaubsreisen der Deutschen finden im Inland statt?", a: 37 },
+  { q: "Wie viel Prozent der Menschen nutzen im Alltag Bargeld als bevorzugtes Zahlungsmittel?", a: 37 },
+  { q: "Wie viel Prozent der Heimwerker-Projekte dauern länger als ursprünglich geplant?", a: 63 },
+
+  { q: "Wie viel Prozent der Smartphone-Besitzer haben einen Displayschaden an ihrem Gerät?", a: 27 },
+  { q: "Wie viel Prozent der Supermarkteinkäufe sind Spontankäufe?", a: 59 },
+  { q: "Wie viel Prozent der Bevölkerung nutzen regelmäßig Streaming-Dienste für Filme und Serien?", a: 69 },
+  { q: "Wie viel Prozent der Menschen drücken morgens die Snooze-Taste des Weckers?", a: 57 },
+  { q: "Wie viel Prozent des Mülls im gelben Sack wird tatsächlich stofflich recycelt?", a: 49 },
+  { q: "Wie viel Prozent der Berufstätigen machen in der Mittagspause tatsächlich Pause vom Bildschirm?", a: 39 },
+  { q: "Wie viel Prozent der Menschen nehmen ihr Smartphone mit auf die Toilette?", a: 73 },
+  { q: "Wie viel Prozent der Restaurantreservierungen werden ohne Absage einfach verfallen gelassen?", a: 13 },
+  { q: "Wie viel Prozent der Neuwagen in Deutschland werden von Firmen oder gewerblich zugelassen?", a: 67 },
+  { q: "Wie viel Prozent der Menschen trinken über den Tag verteilt ausreichend Wasser?", a: 27 }
 ];
 
-const funFacts = [
-  "Bienen können Höhen von bis zu 9.000 Metern fliegen – höher als der Mount Everest!",
-  "Bananen sind krumm, weil sie der Sonne entgegenwachsen.",
-  "Ein Flamingo kann nur fressen, wenn sein Kopf auf dem Kopf steht.",
-  "Das Herz eines Blauwals ist so groß wie ein VW Käfer und wiegt etwa 180 Kilogramm.",
-  "Wombat-Kot ist würfelförmig, damit er nicht von Felsen und Baumstämmen wegrollt.",
-  "Kühe haben beste Freunde und geraten in Stress, wenn sie von ihnen getrennt werden.",
-  "Ein Oktopus besitzt drei Herzen und blaues Blut.",
-  "Geparden können nicht brüllen, sondern nur wie Hauskatzen schnurren und miepen.",
-  "Seepferdchen gehen eine lebenslange Ehe ein und halten sich beim Schwimmen an den Schwänzen fest.",
-  "Ein Faultier braucht bis zu einem Monat, um eine einzige Mahlzeit vollständig zu verdauen.",
-  "Seeotter halten im Schlaf Händchen, damit sie nicht durch die Strömung auseinanderdriften.",
-  "Koalas haben wie Menschen individuelle Fingerabdrücke, die man kaum von menschlichen unterscheiden kann.",
-  "Ein Strauss hat ein Auge, das größer ist als sein gesamtes Gehirn.",
-  "Krähen vergessen nie ein Gesicht und können Rache an einzelnen Menschen planen.",
-  "Garnelen tragen ihr Herz im Kopf.",
-  "Schmetterlinge schmecken mit ihren Füßen, um festzustellen, ob eine Pflanze essbar ist.",
-  "Delfine geben sich gegenseitig individuelle Namen, auf die sie mit Pfeiftönen reagieren.",
-  "Ein Schnecken-Schläfchen kann unter extremen Umständen bis zu drei Jahre dauern.",
-  "Die Zunge eines Blauwals wiegt so viel wie ein ausgewachsener Elefant.",
-  "Männliche Seepferdchen sind diejenigen, die schwanger werden und die Jungen gebären.",
-  "Kolibris sind die einzigen Vögel, die rückwärts fliegen können.",
-  "Haie gab es auf der Erde bereits vor den ersten Bäumen.",
-  "Entenküken halten das erste Lebewesen, das sie nach dem Schlüpfen sehen, für ihre Mutter.",
-
-  "Honig schimmelt oder verdirbt niemals; im Grab von Tutanchamun wurde genießbarer Honig gefunden.",
-  "Erdbeeren und Himbeeren sind botanisch gesehen keine Beeren, Bananen und Tomaten hingegen schon.",
-  "Äpfel Schwimmen im Wasser, weil sie zu 25 Prozent aus Luft bestehen.",
-  "Das teuerste Gewürz der Welt ist Safran – für ein Kilo benötigt man etwa 150.000 Blüten.",
-  "Nutella hat einen Lichtschutzfaktor von etwa 9, wenn man es auf die Haut schmieren würde.",
-  "Cashew-Nüsse wachsen an den Enden von cashew-förmigen Früchten, den Cashew-Äpfeln.",
-  "Karotten waren ursprünglich nicht orange, sondern violett und gelb.",
-  "Ananas brauchen bis zu drei Jahre, um zu einer einzigen erntbaren Frucht heranzuwachsen.",
-  "Erdnüsse wachsen unter der Erde und sind botanisch gesehen Hülsenfrüchte, keine Nüsse.",
-  "Wasabi, den man im Restaurant bekommt, ist meist grün gefärbter Meerrettich mit Senf.",
-  "Kaffee ist botanisch gesehen das Getränk aus den gerösteten Samen einer Kirsche.",
-  "In Island gibt es keine einzigen Mücken.",
-  "Schokolade war bei den Maya und Azteken so wertvoll, dass die Bohnen als Zahlungsmittel dienten.",
-  "Brot wirft man nicht weg: In der Antike nutzte man Altbrot manchmal als Radiergummi.",
-  "Gurken bestehen zu rund 96 Prozent aus Wasser.",
-  "Pistazien können sich durch die Hitze bei der Selbstzersetzung spontan selbst entzünden.",
-  "Die schärfste Chili der Welt kann einen anaphylaktischen Schock auslösen.",
-  "Gummibärchen glänzen oft, weil sie mit Carnaubawachs abgedeckt werden – dem gleichen Wachs wie bei Autos.",
-  "Mu-Err-Pilze wachsen bevorzugt an alten Holundersträuchern.",
-  "Die Vanillepflanze gehört zur Familie der Orchideen.",
-
-  "Eisberge können 'singen' – sie erzeugen durch den Druck des schmelzenden Wassers Töne unter Wasser.",
-  "Auf dem Saturn und dem Jupiter regnet es geschmolzene Diamanten.",
-  "Ein Tag auf der Venus dauert länger als ein ganzes Jahr auf der Venus.",
-  "Der Sonnenwind bläst pro Sekunde etwa eine Million Tonnen Materie von der Sonne weg.",
-  "Ein Teelöffel der Materie eines Neutronensterns würde auf der Erde etwa 6 Milliarden Tonnen wiegen.",
-  "Es gibt mehr Sterne im Universum als alle Sandkörner auf sämtlichen Stränden der Erde.",
-  "Der Mars besitzt den größten Vulkan des Sonnensystems – Olympus Mons ist dreimal höher als der Everest.",
-  "Mondstaub riecht laut den Apollo-Astronauten verbrannt wie abgebranntes Schießpulver.",
-  "Auf dem Neptun herrschen Winde mit Geschwindigkeiten von über 2.000 Kilometern pro Stunde.",
-  "Wenn zwei fehlerfreie Metallstücke im Vakuum des Weltalls aneinandergedrückt werden, verschweißen sie dauerhaft.",
-  "Die Erde ist keine perfekte Kugel, sondern durch die Rotation an den Polen leicht abgeflacht.",
-  "Ein Raumanzug der NASA kostet rund 12 Millionen US-Dollar.",
-  "Der Sonnenkern ist so heiß, dass ein stecknadelkopfgroßes Stück daraus im Umkreis von 150 km tödlich wäre.",
-  "Im Weltall gibt es eine riesige Wolke aus Ethylalkohol, die genug Alkohol für Billiarden Liter Bier enthält.",
-  "Der Mond entfernt sich jedes Jahr um etwa 3,8 Zentimeter von der Erde.",
-  "Die Milchstraße schmeckt laut Spektralanalysen von Gaswolken im Zentrum nach Himbeeren und riecht nach Rum.",
-  "Die Kälte des Weltalls liegt knapp über dem absoluten Nullpunkt bei -270 Grad Celsius.",
-  "Auf dem Jupiter gibt es seit mindestens 350 Jahren einen Wirbelsturm, der größer als die Erde ist.",
-  "Wenn man ein Loch quer durch die Erde graben würde, fiele man in etwa 42 Minuten auf die andere Seite.",
-  "Das Licht der Sonne braucht 8 Minuten und 20 Sekunden, um die Erde zu erreichen.",
-
-  "Das menschliche Gehirn erzeugt genug Elektrizität, um eine kleine LED-Lampe zum Leuchten zu bringen.",
-  "Ein Mensch verbringt in seinem Leben etwa fünf Jahre nur mit dem Blinzeln.",
-  "Die Magensäure des Menschen ist stark genug, um Rasierklingen oder Zink aufzulösen.",
-  "Das Ohr und die Nase hören ein Leben lang nie auf zu wachsen.",
-  "Die Oberschenkelknochen des Menschen sind stabiler und druckfester als massiver Beton.",
-  "Der menschliche Körper leuchtet im Dunkeln, aber das Licht ist 1.000-mal schwächer als unsere Augen sehen können.",
-  "Wenn man alle Blutgefäße eines Erwachsenen aneinanderreihen würde, reichten sie zweieinhalb Mal um die Erde.",
-  "Wir verlieren jeden Tag etwa 30.000 bis 40.000 abgestorbene Hautzellen.",
-  "Das menschliche Auge kann zwischen 10 Millionen verschiedenen Farbtönen unterscheiden.",
-  "Der stärkste Muskel des menschlichen Körpers (gemessen an seiner Größe) ist der Kaumuskel.",
-  "Niesen geschieht mit einer Geschwindigkeit von bis zu 160 Kilometern pro Stunde.",
-  "Ein menschlicher Finger ist so empfindlich, dass er Unebenheiten im Nanometerbereich spüren könnte.",
-  "Babys werden mit etwa 300 Knochen geboren, Erwachsene haben durch das Zusammenwachsen nur noch 206.",
-  "Das Herz schlägt im Laufe eines 80-jährigen Lebens etwa 3 Milliarden Mal.",
-  "Der menschliche Körper enthält genug Kohlenstoff, um etwa 9.000 Bleistifte herzustellen.",
-  "Unsere Augen behalten von der Geburt bis zum Tod fast dieselbe Größe.",
-  "Die Zunge hat wie der Finger einen einzigartigen Abdruck, der bei jedem Menschen anders ist.",
-  "Morgens nach dem Aufstehen ist man etwa 1 bis 2 Zentimeter größer als abends.",
-  "Der Dünndarm ist ausgeklappt etwa so lang wie ein Tennisplatz breit ist.",
-  "Der Mensch teilt sich etwa 50 Prozent seiner DNA mit einer Banane.",
-
-  "Der Eiffelturm kann im Sommer durch die Wärmeausdehnung des Metalls bis zu 15 cm höher sein.",
-  "Das gesammelte Gewicht aller Ameisen auf der Erde ist etwa so groß wie das Gewicht aller Menschen.",
-  "Russland hat eine größere Oberflächenfläche als der gesamte Zwergplanet Pluto.",
-  "Das Feuerzeug wurde vor dem Sicherheitsstreichholz erfunden.",
-  "Saudi-Arabien importiert Kamel-Fleisch und Sand aus Australien.",
-  "Nintendo wurde ursprünglich 1889 als Firma für handgemachte Spielkarten gegründet.",
-  "Die Sahara war vor wenigen Tausend Jahren eine grüne Landschaft mit Flussläufen und Seen.",
-  "In der Schweiz ist es gesetzlich verboten, nur ein einzelnes Meerschweinchen zu halten.",
-  "Der älteste bekannte Baum der Erde ist eine Fichte in Schweden und über 9.500 Jahre alt.",
-  "Die Wahrscheinlichkeit, von einer herabfallenden Kokosnuss getroffen zu werden, ist höher als von einem Hai gebissen zu werden.",
-  "Das längste Englisch-Wörterbuch-Wort ohne Vokale ist 'rhythms'.",
-  "Ketchup wurde im 19. Jahrhundert in den USA als Heilmittel gegen Durchfall verkauft.",
-  "In Frankreich ist es gesetzlich verboten, ein Schwein 'Napoleon' zu nennen.",
-  "Oxford University ist älter als das Volk der Azteken.",
-  "Der Kölner Dom benötigte von der Grundsteinlegung bis zur Fertigstellung 632 Jahre.",
-  "Man kann keinen Ton erzeugen, wenn man sich die Nase zuhält und versucht zu summen.",
-  "Ein Blitzeinschlag ist mit 30.000 Grad Celsius etwa fünfmal heißer als die Oberfläche der Sonne.",
-  "Geld besteht nicht aus Papier, sondern überwiegend aus Baumwolle.",
-  "Ein Tropfen Erdöl kann bis zu 1.000 Liter Trinkwasser verunreinigen.",
-  "Es gibt mehr Plastik-Flamingos auf der Welt als echte lebende Flamingos.",
-
-  "Ein Tag auf dem Merkur dauert doppelt so lange wie ein Jahr auf dem Merkur.",
-  "Wale stammen von hufeisenförmigen, landlebenden Säugetieren ab, die vor Jahrmillionen ins Wasser gingen.",
-  "Libellen haben eine Erfolgsquote von 95 Prozent bei der Jagd – das macht sie zu den effizientesten Raubtieren.",
-  "Eulen haben keine Augäpfel, sondern rohrförmige Organe, die fest im Schädel verankert sind.",
-  "Pinguine haben ein spezielles Organ über den Augen, das Salz aus dem Meerwasser filtert.",
-  "Der Axolotl kann nicht nur Gliedmaßen, sondern auch Teile seines Herzens und Gehirns nachwachsen lassen.",
-  "Eine Bohne schlingt sich beim Wachsen immer gegen den Uhrzeigersinn an ihrer Stütze hoch.",
-  "Nacktmulle spüren fast keinen Schmerz und erkranken so gut wie nie an Krebs.",
-  "Fledermäuse biegen beim Verlassen einer Höhle fast immer nach links ab.",
-  "Bären machen während ihres Winterschlafs monatelang weder Müll noch machen sie ihr Geschäft.",
-  "Papageienfische schlafen in einer selbst produzierten Schutzblase aus eigenem Schleim.",
-  "Die Hörner von Nashörnern bestehen aus demselben Material wie menschliche Haare und Fingernägel: Keratin.",
-  "Tauben können Kunstwerke von Picasso und Monet voneinander unterscheiden.",
-  "Das Chinchilla hat das dichteste Fell aller Landtiere – Flöhe würden darin ersticken.",
-  "Haifischhaut ist mit winzigen Zähnen bedeckt, weshalb sie sich rau wie Schmirgelpapier anfühlt.",
-  "Die Zunge einer Giraffe ist bis zu 50 cm lang und blauschwarz, um sie vor Sonnenbrand zu schützen.",
-  "Chamäleons können ihre Augen unabhängig voneinander bewegen und so zwei Richtungen gleichzeitig sehen.",
-  "Ein Tausendfüßler hat nie genau 1000 Beine – die Zahl der Beinpaare ist immer ungerade.",
-  "Seeigel haben Zähne, die sich selbst schärfen, wenn sie über Felsen schaben.",
-  "Hummer wachsen ein Leben lang weiter und sterben theoretisch nicht an Altersschwäche, sondern an Erschöpfung bei der Häutung.",
-
-  "Die Cheopspyramide bestand ursprünglich aus strahlend weißem, poliertem Kalkstein.",
-  "Albert Einstein wurde 1952 das Amt des Staatspräsidenten von Israel angeboten, was er ablehnte.",
-  "Die Pyramiden von Gizeh wurden gebaut, als noch Wollhaarmammuts auf der Erde lebten.",
-  "Viktorianische Damen nutzten Arsen als Kosmetikmittel, um eine modisch blasse Haut zu bekommen.",
-  "Die Dose wurde 1810 patentiert – der Dosenöffner wurde allerdings erst 48 Jahre später erfunden.",
-  "Der Erfinder der Erdnussbutter war ein Arzt, der ein leicht zu kauendes Protein für Zahnlose suchte.",
-  "Papst Gregor IV. erklärte im Mittelalter Katzen zu Verbündeten des Teufels, was zur Ausbreitung der Pest beitrug.",
-  "Während des 2. Weltkriegs wurden die Statuen der Oscar-Verleihung wegen Metallmangels aus Gips gefertigt.",
-  "Das Wort 'Robot' stammt aus dem Tschechischen und bedeutet übersetzt 'Fronarbeit' oder 'Zwangsarbeit'.",
-  "Napoleon Bonaparte wurde einst von einer Meute wildgewordener Kaninchen attackiert und in die Flucht geschlagen.",
-  "Vor der Erfindung des Weckers gab es 'Aufwecker', die mit Erbsenpustrohren an die Fenster der Menschen schossen.",
-  "Der historische Begriff 'Tee trinken' beruht darauf, dass Tee im 17. Jahrhundert in Europa als Medizin galt.",
-  "Kleopatra lebte zeitlich näher an der Mondlandung als am Bau der großen Pyramiden.",
-  "George Washington besaß kein Gebiss aus Holz, sondern eines aus Gold, Elfenbein und echten Humanzähnen.",
-  "Gabeln wurden im Europa des Mittelalters lange Zeit als 'gotteslästerliches Werkzeug' abgelehnt.",
-  "Thomas Edison erfand nicht die Glühbirne, sondern machte sie kommerziell nutzbar und langlebig.",
-  "In Ancient Rome nutzte man Urin wegen des enthaltenen Ammoniaks zum Bleichen der Wäsche.",
-  "Die Berliner Mauer stand insgesamt 10.316 Tage – seit Mai 2018 ist sie länger weg, als sie stand.",
-  "Der Schiefste Turm der Welt steht nicht in Pisa, sondern im niedersächsischen Suurhusen.",
-  "Der Reißverschluss brauchte über 20 Jahre von der Idee bis zum verlässlichen Prototyp.",
-
-  "Der Pazifische Ozean ist an seiner breitesten Stelle breiter als der Durchmesser des Mondes.",
-  "In Alaska gibt es eine Stadt namens Whittier, in der fast alle Einwohner im selben Gebäude wohnen.",
-  "Der tiefste bekannte Punkt im Meer ist das Challenger-Tief mit knapp 11.000 Metern Tiefe.",
-  "Australien ist breiter als der Planet Merkur.",
-  "Es gibt einen See in Australien (Lake Hillier), der vollkommen natürlich rosa gefärbt ist.",
-  "Die Landesgrenze zwischen den USA und Kanada ist die längste unbewachte Grenze der Welt.",
-  "In Kanada gibt es mehr Seen als im gesamten Rest der Welt zusammen.",
-  "Mausund in Norwegen ist die kleinste bewohnte Inselgruppe mit eigener Kapelle.",
-  "Der Staat San Marino hat mehr eingetragene Autos als menschliche Einwohner.",
-  "Die Antarktis ist offiziell die größte Wüste der Erde, weil dort extrem wenig Niederschlag fällt.",
-  "In Russland gibt es 11 verschiedene Zeitzonen.",
-  "Die Insel Nauru hat als einziger Staat der Welt keine offizielle Hauptstadt.",
-  "In den Niederlanden stehen mehr Strassenlaternen pro Quadratkilometer als in jedem anderen Land.",
-  "Südafrika hat nicht nur eine, sondern gleich drei offizielle Hauptstädte.",
-  "In der Wüste Atacama in Chile hat es an manchen Orten seit über 400 Jahren nicht geregnet.",
-  "Lichtenstein hat seit 1868 kein eigenes Militär mehr.",
-  "Die Stadt Rom besitzt einen eigenen Brunnen, der täglich Münzen im Wert von über 3.000 Euro sammelt.",
-  "Der Amazonas transportiert mehr Wasser als die sieben nächstgrößten Flüsse der Welt zusammen.",
-  "In Bhutan misst die Regierung das Wohlbefinden der Bürger offiziell am 'Bruttonationalglück'.",
-  "Der tiefste Binnensee der Erde ist der Baikal-See in Sibirien mit über 1.600 Metern Tiefe.",
-
-  "Regen enthält manchmal Vitamin B12, das von Bakterien in der Luft produziert wird.",
-  "Der Geruch von frischem Rasen ist eigentlich ein biochemischer Hilferuf der geköpften Grashalme.",
-  "Ein Blitz schlägt auf der Erde durchschnittlich 100 Mal pro Sekunde ein.",
-  "Schnee ist nicht weiß, sondern völlig farblos und transparent – er wirkt nur weiß durch die Lichtbrechung.",
-  "Der kälteste je gemessene Ort auf der Erde liegt in der Antarktis bei -89,2 Grad Celsius.",
-  "Vulkane können eigne Blitze erzeugen, die man als 'Schmutzgewitter' bezeichnet.",
-  "Mammutbäume gehören zu den höchsten Lebewesen der Welt und können über 100 Meter hoch werden.",
-  "Ein durchschnittlicher Cumulus-Wolkenballen wiegt etwa 500 Tonnen – so viel wie 100 Elefanten.",
-  "Der höchste Wasserfall der Welt ist der Salto Ángel in Venezuela mit 979 Metern Fallhöhe.",
-  "Es gibt einen Pilz in Oregon, der sich über 9 Quadratkilometer erstreckt und das größte Lebewesen der Erde ist.",
-  "Erdbeben können die Rotationsgeschwindigkeit der Erde ganz leicht verändern und Tage verkürzen.",
-  "Bernstein ist kein Stein, sondern fossiles, Jahrmillionen altes Baumharz.",
-  "Der Bodensee grenzt an drei Staaten, aber es gibt keine genauen vertraglichen Grenzen auf dem Wasser.",
-  "Regentropfen sind nicht tränenförmig, sondern unten flach wie ein Hamburger-Brötchen.",
-  "Der Great Barrier Reef ist die größte von Lebewesen geschaffene Struktur und aus dem All sichtbar.",
-  "In manchen Teilen des Ozeans gibt es 'Unterwasserwasserfälle' aus dichtem, kalten Salzwasser.",
-  "In der Atacama-Wüste erblüht alle paar Jahre nach seltenem Regen ein riesiges Meer aus bunten Blumen.",
-  "Der Grund für den 'Morgentau' ist, dass Pflanzen nachts überschüssiges Wasser über Blattränder abgeben.",
-  "Bäume kommunizieren miteinander über ein riesiges unterirdisches Netzwerk aus Pilzfäden.",
-  "Tornados können Gegenstände hunderte Kilometer weit tragen, ohne sie zu beschädigen.",
-
-  "Kaugummi kauen beim Zwiebelschneiden verhindert Tränen, weil man hauptsächlich durch den Mund atmet.",
-  "Der Name 'Lego' ist eine Abkürzung für das dänische 'leg godt', was 'spiel gut' bedeutet.",
-  "In Schweden gibt es ein Hotel, das jedes Jahr komplett neu aus Eis und Schnee aufgebaut wird.",
-  "Das Geräusch, das entsteht, wenn man Fingerknöchel knackt, ist das Zerplatzen von Gasbläschen im Gelenk.",
-  "Schach hat nach den ersten drei Zügen auf jeder Seite mehr als 9 Millionen mögliche Stellungen.",
-  "Der Barcode wurde ursprünglich von der Form eines Morse-Codes inspiriert, den man rundgezogen hatte.",
-  "Das Alphabet-Lied und 'Morgen kommt der Weihnachtsmann' haben exakt dieselbe Melodie.",
-  "Im Jahr 1999 wurde das Wort 'Google' als offizielles Verb im Duden aufgenommen.",
-  "Das Spiel 'Monopoly' wurde ursprünglich erfunden, um die Gefahren von Landmonopolen aufzuzeigen.",
-  "Kreditkarten haben alle dieselbe Standardgröße, damit sie weltweiten Normen entsprechen.",
-  "Ein gewöhnlicher Bleistift könnte eine Linie ziehen, die fast 50 Kilometer lang ist.",
-  "In Japan gibt es mehr als 5 Millionen Verkaufsautomaten für fast jedes denkbare Produkt.",
-  "Die Erfinder der Marke 'Pringles' wollten die Stapelchips ursprünglich als mathematische Hyperbeln gestalten.",
-  "Das 'S' in Harry S. Truman steht für gar keinen Namen, sondern war nur ein einzelner Buchstabe.",
-  "Der Reißverschluss an der Jeans besitzt meist die Prägung YKK, was für den größten Hersteller der Welt steht.",
-  "Die Tasten auf einer Computertastatur (QWERTY) wurden erfunden, um das Schreiben zu verlangsamen.",
-  "Auf der Welt werden pro Tag mehr als 3 Milliarden Tassen Kaffee getrunken.",
-  "Der Begriff 'Spam' für unerwünschte Mails stammt von einem Sketch der Comedytruppe Monty Python.",
-  "Kugelschreiberminen funktionieren im Weltall ohne Schwerkraft nur, wenn sie unter Druck stehen.",
-  "Die rote Farbe der Coca-Cola-Weihnachtsmänner prägte das moderne Bild des Weihnachtsmanns entscheidend.",
-
-  "Das Herz einer Kolibri schlägt im Flug über 1.200 Mal pro Minute.",
-  "Katzen haben auf jeder Seite der Schnauze im Durchschnitt etwa 12 Schnurrhaare.",
-  "Eine Bohne schlingt sich immer im Uhrzeigersinn hoch, wenn sie auf der Südhalbkugel wächst.",
-  "Gänseblümchen schließen ihre Blüten bei Dunkelheit und Regen, um den Pollen zu schützen.",
-  "Kühe geben mehr Milch, wenn sie entspannende Musik hören.",
-  "Es gibt Fischarten, die auf Bäume klettern können, um dort nach Insekten zu jagen.",
-  "Strauße können schneller rennen als Pferde.",
-  "Gottesanbeterinnen sind die einzigen Insekten, die ihren Kopf um 180 Grad drehen können.",
-  "Ein Biber kann mit seinen scharfen Zähnen in einer Nacht einen 50 cm dicken Baum fällen.",
-  "Sterne blinken nur deshalb, weil ihr Licht durch die bewegte Erdatmosphäre gebrochen wird.",
-  "Ein Pandabär verbringt bis zu 12 Stunden am Tag nur mit dem Kauen von Bambus.",
-  "Qualmen entsteht, weil unvollständig verbrannter Kohlenstoff als Ruß in der Luft schwebt.",
-  "Die Zähne eines Nagetiers wie der Ratte wachsen ein Leben lang unaufhörlich weiter.",
-  "Elefanten können elektromagnetische Wellen und Erschütterungen mit den Füßen wahrnehmen.",
-  "Manche Frösche können im Winter komplett einfrieren und im Frühjahr lebend wieder auftauen.",
-  "Ein Krokodil kann seine Zunge nicht aus dem Mund herausstrecken, da sie am Gaumen verwachsen ist.",
-  "Fliegen landen oft an der Decke, indem sie einen Looping fliegen und mit den Hinterbeinen zuerst ansetzen.",
-  "Ameisen schlafen nie im menschlichen Sinne, machen aber hunderte winzige Mikroschläfchen am Tag.",
-  "Pinguine können bis zu 500 Meter tief ins Meer tauchen.",
-  "Ein Kamel kann innerhalb von 10 Minuten über 100 Liter Wasser trinken.",
-
-  "Das Geräusch der Peitsche entsteht durch den Überschallknall der Peitschenspitze.",
-  "Wenn man ein Glas Meerwasser mikroskopisch untersucht, findet man darin Tausende Mikrorganismen.",
-  "Ein Bumerang kehrt nur dann zurück, wenn seine Flügel wie bei einem Flugzeugprofil geformt sind.",
-  "Schall breitet sich im Wasser etwa viermal schneller aus als in der Luft.",
-  "Wenn Seife schäumt, ist der Schaum immer weiß, unabhängig von der Eigenfarbe der Seife.",
-  "Diamanten sind gar nicht so selten, wie Juweliere es den Menschen glauben machen.",
-  "Glas ist physikalisch gesehen ein gefrorener, extrem zähflüssiger Zustand (amopher Festkörper).",
-  "Feuer brennt im Weltall ohne Schwerkraft in Form von perfekten, bläulichen Kugeln.",
-  "Helium ist das einzige Element, das bei normalem Druck selbst am absoluten Nullpunkt nicht gefriert.",
-  "Schallwellen können genutzt werden, um Gegenstände in der Luft schweben zu lassen (akustische Levitation).",
-  "Statische Elektrizität auf Kleidung entsteht durch den Austausch von Elektronen beim Reiben.",
-  "Magnete verlieren ihre magnetische Wirkung, wenn man sie über eine bestimmte Temperatur erhitzt.",
-  "Warmes Wasser gefriert unter bestimmten Bedingungen schneller als kaltes Wasser (Mpemba-Effekt).",
-  "Gefriergetrocknete Nahrung verliert fast kein Gewicht, behält aber fast alle Nährstoffe.",
-  "Das Element Quecksilber ist das einzige Metall, das bei Raumtemperatur flüssig ist.",
-  "Flugzeuge fliegen in großer Höhe effizienter, weil die kalte Luft dort dünner ist und weniger Widerstand bietet.",
-  "Gammastrahlenblitze sind die energiereichsten Explosionen im bekannten Universum.",
-  "Röntgenstrahlung wurde durch Zufall bei Experimenten mit Kathodenstrahlen entdeckt.",
-  "Das Wort 'Laser' ist ein Akronym für 'Light Amplification by Stimulated Emission of Radiation'.",
-  "Infrarotstrahlung ist für das menschliche Auge unsichtbar, kann aber als Wärme gespürt werden.",
-
-  "Der 'Geruch von Regen' auf trockener Erde wird durch das Bakterienprodukt Geosmin erzeugt.",
-  "Der längste Stau der Welt dauerte in China über 10 Tage und war über 100 km lang.",
-  "Es gibt einen Vogel (der Leieranzug), der Kettensägen-, Autoalarm- und Kamera-Geräusche perfekt imitiert.",
-  "Das Spielzeug Yo-Yo wurde ursprünglich in manchen Kulturen als Jagdwaffe genutzt.",
-  "In Schweden zahlt man Hundesteuer nach der Größe des Hundes.",
-  "Manche Schildkrötenarten können durch ihren Hintern atmen, wenn sie im Schlamm überwintern.",
-  "Das Geräusch von Popcorn entsteht durch das schlagartige Verdampfen von Wasser im Korn.",
-  "Es gibt mehr gefälschte Flamingos aus Plastik in den USA als echte Flamingos auf der Welt.",
-  "Ein Schaf namens Shrek versteckte sich 6 Jahre lang in einer Höhle und trug danach 27 kg Wolle.",
-  "Das längste Basketballspiel der Geschichte dauerte ohne Unterbrechung über 78 Stunden.",
-  "In Japan gibt es viereckige Wassermelonen, damit sie sich besser stapeln lassen.",
-  "Auf den Sandwich-Inseln wurden die ersten Sandwiches vermutlich nicht erfunden.",
-  "In der Antike benutzte man Mäusehirn als Komponente für Zahnpasta.",
-  "Der 'Eisbären-Code' verbietet es, Eisbären im Winter mit Scheinwerfern zu blendend anzustrahlen.",
-  "Das teuerste Pflasterstein-Material wird aus vulkanischem Basalt geschnitten.",
-  "Die kleinste Vogelart der Welt, die Bienenelfe, wiegt weniger als eine 2-Cent-Münze.",
-  "Auf der Erde gibt es Orte, an denen man aufgrund lokaler Dichteabweichungen minimal leichter ist.",
-  "Der Reißverschluss wurde ursprünglich erfunden, um Stiefel schneller zuzuschnüren.",
-  "Der berühmte Herzschlag-Ton im Film wird oft mit einem gedämpften Mülleimerdeckel erzeugt.",
-  "Faultiere kommen nur einmal pro Woche von den Bäumen herunter, um ihr Geschäft zu erledigen.",
-
-  "Das 'www' in Internetadressen steht für World Wide Web und wurde 1989 erfunden.",
-  "In einem Kubikmeter Luft schweben durchschnittlich Millionen unsichtbare Mikropartikel.",
-  "Ein Wolkenkratzer schwankt bei starkem Wind absichtlich mehrere Meter hin und her, um nicht zu brechen.",
-  "Das Telefonbuch von New York aus dem Jahr 1922 wog bereits über 2 Kilogramm.",
-  "Das erste per Internet verschickte Wort war 'LO' – eigentlich sollte es 'LOGIN' heißen, aber das System stürzte ab.",
-  "Computerchips bestehen hauptsächlich aus hochreinem Silizium, das aus Quarzsand gewonnen wird.",
-  "Das Symbol für Bluetooth stammt aus der Wikingerzeit und verbindet die Initialen des Königs Harald Blauzahn.",
-  "Die ersten Computermäuse in den 1960er Jahren waren aus Holz gefertigt.",
-  "In einer einzigen Minute werden auf YouTube hunderte Stunden Videomaterial hochgeladen.",
-  "Die ersten Festplatten in den 1950er Jahren wogen über eine Tonne und fassten nur 5 Megabyte.",
-  "Das erste Emoji wurde 1999 in Japan entworfen und bestand aus nur 12x12 Pixeln.",
-  "Ein durchschnittliches Smartphone besitzt heute mehr Rechenleistung als die NASA bei der Apollo-11-Mondlandung.",
-  "Das Passionsblumenöl wird in der Kosmetik wegen seiner beruhigenden Eigenschaften genutzt.",
-  "E-Mail ist älter als das World Wide Web – die erste Mail wurde bereits 1971 verschickt.",
-  "Das Hochladen einer Datei im Internet verbraucht winzigste Mengen an physischer Energie.",
-  "Der erste Computervirus der Geschichte hieß 'Creeper' und tauchte Anfang der 1970er Jahre auf.",
-  "Auf der Welt gibt es mehr betriebsbereite SIM-Karten als lebende Menschen.",
-  "Die Tastaturbelegung 'QWERTY' sollte das Verhaken der Mechanik alter Schreibmaschinen verhindern.",
-  "Der Name 'Wi-Fi' hat laut seinen Erfindern gar keine Bedeutung und ist kein Akronym.",
-  "Das meistgespielte Videospiel aller Zeiten gemessen an den Verkäufen ist Tetris."
-];
-
-let partyCode = null;
-let myId = null;
-let myName = "";
-let isHost = false;
-let onlinePlayersList = [];
+let offlinePlayers = [];
+let currentQuestionIndex = 0;
+let selectedQuestions = [];
 let maxRounds = 5;
-let currentPhaseTracker = null;
+let currentTurnPlayerIdx = 0;
+
+/* ZEIT-MESSUNG FÜR PROFIL */
+let gameStartTime = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("funFactText").innerText = funFacts[Math.floor(Math.random() * funFacts.length)];
-
-  const urlParams = new URLSearchParams(window.location.search);
-  partyCode = urlParams.get("party") || localStorage.getItem("currentPartyCode");
-  
-  myId = urlParams.get("player") || sessionStorage.getItem("cc_player_id") || localStorage.getItem("challengeChampPlayerId");
-  myName = sessionStorage.getItem("cc_player_name") || localStorage.getItem("challengeChampProfileName") || "Spieler";
-
-  const checkFB = setInterval(() => {
-    if (window.firebaseDB && partyCode) {
-      clearInterval(checkFB);
-      initOnlineGame();
-    }
-  }, 100);
+  generateNameInputs();
 });
 
-function initOnlineGame() {
-  const partyRef = window.fbRef(window.firebaseDB, `parties/${partyCode}`);
-
-  window.fbGet(partyRef).then(snap => {
-    if (!snap.exists()) {
-      alert("Party nicht gefunden.");
-      window.location.href = "startseite.html";
-      return;
-    }
-
-    const party = snap.val();
-    isHost = (party.hostId === myId);
-
-    hideAllScreens();
-    if (isHost) {
-      document.getElementById("screenSetupHost").style.display = "block";
-    } else {
-      document.getElementById("screenOnlineWait").style.display = "block";
-    }
-
-    window.fbOnValue(partyRef, (snapshot) => {
-      if (!snapshot.exists()) {
-        alert("Party wurde aufgelöst.");
-        window.location.href = "startseite.html";
-        return;
-      }
-
-      const pData = snapshot.val();
-      isHost = (pData.hostId === myId);
-
-      if (pData.players) {
-        onlinePlayersList = Object.keys(pData.players).map(key => ({
-          id: key,
-          name: pData.players[key].name,
-          score: (pData.prozentState && pData.prozentState.scores && pData.prozentState.scores[key]) || 0
-        }));
-      }
-
-      if (pData.prozentState && pData.prozentState.phase !== "setup") {
-        handleOnlineState(pData.prozentState, pData.players);
-      }
-    });
-  });
-}
-
-function handleOnlineState(state, players) {
-  maxRounds = state.rounds || 5;
-
-  if (state.phase === "guess") {
-    const isNewPhase = (currentPhaseTracker !== "guess_" + state.currentRound);
-    currentPhaseTracker = "guess_" + state.currentRound;
-
-    hideAllScreens();
-    document.getElementById("screenGuess").style.display = "block";
-    document.getElementById("btnSkipQuestion").style.display = isHost ? "block" : "none";
-
-    const q = questionBank[state.currentQIdx];
-    document.getElementById("roundIndicator").innerText = `Frage ${state.currentRound + 1}/${maxRounds}`;
-    document.getElementById("questionText").innerText = q.q;
-
-    const myGuessObj = state.guesses && state.guesses[myId];
-    if (myGuessObj) {
-      document.getElementById("btnSubmitGuess").style.display = "none";
-      document.getElementById("waitOtherPlayersMsg").style.display = "block";
-    } else {
-      document.getElementById("btnSubmitGuess").style.display = "block";
-      document.getElementById("waitOtherPlayersMsg").style.display = "none";
-      
-      // FIX: Nur wenn eine komplett NEUE Runde beginnt, stellen wir den Slider auf 50%
-      if (isNewPhase) {
-        document.getElementById("guessSlider").value = 50;
-        document.getElementById("sliderValue").innerText = "50%";
-      }
-    }
-
-    if (isHost && state.guesses) {
-      const answeredCount = Object.keys(state.guesses).length;
-      const totalCount = Object.keys(players).length;
-
-      if (answeredCount >= totalCount) {
-        processOnlineRoundResultsHost(state, players, q.a, q.q);
-      }
-    }
-  }
-  else if (state.phase === "roundResult") {
-    currentPhaseTracker = "roundResult_" + state.currentRound;
-    showRoundResultUI(state.lastRoundPlayers, state.lastCorrectAns, state.lastQuestionText);
-  }
-  else if (state.phase === "leaderboard") {
-    currentPhaseTracker = "leaderboard_" + state.currentRound;
-    renderLeaderboardUI(state.currentRound);
-  }
-  else if (state.phase === "gameover") {
-    currentPhaseTracker = "gameover";
-    renderGameOverUI();
+function generateNameInputs() {
+  const count = parseInt(document.getElementById("playerCountSelect").value);
+  const container = document.getElementById("nameInputsContainer");
+  container.innerHTML = "";
+  for (let i = 1; i <= count; i++) {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = `Name Spieler ${i}`;
+    input.value = `Spieler ${i}`;
+    input.id = `playerName_${i}`;
+    container.appendChild(input);
   }
 }
 
-function startOnlineGameHost() {
+function startOfflineGame() {
+  const count = parseInt(document.getElementById("playerCountSelect").value);
   maxRounds = parseInt(document.getElementById("roundCountSelect").value);
-  const questionIndices = Array.from(Array(questionBank.length).keys()).sort(() => 0.5 - Math.random());
 
-  window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`), {
-    phase: "guess",
-    currentRound: 0,
-    rounds: maxRounds,
-    questionIndices: questionIndices,
-    currentQIdx: questionIndices[0],
-    scores: {},
-    guesses: {}
-  });
+  offlinePlayers = [];
+  for (let i = 1; i <= count; i++) {
+    const pName = document.getElementById(`playerName_${i}`).value.trim() || `Spieler ${i}`;
+    offlinePlayers.push({ id: "p_" + i, name: pName, score: 0, currentGuess: 50, currentDiff: 0 });
+  }
+
+  selectedQuestions = [...questionBank].sort(() => 0.5 - Math.random()).slice(0, maxRounds);
+  currentQuestionIndex = 0;
+
+  /* Zeitmessung starten */
+  gameStartTime = Date.now();
+
+  startOfflineTurn();
 }
 
-function submitOnlineGuess() {
+function startOfflineTurn() {
+  currentTurnPlayerIdx = 0;
+  showOfflineGuessScreen();
+}
+
+function showOfflineGuessScreen() {
+  hideAllScreens();
+  document.getElementById("screenGuess").style.display = "block";
+
+  const q = selectedQuestions[currentQuestionIndex];
+  const p = offlinePlayers[currentTurnPlayerIdx];
+
+  document.getElementById("roundIndicator").innerText = `Frage ${currentQuestionIndex + 1}/${maxRounds}`;
+  document.getElementById("turnIndicator").innerText = `${p.name} ist dran 📱`;
+  document.getElementById("questionText").innerText = q.q;
+
+  document.getElementById("guessSlider").value = 50;
+  document.getElementById("sliderValue").innerText = "50%";
+  document.getElementById("btnSubmitGuess").innerText = `${p.name}: Antwort einloggen 🔒`;
+}
+
+function submitOfflineGuess() {
   const val = parseInt(document.getElementById("guessSlider").value);
-  window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState/guesses/${myId}`), {
-    name: myName,
-    guess: val
-  });
+  offlinePlayers[currentTurnPlayerIdx].currentGuess = val;
+  currentTurnPlayerIdx++;
+
+  if (currentTurnPlayerIdx < offlinePlayers.length) {
+    showOfflineGuessScreen();
+  } else {
+    processOfflineRoundResults();
+  }
 }
 
-function skipQuestionOnline() {
-  if (!isHost) return;
-  window.fbGet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`)).then(snap => {
-    const state = snap.val();
-    const nextQIdx = (state.currentQIdx + 1) % questionBank.length;
+function processOfflineRoundResults() {
+  const q = selectedQuestions[currentQuestionIndex];
 
-    window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState/currentQIdx`), nextQIdx);
-    window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState/guesses`), {});
+  offlinePlayers.forEach(p => {
+    p.currentDiff = Math.abs(p.currentGuess - q.a);
+    p.score += p.currentDiff;
   });
+
+  showRoundResultAnimation([...offlinePlayers], q.a, q.q);
 }
 
-function processOnlineRoundResultsHost(state, players, correctAns, questionText) {
-  const updatedScores = { ...(state.scores || {}) };
-  const roundPlayers = [];
-
-  Object.keys(players).forEach(pId => {
-    const guessData = state.guesses[pId] || { guess: 50 };
-    const diff = Math.abs(guessData.guess - correctAns);
-    updatedScores[pId] = (updatedScores[pId] || 0) + diff;
-
-    roundPlayers.push({
-      id: pId,
-      name: players[pId].name,
-      currentGuess: guessData.guess,
-      currentDiff: diff,
-      score: updatedScores[pId]
-    });
-  });
-
-  window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`), {
-    ...state,
-    phase: "roundResult",
-    scores: updatedScores,
-    lastRoundPlayers: roundPlayers,
-    lastCorrectAns: correctAns,
-    lastQuestionText: questionText
-  });
-}
-
-function showRoundResultUI(playersArray, correctAnswer, questionText) {
+function showRoundResultAnimation(playersArray, correctAnswer, questionText) {
   hideAllScreens();
   document.getElementById("screenRoundResult").style.display = "block";
   document.getElementById("resultQuestionTitle").innerText = questionText;
@@ -1114,75 +817,74 @@ function showRoundResultUI(playersArray, correctAnswer, questionText) {
     setTimeout(() => {
       const item = document.createElement("div");
       item.className = "result-item anim-pop";
-      item.innerHTML = `<div>#${idx + 1} ${p.name}</div><div><b>${p.currentGuess}%</b> <span style="color:#ff4757;">(-${p.currentDiff})</span></div>`;
+
+      item.innerHTML = `
+        <div>
+          <span class="rank-badge">${idx + 1}</span>
+          <span>${p.name}</span>
+        </div>
+        <div>
+          <b>${p.currentGuess}%</b>
+          <span class="diff-tag">(-${p.currentDiff})</span>
+        </div>
+      `;
       answersList.appendChild(item);
     }, (idx + 1) * 800);
   });
 
+  const totalDelay = (roundRanked.length + 1) * 800;
   setTimeout(() => {
     document.getElementById("correctPercentText").innerText = correctAnswer + "%";
     document.getElementById("correctAnswerBox").style.display = "block";
-    document.getElementById("btnNextToTable").style.display = isHost ? "block" : "none";
-  }, (roundRanked.length + 1) * 800);
+    document.getElementById("btnNextToTable").style.display = "block";
+  }, totalDelay);
 }
 
-function showLeaderboardHost() {
-  window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState/phase`), "leaderboard");
-}
-
-function renderLeaderboardUI(currentRound) {
+function showLeaderboard() {
   hideAllScreens();
   document.getElementById("screenLeaderboard").style.display = "block";
 
   const table = document.getElementById("kahootTable");
   table.innerHTML = "";
 
-  const sorted = [...onlinePlayersList].sort((a, b) => a.score - b.score);
+  const sorted = [...offlinePlayers].sort((a, b) => a.score - b.score);
 
   sorted.forEach((p, idx) => {
     const row = document.createElement("div");
     row.className = "kahoot-row anim-pop";
     row.style.animationDelay = (idx * 0.15) + "s";
-    row.innerHTML = `<div><b>#${idx + 1}</b> ${p.name}</div><b>${p.score} Pkt.</b>`;
+    row.innerHTML = `
+      <div>
+        <b style="font-size:1.1rem; margin-right:10px;">#${idx + 1}</b>
+        <span>${p.name}</span>
+      </div>
+      <b>${p.score} Pkt. (Diff)</b>
+    `;
     table.appendChild(row);
   });
 
+  const isLastRound = (currentQuestionIndex + 1) >= maxRounds;
   const btn = document.getElementById("btnNextQuestion");
-  if (isHost) {
-    btn.style.display = "block";
-    if ((currentRound + 1) >= maxRounds) {
-      btn.innerText = "Zur Siegerehrung 🏆";
-      btn.onclick = () => window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState/phase`), "gameover");
-    } else {
-      btn.innerText = "Nächste Frage ⏩";
-      btn.onclick = hostNextRoundOnline;
-    }
+
+  if (isLastRound) {
+    btn.innerText = "Zur Siegerehrung 🏆";
+    btn.onclick = finishOfflineGame;
   } else {
-    btn.style.display = "none";
+    btn.innerText = "Nächste Frage ⏩";
+    btn.onclick = nextOfflineRound;
   }
 }
 
-function hostNextRoundOnline() {
-  window.fbGet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`)).then(snap => {
-    const state = snap.val();
-    const nextRound = state.currentRound + 1;
-    const nextQIdx = state.questionIndices[nextRound];
-
-    window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`), {
-      ...state,
-      phase: "guess",
-      currentRound: nextRound,
-      currentQIdx: nextQIdx,
-      guesses: {}
-    });
-  });
+function nextOfflineRound() {
+  currentQuestionIndex++;
+  startOfflineTurn();
 }
 
-function renderGameOverUI() {
+function finishOfflineGame() {
   hideAllScreens();
   document.getElementById("screenGameOver").style.display = "block";
 
-  const sorted = [...onlinePlayersList].sort((a, b) => a.score - b.score);
+  const sorted = [...offlinePlayers].sort((a, b) => a.score - b.score);
 
   const podiumBox = document.getElementById("podiumBox");
   podiumBox.innerHTML = "";
@@ -1195,48 +897,84 @@ function renderGameOverUI() {
     if (p) {
       const step = document.createElement("div");
       step.className = `podium-step ${classes[idx]}`;
-      step.innerHTML = `<div>${crowns[idx]}</div><div>${p.name}</div><small>${p.score} Pkt.</small>`;
+      step.innerHTML = `
+        <div class="podium-crown">${crowns[idx]}</div>
+        <div>${p.name}</div>
+        <small>${p.score} Pkt.</small>
+      `;
       podiumBox.appendChild(step);
     }
   });
 
-  let coinsEarned = 10;
-  const myRank = sorted.findIndex(p => p.id === myId) + 1;
-  if (myRank === 1) coinsEarned += 25;
-  else if (myRank === 2) coinsEarned += 20;
-  else if (myRank === 3) coinsEarned += 15;
+  const remainingBox = document.getElementById("remainingLeaderboard");
+  remainingBox.innerHTML = "";
+  if (sorted.length > 3) {
+    sorted.slice(3).forEach((p, idx) => {
+      const row = document.createElement("div");
+      row.className = "kahoot-row";
+      row.innerHTML = `<span>#${idx + 4} ${p.name}</span><b>${p.score} Pkt.</b>`;
+      remainingBox.appendChild(row);
+    });
+  }
 
+  const coinsEarned = maxRounds * 15;
   let currentCoins = parseInt(localStorage.getItem("teamMasterCoins") || "0", 10);
   currentCoins += coinsEarned;
   localStorage.setItem("teamMasterCoins", currentCoins);
 
   document.getElementById("coinsEarnedText").innerText = "+" + coinsEarned;
-  document.getElementById("btnReplayHost").style.display = isHost ? "block" : "none";
+
+  /* ---------------------------------------------------------
+     SPIELZEIT & ERFOLG-FORTSCHRITT SPEICHERN (PROFIL-SYNCHRONISATION)
+  --------------------------------------------------------- */
+  // 1. Spielzeit erfassen (in Minuten)
+  if (gameStartTime > 0) {
+    const elapsedMinutes = (Date.now() - gameStartTime) / (1000 * 60);
+    saveGameTime("prozentraetzer", elapsedMinutes);
+    gameStartTime = 0; // Zurücksetzen
+  }
+
+  // 2. Bestwert für Prozent-Gott Erfolg prüfen und abspeichern
+  if (sorted.length > 0) {
+    const winnerScore = sorted[0].score; // Der Gewinner hat die niedrigste Gesamt-Differenz
+    saveProzentAchievementScore(winnerScore);
+  }
 }
 
-function restartOnlineGameHost() {
-  const questionIndices = Array.from(Array(questionBank.length).keys()).sort(() => 0.5 - Math.random());
+function saveGameTime(gameId, minutesPlayed) {
+  let gameHours = {};
+  try {
+    gameHours = JSON.parse(localStorage.getItem("challengeChampGameHours")) || {};
+  } catch(e) { gameHours = {}; }
 
-  window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/prozentState`), {
-    phase: "guess",
-    currentRound: 0,
-    rounds: maxRounds,
-    questionIndices: questionIndices,
-    currentQIdx: questionIndices[0],
-    scores: {},
-    guesses: {}
-  });
+  const currentHours = gameHours[gameId] || 0;
+  gameHours[gameId] = currentHours + (minutesPlayed / 60);
+
+  localStorage.setItem("challengeChampGameHours", JSON.stringify(gameHours));
 }
 
-// FIX: Beim Verlassen schmeißen JEDER (Host oder Mitspieler) die Party raus
-function leaveOnlineGame() {
-  window.fbRemove(window.fbRef(window.firebaseDB, `parties/${partyCode}`));
-  window.location.href = "startseite.html";
+function saveProzentAchievementScore(winnerScore) {
+  let achievements = {};
+  try {
+    achievements = JSON.parse(localStorage.getItem("challengeChampAchievements")) || {};
+  } catch(e) { achievements = {}; }
+
+  const currentBest = achievements["prozentBestDiff"] !== undefined ? achievements["prozentBestDiff"] : 999;
+  
+  // Nur speichern, wenn das aktuelle Ergebnis besser (niedriger) ist als der bisherige Bestwert
+  if (winnerScore < currentBest) {
+    achievements["prozentBestDiff"] = winnerScore;
+    localStorage.setItem("challengeChampAchievements", JSON.stringify(achievements));
+  }
+}
+
+function restartOfflineGame() {
+  hideAllScreens();
+  document.getElementById("screenSetup").style.display = "block";
 }
 
 function hideAllScreens() {
-  document.getElementById("screenSetupHost").style.display = "none";
-  document.getElementById("screenOnlineWait").style.display = "none";
+  document.getElementById("screenSetup").style.display = "none";
   document.getElementById("screenGuess").style.display = "none";
   document.getElementById("screenRoundResult").style.display = "none";
   document.getElementById("screenLeaderboard").style.display = "none";
