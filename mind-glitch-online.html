@@ -445,6 +445,7 @@ function hostStartGame() {
   if (selectedCat !== "all") pool = questionBank.filter(q => q.cat === selectedCat);
   const q = pool[Math.floor(Math.random() * pool.length)];
 
+  // Setzt das State-Objekt frisch auf, um alte Klicks/Readys aus vorherigen Runden zu löschen
   window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/glitchState`), {
     phase: "cards",
     question: q,
@@ -473,6 +474,13 @@ function handleGameState(state, players) {
     if (state.readys && state.readys[myId]) {
       document.getElementById("btnReady").style.display = "none";
       document.getElementById("waitReadyMsg").style.display = "block";
+    } else {
+      // WICHTIG: Setzt die Karte für jede neue Runde wieder verschlossen zurück!
+      document.getElementById("myRoleCardBox").innerHTML = `
+        <button class="btn" onclick="revealMyRoleCard()">Karte Aufdecken 👁️</button>
+      `;
+      document.getElementById("btnReady").style.display = "none";
+      document.getElementById("waitReadyMsg").style.display = "none";
     }
 
     if (isHost && state.readys) {
