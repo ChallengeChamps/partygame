@@ -25,7 +25,16 @@ window.CHALLENGE_CHAMP_CONFIG = {
       icon: "🎯",
       minPlayers: 2,
       maxPlayers: 12,
-      url: "prozent-online.html" // <-- Stellt sicher, dass die Online-Datei aufgerufen wird
+      url: "prozent-online.html"
+    },
+    {
+      id: "spiel4",
+      title: "Mind-Glitch",
+      description: "Findet gemeinsam die Zahl – aber passt auf die Insider auf!",
+      icon: "🕵️",
+      minPlayers: 3,
+      maxPlayers: 12,
+      url: "mind-glitch-online.html"
     }
   ]
 };
