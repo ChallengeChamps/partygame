@@ -177,7 +177,7 @@ const questionBank = [
   { q: "Wie viel Prozent der Menschen lesen vor dem Kauf von Produkten Kundenbewertungen?", a: 86, unit: "%", cat: "prozent" },
   { q: "Wie viel Prozent der Deutschen wohnen zur Miete statt im Eigenheim?", a: 53, unit: "%", cat: "prozent" },
   { q: "Wie viel Prozent der Menschen geben zu, im Job gelegentlich zu prokrastinieren?", a: 88, unit: "%", cat: "prozent" },
-  { q: "Wie viel Prozent der Heimwerker-Projekte dauern länger als ursprünglich geplant?", a: 67, unit: "%", cat: "prozent" },
+  { q: "Wie viel Prozent der Heimwerker-Projekte dauern länger als ursprünglich planned?", a: 67, unit: "%", cat: "prozent" },
   { q: "Wie viel Prozent der Smartphone-Besitzer haben einen Displayschaden an ihrem Gerät?", a: 21, unit: "%", cat: "prozent" },
   { q: "Wie viel Prozent der Supermarkteinkäufe sind Spontankäufe?", a: 62, unit: "%", cat: "prozent" },
   { q: "Wie viel Prozent der Menschen drücken morgens die Snooze-Taste des Weckers?", a: 57, unit: "%", cat: "prozent" },
@@ -297,7 +297,6 @@ const questionBank = [
   { q: "Wie viele Muskeln hat der menschliche Körper insgesamt ungefähr?", a: 650, unit: "Muskeln", cat: "rest" },
   { q: "Wie viele Tassen Kaffee trinken die Deutschen im Schnitt pro Jahr?", a: 450, unit: "Tassen", cat: "rest" },
   { q: "Wie viele Zähne hat ein Flusspferd im Maul?", a: 40, unit: "Zähne", cat: "rest" },
-// ==================== ERWEITERUNG: RESTLICHE ZAHLEN (rest) ====================
   { q: "Wie viele Haare hat ein Mensch durchschnittlich auf dem Kopf?", a: 100000, unit: "Haare", cat: "rest" },
   { q: "Wie viele Geschmacksknospen befinden sich ungefähr auf einer menschlichen Zunge?", a: 10000, unit: "Knospen", cat: "rest" },
   { q: "Wie viele Federn hat ein ausgewachsener Höckerschwan am Körper?", a: 25000, unit: "Federn", cat: "rest" },
@@ -334,7 +333,7 @@ const questionBank = [
   { q: "Wie viele Regentropfen fallen während eines normalen Schauers auf einen Quadratmeter?", a: 100000, unit: "Tropfen", cat: "rest" },
   { q: "Wie viele Herzschläge absolviert das menschliche Herz durchschnittlich am Tag?", a: 100000, unit: "Schläge", cat: "rest" },
   { q: "Wie viele Kilometer Seide spinnt eine Seidenraupe für ihren einzigen Kokon?", a: 3, unit: "km", cat: "rest" },
-  { q: "Wie viele Gerüche kann die menschliche Nase schätzungsweise unterscheiden?", a: 10000, unit: "Gerüche", cat: "rest" },
+  { q: "Wie viele Gerüche kann die menschliche Nase schätzungsweise区分?", a: 10000, unit: "Gerüche", cat: "rest" },
   { q: "Wie viele Lieder speichert ein durchschnittlicher Spotify-Nutzer in seiner Bibliothek?", a: 500, unit: "Lieder", cat: "rest" },
   { q: "Wie viele Träume hat ein Mensch im Schnitt pro Nacht während des Schlafs?", a: 4, unit: "Träume", cat: "rest" },
   { q: "Wie viele Blitze schlagen pro Sekunde weltweit auf der Erde ein?", a: 100, unit: "Blitze", cat: "rest" },
@@ -457,7 +456,17 @@ function hostStartGame() {
 }
 
 function handleGameState(state, players) {
-  if (state.phase === "cards") {
+  if (state.phase === "setup") {
+    hideAllScreens();
+    if (isHost) {
+      setupHostOptions(Object.keys(players).length);
+      document.getElementById("screenSetupHost").style.display = "block";
+    } else {
+      document.getElementById("funFactText").innerText = funFacts[Math.floor(Math.random() * funFacts.length)];
+      document.getElementById("screenOnlineWait").style.display = "block";
+    }
+  }
+  else if (state.phase === "cards") {
     hideAllScreens();
     document.getElementById("screenCardReveal").style.display = "block";
 
@@ -608,9 +617,9 @@ function castVote(approved) {
 }
 
 function hostRestartGame() {
-  setupHostOptions(Object.keys(partyData.players).length);
-  hideAllScreens();
-  document.getElementById("screenSetupHost").style.display = "block";
+  window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/glitchState`), {
+    phase: "setup"
+  });
 }
 
 function leaveParty() {
