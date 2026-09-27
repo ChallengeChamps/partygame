@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind-Glitch Online 🕵️ - ChallengeChamp</title>
+<style>
+/* -------------------- GLOBAL & DESIGNS -------------------- */
+body {
+  margin: 0; padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-image: url('imposter.png');
+  background-size: cover; background-position: center; background-attachment: fixed;
+  color: #fff; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+}
+
+h1 { text-align: center; color: #fff; margin-top: 25px; font-size: 2.2rem; text-shadow: 0 4px 12px rgba(0,0,0,0.8); }
+
+.card-box {
+  background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px);
+  border-radius: 22px; padding: 25px; width: 90%; max-width: 450px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.7); margin: 20px auto; text-align: center;
+  box-sizing: border-box; border: 1px solid rgba(255,255,255,0.15);
+  position: relative; overflow: hidden;
+}
+
+/* -------------------- BUTTONS & INPUTS -------------------- */
+.btn {
+  background: linear-gradient(135deg, #8a2be2, #ff007f);
+  color: #fff; border: none; padding: 14px 20px; border-radius: 16px;
+  font-size: 1.1rem; font-weight: 900; cursor: pointer; width: 100%; margin-top: 12px;
+  box-sizing: border-box; box-shadow: 0 4px 15px rgba(255,0,127,0.4);
+  transition: all 0.2s ease;
+}
+.btn:hover { transform: scale(1.03); }
+.btn-secondary { background: #334155; box-shadow: none; }
+.btn-success { background: linear-gradient(135deg, #10b981, #059669); }
+.btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+input[type=number], select {
+  width: 100%; padding: 12px; border-radius: 12px;
+  border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 1rem;
+  margin-top: 8px; outline: none; text-align: center; box-sizing: border-box;
+}
+
+.anim-fade-in { animation: fadeIn 0.5s ease forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+.role-card {
+  background: #1e293b; border-radius: 16px; padding: 20px; margin: 15px 0;
+  border: 2px dashed #8a2be2; min-height: 100px;
+}
+.insider-badge { color: #ff007f; font-weight: bold; font-size: 1.3rem; }
+.citizen-badge { color: #38bdf8; font-weight: bold; font-size: 1.3rem; }
+.funfact-box { background: rgba(255, 0, 127, 0.1); border: 1px dashed #ff007f; padding: 15px; border-radius: 14px; margin-top: 15px; }
+
+.roulette-container {
+  font-size: 2.5rem; font-weight: 900; color: #ffd700; height: 70px;
+  display: flex; align-items: center; justify-content: center; text-shadow: 0 0 20px rgba(255,215,0,0.8);
+}
+</style>
+</head>
+<body>
+
+<h1>Mind-Glitch Online 🌐</h1>
+
+<!-- SCREEN 1: HOST SETUP -->
+<div id="screenSetupHost" class="card-box anim-fade-in" style="display:none;">
+  <h2>Party-Einstellungen (Host)</h2>
+  
+  <label>Anzahl Insider (Lügner):</label>
+  <select id="insiderCountSelect"></select>
+
+  <label style="margin-top:12px; display:block;">Zahlen-Kategorie:</label>
+  <select id="categorySelect">
+    <option value="all">🔀 Zufällig (Alle)</option>
+    <option value="prozent">📊 Prozentzahlen (%)</option>
+    <option value="geld">💰 Geldsummen (€)</option>
+    <option value="mass">📏 Maßangaben (cm, kg, l...)</option>
+  </select>
+
+  <button class="btn" onclick="hostStartGame()">Spiel Starten 🚀</button>
+</div>
+
+<!-- SCREEN 2: MITSPIELER WARTEN -->
+<div id="screenOnlineWait" class="card-box anim-fade-in" style="display:none;">
+  <h2>Warten auf den Host... ⏳</h2>
+  <p>Der Host stellt gerade die Insider-Anzahl ein.</p>
+  <div class="funfact-box">
+    <b>💡 Wusstest du schon?</b>
+    <p id="funFactText">Lade Fun Fact...</p>
+  </div>
+</div>
+
+<!-- SCREEN 3: KARTE AUFDECKEN -->
+<div id="screenCardReveal" class="card-box anim-fade-in" style="display:none;">
+  <h2>Deine Geheim-Karte 🃏</h2>
+  <div class="role-card" id="myRoleCardBox">
+    <button class="btn" onclick="revealMyRoleCard()">Karte Aufdecken 👁️</button>
+  </div>
+  <button id="btnReady" class="btn btn-success" style="display:none;" onclick="markPlayerReady()">Ich bin Bereit 👍</button>
+  <p id="waitReadyMsg" style="display:none; color:#ffd700; margin-top:10px;">Warten, bis alle bereit sind... ⏳</p>
+</div>
+
+<!-- SCREEN 4: DISKUSSION & HOST INPUT -->
+<div id="screenDiscuss" class="card-box anim-fade-in" style="display:none;">
+  <h2>Diskutiert gemeinsam! 🗣️</h2>
+  <h3 id="discussQuestionText"></h3>
+
+  <div id="hostInputArea" style="display:none; margin-top:15px;">
+    <input type="number" id="hostProposedAnswer" placeholder="Antwort-Zahl eingeben..." />
+    <button class="btn" onclick="hostSubmitProposedAnswer()">Antwort zur Abstimmung stellen 🗳️</button>
+  </div>
+
+  <p id="nonHostDiscussMsg" style="color:#94a3b8;">Der Host wird gleich eine Antwort vorschlagen.</p>
+</div>
+
+<!-- SCREEN 5: VOTING SCREEN -->
+<div id="screenVoting" class="card-box anim-fade-in" style="display:none;">
+  <h2>Antwort bestätigen? 🗳️</h2>
+  <p>Der Host schlägt vor:</p>
+  <h2 id="proposedAnswerDisplay" style="color:#ffd700; font-size:2.5rem; margin:10px 0;">--</h2>
+
+  <div id="voteButtonsBox">
+    <button class="btn btn-success" onclick="castVote(true)">Bestätigen (Ja) 👍</button>
+    <button class="btn btn-danger" onclick="castVote(false)">Ablehnen (Nein) 👎</button>
+  </div>
+
+  <p id="voteStatusText" style="margin-top:15px; color:#ffd700;"></p>
+</div>
+
+<!-- SCREEN 6: ROULETTE & ANIMATION -->
+<div id="screenRoulette" class="card-box anim-fade-in" style="display:none;">
+  <h2>Antwort wird geprüft... ⚙️</h2>
+  <div class="roulette-container" id="rouletteText">---</div>
+</div>
+
+<!-- SCREEN 7: RESULT SCREEN -->
+<div id="screenResult" class="card-box anim-fade-in" style="display:none;">
+  <h2 id="winnerText">--</h2>
+  <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:14px; margin: 15px 0;">
+    <p>Echte Lösung: <b id="trueAnswerText" style="color:#ff007f; font-size:1.3rem;"></b></p>
+    <p>Eingeloggte Antwort: <b id="userAnswerText" style="color:#38bdf8; font-size:1.3rem;"></b></p>
+    <p><small id="toleranceDetailText" style="color:#94a3b8;"></small></p>
+  </div>
+  
+  <div id="insiderNamesBox" style="margin: 15px 0; font-weight: bold; color: #ffd700;"></div>
+
+  <button id="btnReplayHost" class="btn" style="display:none;" onclick="hostRestartGame()">Erneut Spielen 🔄</button>
+  <button class="btn btn-secondary" onclick="leaveParty()">Party Verlassen 🚪</button>
+</div>
+
+<!-- FIREBASE SCRIPT -->
+<script type="module" src="firebase-config.js"></script>
+
+<script>
+const questionBank = [
+  { q: "Wie viel Prozent des Gehalts sollte man für die Kaltmiete ausgeben?", a: 30, unit: "%", cat: "prozent" },
+  { q: "Wie viel Prozent der Erdfläche sind von Wüsten bedeckt?", a: 33, unit: "%", cat: "prozent" },
+  { q: "Wie viel Prozent des menschlichen Körpers bestehen aus Wasser?", a: 60, unit: "%", cat: "prozent" },
+  { q: "Wie viele Euro kostet das teuerste Smartphone der Welt durchschnittlich?", a: 1200, unit: "€", cat: "geld" },
+  { q: "Wie viele Meter ist der Eiffelturm in Paris hoch?", a: 330, unit: "m", cat: "mass" }
+];
+
+const funFacts = [
+  "Bienen können höher fliegen als der Mount Everest!",
+  "Bananen sind krumm, weil sie der Sonne entgegenwachsen.",
+  "Ein Oktopus besitzt drei Herzen und blaues Blut."
+];
+
+let partyCode = null;
+let myId = null;
+let myName = "";
+let isHost = false;
+let partyData = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("funFactText").innerText = funFacts[Math.floor(Math.random() * funFacts.length)];
+  const urlParams = new URLSearchParams(window.location.search);
+  partyCode = urlParams.get("party") || localStorage.getItem("currentPartyCode");
+  myId = urlParams.get("player") || sessionStorage.getItem("cc_player_id") || localStorage.getItem("challengeChampPlayerId");
+  myName = sessionStorage.getItem("cc_player_name") || localStorage.getItem("challengeChampProfileName") || "Spieler";
+
+  const checkFB = setInterval(() => {
+    if (window.firebaseDB && partyCode) {
+      clearInterval(checkFB);
+      initOnlineGame();
+    }
+  }, 100);
+});
+
+function calcThreshold(targetValue) {
+  return Math.max(5, Math.round(targetValue * 0.15));
+}
+
+function initOnlineGame() {
+  const partyRef = window.fbRef(window.firebaseDB, `parties/${partyCode}`);
+
+  window.fbGet(partyRef).then(snap => {
+    if (!snap.exists()) {
+      alert("Party nicht gefunden.");
+      window.location.href = "startseite.html";
+      return;
+    }
+
+    partyData = snap.val();
+    isHost = (partyData.hostId === myId);
+
+    hideAllScreens();
+    if (isHost) {
+      setupHostOptions(Object.keys(partyData.players).length);
+      document.getElementById("screenSetupHost").style.display = "block";
+    } else {
+      document.getElementById("screenOnlineWait").style.display = "block";
+    }
+
+    window.fbOnValue(partyRef, (snapshot) => {
+      if (!snapshot.exists()) {
+        alert("Party wurde aufgelöst.");
+        window.location.href = "startseite.html";
+        return;
+      }
+      partyData = snapshot.val();
+      isHost = (partyData.hostId === myId);
+
+      if (partyData.glitchState) {
+        handleGameState(partyData.glitchState, partyData.players);
+      }
+    });
+  });
+}
+
+function setupHostOptions(playerCount) {
+  const maxInsiders = Math.floor((playerCount - 1) / 2);
+  const insiderSelect = document.getElementById("insiderCountSelect");
+  insiderSelect.innerHTML = "";
+
+  for (let i = 1; i <= Math.max(1, maxInsiders); i++) {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.innerText = `${i} Insider`;
+    insiderSelect.appendChild(opt);
+  }
+}
+
+function hostStartGame() {
+  const playerIds = Object.keys(partyData.players);
+  const insiderCount = parseInt(document.getElementById("insiderCountSelect").value);
+  
+  const insiderIds = [];
+  while (insiderIds.length < insiderCount) {
+    const randId = playerIds[Math.floor(Math.random() * playerIds.length)];
+    if (!insiderIds.includes(randId)) insiderIds.push(randId);
+  }
+
+  const selectedCat = document.getElementById("categorySelect").value;
+  let pool = questionBank;
+  if (selectedCat !== "all") pool = questionBank.filter(q => q.cat === selectedCat);
+  const q = pool[Math.floor(Math.random() * pool.length)];
+
+  window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/glitchState`), {
+    phase: "cards",
+    question: q,
+    insiderIds: insiderIds,
+    readys: {},
+    proposedAnswer: null,
+    votes: {}
+  });
+}
+
+function handleGameState(state, players) {
+  if (state.phase === "cards") {
+    hideAllScreens();
+    document.getElementById("screenCardReveal").style.display = "block";
+
+    if (state.readys && state.readys[myId]) {
+      document.getElementById("btnReady").style.display = "none";
+      document.getElementById("waitReadyMsg").style.display = "block";
+    }
+
+    if (isHost && state.readys) {
+      const readyCount = Object.keys(state.readys).length;
+      if (readyCount >= Object.keys(players).length) {
+        window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/glitchState/phase`), "discuss");
+      }
+    }
+  }
+  else if (state.phase === "discuss") {
+    hideAllScreens();
+    document.getElementById("screenDiscuss").style.display = "block";
+    document.getElementById("discussQuestionText").innerText = `${state.question.q} (${state.question.unit})`;
+
+    if (isHost) {
+      document.getElementById("hostInputArea").style.display = "block";
+      document.getElementById("nonHostDiscussMsg").style.display = "none";
+    } else {
+      document.getElementById("hostInputArea").style.display = "none";
+      document.getElementById("nonHostDiscussMsg").style.display = "block";
+    }
+  }
+  else if (state.phase === "voting") {
+    hideAllScreens();
+    document.getElementById("screenVoting").style.display = "block";
+    document.getElementById("proposedAnswerDisplay").innerText = `${state.proposedAnswer} ${state.question.unit}`;
+
+    if (state.votes && state.votes[myId] !== undefined) {
+      document.getElementById("voteButtonsBox").style.display = "none";
+      document.getElementById("voteStatusText").innerText = "Deine Stimme wurde abgegeben! Warten auf andere...";
+    } else {
+      document.getElementById("voteButtonsBox").style.display = "block";
+      document.getElementById("voteStatusText").innerText = "";
+    }
+
+    if (isHost && state.votes) {
+      const totalPlayers = Object.keys(players).length;
+      const votesArr = Object.values(state.votes);
+      if (votesArr.length >= totalPlayers) {
+        const yesVotes = votesArr.filter(v => v === true).length;
+        const ratio = yesVotes / totalPlayers;
+
+        if (ratio >= 0.75) {
+          window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/glitchState/phase`), "roulette");
+        } else {
+          alert("Über 25% haben abgelehnt! Weiter diskutieren.");
+          window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/glitchState`), {
+            ...state, phase: "discuss", proposedAnswer: null, votes: {}
+          });
+        }
+      }
+    }
+  }
+  else if (state.phase === "roulette") {
+    hideAllScreens();
+    document.getElementById("screenRoulette").style.display = "block";
+
+    if (isHost) {
+      setTimeout(() => {
+        window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/glitchState/phase`), "result");
+      }, 3000);
+    }
+  }
+  else if (state.phase === "result") {
+    hideAllScreens();
+    document.getElementById("screenResult").style.display = "block";
+
+    const diff = Math.abs(state.proposedAnswer - state.question.a);
+    const threshold = calcThreshold(state.question.a);
+
+    const winnerEl = document.getElementById("winnerText");
+    if (diff <= threshold) {
+      winnerEl.innerText = "🏆 DIE SPIELER GEWINNEN!";
+      winnerEl.style.color = "#38bdf8";
+    } else {
+      winnerEl.innerText = "🕵️ DIE INSIDER GEWINNEN!";
+      winnerEl.style.color = "#ff007f";
+    }
+
+    document.getElementById("trueAnswerText").innerText = `${state.question.a} ${state.question.unit}`;
+    document.getElementById("userAnswerText").innerText = `${state.proposedAnswer} ${state.question.unit}`;
+    document.getElementById("toleranceDetailText").innerText = `(Erlaubte Abweichung war: ±${threshold} ${state.question.unit} | Eure Abweichung: ${diff} ${state.question.unit})`;
+
+    const insiderNames = state.insiderIds.map(id => players[id] ? players[id].name : "Insider").join(", ");
+    document.getElementById("insiderNamesBox").innerText = `Die Insider waren: ${insiderNames}`;
+
+    document.getElementById("btnReplayHost").style.display = isHost ? "block" : "none";
+  }
+}
+
+function revealMyRoleCard() {
+  const state = partyData.glitchState;
+  const isInsider = state.insiderIds.includes(myId);
+  const box = document.getElementById("myRoleCardBox");
+  const threshold = calcThreshold(state.question.a);
+
+  if (isInsider) {
+    const otherInsiders = state.insiderIds
+      .filter(id => id !== myId)
+      .map(id => partyData.players[id] ? partyData.players[id].name : "");
+
+    let otherText = otherInsiders.length > 0 ? `<br><small style="color:#ffd700;">Mit-Insider: ${otherInsiders.join(", ")}</small>` : "";
+
+    box.innerHTML = `
+      <div class="insider-badge">🕵️ DU BIST INSIDER!</div>
+      <div style="margin-top:8px;"><b>Frage:</b> ${state.question.q}</div>
+      <div style="margin-top:8px; color:#ff007f;"><b>Exakte Lösung:</b> ${state.question.a} ${state.question.unit}</div>
+      <div style="margin-top:6px; color:#38bdf8; font-size:0.9rem;">🎯 <b>Toleranz:</b> Spieler gewinnen bei max. ±${threshold} ${state.question.unit} Abweichung!</div>
+      ${otherText}
+    `;
+  } else {
+    box.innerHTML = `
+      <div class="citizen-badge">👤 DU BIST NORMALER SPIELER</div>
+      <div style="margin-top:8px;"><b>Frage:</b> ${state.question.q}</div>
+      <small style="color:#94a3b8; margin-top:8px;">Du kennst die Lösung nicht!</small>
+    `;
+  }
+
+  document.getElementById("btnReady").style.display = "block";
+}
+
+function markPlayerReady() {
+  window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/glitchState/readys/${myId}`), true);
+  document.getElementById("btnReady").style.display = "none";
+  document.getElementById("waitReadyMsg").style.display = "block";
+}
+
+function hostSubmitProposedAnswer() {
+  const val = parseInt(document.getElementById("hostProposedAnswer").value);
+  if (!val) { alert("Bitte eine Zahl eingeben!"); return; }
+
+  window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/glitchState`), {
+    ...partyData.glitchState,
+    phase: "voting",
+    proposedAnswer: val,
+    votes: {}
+  });
+}
+
+function castVote(approved) {
+  window.fbSet(window.fbRef(window.firebaseDB, `parties/${partyCode}/glitchState/votes/${myId}`), approved);
+}
+
+function hostRestartGame() {
+  setupHostOptions(Object.keys(partyData.players).length);
+  hideAllScreens();
+  document.getElementById("screenSetupHost").style.display = "block";
+}
+
+function leaveParty() {
+  window.fbRemove(window.fbRef(window.firebaseDB, `parties/${partyCode}`));
+  window.location.href = "startseite.html";
+}
+
+function hideAllScreens() {
+  document.getElementById("screenSetupHost").style.display = "none";
+  document.getElementById("screenOnlineWait").style.display = "none";
+  document.getElementById("screenCardReveal").style.display = "none";
+  document.getElementById("screenDiscuss").style.display = "none";
+  document.getElementById("screenVoting").style.display = "none";
+  document.getElementById("screenRoulette").style.display = "none";
+  document.getElementById("screenResult").style.display = "none";
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind-Glitch 🕵️ - ChallengeChamp</title>
+<style>
+/* -------------------- GLOBAL & DESIGNS -------------------- */
+body {
+  margin: 0; padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-image: url('imposter.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #fff;
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+}
+
+h1 {
+  text-align: center; color: #fff; margin-top: 25px; font-size: 2.2rem;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.8);
+}
+
+.card-box {
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 22px; padding: 25px; width: 90%; max-width: 450px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.7); margin: 20px auto; text-align: center;
+  box-sizing: border-box; border: 1px solid rgba(255,255,255,0.15);
+  position: relative; overflow: hidden;
+}
+
+/* -------------------- BUTTONS & INPUTS -------------------- */
+.btn {
+  background: linear-gradient(135deg, #8a2be2, #ff007f);
+  color: #fff; border: none; padding: 14px 20px; border-radius: 16px;
+  font-size: 1.1rem; font-weight: 900; cursor: pointer; width: 100%; margin-top: 12px;
+  box-sizing: border-box; box-shadow: 0 4px 15px rgba(255,0,127,0.4);
+  transition: all 0.2s ease;
+}
+.btn:hover { transform: scale(1.03); box-shadow: 0 6px 20px rgba(255,0,127,0.6); }
+.btn-secondary { background: #334155; color: #fff; box-shadow: none; }
+
+input[type=text], input[type=number], select {
+  width: 100%; padding: 12px; border-radius: 12px;
+  border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 1rem;
+  margin-top: 8px; outline: none; text-align: center; box-sizing: border-box;
+}
+
+.player-input-list { max-height: 180px; overflow-y: auto; margin-top: 10px; }
+
+/* -------------------- ANIMATIONEN -------------------- */
+.anim-fade-in { animation: fadeIn 0.5s ease forwards; }
+.anim-pop { animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes popUp {
+  0% { opacity: 0; transform: scale(0.6); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* -------------------- ROLLENKARTE & ROULETTE -------------------- */
+.role-card {
+  background: #1e293b; border-radius: 16px; padding: 20px; margin: 15px 0;
+  border: 2px dashed #8a2be2; min-height: 120px;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+}
+
+.insider-badge { color: #ff007f; font-weight: bold; font-size: 1.3rem; margin-bottom: 8px; }
+.citizen-badge { color: #38bdf8; font-weight: bold; font-size: 1.3rem; margin-bottom: 8px; }
+
+.roulette-container {
+  font-size: 2.5rem; font-weight: 900; color: #ffd700; height: 70px;
+  display: flex; align-items: center; justify-content: center;
+  text-shadow: 0 0 20px rgba(255,215,0,0.8); margin: 20px 0;
+}
+</style>
+</head>
+<body>
+
+<h1>Mind-Glitch 🕵️</h1>
+
+<!-- SCREEN 1: SETUP -->
+<div id="screenSetup" class="card-box anim-fade-in">
+  <h2>Spiel-Einstellungen</h2>
+  
+  <label>Anzahl der Spieler (3-12):</label>
+  <select id="playerCountSelect" onchange="updatePlayerInputs()">
+    <!-- Wird dynamisch von 3 bis 12 befüllt -->
+  </select>
+
+  <div class="player-input-list" id="playerInputsContainer"></div>
+
+  <label style="margin-top:12px; display:block;">Anzahl Insider (Lügner):</label>
+  <select id="insiderCountSelect"></select>
+
+  <label style="margin-top:12px; display:block;">Zahlen-Kategorie:</label>
+  <select id="categorySelect">
+    <option value="all">🔀 Zufällig (Alle)</option>
+    <option value="prozent">📊 Prozentzahlen (%)</option>
+    <option value="geld">💰 Geldsummen (€)</option>
+    <option value="mass">📏 Maßangaben (cm, kg, l...)</option>
+  </select>
+
+  <button class="btn" onclick="startSetupToCards()">Rollen verteilen 🃏</button>
+  <button class="btn btn-secondary" onclick="window.location.href='startseite.html'">Zurück zur Startseite</button>
+</div>
+
+<!-- SCREEN 2: CARD REVEAL (REIHUM) -->
+<div id="screenReveal" class="card-box anim-fade-in" style="display:none;">
+  <h2 id="revealPlayerTitle">Spieler 1</h2>
+  <p>Verdeckte Karte. Klicke auf Aufdecken, um deine Rolle geheim zu sehen.</p>
+  
+  <div class="role-card" id="roleCardBox">
+    <span style="font-size: 2rem;">🔒</span>
+    <span>Karte ist verdeckt</span>
+  </div>
+
+  <button id="btnRevealCard" class="btn" onclick="revealCurrentCard()">Karte Aufdecken 👁️</button>
+  <button id="btnNextCard" class="btn" style="display:none;" onclick="nextPlayerCard()">Weiter ➡️</button>
+</div>
+
+<!-- SCREEN 3: DISCUSSION & INPUT -->
+<div id="screenDiscuss" class="card-box anim-fade-in" style="display:none;">
+  <h2>Diskussion & Lösung 🗣️</h2>
+  <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:14px; margin: 15px 0;">
+    <h3 id="discussQuestionText" style="margin:0;"></h3>
+  </div>
+  <p>Diskutiert gemeinsam und gebt eure finale Schätzung ein:</p>
+  
+  <input type="number" id="teamAnswerInput" placeholder="Antwort-Zahl eingeben..." />
+  <button class="btn" onclick="startSuspenseRoulette()">Lösung Einloggen 🔒</button>
+</div>
+
+<!-- SCREEN 4: SUSPENSE ROULETT -->
+<div id="screenRoulette" class="card-box anim-fade-in" style="display:none;">
+  <h2>System prüft... ⚙️</h2>
+  <div class="roulette-container" id="rouletteText">---</div>
+  <p>Zahlen werden ausgewertet...</p>
+</div>
+
+<!-- SCREEN 5: GAME OVER / RESULT -->
+<div id="screenResult" class="card-box anim-fade-in" style="display:none;">
+  <h2 id="winnerText">--</h2>
+  <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:14px; margin: 15px 0;">
+    <p>Echte Lösung: <b id="trueAnswerText" style="color:#ff007f; font-size:1.3rem;"></b></p>
+    <p>Eure Eingabe: <b id="userAnswerText" style="color:#38bdf8; font-size:1.3rem;"></b></p>
+    <p><small id="toleranceDetailText" style="color:#94a3b8;"></small></p>
+  </div>
+  
+  <div id="insiderNamesBox" style="margin: 15px 0; font-weight: bold; color: #ffd700;"></div>
+
+  <button class="btn" onclick="resetToSetup()">Erneut Spielen 🔄</button>
+  <button class="btn btn-secondary" onclick="window.location.href='startseite.html'">Zur Startseite</button>
+</div>
+
+<script>
+const questionBank = [
+  { q: "Wie viel Prozent des Gehalts sollte man für die Kaltmiete ausgeben?", a: 30, unit: "%", cat: "prozent" },
+  { q: "Wie viel Prozent der Erdfläche sind von Wüsten bedeckt?", a: 33, unit: "%", cat: "prozent" },
+  { q: "Wie viel Prozent des menschlichen Körpers bestehen aus Wasser?", a: 60, unit: "%", cat: "prozent" },
+  { q: "Wie viel Prozent der Autofahrer nutzen am Steuer das Smartphone?", a: 53, unit: "%", cat: "prozent" },
+  { q: "Wie viele Euro kostet das teuerste Smartphone der Welt durchschnittlich?", a: 1200, unit: "€", cat: "geld" },
+  { q: "Wie viel Geld gibt der deutsche Haushalt im Schnitt monatlich für Lebensmittel aus?", a: 400, unit: "€", cat: "geld" },
+  { q: "Wie viel Euro Strafe kostet Telefonieren am Steuer mindestens?", a: 100, unit: "€", cat: "geld" },
+  { q: "Wie viele Meter ist der Eiffelturm in Paris hoch?", a: 330, unit: "m", cat: "mass" },
+  { q: "Wie viele Kilogramm wiegt das Herz eines ausgewachsenen Blauwals?", a: 180, unit: "kg", cat: "mass" },
+  { q: "Wie viele Liter Wasser verbraucht eine Person in Deutschland pro Tag?", a: 125, unit: "l", cat: "mass" }
+];
+
+let players = [];
+let insiderIndices = [];
+let currentQuestion = null;
+let currentRevealIndex = 0;
+
+document.addEventListener("DOMContentLoaded", () => {
+  initPlayerCountSelect();
+  updatePlayerInputs();
+});
+
+function initPlayerCountSelect() {
+  const sel = document.getElementById("playerCountSelect");
+  sel.innerHTML = "";
+  for (let i = 3; i <= 12; i++) {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.innerText = `${i} Spieler`;
+    if (i === 4) opt.selected = true;
+    sel.appendChild(opt);
+  }
+}
+
+function updatePlayerInputs() {
+  const count = parseInt(document.getElementById("playerCountSelect").value);
+  const container = document.getElementById("playerInputsContainer");
+  container.innerHTML = "";
+
+  for (let i = 0; i < count; i++) {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = `Spieler ${i + 1}`;
+    input.id = `playerName_${i}`;
+    container.appendChild(input);
+  }
+
+  // Insider-Anzahl begrenzen (streng weniger als die Hälfte)
+  const maxInsiders = Math.floor((count - 1) / 2);
+  const insiderSelect = document.getElementById("insiderCountSelect");
+  insiderSelect.innerHTML = "";
+
+  for (let i = 1; i <= Math.max(1, maxInsiders); i++) {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.innerText = `${i} Insider`;
+    insiderSelect.appendChild(opt);
+  }
+}
+
+function calcThreshold(targetValue) {
+  return Math.max(5, Math.round(targetValue * 0.15));
+}
+
+function startSetupToCards() {
+  const count = parseInt(document.getElementById("playerCountSelect").value);
+  players = [];
+  for (let i = 0; i < count; i++) {
+    players.push(document.getElementById(`playerName_${i}`).value || `Spieler ${i + 1}`);
+  }
+
+  const insiderCount = parseInt(document.getElementById("insiderCountSelect").value);
+  insiderIndices = [];
+  while (insiderIndices.length < insiderCount) {
+    const rand = Math.floor(Math.random() * count);
+    if (!insiderIndices.includes(rand)) insiderIndices.push(rand);
+  }
+
+  const selectedCat = document.getElementById("categorySelect").value;
+  let pool = questionBank;
+  if (selectedCat !== "all") pool = questionBank.filter(q => q.cat === selectedCat);
+  currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+  currentRevealIndex = 0;
+  hideAllScreens();
+  document.getElementById("screenReveal").style.display = "block";
+  setupRevealCardScreen();
+}
+
+function setupRevealCardScreen() {
+  document.getElementById("revealPlayerTitle").innerText = players[currentRevealIndex];
+  const box = document.getElementById("roleCardBox");
+  box.innerHTML = `<span style="font-size: 2rem;">🔒</span><span>Karte ist verdeckt</span>`;
+  document.getElementById("btnRevealCard").style.display = "block";
+  document.getElementById("btnNextCard").style.display = "none";
+}
+
+function revealCurrentCard() {
+  const box = document.getElementById("roleCardBox");
+  const isInsider = insiderIndices.includes(currentRevealIndex);
+  const threshold = calcThreshold(currentQuestion.a);
+
+  if (isInsider) {
+    let otherInsiders = insiderIndices
+      .filter(i => i !== currentRevealIndex)
+      .map(i => players[i]);
+
+    let otherText = "";
+    if (otherInsiders.length > 0) {
+      otherText = `<br><small style="color:#ffd700;">Mit-Insider: ${otherInsiders.join(", ")}</small>`;
+    }
+
+    box.innerHTML = `
+      <div class="insider-badge">🕵️ DU BIST INSIDER!</div>
+      <div style="margin-top:8px;"><b>Frage:</b> ${currentQuestion.q}</div>
+      <div style="margin-top:8px; color:#ff007f;"><b>Exakte Lösung:</b> ${currentQuestion.a} ${currentQuestion.unit}</div>
+      <div style="margin-top:6px; color:#38bdf8; font-size:0.9rem;">🎯 <b>Toleranz:</b> Spieler gewinnen bei max. ±${threshold} ${currentQuestion.unit} Abweichung!</div>
+      ${otherText}
+    `;
+  } else {
+    box.innerHTML = `
+      <div class="citizen-badge">👤 DU BIST NORMALER SPIELER</div>
+      <div style="margin-top:8px;"><b>Frage:</b> ${currentQuestion.q}</div>
+      <small style="color:#94a3b8; margin-top:8px;">Du kennst die Lösung nicht!</small>
+    `;
+  }
+
+  document.getElementById("btnRevealCard").style.display = "none";
+  const btnNext = document.getElementById("btnNextCard");
+  btnNext.style.display = "block";
+
+  if (currentRevealIndex >= players.length - 1) {
+    btnNext.innerText = "Spiel Starten 🚀";
+  } else {
+    btnNext.innerText = "Nächster Spieler ➡️";
+  }
+}
+
+function nextPlayerCard() {
+  currentRevealIndex++;
+  if (currentRevealIndex < players.length) {
+    setupRevealCardScreen();
+  } else {
+    hideAllScreens();
+    document.getElementById("screenDiscuss").style.display = "block";
+    document.getElementById("discussQuestionText").innerText = `${currentQuestion.q} (${currentQuestion.unit})`;
+  }
+}
+
+function startSuspenseRoulette() {
+  const inputVal = document.getElementById("teamAnswerInput").value;
+  if (!inputVal) {
+    alert("Bitte gib eine Schätzung ein!");
+    return;
+  }
+
+  hideAllScreens();
+  document.getElementById("screenRoulette").style.display = "block";
+  const textEl = document.getElementById("rouletteText");
+
+  let counter = 0;
+  const interval = setInterval(() => {
+    counter++;
+    textEl.innerText = Math.floor(Math.random() * 500) + " " + currentQuestion.unit;
+    if (counter > 18) {
+      clearInterval(interval);
+      showFinalResult(parseInt(inputVal));
+    }
+  }, 100);
+}
+
+function showFinalResult(userGuess) {
+  hideAllScreens();
+  document.getElementById("screenResult").style.display = "block";
+
+  const diff = Math.abs(userGuess - currentQuestion.a);
+  const threshold = calcThreshold(currentQuestion.a);
+
+  const winnerEl = document.getElementById("winnerText");
+  if (diff <= threshold) {
+    winnerEl.innerText = "🏆 DIE SPIELER GEWINNEN!";
+    winnerEl.style.color = "#38bdf8";
+  } else {
+    winnerEl.innerText = "🕵️ DIE INSIDER GEWINNEN!";
+    winnerEl.style.color = "#ff007f";
+  }
+
+  document.getElementById("trueAnswerText").innerText = `${currentQuestion.a} ${currentQuestion.unit}`;
+  document.getElementById("userAnswerText").innerText = `${userGuess} ${currentQuestion.unit}`;
+  document.getElementById("toleranceDetailText").innerText = `(Erlaubte Abweichung war: ±${threshold} ${currentQuestion.unit} | Eure Abweichung: ${diff} ${currentQuestion.unit})`;
+
+  const insiderNames = insiderIndices.map(i => players[i]).join(", ");
+  document.getElementById("insiderNamesBox").innerText = `Die Insider waren: ${insiderNames}`;
+}
+
+function resetToSetup() {
+  hideAllScreens();
+  document.getElementById("screenSetup").style.display = "block";
+}
+
+function hideAllScreens() {
+  document.getElementById("screenSetup").style.display = "none";
+  document.getElementById("screenReveal").style.display = "none";
+  document.getElementById("screenDiscuss").style.display = "none";
+  document.getElementById("screenRoulette").style.display = "none";
+  document.getElementById("screenResult").style.display = "none";
+}
+</script>
+</body>
+</html>
