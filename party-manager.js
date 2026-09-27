@@ -177,17 +177,22 @@ class PartyManager {
 
             const data = snapshot.val();
 
-            if (data.status === "started") {
-                const gameConfig = window.CHALLENGE_CHAMP_CONFIG.multiplayerGames.find(g => g.id === data.selectedGame);
-                if (gameConfig) {
-                    // Disconnect Cleanup stornieren, damit der Spieler beim Wechsel zu imposter.html nicht aus der DB fliegt
-                    const playerRef = window.fbRef(window.firebaseDB, `parties/${this.currentPartyCode}/players/${this.playerId}`);
-                    window.fbOnDisconnect(playerRef).cancel();
+if (data.status === "started") {
+    let targetUrl = "prozent-online.html"; // Fallback-Sicherheit für Prozent-Rätzer
 
-                    window.location.href = `${gameConfig.url}?party=${this.currentPartyCode}&player=${this.playerId}`;
-                }
-                return;
-            }
+    const gameConfig = window.CHALLENGE_CHAMP_CONFIG.multiplayerGames.find(g => g.id === data.selectedGame);
+    if (gameConfig) {
+        targetUrl = gameConfig.url;
+    }
+
+    // Cleanup stornieren, damit die Spieler nicht aus der DB gelöscht werden
+    const playerRef = window.fbRef(window.firebaseDB, `parties/${this.currentPartyCode}/players/${this.playerId}`);
+    window.fbOnDisconnect(playerRef).cancel();
+
+    // Weiterleitung zur Online-Datei mit Party-Parametern
+    window.location.href = `${targetUrl}?party=${this.currentPartyCode}&player=${this.playerId}`;
+    return;
+}
 
             this.updateLobbyUI(data);
         });
