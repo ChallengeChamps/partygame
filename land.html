@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geheimnisvolle Länder – ChallengeChamp</title>
+<style>
+/* -------------------- GLOBAL & CHALLENGECHAMP DESIGN -------------------- */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('10von10.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: hidden;
+}
+
+h1, h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 2px 2px 6px #000;
+  margin-top: 15px;
+}
+
+/* Glassmorphism Container */
+.container {
+  width: 90%;
+  max-width: 380px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  padding: 22px;
+  margin: 25px auto;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Formularelemente */
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+select, input[type="text"] {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: none;
+  background: #ffffff;
+  color: #111;
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: 0.2s;
+}
+
+select:focus, input[type="text"]:focus {
+  box-shadow: 0 0 12px rgba(255, 45, 115, 0.5);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #ff2d73;
+  cursor: pointer;
+}
+
+/* Einheitliche Buttons (exakte, gleiche Breite) */
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-top: 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.btn-pink {
+  background: #ff2d73;
+  color: #fff;
+}
+
+.btn-pink:hover {
+  transform: scale(1.03);
+  background: #e02464;
+}
+
+.btn-green {
+  background: #38a169;
+  color: #fff;
+}
+
+.btn-green:hover {
+  transform: scale(1.03);
+  background: #2f855a;
+}
+
+/* Spiel-Screen Komponenten */
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  color: #38bdf8;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 8px;
+}
+
+/* Container für Fakten und Hinweise in einheitlichen ovalen Pillen */
+.facts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.fact-pill {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  color: #f1f5f9;
+  padding: 10px 16px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Ovale Pillen für die Hinweise (gelblich/golden) */
+.hint-pill {
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.35), rgba(202, 138, 4, 0.35));
+  border: 1.5px solid rgba(234, 179, 8, 0.7);
+  color: #fef08a;
+  padding: 10px 16px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Autocomplete Vorschläge */
+.autocomplete-wrapper {
+  position: relative;
+}
+
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 0 0 14px 14px;
+  max-height: 140px;
+  overflow-y: auto;
+  z-index: 99;
+  display: none;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  text-align: left;
+}
+
+.suggestion-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.suggestion-item:hover {
+  background: #334155;
+}
+
+/* Feedback Screen */
+.feedback-container {
+  text-align: center;
+  animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.flag-display {
+  font-size: 5rem;
+  margin: 10px 0;
+  filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
+}
+
+.result-icon {
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- START SCREEN -->
+<div class="container" id="screen-home">
+  <h1>🌍 Geheimnisvolle Länder</h1>
+  <p style="color: #cbd5e1; font-size: 0.85rem; margin-bottom: 18px;">Errate das gesuchte Land anhand zufälliger Fakten!</p>
+  
+  <div id="highscore-display" style="background: rgba(255,45,115,0.15); border: 1px solid rgba(255,45,115,0.4); padding: 10px; border-radius: 14px; margin-bottom: 18px; font-size: 0.9rem; color: #ff2d73; font-weight: bold;">
+    🏆 Highscore (Mit Zeitlimit): <span id="val-highscore">0</span> Länder
+  </div>
+
+  <div class="form-group">
+    <label>Themenbereich wählen:</label>
+    <select id="select-theme">
+      <option value="all">🌟 Alle Themen</option>
+      <option value="geography">🏔️ Geografie (leicht)</option>
+      <option value="schwer">🏔️ Geografie (schwer)</option>
+      <option value="funfacts"> ⚽ Sport</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Spielmodus:</label>
+    <select id="select-mode" onchange="toggleTimeInput()">
+      <option value="timed">⏱️ Mit Zeitlimit (2 Minuten & Highscore)</option>
+      <option value="infinite">♾️ Ohne Zeitlimit (Entspannt spielen)</option>
+    </select>
+  </div>
+
+  <div class="form-group" id="group-timelimit">
+    <label>Dauer (Sekunden):</label>
+    <select id="select-duration">
+      <option value="120">2 Minuten (120 Sek)</option>
+      <option value="60">1 Minute (60 Sek)</option>
+      <option value="180">3 Minuten (180 Sek)</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label class="checkbox-label">
+      <input type="checkbox" id="check-hints" checked> 💡 Tipps aktivieren (Per Klick abrufbar)
+    </label>
+  </div>
+
+  <button class="btn btn-pink" onclick="startGame()">Spiel starten</button>
+  <a href="startseite.html" class="btn btn-green" style="margin-top: 12px; display: block;">Zurück zum Hauptmenü</a>
+</div>
+
+
+<!-- SPIEL SCREEN -->
+<div class="container hidden" id="screen-game">
+  <div class="game-header">
+    <span id="game-timer-display">⏱️ 120s</span>
+    <span id="game-score-display">⭐ Punkte: 0</span>
+  </div>
+
+  <h3 style="margin-top: 0; color: #fff; font-size: 1.1rem; margin-bottom: 12px;">Welches Land wird gesucht?</h3>
+  
+  <!-- Die 4 Fakten jeweils als einzelne ovale Pillen -->
+  <div class="facts-container" id="current-facts-container"></div>
+
+  <!-- Hier ploppen die Tipps nacheinander per Klick auf -->
+  <div class="facts-container" id="current-hints-container"></div>
+
+  <!-- Der Button zum Aufploppen des nächsten Tipps -->
+  <button id="btn-get-tip" class="btn btn-green hidden" onclick="revealTip()" style="margin-top: 4px; margin-bottom: 10px; padding: 10px; font-size: 0.9rem;">
+    💡 Tipp anzeigen (<span id="tips-left">4</span> übrig)
+  </button>
+
+  <div class="form-group autocomplete-wrapper" style="margin-bottom: 10px; margin-top: 5px;">
+    <input type="text" id="country-input" placeholder="Land eingeben (z. B. Deu...)" autocomplete="off" oninput="handleAutocomplete()">
+    <div class="suggestions-list" id="suggestions-box"></div>
+  </div>
+
+  <button class="btn btn-pink" onclick="submitAnswer()">Antwort absenden</button>
+  <button class="btn btn-green" onclick="endGame()">Beenden</button>
+</div>
+
+
+<!-- FEEDBACK SCREEN -->
+<div class="container hidden" id="screen-feedback">
+  <div class="feedback-container">
+    <div class="result-icon" id="feedback-icon">✔</div>
+    <div class="flag-display" id="feedback-flag">🇩🇪</div>
+    <h2 id="feedback-country-name" style="margin-bottom: 5px;">Deutschland</h2>
+    <p id="feedback-text" style="color: #cbd5e1; margin-bottom: 20px; font-size: 0.95rem;">Richtig geraten!</p>
+    
+    <button class="btn btn-pink" onclick="nextRound()">Weiter</button>
+  </div>
+</div>
+
+
+<!-- END SCREEN -->
+<div class="container hidden" id="screen-end">
+  <h1>🏁 Spiel beendet!</h1>
+  <div style="text-align: center; margin: 20px 0;">
+    <p style="color: #cbd5e1; font-size: 1rem;">Dein Endergebnis:</p>
+    <div id="final-score-val" style="font-size: 3rem; font-weight: 900; color: #ff2d73;">0</div>
+    <p id="final-score-label" style="color: #cbd5e1; font-size: 0.85rem; margin-top: 5px;">Richtig erratene Länder</p>
+  </div>
+
+  <button class="btn btn-pink" onclick="resetToHome()">Erneut spielen</button>
+  <a href="startseite.html" class="btn btn-green" style="margin-top: 12px; display: block;">Zurück zum Hauptmenü</a>
+</div>
+
+
+<script>
+const countriesDatabase = [
+  {
+    name: "Deutschland", theme: "geography",
+    facts: [
+      "Einwohner: ca. 83 Millionen",
+      "BIP: rund 4,5 Billionen Euro",
+      "Offizielle Währung: Euro (€)",
+      "Gründungsjahr: 1949",
+      "9 Nachbarländer",
+      "über 20.000 Burgen und Schlösser",
+      "Hauptstadt ist Metropole und Regierungssitz zugleich",
+      "Hier wurde die Buchdruckerkunst erfunden",
+      "Längste Flussgrenze: Rhein",
+      "Über 1.500 verschiedene Biersorten",
+      "Höchster Backsteinkirchturm der Welt",
+      "Erfunden wurde hier u.a. das Auto und das Aspirin",
+      "65% der Autobahnen haben kein Tempolimit",
+      "Schmalste Straße der Welt (31cm)"
+    ],
+    clickableTips: [
+      "💡 Im Herzen von Mitteleuropa",
+      "💡 Weltbekannt für das Oktoberfest",
+      "💡 Nationalfarben: Schwarz, Rot, Gold",
+      "💡 Höchster Berg: Zugspitze."
+    ]
+  },
+ {
+    name: "Österreich", theme: "geography",
+    facts: [
+      "Einwohner: ca. 9 Millionen",
+      "BIP: rund 470 Milliarden Euro",
+      "Offizielle Währung: Euro (€)",
+      "EU-Beitritt: 1995",
+      "8 Nachbarländer",
+      "Hauptstadt an der Donau gelegen",
+      "Über 60% der Landesfläche von Alpen bedeckt",
+      "Heimatstadt von Wolfgang Amadeus Mozart",
+      "Erfindung der Energydrinks Red Bull",
+      "Höchster Berg: Großglockner",
+      "Erfolgreichste Ski-Nation",
+      "Ältestes Restaurant Europas",
+      "Ältester Zoo der Welt (1752)",
+      "Größtes Eishöhlensystem der Erde"
+    ],
+    clickableTips: [
+      "💡 Liegt im südlichen Mitteleuropa",
+      "💡 Die Hauptstadt ist Wien",
+      "💡 Amtssprache ist Deutsch",
+      "💡 Bekannt für Sachertorte und Wiener Schnitzel"
+    ]
+  },
+  {
+    name: "Schweiz", theme: "geography",
+    facts: [
+      "Einwohner: ca. 8,9 Millionen",
+      "BIP: rund 850 Milliarden Franken",
+      "Offizielle Währung: ... Franken (CHF)",
+      "Gründungsjahr: 1291 (Eidgenossenschaft)",
+      "5 Nachbarländer",
+      "Kein Mitglied der Europäischen Union",
+      "Vier offizielle Landessprachen",
+      "Weltweit bekannt für Schokolade und Uhren",
+      "Zentrum internationaler Organisationen",
+      "Höchster Berg: Dufourspitze",
+      "Längster Eisenbahntunnel der Erde",
+      "Hohe politische Neutralität",
+      "Geringe Arbeitslosenquote und hohe Lebensqualität",
+      "Höchste Dichte an öffnetlichen Verkehr"
+    ],
+    clickableTips: [
+      "💡 Bekannt für direkte Demokratie",
+      "💡 Die Bundeshauptstadt ist Bern",
+      "💡 Liegt mitten im europäischen Hochgebirge",
+      "💡 Berühmt für Bankgeheimnis und Bankenwesen"
+    ]
+  },
+  {
+    name: "Spanien", theme: "geography",
+    facts: [
+      "Einwohner: ca. 48 Millionen",
+      "BIP: rund 1,4 Billionen Euro",
+      "Offizielle Währung: Euro (€)",
+      "Konstitutionelle Monarchie",
+      "5 Nachbarländer (inkl. Gibraltar)",
+      "Zweitmeistbesuchtes Land der Welt",
+      "Zweitgebirgigstes Land Europas",
+      "Weltweit führend bei Olivenöl-Produktion",
+      "Heimat von weltberühmten Künstlern wie Picasso und Dalí",
+      "Beliebte Küsten wie Costa Brava und Costa del Sol",
+      "Traditioneller Stierkampf und Flamenco",
+      "Hauptstadt mit königlichem Palast",
+      "Mehrere Millionen Touristen jährlich",
+      "Siesta-Kultur am Nachmittag"
+    ],
+    clickableTips: [
+      "💡 Liegt auf der Iberischen Halbinsel",
+      "💡 Die Hauptstadt ist Madrid",
+      "💡 Berühmt für Tapas und Paella",
+      "💡 Die Sagrada Família steht in Barcelona"
+    ]
+  },
+  {
+    name: "Italien", theme: "geography",
+    facts: [
+      "Einwohner: ca. 59 Millionen",
+      "BIP: rund 2,1 Billionen Euro",
+      "Offizielle Währung: Euro (€)",
+      "Geografische Form eines Stiefels",
+      "6 Nachbarländer",
+      "Meisten UNESCO-Welterbestätten",
+      "Die meisten UNESCO-Weltkulturerbestätten weltweit",
+      "Aktive Vulkane wie Ätna, Vesuv und Stromboli",
+      "Beliebteste Küche der Welt",
+      "Heimat von Pizza, Pasta und Espresso",
+      "Größte freitragende gemauerte Kuppel",
+      "Größter Weinproduzent Europas",
+      "Historisches Zentrum im antiken Rom",
+      "Mittelmeerinseln Sizilien und Sardinien"
+    ],
+    clickableTips: [
+      "💡 Liegt im Süden Europas",
+      "💡 Die Hauptstadt ist Rom",
+      "💡 Umringt von Mittelmeer und Alpen",
+      "💡 Die Lagunenstadt Venedig mit Kanälen",
+    ]
+  },
+  {
+    name: "Frankreich", theme: "geography",
+    facts: [
+      "Einwohner: ca. 68 Millionen",
+      "BIP: rund 2,8 Billionen Euro",
+      "Offizielle Währung: Euro (€)",
+      "Form eines Sechsecks",
+      "8 Nachbarländer in Europa",
+      "Meistbesuchtes Land der Welt",
+      "Höchster Berg der Alpen: Mont Blanc",
+      "Meistbesuchtes kostenpflichtiges Wahrzeichen",
+      "Höchste Zugbrücke der Welt",
+      "Historische Schlösser im Loire-Tal",
+      "Jährliches weltbekanntes Radrennen",
+      "Meisten Zeitzonen der Welt",
+      "Übersee-Gebiete in Karibik und Pazifik",
+      "Revolution von 1789 als historischer Meilenstein"
+    ],
+    clickableTips: [
+      "💡 Bekannt als die Grande Nation",
+      "💡 Die Hauptstadt ist Paris",
+      "💡 Das Wahrzeichen ist ein eiserner Turm",
+      "💡 Offizielle Sprache ist Französisch"
+    ]
+  },
+  {
+    name: "Vereinigtes Königreich", theme: "geography",
+    facts: [
+      "Einwohner: ca. 67 Millionen",
+      "BIP: rund 3,1 Billionen Pfund-Äquivalent",
+      "Offizielle Währung: ... Pfund (£)",
+      "Besteht aus vier Landesteilen",
+      "Inselstaat im Nordwesten Europas",
+      "Konstitutionelle Monarchie mit König",
+      "Historisches Empire mit weltweitem Einfluss",
+      "Geburtsort der Industriellen Revolution",
+      "Weltbekannte Universitäten wie Oxford und Cambridge",
+      "Linksverkehr auf allen Straßen",
+      "Erfolgreichste Band aller Zeiten",
+      "Nullmeridian in Greenwich",
+      "Typischer Teegenuss am Nachmittag",
+      "Erfolgreichste Buchreihe der Geschichte",
+      "Ursprungsland des Fußballs"
+    ],
+    clickableTips: [
+      "💡 Besteht aus England, Schottland, Wales und Nordirland",
+      "💡 Typischer Teegenuss am Nachmittag",
+      "💡 Hat die EU mit dem Brexit verlassen",
+      "💡 Die Monarchin/der Monarch regiert als Staatsoberhaupt"
+    ]
+  },
+  {
+    name: "USA", theme: "geography",
+    facts: [
+      "Einwohner: ca. 335 Millionen",
+      "BIP: über 27 Billionen $",
+      "Offizielle Währung: ...-Dollar ($)",
+      "Föderation aus 50 Bundesstaaten",
+      "Drittgrößtes Land der Erde nach Fläche",
+      "Wirtschafts- und Finanzmacht Nummer eins",
+      "Silicon Valley als Zentrum der Tech-Industrie",
+      "Hollywood als Welthauptstadt des Films",
+      "Nationale Wahrzeichen wie Freiheitsstatue und Grand Canyon",
+      "Entdeckung und Besiedlung durch europäische Pioniere",
+      "Größte Filmindustrie der Welt",
+      "Kultureller Schmelztiegel der Einwanderer",
+      "Sportligen wie NBA, NFL und MLB",
+      "Vielfältige Klimazonen von Alaska bis Hawaii"
+    ],
+    clickableTips: [
+      "💡 Liegt in Nordamerika",
+      "💡 Die Hauptstadt ist Washington, D.C.",
+      "💡 Die Flagge hat Sterne und Streifen",
+      "💡 Wirtschaftliche Supermacht"
+    ]
+  },
+  {
+    name: "Kanada", theme: "geography",
+    facts: [
+      "Einwohner: ca. 40 Millionen",
+      "BIP: rund 2,1 Billionen US-Dollar",
+      "Offizielle Währung: ... Dollar",
+      "Flächenmäßig zweitgrößtes Land der Welt",
+      "Längste Küstenlinie der Erde",
+      "Zwei offizielle Amtssprachen: Englisch und Französisch",
+      "Meisten Seen der Welt",
+      "Größter Parkplatz der Welt",
+      "Nationalsportart ist Eishockey",
+      "Reich an unberührter Natur, Wäldern und Tieren",
+      "Weltbekannte Niagarafälle an der US-Grenze",
+      "Extrem kalte Winter in vielen Regionen",
+      "Gilt als eines der sichersten Länder",
+      "Höchster Anteil an Hochschulabsolventen"
+    ],
+    clickableTips: [
+      "💡 Liegt nördlich der USA",
+      "💡 Bekannt für Ahornsirup",
+      "💡 Eishockey ist Nationalsport",
+      "💡 Rotes Ahornblatt in der Flagge"
+    ]
+  },
+  {
+    name: "Brasilien", theme: "geography",
+    facts: [
+      "Einwohner: ca. 215 Millionen",
+      "BIP: rund 2,1 Billionen US-Dollar",
+      "Offizielle Währung: Real (BRL)",
+      "Größtes Land in Südamerika",
+      "Einzige portugiesischsprachige Nation in Amerika",
+      "Beherbergt den Großteil des Amazonas-Regenwaldes",
+      "Weltgrößter Produzent von Kaffee",
+      "Weltberühmter Karneval",
+      "Historischer Rekordweltmeister im Fußball",
+      "Gigantische Christusstatue als Wahrzeichen",
+      "Moderne Planstadt als Hauptstadt",
+      "Artenreichste Fauna und Flora weltweit",
+      "Traumhafte Strände",
+      "Tropisches und subtropisches Klima"
+    ],
+    clickableTips: [
+      "💡 Liegt auf dem südamerikanischen Kontinent",
+      "💡 Amtssprache ist Portugiesisch",
+      "💡 Heimat des Samba und des Fußballs",
+      "💡 Der Amazonas-Fluss fließt hier"
+    ]
+  },
+  {
+    name: "Japan", theme: "geography",
+    facts: [
+      "Einwohner: ca. 125 Millionen",
+      "BIP: rund 4,2 Billionen US-Dollar",
+      "Offizielle Währung: Yen (¥)",
+      "Inselstaat mit über 6.800 Inseln",
+      "Extrem hohe Lebenserwartung der Bevölkerung",
+      "Weltweit führend in Robotertechnik und High-Tech",
+      "Heimat von Anime, Manga und Videospielen",
+      "Heiliger Vulkan Berg Fuji als Nationalsymbol",
+      "Pünktlichster Zugverkehr der Welt",
+      "Traditionelle Teezeremonien und Kimonos",
+      "Erdbebenreiche Region durch tektonische Plattengrenzen",
+      "Kirschblütenfeste im Frühling",
+      "Größte Stadt der Welt",
+      "Kaiserreich unter einem symbolischen Tennō"
+    ],
+    clickableTips: [
+      "💡 Das Land der aufgehenden Sonne",
+      "💡 Die Hauptstadt ist Tokio",
+      "💡 Berühmt für Sushi und Tempel",
+      "💡 Roter Kreis auf weißem Grund in der Flagge"
+    ]
+  },
+  {
+    name: "Australien", theme: "geography",
+    facts: [
+      "Einwohner: ca. 26 Millionen",
+      "BIP: rund 1,7 Billionen US-Dollar",
+      "Offizielle Währung: ... Dollar (AUD)",
+      "Größtes Korallenriff der Erde",
+      "Größte Sandinsel der Welt",
+      "Höchste Konzentration an Gifttieren",
+      "Längste Küstenlinie der Erde",
+      "Trockenes und weites Landesinnere",
+      "Weltbekanntes Opernhaus",
+      "Ehemals britische Kolonie und Strafgefangeneninsel",
+      "Liegt auf der südlichen Hemisphäre",
+      "Trockenster besiedelter Kontinent",
+      "Heiliger roter Monolith Uluru im Zentrum",
+      "Starke Surfkultur"
+    ],
+    clickableTips: [
+      "💡 Bekannt als 'Down Under'",
+      "💡 Jahreszeiten spiegelverkehrt zu Europa",
+      "💡 Kängurus sind hier heimisch",
+      "💡 Das Opernhaus in Sydney ist das Wahrzeichen"
+    ]
+  },
+  {
+    name: "China", theme: "geography",
+    facts: [
+      "Einwohner: ca. 1,4 Milliarden",
+      "BIP: über 17 Billionen US-Dollar",
+      "Offizielle Währung: Renminbi / Yuan (CNY)",
+      "Größtes Hochgeschwindigkeits-Schienennetz",
+      "Regierung durch die Kommunistische Partei",
+      "Historische Großmacht mit jahrtausendealter Kultur",
+      "Größte Exportnation der Erde",
+      "Weltfabrik und zweitgrößte Volkswirtschaft",
+      "Schnellstes Wirtschaftswachstum der letzten Jahrzehnte",
+      "Heimat des Großen Pandas",
+      "Erfindungen wie Papier, Kompass und Schießpulver",
+      "Längster Bauwerk der Menscheit",
+      "Verwendung von Zeichen statt Alphabet",
+      "Gigantische Staudämme"
+    ],
+    clickableTips: [
+      "💡 Liegt in Ostasien",
+      "💡 Die Hauptstadt ist Peking",
+      "💡 Besitzt die Chinesische Mauer",
+      "💡 Rote Flagge mit gelben Sternen"
+    ]
+  },
+  {
+    name: "Indien", theme: "geography",
+    facts: [
+      "Einwohner: ca. 1,43 Milliarden",
+      "BIP: rund 3,7 Billionen US-Dollar",
+      "Offizielle Währung: ... Rupie",
+      "Größte Demokratie der Welt",
+      "Der einzige schwimmende Nationalpark",
+      "Höchste Eisenbahnbrücke der Welt",
+      "Bollywood als riesige Filmindustrie",
+      "Vielfältige Sprachen mit über 20 offiziellen Amtssprachen",
+      "Imposantes Himalayagebirge im Norden",
+      "Farbenfrohes Holi-Fest und Diwali",
+      "Wichtiges Zentrum für IT und Software",
+      "Wirtschaftlicher Aufstieg zur globalen Macht",
+      "Tropisches Klima mit ausgeprägtem Monsun",
+      "Größte Massenversammlungen"
+    ],
+    clickableTips: [
+      "💡 Liegt in Südasien auf einem Subkontinent",
+      "💡 Die Hauptstadt ist Neu-Delhi",
+      "💡 Das Taj Mahal steht in Agra",
+      "💡 Bekannt für eine bunte Kultur und Gewürze"
+    ]
+  },
+  {
+    name: "Mexiko", theme: "geography",
+    facts: [
+      "Einwohner: ca. 128 Millionen",
+      "BIP: rund 1,4 Billionen US-Dollar",
+      "Offizielle Währung: ... Peso",
+      "Größtes spanischsprachiges Land der Welt",
+      "Hauptstadt auf einem See erbaut",
+      "Artenreichstes Reptillien- und Kakteenland",
+      "Ursprungsland von Schokolade, Mais und Chilis",
+      "Weltweite Heimat des Tequila",
+      "Farbenfroher Tag der Toten",
+      "UNESCO-Weltkulturerbe für die Landesküche",
+      "Traumhafte Urlaubsstrände an Pazifik und Karibik",
+      "Größte Pyramide der welt nach Volumen",
+      "Musikalische Tradition der Mariachi-Bands",
+      "Direkter Nachbar der USA"
+    ],
+    clickableTips: [
+      "💡 Liegt in Nordamerika",
+      "💡 Die Hauptstadt heißt wie das Land",
+      "💡 Heimat von Tacos und Tequila",
+      "💡 Berühmt für Maya-Pyramiden"
+    ]
+  },
+  {
+    name: "Südafrika", theme: "geography",
+    facts: [
+      "Einwohner: ca. 60 Millionen",
+      "BIP: rund 400 Milliarden US-Dollar",
+      "Offizielle Währung: ... Rand",
+      "Meisten Rugby-Union-Weltmeistertitel",
+      "Drei offizielle Hauptstädte",
+      "Elf offizielle Amtssprachen",
+      "Nelson Mandela als historische Führungspersönlichkeit",
+      "Ende der Apartheid in den 1990er Jahren",
+      "Größter Ultramarathon der Erde",
+      "Ausrichter der Fußball-Weltmeisterschaft 2010",
+      "Reich an Gold und Diamanten",
+      "Tafelberg als Wahrzeichen",
+      "Treffpunkt von Atlantischem und Indischem Ozean",
+      "Wirtschaftliche Lokomotive des Kontinents"
+    ],
+    clickableTips: [
+      "💡 Liegt am südlichsten Zipfel Afrikas",
+      "💡 Hat gleich drei Hauptstädte",
+      "💡 Berühmt für Safaris und die Big Five",
+      "💡 Bekannt als Regenbogen-Nation"
+    ]
+  },
+  {
+    name: "Argentinien", theme: "geography",
+    facts: [
+      "Einwohner: ca. 46 Millionen",
+      "BIP: rund 640 Milliarden US-Dollar",
+      "Offizielle Währung: ... Peso",
+      "Zweitgrößtes Land in Südamerika",
+      "Anden-Gebirge",
+      "Weltberühmte Tangotanz-Kultur",
+      "Rekordtorschütze einer Fußballweltmeisterschaft",
+      "Ausgedehnte Graslandschaften mit Rinderzucht",
+      "Spektakuläre Iguazú-Wasserfälle im Norden",
+      "Höchster Vulkan der Erde",
+      "``Paris Südamerikas``",
+      "Traditioneller Matetee-Konsum",
+      "Spanisch als Amtssprache",
+      "Höchster Rindfleischkosnum pro Kopf"
+    ],
+    clickableTips: [
+      "💡 Liegt im Süden Südamerikas",
+      "💡 Die Hauptstadt ist Buenos Aires",
+      "💡 Heimat des Tangos",
+      "💡 Die Anden trennen das Land von Chile"
+    ]
+  },
+  {
+    name: "Ägypten", theme: "geography",
+    facts: [
+      "Einwohner: ca. 110 Millionen",
+      "BIP: rund 400 Milliarden US-Dollar",
+      "Offizielle Währung: ... Pfund",
+      "Verbindet Nordafrika mit dem Nahen Osten",
+      "Ältester zentarler Staat der Erde",
+      "Größter Temeplkomplex der Antike",
+      "Weltberühmte Pyramiden",
+      "Längste Tafel der Welt",
+      "Wichigste künstliche Wasserstraße",
+      "Beliebte Tauchgebiete am Roten Meer",
+      "Heißes Wüstenklima mit geringem Niederschlag",
+      "Amtssprache ist Arabisch",
+      "Täler der Könige und antike Tempelanlagen",
+      "Schnittpunkt von Mittelmeer und Rotem Meer"
+    ],
+    clickableTips: [
+      "💡 Liegt in Nordostafrika",
+      "💡 Die Hauptstadt ist Kairo",
+      "💡 Heimat der Pyramiden und Pharaonen",
+      "💡 Der Fluss Nil prägt das Land"
+    ]
+  },
+  {
+    name: "Griechenland", theme: "geography",
+    facts: [
+      "Einwohner: ca. 10,4 Millionen",
+      "BIP: rund 220 Milliarden Euro",
+      "Offizielle Währung: Euro (€)",
+      "Wiege der europäischen Demokratie und Philosophie",
+      "Tausende Inseln",
+      "Bestes Reiseland der Welt",
+      "Sehr lange Küstenlinie mit traumhaften Stränden",
+      "Historische Stätten der Antike",
+      "Mittelmeer-Klima mit viel Sonnenschein",
+      "Traditionelle Küche mit Olivenöl und Feta",
+      "Ursprungsort der Olympischen Spiele",
+      "Gebirgiges Festland (ca. 80% des Landes)",
+      "Schifffahrt als wichtiger Wirtschaftszweig",
+      "Reiche Mythologie mit Göttern des Olymps"
+    ],
+    clickableTips: [
+      "💡 Liegt im Südosten Europas",
+      "💡 Die Hauptstadt ist Athen",
+      "💡 Bekannt für die Akropolis",
+      "💡 Umgeben von zahlreichen Inseln"
+    ]
+  },
+{
+    name: "Kroatien", theme: "schwer",
+    facts: [
+      "Küstengebiete an der Adria von über tausend Inseln gesäumt",
+      "Einzigartige dinarische Karstlandschaft mit unterirdischen Flüssen",
+      "Hauptstadt besitzt historische Oberstadt mit mittelalterlichen Türmen",
+      "Spektakuläre Nationalparks mit kaskadenartigen Seen (Plitvice)",
+      "Historische Küstenstädte mit venezianischer Architektur",
+      "Zusammenfluss von mitteleuropäischem und mediterranem Klima",
+      "Heimat der weltberühmten Hunderasse mit charakteristischen Flecken",
+      "Krawatte als modisches Accessoire hat hier ihren Ursprung",
+      "Wichtige Filmkulisse für weltbekannte Fantasy-Serien",
+      "Küche verbindet slawische Gerichte mit mediterraner Meeresküche",
+      "Lange, schmale Landesform biegt sich wie ein Halbmond",
+      "Wirtschaft stark durch florierenden Mittelmeertourismus geprägt",
+      "Unberührte Kiesstrände und kristallklares Wasser",
+      "Ehemaliger Teil eines größeren südslawischen Bundesstaates"
+    ],
+    clickableTips: [
+      "💡 Staat an der Adria in Südosteuropa",
+      "💡 Die Hauptstadt ist Zagreb",
+      "💡 Bekannt für die Plitvicer Seen",
+      "💡 Historische Küstenstadt Dubrovnik"
+    ]
+  },
+  {
+    name: "Ungarn", theme: "schwer",
+    facts: [
+      "Uralte finno-ugrische Sprache ohne Verwandtschaft zu Nachbarn",
+      "Hauptstadt besteht aus zwei früher getrennten Flusseiten",
+      "Reich an natürlichen Thermal- und Heilquellen",
+      "Flaches pannonisches Becken prägt den Hauptteil",
+      "Weltberühmte Weinregion Tokaj produziert edle Süßweine",
+      "Donau teilt das Staatsgebiet exakt von Norden nach Süden",
+      "Traditionelle Reitervölker-Vergangenheit prägt das Bewusstsein",
+      "Paprika als unangefochtenes Nationalgewürz im Gulasch",
+      "See Balaton gilt als das ungarische Meer im Sommer",
+      "Prachtvolles neugotisches Parlamentsgebäude an der Donau",
+      "Keine Meeresküste, aber ein riesiges Binnen-Wassernetz",
+      "Reich an historischen Schlösser- und Festungsanlagen",
+      "Wichtiger Standort für klassische Komponisten",
+      "Kontinentales Klima mit heißen Sommern"
+    ],
+    clickableTips: [
+      "💡 Binnenstaat in Mitteleuropa",
+      "💡 Die Hauptstadt ist Budapest",
+      "💡 Bekannt für Thermalbäder und Paprika",
+      "💡 Der Fluss Donau fließt mitten durch"
+    ]
+  },
+  {
+    name: "Rumänien", theme: "schwer",
+    facts: [
+      "Geografisch geschützt durch den Bogen der Karpaten",
+      "Romanische Sprache inmitten slawischer Nachbarn",
+      "Heimat der historischen Region Transsilvanien mit Burgen",
+      "Hauptstadt besaß das zweitgrößte administrative Gebäude der Welt",
+      "Donaudelta bildet eines der besterhaltenen Feuchtgebiete Europas",
+      "Schwarzes Meer bildet die gesamte östliche Küstengrenze",
+      "Reich an unterirdischen Salzminen und Bodenschätzen",
+      "Dichte Urwälder bieten Schutz für viele Braunbären",
+      "Historische Holzkirchen und befestigte Weichkirchen",
+      "Römische Ursprünge spiegeln sich in der Sprache wider",
+      "Kontinentales Klima mit kalten, schneereichen Wintern",
+      "Wirtschaftlicher Aufschwung durch IT und Automobilbau",
+      "Schwarze Erde in der Walachei gilt als extrem fruchtbar",
+      "Traditionelle Folklore überlebt in abgelegenen Bergdörfern"
+    ],
+    clickableTips: [
+      "💡 Osteuropäischer Staat am Schwarzen Meer",
+      "💡 Die Hauptstadt ist Bukarest",
+      "💡 Heimat der Region Transsilvanien",
+      "💡 Umgeben von den Karpaten"
+    ]
+  },
+  {
+    name: "Marokko", theme: "schwer",
+    facts: [
+      "Verbindet Afrika über eine schmale Meerenge mit Europa",
+      "Majestätisches Atlasgebirge zieht sich quer durchs Land",
+      "Historische Königsstädte mit labyrinthartigen Altstädten",
+      "Atlantikküste und Mittelmeer bilden zwei Meeresgrenzen",
+      "Sahara-Wüste prägt den trockenen und kargen Süden",
+      "Weltberühmte traditionelle Lederverarbeitung",
+      "Hauptstadt ist nicht die berühmte Touristenmetropole",
+      "Küche nutzt kegelförmige Tonschüsseln (Tajine)",
+      "Mix aus arabischer, berberischer und europäischer Kultur",
+      "Atlantische Wellen ziehen weltweite Surfer an",
+      "Hohe Sanddünen und steile Schluchten im Süden",
+      "Konstitutionelle Monarchie mit alter Herrschertradition",
+      "Wichtiger Handelspfeiler zwischen Afrika und Mittelmeer",
+      "Fruchtbare Nordebenen produzieren Zitrusfrüchte"
+    ],
+    clickableTips: [
+      "💡 Nordafrikanischer Staat am Atlantik",
+      "💡 Die Hauptstadt ist Rabat",
+      "💡 Berühmt für Marrakesch und das Atlasgebirge",
+      "💡 Nahe an der Straße von Gibraltar"
+    ]
+  },
+  {
+    name: "Kenia", theme: "schwer",
+    facts: [
+      "Äquator verläuft exakt quer durch das Zentrum",
+      "Weltbekannte Savannenlandschaften mit Tier-Migrationen",
+      "Ostafrikanischer Grabenbruch zerschneidet das Hochland",
+      "Höchster Berg ist der zweithöchste des Kontinents",
+      "Hauptstadt ist eine pulsierende moderne Metropole",
+      "Indische Ozeanküste bietet Korallenriffe",
+      "Heimat von weltbesten Langstreckenläufern",
+      "Große Binnenseen beherbergen rosafarbene Flamingos",
+      "Swahili als Handelssprache hat hier ihren Ursprung",
+      "Wirtschaftliches Drehkreuz für Ostafrika",
+      "Traditionelle Hirtenvölker wie die Massai",
+      "Großflächige Tee- und Kaffeeplantagen",
+      "Angrenzend an den zweitgrößten Süßwassersee der Erde",
+      "Tropisches Klima mit ausgeprägten Regenzeiten"
+    ],
+    clickableTips: [
+      "💡 Ostafrikanischer Staat am Äquator",
+      "💡 Die Hauptstadt ist Nairobi",
+      "💡 Weltberühmt für Safaris und die Masai Mara",
+      "💡 Heimat der besten Läufer der Welt"
+    ]
+  },
+  {
+    name: "Peru", theme: "schwer",
+    facts: [
+      "Geografisch dreigeteilt in Wüste, Anden und Dschungel",
+      "Heimat des Inka-Reiches mit Ruinen in den Wolken",
+      "Tiefster Canyon der Erde (Colca-Schlucht)",
+      "Höchstgelegener schiffbarer Großsee an der Grenze",
+      "Hauptstadt liegt trocken und neblig an der Küste",
+      "Mystische Nazca-Linien als gigantische Scharrbilder",
+      "Anden erheben sich in schwindelerregende Höhen",
+      "Kalter Humboldt-Strom sorgt für fischreiche Gründe",
+      "Kartoffeln haben hier ihren historischen Ursprung",
+      "Traditionelle Anden-Musik mit Panflöten",
+      "Amazonas-Fluss hat hier entlegenste Quellgebiete",
+      "Spanische Kolonialarchitektur trifft auf Inka-Mauern",
+      "Meerschweinchen gelten als traditionelle Delikatesse",
+      "Klimatische Extreme auf engstem Raum"
+    ],
+    clickableTips: [
+      "💡 Staat an der Westküste Südamerikas",
+      "💡 Die Hauptstadt ist Lima",
+      "💡 Heimat von Machu Picchu und den Anden",
+      "💡 Ursprungsland der Inka"
+    ]
+  },
+  {
+    name: "Kolumbien", theme: "schwer",
+    facts: [
+      "Küstenlinien an Atlantik und Pazifik",
+      "Anden fächern sich in drei gewaltige Kordilleren auf",
+      "Äquatornahe Lage mit ganzjährig tropischem Klima",
+      "Weltweit führend im Anbau von Arabica-Kaffee",
+      "Hauptstadt liegt auf hochgelegenem Anden-Plateau",
+      "Heimat des legendären El-Dorado-Mythos",
+      "Artenreichste Vogelwelt und Amphibien-Vielfalt",
+      "Karibische Traumstrände treffen auf Kolonialstädte",
+      "Magische Realismus-Literatur hat hier ihre Wurzeln",
+      "Unberührter Regenwald bedeckt die Südhälfte",
+      "Erdöl, Kohle und edle Smaragde als Bodenschätze",
+      "Traditionelle Musik wie Cumbia und Vallenato",
+      "Keine nennenswerten Temperaturunterschiede im Jahr",
+      "Innovative urbane Seilbahn-Verkehrssysteme"
+    ],
+    clickableTips: [
+      "💡 Staat im Nordwesten Südamerikas",
+      "💡 Die Hauptstadt ist Bogotá",
+      "💡 Berühmt für Kaffee und Smaragde",
+      "💡 Küsten an Karibik und Pazifik"
+    ]
+  },
+  {
+    name: "Philippinen", theme: "schwer",
+    facts: [
+      "Inselarchipel aus über 7.000 tropischen Eilanden",
+      "Liegt im pazifischen Feuergürtel mit Vulkanen",
+      "Einzige überwiegend katholische Nation in Südostasien",
+      "Hauptstadt bildet eine der dichtesten Metropolen",
+      "Spektakuläre, reiskultivierte Berghänge im Norden",
+      "Tiefster Ozean-Graben verläuft vor der Küste",
+      "Hunderte lokale indigene Dialekte neben Amtssprachen",
+      "Weltberühmte unterirdische Flusssysteme auf Palawan",
+      "Jeepneys als umgebaute US-Militärjeeps als Busse",
+      "Tropische Biodiversität mit winzigen Primaten",
+      "Wichtiger Exporteur von Seefahrern",
+      "Spanische und US-Kultureinflüsse prägen das Land",
+      "Weiße Sandstrände und weltklasse Tauchgebiete",
+      "Zahlreiche tropische Wirbelstürme jährlich"
+    ],
+    clickableTips: [
+      "💡 Inselstaat in Südostasien",
+      "💡 Die Hauptstadt ist Manila",
+      "💡 Archipel aus über 7.000 Inseln",
+      "💡 Bekannt für Strände und Jeepneys"
+    ]
+  },
+  {
+    name: "Malaysia", theme: "schwer",
+    facts: [
+      "Geteilt durch das Südchinesische Meer in zwei Teile",
+      "Hauptstadt von weltberühmten Zwillings-Türmen dominiert",
+      "Uralte, unberührte Regenwälder von globalem Rang",
+      "Multikulturelle Gesellschaft (malaiisch, chinesisch, indisch)",
+      "Höchster Berg Südostasiens auf der Insel Borneo",
+      "Wirtschaftliche Supermacht für Palmöl",
+      "Moderne Wolkenkratzer neben traditionellen Stelzendörfern",
+      "Äquatornahes, feuchtes Tropenklima",
+      "Föderale Wahlmonarchie mit wechselnden Sultanen",
+      "Artenreiche Tierwelt mit Orang-Utans",
+      "Strategische Straße von Malakka als Welthandelsroute",
+      "Inselwelten mit weltberühmten Tauchparadiesen",
+      "Staatlich geförderte Technologie-Zentren",
+      "Kulinarische Vielfalt gilt als herausragend"
+    ],
+    clickableTips: [
+      "💡 Staat in Südostasien",
+      "💡 Die Hauptstadt ist Kuala Lumpur",
+      "💡 Geteilt in zwei Landesteile",
+      "💡 Berühmt für die Petronas Towers"
+    ]
+  },
+  {
+    name: "Pakistan", theme: "schwer",
+    facts: [
+      "Beherbergt weltgrößte Ansammlung von Achttausendern",
+      "Geografischer Knotenpunkt zwischen Süd- und Zentralasien",
+      "Historisches Indus-Tal als Wiege alter Zivilisationen",
+      "Hauptstadt als moderne Planstadt im Norden erbaut",
+      "Islamische Republik mit atomarer Bewaffnung",
+      "Karakorum-Gebirge mit extrem hoher Passstraße",
+      "Fruchtbare Flussebenen des Indus",
+      "Bunte Lastkraftwagen (Truck Art) als Kulturphänomen",
+      "Monsunklima bringt heftige Regenfälle",
+      "Kulturelle Vielfalt durch historische Bergstämme",
+      "Wichtiger Abschnitt der alten Seidenstraße",
+      "Arabisches Meer bildet die südliche Küste",
+      "Cricket als unangefochtene nationale Leidenschaft",
+      "Stark ausgeprägte Textilindustrie"
+    ],
+    clickableTips: [
+      "💡 Staat in Südasien",
+      "💡 Die Hauptstadt ist Islamabad",
+      "💡 Heimat des K2 im Karakorum",
+      "💡 Historisches Indus-Tal"
+    ]
+  },
+  {
+    name: "Indonesien", theme: "schwer",
+    facts: [
+      "Größter Inselstaat der Erde mit über 17.000 Inseln",
+      "Größte muslimische Bevölkerung weltweit",
+      "Pazifischer Feuergürtel sorgt für viele Vulkane",
+      "Hauptstadt zieht wegen Absenkung in neue Planstadt um",
+      "Heimat der Warane auf abgelegener Vulkaninsel",
+      "Äquator verläuft mitten durch den Archipel",
+      "Dschungel beherbergt bedrohte Orang-Utans",
+      "Insel Bali als hinduistisches Kulturzentrum",
+      "Gewürzinseln lockten einst Seefahrer an",
+      "Komplexe Sprachenvielfalt mit hunderten Dialekten",
+      "Tropischer Regenwald von globaler Bedeutung",
+      "Spektakuläre Reisterrassen im Hochland",
+      "Wichtiger Exporteur von Rohstoffen",
+      "Zentrales Scharnier zwischen Ozeanen"
+    ],
+    clickableTips: [
+      "💡 Größter Inselstaat der Welt",
+      "💡 Die Hauptstadt zieht nach Nusantara um",
+      "💡 Berühmt für Bali und Vulkane",
+      "💡 Liegt in Südostasien"
+    ]
+  },
+  {
+    name: "Saudi-Arabien", theme: "schwer",
+    facts: [
+      "Nimmt den Großteil der arabischen Halbinsel ein",
+      "Größte nachgewiesene Erdölreserven weltweit",
+      "Zwei heiligste Stätten des Islam im Staatsgebiet",
+      "Vollständige Abwesenheit permanenter Flüsse",
+      "Hauptstadt liegt auf zentralem Wüstenplateau",
+      "Geplant ist eine gigantische lineare Zukunftsstadt",
+      "Rotes Meer bietet spektakuläre Korallenriffe",
+      "Strenge islamische Rechtsgelehrsamkeit",
+      "Massive Transformation zur Reduzierung der Öl-Abhängigkeit",
+      "Sandwüsten wie Rub al-Chali erstrecken sich unendlich",
+      "Historische Oasen als Karawanenstationen",
+      "Sehr heiße, trockene Klimabedingungen",
+      "Absolute Monarchie unter Königshaus",
+      "Großflächige Entsalzungsanlagen sichern Wasser"
+    ],
+    clickableTips: [
+      "💡 Wüstenstaat auf der arabischen Halbinsel",
+      "💡 Die Hauptstadt ist Riad",
+      "💡 Heimat von Mekka und Medina",
+      "💡 Globaler Erdöl-Riese"
+    ]
+  },
+  {
+    name: "Iran", theme: "schwer",
+    facts: [
+      "Historisches Kernland des antiken Persischen Reiches",
+      "Umschlossen von Gebirgen und Wüstenbecken",
+      "Hauptstadt am Fuße des Elburs-Gebirges",
+      "Führend in der Produktion von Safran und Teppichen",
+      "Theologisches Regierungssystem der Islamischen Republik",
+      "Riesige Vorkommen an Erdgas und Erdöl",
+      "Prachtvolle Moscheen mit blauen Mosaiken in Isfahan",
+      "Extremes Kontinentalklima mit heißen Sommern",
+      "Keine diplomatischen Beziehungen zu westlichen Mächten",
+      "Reiche literarische Tradition aus Jahrtausenden",
+      "Kaspisches Meer als natürliche Nordgrenze",
+      "Strategische Lage an der Straße von Hormus",
+      "Antike unterirdische Bewässerungssysteme (Qanats)",
+      "Bergketten trennen das innere Plateau ab"
+    ],
+    clickableTips: [
+      "💡 Vorderasiatischer Staat (historisches Persien)",
+      "💡 Die Hauptstadt ist Teheran",
+      "💡 Berühmt für Teppiche, Safran und Moscheen",
+      "💡 Gelegen zwischen Kaspischem Meer und Persischem Golf"
+    ]
+  },
+  {
+    name: "Nigeria", theme: "schwer",
+    facts: [
+      "Bevölkerungsreichster Staat auf dem afrikanischen Kontinent",
+      "Wichtigste wirtschaftliche Lokomotive Westafrikas",
+      "Hauptstadt im Landesinneren ersetzte Küstenmetropole",
+      "Niger-Fluss bildet ein bedeutendes Delta",
+      "Hunderte verschiedene ethnische Gruppen prallen aufeinander",
+      "Heimat einer der größten Filmindustrien ('Nollywood')",
+      "Tropisches Klima mit ausgeprägten Regenzeiten",
+      "Atlantische Küste mit sumpfigen Mangroven",
+      "Mix aus traditionellen Königreichen und Metropolen",
+      "Starkes Nord-Süd-Gefälle in Kultur und Religion",
+      "Landwirtschaft produziert Kakao und Palmöl",
+      "Rasant wachsendes Wirtschafts- und Finanzzentrum",
+      "Historische Stadtmauern im trockenen Norden",
+      "Demokratische Bundesrepublik mit Föderalismus"
+    ],
+    clickableTips: [
+      "💡 Westafrikanischer bevölkerungsreicher Staat",
+      "💡 Die Hauptstadt ist Abuja",
+      "💡 Heimat von Nollywood und dem Nigerdelta",
+      "💡 Wirtschaftskraft am Golf von Guinea"
+    ]
+  },
+  {
+    name: "Kuba", theme: "schwer",
+    facts: [
+      "Größte Insel der Karibik mit Bananenform",
+      "Einziger sozialistischer Staat auf westlicher Halbinsel",
+      "Weltberühmt für handgerollte Zigarren und Rum",
+      "Hauptstadt besitzt koloniale Altstadt voller Oldtimer",
+      "Wirtschaft durch jahrzehntelange Embargos geprägt",
+      "Zuckerrohr- und Tabakplantagen im Flachland",
+      "Salsa und Son haben hier ihren globalen Ursprung",
+      "Strategische Lage am Eingang zum Golf von Mexiko",
+      "Führend im medizinischen Sektor und bei Ärzten",
+      "Vorgelagerte Koralleninseln mit unberührten Stränden",
+      "Historische Revolution prägte nationale Identität",
+      "Geprägt von charmantem Verfall kolonialer Bauten",
+      "Keine giftigen Schlangen in der Tierwelt",
+      "Baseball gilt als unangefochtener Nationalsport"
+    ],
+    clickableTips: [
+      "💡 Karibischer Inselstaat",
+      "💡 Die Hauptstadt ist Havanna",
+      "💡 Bekannt für Zigarren, Oldtimer und Sozialismus",
+      "💡 Größte Insel der Antillen"
+    ]
+  },
+{
+    name: "Südkorea", theme: "schwer",
+    facts: [
+      "Wirtschaftswunder machte das Land zur Hightech-Macht",
+      "Getrennt durch eine der am stärksten bewachten Grenzen der Welt",
+      "Hauptstadt beherbergt fast die Hälfte der Gesamtbevölkerung",
+      "Führend in superschneller Internet-Infrastruktur",
+      "Traditionelle Schrift (Hangul) gilt als wissenschaftlich durchdacht",
+      "Extreme Leistungsgesellschaft mit hochangesehenem Bildungswesen",
+      "Globale Popkultur (K-Pop) dominiert internationale Charts",
+      "Gebirgiges Relief im Osten, Flussebenen im Westen",
+      "Heimat weltgrößter Elektronik- und Automobilkonzerne",
+      "Traditionelle Paläste neben futuristischen Wolkenkratzern",
+      "Einzigartiges Saunakultur-System (Jjimjilbang) im Alltag",
+      "Stark ausgeprägte E-Sport-Kultur mit Profiligen",
+      "Halbinsellage im Osten und Westen von Meeren umgeben",
+      "Historisch geprägt durch konfuzianische Werte"
+    ],
+    clickableTips: [
+      "💡 Ostasiatischer Staat auf einer Halbinsel",
+      "💡 Die Hauptstadt ist Seoul",
+      "💡 Heimat von Samsung und K-Pop",
+      "💡 Getrennt von Nordkorea"
+    ]
+  },
+  {
+    name: "Vietnam", theme: "schwer",
+    facts: [
+      "Extrem schmale, S-förmige Landesform",
+      "Zweitgrößter Kaffee-Exporteur weltweit (Robusta)",
+      "Spektakuläre Bucht mit tausenden Kalksteininseln (Ha-Long)",
+      "Roter-Fluss-Delta und Mekong-Delta als Lebensadern",
+      "Historisch geprägt durch jahrzehntelange Konflikte",
+      "Moped- und Motorrollerkultur prägt den Straßenverkehr",
+      "Hauptstadt besitzt historisches Gilden-Altstadtviertel",
+      "Weltbekannte Straßenküchen-Kultur mit Nudelsuppen",
+      "Dschungelbedeckte Bergketten im gebirgigen Binnenland",
+      "Stark aufstrebende Textil- und Technologieindustrie",
+      "Tropisches Monsunklima mit starken Regenfällen",
+      "Französische Kolonialarchitektur in Kaffeehäusern sichtbar",
+      "Phong-Nha-Kalksteinhöhlen gehören zu den größten der Erde",
+      "Wirtschaftsmetropole im Süden hieß früher Saigon"
+    ],
+    clickableTips: [
+      "💡 Staat in Südostasien",
+      "💡 Die Hauptstadt ist Hanoi",
+      "💡 Bekannt für die Ha-Long-Bucht und Pho",
+      "💡 S-förmige Küstenlinie"
+    ]
+  },
+  {
+    name: "Dänemark", theme: "schwer",
+    facts: [
+      "Besteht aus Jütland und hunderten umliegenden Inseln",
+      "Älteste durchgehend regierende Monarchie Europas",
+      "Geografisch extrem flach ohne nennenswerte Erhebungen",
+      "Heimat des weltberühmten bunten Klemmbausteins",
+      "Hauptstadt auf zwei Hauptinseln durch Brücken verbunden",
+      "Fahrrad gilt als dominantes Hauptverkehrsmittel",
+      "Kontrolle über Grönland als autonomes Überseegebiet",
+      "Lebensgefühl der Gemütlichkeit ('Hygge') weltbekannt",
+      "Historischer Ausgangspunkt der Wikinger-Seefahrer",
+      "Keine nennenswerten Flüsse oder Gebirge",
+      "Führend in Erzeugung von Offshore-Windenergie",
+      "Strikter Wohlfahrtsstaat mit hoher Steuerquote",
+      "Brücke verbindet Festland direkt mit Schweden",
+      "Heimat weltbekannter klassischer Märchen-Autoren"
+    ],
+    clickableTips: [
+      "💡 Skandinavischer Staat in Mitteleuropa",
+      "💡 Die Hauptstadt ist Kopenhagen",
+      "💡 Erfinder von Lego und Wikinger-Heimat",
+      "💡 Extrem flaches Land an Nord- und Ostsee"
+    ]
+  },
+  {
+    name: "Schweden", theme: "geography",
+    facts: [
+      "Einwohner: ca. 10,5 Millionen",
+      "BIP: rund 600 Milliarden US-Dollar",
+      "Offizielle Währung: ... Krone",
+      "Größtes Land in Nordeuropa",
+      "Konstitutionelle Monarchie",
+      "Hauptstadt auf 14 Inseln erbaut",
+      "Heimat von Spotify und Volvo",
+      "Innovativstes Land der EU",
+      "Dichte Wälder und tausende Seen",
+      "Polarlichter im hohen Norden",
+      "Stiftung der weltberühmten Nobelpreise",
+      "Hoher Lebensstandard und Sozialstaat",
+      "Kaffeekultur mit traditioneller 'Fika'",
+      "Mittsommerfeste als wichtiger Brauch"
+    ],
+    clickableTips: [
+      "💡 Liegt in Skandinavien",
+      "💡 Die Hauptstadt ist Stockholm",
+      "💡 Heimat von IKEA und ABBA",
+      "💡 Blaue Flagge mit gelbem Kreuz"
+    ]
+  },
+{
+    name: "Bhutan", theme: "schwer",
+    facts: [
+      "Misst Bruttonationalglück statt BIP",
+      "Rauchen im öffentlichen Raum streng verboten",
+      "Komplettes Verbot von Tabakverkauf",
+      "Hauptstadt ohne einzige Verkehrsampel",
+      "Über 70% ständige Waldfläche gesetzlich",
+      "Liegt vollständig im Himalaya",
+      "Traditionelle Tracht im Berufsleben Pflicht",
+      "Bunte Phallussymbole zum Schutz auf Häusern",
+      "Höchster unbestiegener Berg der Erde",
+      "Fernsehen erst ab 1999 erlaubt",
+      "Flagge zeigt mystischen Drachen",
+      "Gletscher stürzen in steile Schluchten",
+      "Klöster (Dzongs) als Verwaltungsfestungen",
+      "Extrem saubere Luft in den Tälern"
+    ],
+    clickableTips: [
+      "💡 Königreich im Himalaya",
+      "💡 Misst Erfolg in Glück statt Geld",
+      "💡 Hauptstadt heißt Thimphu",
+      "💡 Land des Drachens"
+    ]
+  },
+  {
+    name: "San Marino", theme: "schwer",
+    facts: [
+      "Älteste noch existierende Republik weltweit",
+      "Vollständig von Italien umschlossen",
+      "Historische Hellebarden-Garden als Armee",
+      "Drei Festungstürme auf dem Monte Titano",
+      "Verfassung stammt aus dem Mittelalter",
+      "Mehr Autos als registrierte Einwohner",
+      "Liegt auf Ausläufern des Apennin",
+      "Zwei gleichzeitig amtierende Staatsoberhäupter",
+      "Gründung im 4. Jahrhundert",
+      "Kultstatus für eigene Briefmarken",
+      "Kein internationaler Flughafen",
+      "Altstadt gehört zum UNESCO-Erbe",
+      "Stark geprägt durch zollfreien Handel",
+      "Blick von Mauern reicht bis zum Meer"
+    ],
+    clickableTips: [
+      "💡 Zwergstaat in Südeuropa",
+      "💡 Vollständig von Italien umzingelt",
+      "💡 Liegt auf dem Monte Titano",
+      "💡 Älteste bestehende Republik"
+    ]
+  },
+  {
+    name: "Kirgisistan", theme: "schwer",
+    facts: [
+      "Über 90% der Fläche von Hochgebirgen bedeckt",
+      "Zweitgrößter warmer Bergsee (Issyk-Kul)",
+      "Traditionelle Jurte ziert die Flagge",
+      "Legendäres Manas-Heldenepos als Weltrekord",
+      "Torugart-Pass verbindet mit Zentralasien",
+      "Nomadenkultur in weiten Hochebenen",
+      "Reißende Gletscherflüsse in tiefen Schluchten",
+      "Zufluchtsort für seltene Schneelleoparden",
+      "Hauptstadt als ehemaliger Militärposten",
+      "Pferdefleisch und vergorene Stutenmilch als Speise",
+      "Tian-Shan-Gebirge als Himmelsberge",
+      "Historischer Knotenpunkt der Seidenstraße",
+      "Zentrum weltweit wilder Walnusswälder",
+      "Grenzen verlaufen über eisige Bergkämme"
+    ],
+    clickableTips: [
+      "💡 Binnenstaat in Zentralasien",
+      "💡 Hauptstadt ist Bischkek",
+      "💡 Bekannt für das Tian-Shan-Gebirge",
+      "💡 Stark geprägt von Nomaden"
+    ]
+  },
+  {
+    name: "Liechtenstein", theme: "schwer",
+    facts: [
+      "Doppelt eingeschlossener alpiner Binnenstaat",
+      "Wird von einem regierenden Fürstenhaus geführt",
+      "Niedrigste Staatsverschuldung pro Kopf",
+      "Historisches Fürstenfest als Nationalfeiertag",
+      "Sammel-Kultstatus für historische Postwertzeichen",
+      "Staatsgebiet an einem Nachmittag durchquerbar",
+      "Militärische Landesverteidigung komplett abgeschafft",
+      "Burg Vaduz thront auf bewaldetem Felsen",
+      "Spezifischer alemannischer Dialekt",
+      "Fokus auf Hochtechnologie und Zahnmedizin",
+      "Rhein bildet natürliche Westgrenze",
+      "Einst ärmliches Bauerndorf, heute reich",
+      "Extrem niedrige Kriminalitätsrate",
+      "Wanderwege direkt in hochalpine Felswände"
+    ],
+    clickableTips: [
+      "💡 Europäischer Zwergstaat im Rheintal",
+      "💡 Zwischen Schweiz und Österreich",
+      "💡 Hauptstadt ist Vaduz",
+      "💡 Regiert von einem Fürsten"
+    ]
+  },
+  {
+    name: "Seychellen", theme: "schwer",
+    facts: [
+      "Abgelegene Granitinseln im Indischen Ozean",
+      "Heimat der schwersten Nusssorte (Coco de Mer)",
+      "Einst legendäres Versteck für Piraten",
+      "Kleinste Hauptstadt (Victoria) mit Mini-Big-Ben",
+      "Mehr Riesenschildkröten als Menschen auf Aldabra",
+      "Traumstrände mit einzigartigen Granitfelsen",
+      "Stark abhängig von Luxus-Inseltourismus",
+      "Endemische Flora und Fauna nirgendwo sonst",
+      "Vor Entdeckung komplett unbewohnt",
+      "Kreolische Kultur prägt den Alltag",
+      "Großteil der Fläche unter Naturschutz",
+      "Spektakuläre Riffhaie und Atolle",
+      "Ganzjährig warmes Tropenklima",
+      "Republik im britischen Commonwealth"
+    ],
+    clickableTips: [
+      "💡 Inselstaat im Indischen Ozean",
+      "💡 Hauptstadt ist Victoria",
+      "💡 Heimat der Coco-de-Mer-Nuss",
+      "💡 Tropisches Granit-Paradies"
+    ]
+  },
+   {
+    name: "Lesotho", theme: "schwer",
+    facts: [
+      "Komplett über 1.000 Meter Höhe gelegen",
+      "Vollständiger Binnenstaat, umschlossen von einem Nachbarn",
+      "Wird als Himmelreich im Hochland bezeichnet",
+      "Traditionelle Wolldecke als Nationalumhang",
+      "Regelmäßige Skigebiete im südafrikanischen Winter",
+      "Drakensberge bilden steile natürliche Felswand",
+      "Wasserkraft und Quellwasser als Hautexport",
+      "Hauptstadt liegt auf weitem Hochplateau",
+      "Ponys als wichtigstes Fortbewegungsmittel",
+      "Monarchie mit tief verwurzelter Tradition",
+      "Tiefe Schluchten und spektakuläre Wasserfälle",
+      "Als Bergzuflucht vor Kolonialmächten gegründet",
+      "Geologie besteht aus mächtigem Basalt",
+      "Klima deutlich kühler durch Höhenlage"
+    ],
+    clickableTips: [
+      "💡 Königreich im südlichen Afrika",
+      "💡 Komplett von Südafrika umschlossen",
+      "💡 Liegt ganz im Hochland",
+      "💡 Hauptstadt ist Maseru"
+    ]
+  },
+  {
+    name: "Monaco", theme: "schwer",
+    facts: [
+      "Zweitkleinster Staat mit höchster Bevölkerungsdichte",
+      "Formel-1-Rennen direkt auf engen Straßen",
+      "Keine Einkommensteuer für ansässige Personen",
+      "Legendäres Casino von Monte-Carlo",
+      "Fürstenfamilie Grimaldi regiert seit Jahrhunderten",
+      "Große Staatsfläche dem Meer abgerungen",
+      "Ozeanographisches Museum direkt an Klippen",
+      "Teuerste Immobilienpreise weltweit",
+      "Grenze zu Frankreich verläuft mitten durch Straßen",
+      "Keinerlei landwirtschaftliche Nutzfläche",
+      "Jachthäfen voll mit Megajachten",
+      "Vollständig als Beton-Hochhauslandschaft verbaut",
+      "Strengste Sicherheitsüberwachung per Kamera",
+      "Mittelmeer bildet die gesamte Südkante"
+    ],
+    clickableTips: [
+      "💡 Stadtstaat an der Côte d'Azur",
+      "💡 Bekannt für Casino Monte-Carlo",
+      "💡 Formel-1-Straßenrennen",
+      "💡 Regiert von Haus Grimaldi"
+    ]
+  },
+  {
+    name: "Andorra", theme: "schwer",
+    facts: [
+      "Versteckt in alpinen Tälern der Pyrenäen",
+      "Zwei Co-Fürsten als historische Staatsoberhäupter",
+      "Nutzt Euro ohne eigene Währung",
+      "Höchste durchschnittliche Geländehöhe Europas",
+      "Einst Schmugglernest, heute Steuerparadies",
+      "Skigebiete und zollfreier Einkauf",
+      "Katalanisch als einzige Amtssprache",
+      "Historische Steinhäuser in abgelegenen Dörfern",
+      "Durch Tunnelverbindungen durchbrachen die Berge",
+      "Keine eigene Armee zur Landesverteidigung",
+      "Hauptstadt liegt in engem Bergbeset",
+      "Klettersteige durchziehen Granitgipfel",
+      "Einst nur Viehzucht und Tabakanbau",
+      "Gletschergeformte, tiefe Schluchten"
+    ],
+    clickableTips: [
+      "💡 Liegt in den Pyrenäen",
+      "💡 Zwischen Frankreich und Spanien",
+      "💡 Hauptstadt ist Andorra la Vella",
+      "💡 Co-Fürstentum-Verwaltung"
+    ]
+  },
+  {
+    name: "Island", theme: "schwer",
+    facts: [
+      "Keine einzige insektenartfressende Mückenart im Ökosystem",
+      "Vom Mittelatlantischen Rücken in zwei Kontinentalplatten gerissen",
+      "Erste Nation weltweit mit demokratisch gewählter Ministerpräsidentin",
+      "Nutzt fast ausschließlich Geothermie und Wasserkraft",
+      "Staatliches Register zur Vermeidung von Inzucht bei Dates",
+      "Ältestes noch tagendes Parlament der Welt (Althing)",
+      "Verwendet historisch bedingt keine klassischen Postleitzahlen",
+      "Größter europäischer Gletscher außerhalb der Arktis (Vatnajökull)",
+      "Besitzt keine reguläre Armee, nur eine eigene Küstenwache",
+      "Straßennamen teilweise nach verborgenem Elfenglauben ausgerichtet",
+      "Vulkanausbrüche statistisch alle vier bis fünf Jahre",
+      "Amtssprache seit Jahrhunderten nahezu unverändert (alte Sagas lesbar)",
+      "Größtes Lavafeld der Erde nach Ausbruch im 18. Jahrhundert",
+      "Tagelang ununterbrochene Helligkeit der Mitternachtssonne im Sommer"
+    ],
+    clickableTips: [
+      "💡 Vulkaninsel im Nordatlantik",
+      "💡 Die Hauptstadt ist Reykjavík",
+      "💡 Bekannt für Geysire und heiße Quellen",
+      "💡 Land aus Feuer und Eis"
+    ]
+  },
+  {
+    name: "Norwegen", theme: "schwer",
+    facts: [
+      "Besitzt mit dem Lærdalstunnel den längsten Straßentunnel der Welt",
+      "Reichlich Öl- und Gasvorkommen machten das Land zum Wohlstandsstaat",
+      "Westküste tief von eiszeitlichen Meeresarmen (Fjorden) zerschnitten",
+      "Globales Saatgut-Depot tief im Permafrost der Arktis",
+      "Hauptstadt hieß über Jahrhunderte historisch 'Kristiania'",
+      "Nördlichstes ziviles Siedlungsgebiet Europas auf Spitzbergen",
+      "Verleiht jährlich den international angesehenen Friedensnobelpreis",
+      "Geologie besteht fast nur aus hartem skandinavischem Urgestein",
+      "Steilster und tiefster Fjordabgrund direkt ins Meer",
+      "Zwei offizielle, gleichgestellte geschriebene Sprachformen (Bokmål/Nynorsk)",
+      "Pionier bei der vollständigen Revolution der elektrischen Mobilität",
+      "Extrem zerklüftete Küste durch unzählige vorgelagerte Schären",
+      "Sonne wandert im hohen Norden im Winter tagelang unter dem Horizont",
+      "Höchster Wasserfall Skandinaviens stürzt in gebirgigen Serpentinen"
+    ],
+    clickableTips: [
+      "💡 Skandinavisches Königreich im Norden",
+      "💡 Die Hauptstadt ist Oslo",
+      "💡 Bekannt für tiefe Fjorde und Trolle",
+      "💡 Heimat der historischen Wikinger"
+    ]
+  },
+   {
+    name: "Polen", theme: "schwer",
+    facts: [
+      "Übergangsgebiet zwischen westeuropäischem Tiefland und osteuropäischen Ebenen",
+      "Kopernikus formulierte hier das heliozentrische Weltbild",
+      "Letzter echter europäischer Urwald mit freilebenden Wisenten (Białowieża)",
+      "Hauptstadt nach Kriegszerstörungen historisch originalgetreu rekonstruiert",
+      "Weichsel als längster Fluss fließt durch das gesamte Staatsgebiet",
+      "Größter mittelalterlicher Marktplatz Europas in historischer Tuchmacher-Stadt",
+      "Erste moderne europäische Verfassung nach der Aufklärung verabschiedet",
+      "Natürliche Südgrenze durch schroffe Kalksteinfelsen der Tatra",
+      "Weltgrößtes Backsteinschloss des Deutschen Ordens in Malbork",
+      "Westslawische Amtssprache mit komplexen Zischlauten",
+      "Geburtsstätte der historischen Gewerkschaftsbewegung 'Solidarność'",
+      "Ältestes kommerzielles Salzbergwerk mit unterirdischen Kathedralen (Wieliczka)",
+      "Zweitgrößter Strom mündet über ein großes Delta in die Ostsee",
+      "Ausgedehnte Küstenlinie mit steilen Sanddünen an der Danziger Bucht"
+    ],
+    clickableTips: [
+      "💡 Mitteleuropäischer Staat an der Ostsee",
+      "💡 Die Hauptstadt ist Warschau",
+      "💡 Heimat von Nikolaus Kopernikus",
+      "💡 Historische Schlösser und Bernsteinküste"
+    ]
+  },
+  {
+    name: "Niederlande", theme: "schwer",
+    facts: [
+      "Großer Teil des Staatsgebiets mühsam dem Meer abgerungen (Polder)",
+      "Offizieller Sitz des Internationalen Gerichtshofs in Residenzstadt",
+      "Weltweit dichtest ausgebaute Fahrrad-Infrastruktur",
+      "Hauptstadt ruht komplett auf Millionen Holzpfählen im Sumpfdelta",
+      "Rhein entspringt in Alpen, mündet aber in diesem flachen Delta",
+      "Größtes Hafengelände Europas für globalen Welthandel (Rotterdam)",
+      "Erste moderne Aktiengesellschaft und Börse der Welt gegründet",
+      "Extrem flache Geologie, höchste Erhebung kaum über Sanddünen",
+      "Industrieller Tulpenanbau in riesigen, farbigen Feldern",
+      "Germanische Amtssprache eng verwandt mit Plattdeutsch",
+      "Goldenes Zeitalter brachte weltberühmte Ölmalerei hervor",
+      "Komplexes System aus Sturmflutwehren und gigantischen Deichen",
+      "Maritimes, windiges Seeklima durch offene Nordseelage",
+      "Höchste Bevölkerungsdichte aller größeren EU-Flächenstaaten"
+    ],
+    clickableTips: [
+      "💡 Westeuropäischer Staat an der Nordsee",
+      "💡 Die Hauptstadt ist Amsterdam",
+      "💡 Bekannt für Windmühlen und Grachten",
+      "💡 Flaches Land unter dem Meeresspiegel"
+    ]
+  },
+  {
+    name: "Portugal", theme: "schwer",
+    facts: [
+      "Westlichster Zipfel der europäischen Festland-Landmasse",
+      "Ehemalige globale Seemacht mit Kolonien auf allen Kontinenten",
+      "Älteste unveränderte nationale Grenzen Europas",
+      "Längster Fluss der iberischen Halbinsel (Tajo) mündet in breiten Ästuar",
+      "Schroffe Atlantikküste mit den extremsten Surferwellen der Welt",
+      "Weltgrößter Produzent von Naturkork aus riesigen Eichenwäldern",
+      "Hauptstadt liegt auf sieben Hügeln an Flussmündung in den Atlantik",
+      "Nach schwerem Erdbeben im 18. Jahrhundert als erste Rasterstadt erbaut",
+      "Azoren und Madeira im Atlantik als autonome Insel-Außenposten",
+      "Amtssprache wird global von hunderten Millionen Menschen gesprochen",
+      "Ursprungsland der melancholischen Fado-Musik",
+      "Westlichstes Kap des europäischen Festlands (Cabo da Roca)",
+      "Mioides mediterranes und atlantisches Übergangsklima mit starkem Seewind",
+      "Historische Handelskultur machte den Tee-Genuss in Europa populär"
+    ],
+    clickableTips: [
+      "💡 Staat im Westen der Iberischen Halbinsel",
+      "💡 Die Hauptstadt ist Lissabon",
+      "💡 Bekannt für Seefahrergeschichte und Kork",
+      "💡 Atlantikküste und Fado-Musik"
+    ]
+  },
+  {
+    name: "Irland", theme: "schwer",
+    facts: [
+      "Größter Teil einer grünen Atlantikinsel, getrennt von östlichem Nachbarn",
+      "Flache Zentralebene umringt von ringförmigen Küstengebirgen",
+      "Keltische Sprache als erste Amtssprache neben Englisch",
+      "Hauptstadt liegt an Flussmündung des Liffey in geschützte Bucht",
+      "Dauermildes, aber extrem niederschlagsreiches Klima durch Golfstrom",
+      "Spektakuläre, senkrechte Steilkanten der Moher-Klippen an Westküste",
+      "Rasant gewachsene Technologie- und Wirtschaftsnation Europas",
+      "Komplettes Fehlen nennenswerter Schlangenarten auf der Insel",
+      "Historischer Ursprung einer weltberühmten dunklen Biersorte",
+      "Geologische Prägung durch riesige, nährstoffarme Torfmoore (Bogs)",
+      "Weltweit zelebrierter Nationalfeiertag zu Ehren des St. Patrick",
+      "Reiche literarische Tradition mit mehreren Literaturnobelpreisträgern",
+      "Historische monastische Kulturzentren des frühen Christentums",
+      "Wild zerklüftete Halbinseln im Südwesten mit dem Ring of Kerry"
+    ],
+    clickableTips: [
+      "💡 Grüne Insel im Nordatlantik",
+      "💡 Die Hauptstadt ist Dublin",
+      "💡 Bekannt als die Grüne Insel",
+      "💡 Heimat von Guinness und keltischer Kultur"
+    ]
+  },
+  {
+    name: "Finnland", theme: "schwer",
+    facts: [
+      "Gigantische Anzahl von über 180.000 Binnenseen im waldreichen Gebiet",
+      "Offizielle mythologische Heimat des Weihnachtsmanns im hohen Norden",
+      "Finno-ugrische Amtssprache ohne indoeuropäische Verwandtschaft",
+      "Erfinder der weltberühmten Saunakultur in holzbeheizten Räumen",
+      "Nördlichste Hauptstadt der Europäischen Union auf dem Festland",
+      "Häufiges Auftreten von Polarlichtern (Aurora Borealis) im Winter",
+      "Eiszeit hinterließ flache, von Granitfelsen durchzogene Landschaft",
+      "Naturphänomen der ununterbrochenen Mitternachtssonne im Sommer",
+      "Eines der fortschrittlichsten und egalitärsten Bildungssysteme weltweit",
+      "Besitzt im Osten eine der längsten europäischen Außengrenzen",
+      "Zehntausende kleine felsige Eilande im küstennahen Schärengarten",
+      "Zugefrorenes Meer wird im Winter als Schlittschuh-Weg genutzt",
+      "Technologie-Metropole einst durch globale Mobiltelefonie weltberühmt",
+      "Dichte boreale Nadelwälder (Taiga) bedecken den Hauptteil des Landes"
+    ],
+    clickableTips: [
+      "💡 Nordeuropäischer Staat in Skandinavien",
+      "💡 Die Hauptstadt ist Helsinki",
+      "💡 Das Land der tausend Seen",
+      "💡 Heimat der Sauna und Polarlichter"
+    ]
+  },
+  {
+    name: "Tschechien", theme: "schwer",
+    facts: [
+      "Besteht aus historischen Regionen Böhmen, Mähren und einem Teil Schlesiens",
+      "Durch geschlossenen Ring von Mittelgebirgen wie ein Becken umschlossen",
+      "Eine der größten geschlossenen mittelalterlichen Burganlagen in der Hauptstadt",
+      "Höchster Pro-Kopf-Konsum an Hopfengetränken weltweit",
+      "Elbe entspringt in Riesengebirgen und fließt Richtung Nordsee",
+      "Weltberühmte historische Altstadt mit hunderten gotischen Türmen",
+      "Prager Universität im Mittelalter als erste Hochschule mitteleuropäisch gegründet",
+      "Westslawische Amtssprache mit markanten Besonderheiten",
+      "Makabres Beinhaus in Kirche voller menschlicher Knochen (Sedlec)",
+      "Berühmtestes Kur- und Bäderstädtchen mit heißen Mineralquellen (Karlsbad)",
+      "Weltweit perfektionierte Kristallglas- und Porzellanindustrie",
+      "Keine eigene Meeresküste, aber über Flüsse wirtschaftlich vernetzt",
+      "Mitteleuropäisches Übergangsklima mit ausgeprägten Kontrasten",
+      "Hochmoderne Tradition im weltweiten Marionetten- und Figurentheaterbau"
+    ],
+    clickableTips: [
+      "💡 Binnenstaat in Mitteleuropa",
+      "💡 Die Hauptstadt ist Prag",
+      "💡 Bekannt für Burgen und Bierkultur",
+      "💡 Die goldene Stadt der hundert Türme"
+    ]
+  },
+  {
+    name: "Thailand", theme: "schwer",
+    facts: [
+      "Einziges südostasiatisches Land ohne koloniale Vergangenheit",
+      "Zentrales Reisanbautal umringt von bewaldeten Bergen",
+      "Tief verwurzelte Monarchie mit strikten Gesetzen zum Dynastieschutz",
+      "Hauptstadt trägt in Landessprache extrem langen Zeremoniennamen",
+      "Mächtiger Fluss Chao Phraya fließt durch das geografische Herzland",
+      "Südliche Tropeninseln mit spektakulären Kalksteinfelsen im Meer",
+      "Theravada-Buddhismus prägt mit tausenden prächtigen Klöstern (Wats) den Alltag",
+      "Amtssprache nutzt eigenes Tonsystem und indisch basierte Schrift",
+      "Weltweit gefeierte Küche mit explosiver Schärfe und Aromen",
+      "Historisch bedeutsame Dschungel-Grenzregionen des 'Goldenen Dreiecks'",
+      "Tropisches Monsunklima mit starken saisonalen Regenfällen",
+      "Florierende Kultur von schwimmenden Märkten auf Kanälen",
+      "Neujahrswechsel wird mit riesiger landesweiter Wasserschlacht gefeiert",
+      "Strategische Küstenlinien am Golf von Thailand und an der Andamanensee"
+    ],
+    clickableTips: [
+      "💡 Staat in Südostasien",
+      "💡 Die Hauptstadt ist Bangkok",
+      "💡 Bekannt als das Land des Lächelns",
+      "💡 Berühmt für goldene Tempel und Strände"
+    ]
+  },
+  {
+    name: "Neuseeland", theme: "geography",
+    facts: [
+      "Einwohner: ca. 5,1 Millionen",
+      "BIP: rund 250 Milliarden US-Dollar",
+      "Offizielle Währung: ...-Dollar",
+      "Inselstaat",
+      "Besteht aus Nord- und Südinsel",
+      "Atemberaubende Landschaften als Kulisse für 'Der Herr der Ringe'",
+      "Einzigartiger flugunfähiger Kiwi-Vogel als Nationalsymbol",
+      "Ureinwohner sind die Māori mit ihrer Kultur",
+      "Aktive Vulkane und Geysire",
+      "Nationalsport ist Rugby",
+      "Sehr abgelegene geografische Lage",
+      "Größte Haka der Welt",
+      "Geringe Bevölkerungsdichte im Vergleich zu Schafen",
+      "Führend im Outdoor- und Abenteuertourismus"
+    ],
+    clickableTips: [
+      "💡 Liegt im südlichen Pazifik nahe Australien",
+      "💡 Der Vogel Kiwi ist Namensgeber",
+      "💡 Schauplatz der Herr-der-Ringe-Filme",
+      "💡 Die Ureinwohner heißen Māori"
+    ]
+  }
+];
+
+let gameConfig = { theme: "all", mode: "timed", duration: 120, hintsEnabled: true };
+let activeCountries = [], currentCountryIndex = 0, currentCountry = null, currentFacts = [];
+let score = 0, timerInterval = null, timeLeft = 120, isPlaying = false;
+let revealedTipsCount = 0;
+
+window.addEventListener("load", () => {
+  updateHighscoreDisplay();
+  const savedBg = localStorage.getItem("premiumBackground");
+  if (savedBg) {
+    document.body.style.backgroundImage = `url('${savedBg}')`;
+  }
+});
+
+function updateHighscoreDisplay() {
+  const hs = localStorage.getItem("champs_country_highscore") || 0;
+  document.getElementById("val-highscore").textContent = hs;
+}
+
+function toggleTimeInput() {
+  const mode = document.getElementById("select-mode").value;
+  const timeGroup = document.getElementById("group-timelimit");
+  if (mode === "infinite") {
+    timeGroup.classList.add("hidden");
+  } else {
+    timeGroup.classList.remove("hidden");
+  }
+}
+
+function startGame() {
+  gameConfig.theme = document.getElementById("select-theme").value;
+  gameConfig.mode = document.getElementById("select-mode").value;
+  gameConfig.duration = parseInt(document.getElementById("select-duration").value);
+  gameConfig.hintsEnabled = document.getElementById("check-hints").checked;
+
+  activeCountries = gameConfig.theme === "all" ? [...countriesDatabase] : countriesDatabase.filter(c => c.theme === gameConfig.theme);
+  if (activeCountries.length === 0) activeCountries = [...countriesDatabase];
+
+  activeCountries.sort(() => Math.random() - 0.5);
+  currentCountryIndex = 0;
+  score = 0;
+  isPlaying = true;
+
+  document.getElementById("screen-home").classList.add("hidden");
+  document.getElementById("screen-game").classList.remove("hidden");
+
+  if (gameConfig.mode === "timed") {
+    timeLeft = gameConfig.duration;
+    document.getElementById("game-timer-display").classList.remove("hidden");
+    document.getElementById("game-score-display").classList.remove("hidden");
+    document.getElementById("game-score-display").textContent = `⭐ Punkte: 0`;
+    
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      document.getElementById("game-timer-display").textContent = `⏱️ ${timeLeft}s`;
+      if (timeLeft <= 0) finishGame();
+    }, 1000);
+  } else {
+    document.getElementById("game-timer-display").classList.add("hidden");
+    document.getElementById("game-score-display").classList.add("hidden");
+  }
+
+  loadNextRound();
+}
+
+function loadNextRound() {
+  if (currentCountryIndex >= activeCountries.length) {
+    activeCountries.sort(() => Math.random() - 0.5);
+    currentCountryIndex = 0;
+  }
+
+  currentCountry = activeCountries[currentCountryIndex];
+  currentCountryIndex++;
+  revealedTipsCount = 0;
+
+  let shuffledFacts = [...currentCountry.facts].sort(() => Math.random() - 0.5);
+    currentFacts = shuffledFacts.slice(0, 4);
+
+  // 4 Fakten jeweils als einzelne ovale Pillen anzeigen
+  let factsHtml = "";
+  currentFacts.forEach((fact) => {
+    factsHtml += `<div class="fact-pill">📌 ${fact}</div>`;
+  });
+  document.getElementById("current-facts-container").innerHTML = factsHtml;
+
+  // Hinweise-Container (für angeklickte Tipps) zunächst leer machen
+  document.getElementById("current-hints-container").innerHTML = "";
+
+  // Tipp-Button steuern
+  const tipBtn = document.getElementById("btn-get-tip");
+  if (gameConfig.hintsEnabled && currentCountry.clickableTips && currentCountry.clickableTips.length > 0) {
+    tipBtn.classList.remove("hidden");
+    document.getElementById("tips-left").textContent = currentCountry.clickableTips.length;
+  } else {
+    tipBtn.classList.add("hidden");
+  }
+
+  document.getElementById("country-input").value = "";
+  document.getElementById("suggestions-box").innerHTML = "";
+  document.getElementById("suggestions-box").style.display = "none";
+}
+
+function revealTip() {
+  if (!currentCountry.clickableTips || revealedTipsCount >= currentCountry.clickableTips.length) return;
+
+  const tipText = currentCountry.clickableTips[revealedTipsCount];
+  revealedTipsCount++;
+
+  const hintPill = document.createElement("div");
+  hintPill.className = "hint-pill";
+  hintPill.textContent = tipText;
+  document.getElementById("current-hints-container").appendChild(hintPill);
+
+  const left = currentCountry.clickableTips.length - revealedTipsCount;
+  document.getElementById("tips-left").textContent = left;
+
+  if (left <= 0) {
+    document.getElementById("btn-get-tip").classList.add("hidden");
+  }
+}
+
+function handleAutocomplete() {
+  const inputVal = document.getElementById("country-input").value.trim().toLowerCase();
+  const box = document.getElementById("suggestions-box");
+  box.innerHTML = "";
+
+  if (inputVal.length === 0) {
+    box.style.display = "none";
+    return;
+  }
+
+  const matches = countriesDatabase.filter(c => c.name.toLowerCase().includes(inputVal));
+  if (matches.length === 0) {
+    box.style.display = "none";
+    return;
+  }
+
+  matches.forEach(m => {
+    const item = document.createElement("div");
+    item.className = "suggestion-item";
+    item.textContent = m.name;
+    item.onclick = () => {
+      document.getElementById("country-input").value = m.name;
+      box.style.display = "none";
+    };
+    box.appendChild(item);
+  });
+
+  box.style.display = "block";
+}
+
+function submitAnswer() {
+  if (!isPlaying) return;
+  const userVal = document.getElementById("country-input").value.trim().toLowerCase();
+  if (!userVal) return;
+
+  const isValidCountry = countriesDatabase.some(c => c.name.toLowerCase() === userVal);
+  if (!isValidCountry) {
+    alert("Bitte wähle ein gültiges Land aus den Vorschlägen aus!");
+    return;
+  }
+
+  const isCorrect = userVal === currentCountry.name.toLowerCase();
+
+  if (gameConfig.mode === "timed") {
+    if (isCorrect) {
+      score++;
+      document.getElementById("game-score-display").textContent = `⭐ Punkte: ${score}`;
+      showFeedback(true);
+    } else {
+      showFeedback(false);
+    }
+  } else {
+    showFeedback(isCorrect);
+  }
+}
+
+function showFeedback(isCorrect) {
+  document.getElementById("screen-game").classList.add("hidden");
+  document.getElementById("screen-feedback").classList.remove("hidden");
+
+  const iconElem = document.getElementById("feedback-icon");
+  const flagElem = document.getElementById("feedback-flag");
+  const nameElem = document.getElementById("feedback-country-name");
+  const textElem = document.getElementById("feedback-text");
+
+let flagEmoji = "🌍";
+  if (currentCountry.name === "Deutschland") flagEmoji = "🇩🇪";
+  else if (currentCountry.name === "Österreich") flagEmoji = "🇦🇹";
+  else if (currentCountry.name === "Schweiz") flagEmoji = "🇨🇭";
+  else if (currentCountry.name === "Spanien") flagEmoji = "🇪🇸";
+  else if (currentCountry.name === "Italien") flagEmoji = "🇮🇹";
+  else if (currentCountry.name === "Frankreich") flagEmoji = "🇫🇷";
+  else if (currentCountry.name === "Vereinigtes Königreich") flagEmoji = "🇬🇧";
+  else if (currentCountry.name === "Vereinigte Staaten") flagEmoji = "🇺🇸";
+  else if (currentCountry.name === "Kanada") flagEmoji = "🇨🇦";
+  else if (currentCountry.name === "Brasilien") flagEmoji = "🇧🇷";
+  else if (currentCountry.name === "Japan") flagEmoji = "🇯🇵";
+  else if (currentCountry.name === "Australien") flagEmoji = "🇦🇺";
+  else if (currentCountry.name === "China") flagEmoji = "🇨🇳";
+  else if (currentCountry.name === "Indien") flagEmoji = "🇮🇳";
+  else if (currentCountry.name === "Mexiko") flagEmoji = "🇲🇽";
+  else if (currentCountry.name === "Südafrika") flagEmoji = "🇿🇦";
+  else if (currentCountry.name === "Argentinien") flagEmoji = "🇦🇷";
+  else if (currentCountry.name === "Ägypten") flagEmoji = "🇪🇬";
+  else if (currentCountry.name === "Griechenland") flagEmoji = "🇬🇷";
+  else if (currentCountry.name === "Schweden") flagEmoji = "🇸🇪";
+  else if (currentCountry.name === "Neuseeland") flagEmoji = "🇳🇿";
+
+  flagElem.textContent = flagEmoji;
+  nameElem.textContent = currentCountry.name;
+
+  if (isCorrect) {
+    iconElem.textContent = "✔";
+    iconElem.style.color = "#38a169";
+    textElem.textContent = "Richtig geraten! Tolle Leistung.";
+  } else {
+    iconElem.textContent = "❌";
+    iconElem.style.color = "#e53e3e";
+    textElem.textContent = `Leider falsch! Das gesuchte Land war ${currentCountry.name}.`;
+  }
+}
+
+function nextRound() {
+  document.getElementById("screen-feedback").classList.add("hidden");
+  if (gameConfig.mode === "timed" && timeLeft <= 0) {
+    finishGame();
+    return;
+  }
+  document.getElementById("screen-game").classList.remove("hidden");
+  loadNextRound();
+}
+
+function endGame() {
+  if (timerInterval) clearInterval(timerInterval);
+  isPlaying = false;
+  if (gameConfig.mode === "timed") {
+    finishGame();
+  } else {
+    resetToHome();
+  }
+}
+
+function finishGame() {
+  if (timerInterval) clearInterval(timerInterval);
+  isPlaying = false;
+
+  document.getElementById("screen-game").classList.add("hidden");
+  document.getElementById("screen-feedback").classList.add("hidden");
+  document.getElementById("screen-end").classList.remove("hidden");
+
+  document.getElementById("final-score-val").textContent = score;
+
+  if (gameConfig.mode === "timed") {
+    const currentHs = parseInt(localStorage.getItem("champs_country_highscore") || "0", 10);
+    if (score > currentHs) {
+      localStorage.setItem("champs_country_highscore", score);
+      document.getElementById("final-score-label").textContent = "🏆 Neuer Highscore aufgestellt!";
+    } else {
+      document.getElementById("final-score-label").textContent = "Richtig erratene Länder";
+    }
+  } else {
+    document.getElementById("final-score-label").textContent = "Beendetes Endlos-Spiel";
+  }
+  updateHighscoreDisplay();
+}
+
+function resetToHome() {
+  if (timerInterval) clearInterval(timerInterval);
+  isPlaying = false;
+  document.getElementById("screen-game").classList.add("hidden");
+  document.getElementById("screen-feedback").classList.add("hidden");
+  document.getElementById("screen-end").classList.add("hidden");
+  document.getElementById("screen-home").classList.remove("hidden");
+  updateHighscoreDisplay();
+}
+</script>
+
+</body>
+</html>
