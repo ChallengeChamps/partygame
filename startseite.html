@@ -6,8 +6,8 @@
 <title>ChallengeChamp 1.01</title>
 
 <style>
-/* Profil Button */
-.profile-button {
+/* Profil & Glücksrad Button */
+.profile-button, .wheel-nav-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -21,12 +21,20 @@
   font-weight: 900;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   transition: 0.2s ease;
+  border: none;
+  cursor: pointer;
 }
 
-.profile-button:hover {
+.profile-button:hover, .wheel-nav-button:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
+
+.wheel-nav-button {
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  color: #fff;
+}
+
 /* -------------------- GLOBAL -------------------- */
 body {
   margin: 0;
@@ -87,34 +95,36 @@ h1 {
   to { transform: scale(1); opacity: 1; }
 }
 
-/* -------------------- MODERN PREMIUM POPUPS -------------------- */
+/* -------------------- MODERN POPUPS (GLÜCKSRAD & PREMIUM) -------------------- */
 .popupOverlay {
   display:none;
   position:fixed;
   top:0; left:0;
   width:100%; height:100%;
-  background:rgba(0,0,0,0.65);
-  backdrop-filter: blur(6px);
+  background:rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px);
   z-index:99999;
   justify-content:center;
   align-items:center;
 }
 
 .popupBox {
-  background: linear-gradient(135deg, #ffffff, #f2f2f2);
-  padding:30px;
-  border-radius:22px;
-  width:90%;
-  max-width:360px;
-  text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,0.35);
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #fff;
+  padding: 25px;
+  border-radius: 24px;
+  width: 92%;
+  max-width: 380px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
   animation: fadeIn 0.25s ease;
-  position:relative;
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.15);
 }
 
 .popupClose {
   position:absolute;
-  top:10px; right:10px;
+  top:12px; right:12px;
   background:#ff4d4d;
   color:#fff;
   width:32px; height:32px;
@@ -128,11 +138,11 @@ h1 {
 
 .popupBox button {
   width:100%;
-  padding:14px;
+  padding:12px;
   border:none;
   border-radius:14px;
-  margin-top:14px;
-  font-size:1.15rem;
+  margin-top:12px;
+  font-size:1.1rem;
   font-weight:bold;
   cursor:pointer;
   transition:0.2s;
@@ -163,99 +173,77 @@ h1 {
   to { opacity:1; transform:scale(1); }
 }
 
-/* PREMIUM UNLOCK ANIMATION */
+/* -------------------- NEUE PREMIUM UNLOCK ANIMATION -------------------- */
 .premium-unlock {
-  display:none;
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.85);
-  backdrop-filter:blur(12px);
-  z-index:999999;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  animation:unlockFadeIn 0.4s ease forwards;
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(3, 7, 18, 0.92);
+  backdrop-filter: blur(16px);
+  z-index: 999999;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  animation: newUnlockFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.unlock-glow {
-  position:absolute;
-  width:420px;
-  height:420px;
-  background:radial-gradient(circle, rgba(0,234,255,0.8), rgba(0,0,0,0));
-  filter:blur(40px);
-  animation:glowPulse 2s infinite ease-in-out;
+.new-unlock-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.8));
+  border: 2px solid rgba(0, 234, 255, 0.4);
+  box-shadow: 0 0 50px rgba(0, 234, 255, 0.25), inset 0 0 20px rgba(0, 234, 255, 0.1);
+  padding: 40px 30px;
+  border-radius: 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0.8);
+  animation: newCardZoom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-.unlock-ring {
-  position:absolute;
-  width:260px;
-  height:260px;
-  border:4px solid #00eaff;
-  border-radius:50%;
-  animation:ringPulse 1.8s infinite ease-out;
-  opacity:0.7;
+.new-unlock-icon {
+  font-size: 4rem;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, #00eaff, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 15px rgba(0, 234, 255, 0.6));
+  animation: newIconBounce 1.2s infinite ease-in-out alternate;
 }
 
-.unlock-ring.delay1 { animation-delay:0.4s; }
-.unlock-ring.delay2 { animation-delay:0.8s; }
-
-.unlock-diamond {
-  width:80px;
-  height:80px;
-  background:linear-gradient(135deg,#00eaff,#00c4d4);
-  clip-path:polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  animation:diamondPop 0.8s ease forwards;
-  box-shadow:0 0 25px #00eaff;
+.new-unlock-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px 0;
+  text-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
 
-.unlock-text {
-  margin-top:20px;
-  font-size:2.4rem;
-  color:#00eaff;
-  text-shadow:0 0 20px #00eaff;
-  animation:textFade 1s ease forwards;
+.new-unlock-subtitle {
+  font-size: 0.95rem;
+  color: #38bdf8;
+  margin: 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
-.premium-unlock .confetti {
-  position:absolute;
-  width:10px;
-  height:10px;
-  background:hsl(calc(360 * var(--i)), 80%, 60%);
-  top:-10px;
-  left:calc(100% * var(--j));
-  opacity:0.9;
-  animation:confettiFall 1.8s linear forwards;
-  border-radius:2px;
+@keyframes newUnlockFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-@keyframes unlockFadeIn {
-  from { opacity:0; transform:scale(0.9); }
-  to { opacity:1; transform:scale(1); }
+@keyframes newCardZoom {
+  0% { transform: scale(0.6) translateY(20px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
 }
 
-@keyframes glowPulse {
-  0% { transform:scale(0.9); opacity:0.7; }
-  100% { transform:scale(1.1); opacity:1; }
-}
-
-@keyframes ringPulse {
-  0% { transform:scale(0.7); opacity:0.8; }
-  100% { transform:scale(2.2); opacity:0; }
-}
-
-@keyframes diamondPop {
-  0% { transform:scale(0.3); opacity:0; }
-  100% { transform:scale(1); opacity:1; }
-}
-
-@keyframes textFade {
-  0% { opacity:0; transform:translateY(20px); }
-  100% { opacity:1; transform:translateY(0); }
-}
-
-@keyframes confettiFall {
-  to { transform:translateY(110vh) rotate(720deg); }
+@keyframes newIconBounce {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-8px) scale(1.08); }
 }
 
 /* -------------------- SEARCH -------------------- */
@@ -298,6 +286,84 @@ h1 {
 
 .search-results div:hover {
   background: #f2f2f2;
+}
+
+/* -------------------- PERFEKTES CSS-GLÜCKSRAD -------------------- */
+.wheel-wrapper {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 15px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wheel-pointer {
+  position: absolute;
+  top: -10px;
+  z-index: 30;
+  width: 0; 
+  height: 0; 
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 24px solid #ec4899;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
+}
+
+#domWheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+  border: 5px solid #334155;
+  transition: transform 4s cubic-bezier(0.15, 0.9, 0.2, 1);
+  background: #0f172a;
+}
+
+.wheel-slice {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  transform-origin: 100% 100%;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 15px;
+  box-sizing: border-box;
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+.wheel-center-btn {
+  position: absolute;
+  z-index: 25;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  border: 3px solid #1e293b;
+  color: white;
+  font-weight: 900;
+  font-size: 0.75rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: 0.2s;
+}
+
+.wheel-center-btn:hover {
+  transform: scale(1.05);
+}
+
+.wheel-center-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* -------------------- BUTTONS -------------------- */
@@ -619,19 +685,23 @@ footer a {
 
   <h1>Wähle dein Spiel</h1>
 
-  <!-- COINS + SHOP + PROFIL -->
+  <!-- COINS + SHOP + PROFIL + GLÜCKSRAD -->
   <div class="top-actions">
     <div class="coins-display">
       🪙 <span id="coinAmount">0</span>
     </div>
 
     <a href="shop.html" class="shop-button">
-      🛒 Shop
+      Shop
     </a>
 
     <a href="profil.html" class="profile-button">
-      👤 Profil
+      Profil
     </a>
+
+    <button onclick="openWheelModal()" class="wheel-nav-button">
+      🎰
+    </button>
   </div>
 
   <!-- SUCHFELD -->
@@ -782,6 +852,39 @@ footer a {
   </footer>
 </div>
 
+<!-- GLÜCKSRAD POPUP -->
+<div id="wheelModal" class="popupOverlay">
+  <div class="popupBox" style="max-width: 360px;">
+    <div class="popupClose" onclick="closeWheelModal()">X</div>
+    <h3 style="margin: 0 0 5px 0; color: #fff;">🎁 Tägliches Glücksrad</h3>
+    <p id="wheel-info-text" style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 12px;">
+      1 Gratis-Spin pro Tag. Extradreh kostet 150 Coins.
+    </p>
+
+    <div class="wheel-wrapper">
+      <div class="wheel-pointer"></div>
+      <div id="domWheel"></div>
+      <button onclick="spinWheel()" id="spin-btn" class="wheel-center-btn">DREHEN</button>
+    </div>
+  </div>
+</div>
+
+<!-- GEWINN POPUP -->
+<div id="prize-modal" class="popupOverlay">
+  <div class="popupBox">
+    <div class="popupClose" onclick="closePrizeModal()">X</div>
+    <div id="modal-icon" style="font-size: 3rem; margin-bottom: 5px;">🎉</div>
+    <h3 id="modal-title" style="color: #fff; margin-top:0;">Gewonnen!</h3>
+    <p id="modal-desc" style="color: #cbd5e1; font-size: 0.95rem;"></p>
+    
+    <div id="modal-code-box" style="display:none; background: #0f172a; color: #38bdf8; padding: 10px; border-radius: 10px; font-family: monospace; font-size: 0.85rem; margin: 12px 0; word-break: break-all; border: 1px solid rgba(255,255,255,0.1);">
+      CODE: <span id="modal-code"></span>
+    </div>
+
+    <button class="premiumBtn" onclick="closePrizeModal()">Weiter spielen</button>
+  </div>
+</div>
+
 <!-- NEWS POPUP -->
 <div id="premiumPopup">
   <div id="premiumPopupContent">
@@ -803,13 +906,6 @@ footer a {
       <li>Neue Premium Spiele 🎉</li>
       <li>Neue Premium Hintergrundwahl 🖼️</li>
     </ul>
-    <p><b>Neuigkeiten:</b></p>
-    <ul>
-      <li>Spielsuche 🔍</li>
-      <li>Bugfixes 🔧</li>
-      <li>Sound- und Animationerweiterungen 🎶</li>
-      <li>Über 150 neue Kategorien ➕</li>
-    </ul>
   </div>
 </div>
 
@@ -828,20 +924,20 @@ footer a {
   <div class="popupBox">
     <div class="popupClose" onclick="closePremiumPassword()">X</div>
     <h3>Premium‑Passwort eingeben</h3>
-    <input id="premiumPasswordInput" placeholder="Premium‑PIN">
-    <p><a href="hilfe.html">Passwort verloren?</a></p>
+    <input id="premiumPasswordInput" placeholder="Premium‑PIN" style="width: 85%; padding: 10px; border-radius: 10px; border: none; margin-top: 10px; font-size: 1rem;">
+    <p><a href="hilfe.html" style="color: #38bdf8;">Passwort verloren?</a></p>
     <button class="premiumBtn" onclick="checkPremiumPassword()">Freischalten</button>
     <p id="premiumError" style="color:red; display:none;">Premium‑PIN falsch!</p>
   </div>
 </div>
 
+<!-- NEUE PREMIUM UNLOCK OVERLAY -->
 <div id="premiumUnlocked" class="premium-unlock">
-  <div class="unlock-glow"></div>
-  <div class="unlock-ring"></div>
-  <div class="unlock-ring delay1"></div>
-  <div class="unlock-ring delay2"></div>
-  <div class="unlock-diamond"></div>
-  <div class="unlock-text">Premium aktiviert 💎</div>
+  <div class="new-unlock-card">
+    <div class="new-unlock-icon">💎</div>
+    <h2 class="new-unlock-title">Premium Aktiviert!</h2>
+    <p class="new-unlock-subtitle">Vollzugriff erteilt</p>
+  </div>
 </div>
 
 <!-- MODAL: Party Erstellen -->
@@ -957,6 +1053,7 @@ function checkPremiumPassword() {
     setTimeout(() => {
       document.getElementById("premiumUnlocked").style.display = "none";
     }, 2000);
+    initWheelSystem();
   } else {
     document.getElementById("premiumError").style.display = "block";
   }
@@ -965,6 +1062,191 @@ function checkPremiumPassword() {
 function logoutPremium() {
   localStorage.removeItem("premium");
   alert("Premium wurde deaktiviert.");
+  initWheelSystem();
+}
+
+/* -------------------- HTML/CSS GLÜCKSRAD LOGIK -------------------- */
+let currentRotation = 0;
+
+const wheelSlices = [
+  { name: "150 Coins", type: "coins", amount: 150, color: "#7c3aed" },
+  { name: "Logo 1", type: "logo", code: "CHAMPS-LOGO-A1", color: "#db2777" },
+  { name: "150 Coins", type: "coins", amount: 150, color: "#4f46e5" },
+  { name: "Mystery", type: "mystery", color: "#d97706" },
+  { name: "250 Coins", type: "coins", amount: 250, color: "#2563eb" },
+  { name: "Logo 2", type: "logo", code: "CHAMPS-LOGO-B2", color: "#059669" },
+  { name: "1 Mo. Premium", type: "premium", code: "PREMIUM-VIP-2026", color: "#e11d48" },
+  { name: "350 Coins", type: "coins", amount: 350, color: "#7c2d12" },
+  { name: "Logo 3", type: "logo", code: "CHAMPS-LOGO-C3", color: "#0891b2" },
+  { name: "750 Coins", type: "coins", amount: 750, color: "#ca8a04" },
+  { name: "10€ Amazon", type: "amazon", code: "AMZ-CHAMPS-10EUR", color: "#dc2626" },
+  { name: "Mystery", type: "mystery", color: "#0d9488" }
+];
+
+function buildWheelDOM() {
+  const wheel = document.getElementById("domWheel");
+  if (!wheel || wheel.children.length > 0) return;
+  
+  const numSlices = wheelSlices.length;
+  const sliceAngle = 360 / numSlices;
+
+  wheelSlices.forEach((slice, i) => {
+    const div = document.createElement("div");
+    div.className = "wheel-slice";
+    div.style.backgroundColor = slice.color;
+    div.style.transform = `rotate(${i * sliceAngle}deg) skewY(${90 - sliceAngle}deg)`;
+    
+    const span = document.createElement("span");
+    span.style.transform = `skewY(${-(90 - sliceAngle)}deg) rotate(${sliceAngle / 2}deg)`;
+    span.style.display = "inline-block";
+    span.style.position = "absolute";
+    span.style.left = "20px";
+    span.style.top = "30px";
+    span.style.maxWidth = "70px";
+    span.style.overflow = "hidden";
+    span.style.textOverflow = "ellipsis";
+    span.style.whiteSpace = "nowrap";
+    span.textContent = slice.name;
+    
+    div.appendChild(span);
+    wheel.appendChild(div);
+  });
+}
+
+function openWheelModal() {
+  document.getElementById("wheelModal").style.display = "flex";
+  initWheelSystem();
+  buildWheelDOM();
+}
+
+function closeWheelModal() {
+  document.getElementById("wheelModal").style.display = "none";
+}
+
+function getDailySpinData() {
+  const today = new Date().toDateString();
+  let data = JSON.parse(localStorage.getItem("champs_spin_data")) || { date: "", spinsUsed: 0 };
+  if (data.date !== today) {
+    data.date = today;
+    data.spinsUsed = 0;
+    localStorage.setItem("champs_spin_data", JSON.stringify(data));
+  }
+  return data;
+}
+
+function initWheelSystem() {
+  const spinData = getDailySpinData();
+  const maxFree = isPremium() ? 2 : 1;
+  const freeLeft = Math.max(0, maxFree - spinData.spinsUsed);
+  const infoText = document.getElementById("wheel-info-text");
+  
+  if (freeLeft > 0) {
+    infoText.innerHTML = `Du hast noch <b style="color:#38bdf8;">${freeLeft}</b> Gratis-Spin(s) heute. Jeder weitere 150 Coins.`;
+  } else {
+    infoText.innerHTML = `Gratis-Spins leer. Extradreh kostet <b style="color:#fbbf24;">150 Coins</b>.`;
+  }
+}
+
+function spinWheel() {
+  let coins = parseInt(localStorage.getItem("teamMasterCoins"), 10) || 0;
+  let spinData = getDailySpinData();
+  const maxFree = isPremium() ? 2 : 1;
+
+  if (spinData.spinsUsed >= maxFree) {
+    if (coins < 150) {
+      alert("Nicht genug Coins! Du brauchst 150 Coins für einen Extradreh.");
+      return;
+    }
+    coins -= 150;
+    localStorage.setItem("teamMasterCoins", coins);
+    updateCoinDisplay();
+  }
+
+  spinData.spinsUsed++;
+  localStorage.setItem("champs_spin_data", JSON.stringify(spinData));
+  initWheelSystem();
+
+  const btn = document.getElementById("spin-btn");
+  btn.disabled = true;
+
+  const numSlices = wheelSlices.length;
+  const degreesPerSlice = 360 / numSlices;
+  
+  const winningIndex = Math.floor(Math.random() * numSlices);
+  
+  const extraSpins = 5 * 360;
+  const targetRotation = currentRotation + extraSpins + (360 - (winningIndex * degreesPerSlice)) - (degreesPerSlice / 2);
+  currentRotation = targetRotation;
+
+  const wheel = document.getElementById("domWheel");
+  wheel.style.transform = `rotate(${targetRotation}deg)`;
+
+  setTimeout(() => {
+    btn.disabled = false;
+    closeWheelModal();
+    processReward(wheelSlices[winningIndex]);
+  }, 4000);
+}
+
+function processReward(reward) {
+  const modal = document.getElementById("prize-modal");
+  const icon = document.getElementById("modal-icon");
+  const title = document.getElementById("modal-title");
+  const desc = document.getElementById("modal-desc");
+  const codeBox = document.getElementById("modal-code-box");
+  const codeSpan = document.getElementById("modal-code");
+
+  title.textContent = reward.name;
+  codeBox.style.display = "none";
+
+  let coins = parseInt(localStorage.getItem("teamMasterCoins"), 10) || 0;
+
+  if (reward.type === "coins") {
+    icon.textContent = "🪙";
+    coins += reward.amount;
+    localStorage.setItem("teamMasterCoins", coins);
+    desc.textContent = `Glückwunsch! ${reward.amount} Coins wurden deinem Konto sofort gutgeschrieben.`;
+  } else if (reward.type === "mystery") {
+    icon.textContent = "🎁";
+    const mysteryAmounts = [100, 250, 500, 750, 1000, 2500, 5000];
+    const weights = [40, 25, 15, 10, 6, 3, 1];
+    let totalWeight = weights.reduce((a, b) => a + b, 0);
+    let randomVal = Math.random() * totalWeight;
+    let chosenAmount = 100;
+    let cumulative = 0;
+    for(let i=0; i<mysteryAmounts.length; i++) {
+      cumulative += weights[i];
+      if(randomVal <= cumulative) {
+        chosenAmount = mysteryAmounts[i];
+        break;
+      }
+    }
+    coins += chosenAmount;
+    localStorage.setItem("teamMasterCoins", coins);
+    desc.textContent = `Die Mystery Box öffnet sich... Du hast sensationelle ${chosenAmount} Coins gewonnen!`;
+  } else if (reward.type === "logo") {
+    icon.textContent = "🎨";
+    codeBox.style.display = "block";
+    codeSpan.textContent = reward.code;
+    desc.textContent = `Exklusives Profil-Logo freigeschaltet! Kopiere deinen Code:`;
+  } else if (reward.type === "premium") {
+    icon.textContent = "👑";
+    codeBox.style.display = "block";
+    codeSpan.textContent = reward.code;
+    desc.textContent = `UNGLAUBLICH! 1 Monat Premium gewonnen! Nutze folgenden Code:`;
+  } else if (reward.type === "amazon") {
+    icon.textContent = "🏆";
+    codeBox.style.display = "block";
+    codeSpan.textContent = reward.code;
+    desc.textContent = `JACKPOT! 10€ Amazon Gutschein gewonnen (Sehr selten)!`;
+  }
+
+  updateCoinDisplay();
+  modal.style.display = "flex";
+}
+
+function closePrizeModal() {
+  document.getElementById("prize-modal").style.display = "none";
 }
 
 /* -------------------- STICKER + PREMIUM BLOCKER -------------------- */
@@ -1055,6 +1337,7 @@ searchInput.addEventListener("input", () => {
 /* -------------------- NEWS POPUP AUTO -------------------- */
 window.addEventListener("load", () => {
   document.getElementById("premiumPopup").style.display = "flex";
+  updateCoinDisplay();
 });
 
 /* -------------------- PREMIUM HINTERGRUND -------------------- */
@@ -1083,8 +1366,6 @@ function updateCoinDisplay() {
   const coins = parseInt(localStorage.getItem("teamMasterCoins"), 10) || 0;
   coinAmount.textContent = coins;
 }
-
-updateCoinDisplay();
 </script>
 
 <!-- MULTIPLAYER SKRIPTE -->
