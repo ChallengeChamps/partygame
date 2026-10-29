@@ -54,6 +54,44 @@ h1 {
   text-shadow: 2px 2px 6px #000;
 }
 
+/* -------------------- FILTER LEISTE -------------------- */
+.filter-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 15px auto 10px auto;
+  max-width: 90%;
+  padding: 0 10px;
+}
+
+.filter-btn {
+  background: rgba(15, 23, 42, 0.75);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: 0.2s ease;
+}
+
+.filter-btn:hover {
+  background: rgba(30, 41, 59, 0.9);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, #00eaff, #00c4d4);
+  color: #000;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(0, 234, 255, 0.4);
+  font-weight: 700;
+}
+
 /* -------------------- NEWS POPUP -------------------- */
 #premiumPopup {
   position: fixed;
@@ -250,7 +288,7 @@ h1 {
 .search-box {
   width: 85%;
   max-width: 280px;
-  margin: 15px auto;
+  margin: 15px auto 5px auto;
   position: relative;
 }
 
@@ -710,6 +748,17 @@ footer a {
     <div class="search-results" id="searchResults"></div>
   </div>
 
+  <!-- FILTER LEISTE -->
+  <div class="filter-container">
+    <button class="filter-btn active" onclick="filterGames('all', this)">Alle</button>
+    <button class="filter-btn" onclick="filterGames('min3', this)">👥 max 4 Sp.</button>
+    <button class="filter-btn" onclick="filterGames('min5', this)">👥 ab 5 Sp.</button>
+    <button class="filter-btn" onclick="filterGames('geo', this)">🌍 Geografie</button>
+    <button class="filter-btn" onclick="filterGames('sport', this)">⚽ Sport & WM</button>
+    <button class="filter-btn" onclick="filterGames('party', this)">🎉 Party / Social</button>
+    <button class="filter-btn" onclick="filterGames('wissen', this)">🧠 Wissen & Quiz</button>
+  </div>
+
   <!-- ONLINE MULTIPLAYER SEKTION -->
   <section class="online-play-section">
     <h2>🎮 Online spielen</h2>
@@ -737,109 +786,112 @@ footer a {
   </div>
 
   <!-- SPIELE GRID -->
-  <div class="card-container">
-    <a href="index.html" class="card fakeorfakt">
+  <div class="card-container" id="gameGrid">
+    <a href="index.html" class="card fakeorfakt" data-minplayers="5" data-category="party wissen">
       <div class="card-content">Fake or Fakt 🎭<div class="player-count">3–6</div></div>
     </a>
 
-    <a href="10von10.html" class="card zehnvonzehn">
+    <a href="10von10.html" class="card zehnvonzehn" data-minplayers="5" data-category="party">
       <div class="card-content">10 von 10 💘<div class="player-count">2–6</div></div>
     </a>
 
-    <a href="wop.html" class="card wop">
+    <a href="wop.html" class="card wop" data-minplayers="5" data-category="party">
       <div class="card-content">Wahrheit oder Pflicht 🔥<div class="player-count">1–6</div></div>
     </a>
 
-    <a href="imposter.html" class="card imposter">
+    <a href="imposter.html" class="card imposter" data-minplayers="5" data-category="party">
       <div class="card-content">Finde den Imposter 🕵️‍♂️<div class="player-count">3–6</div></div>
     </a>
 
-    <a href="imposterpremium.html" class="card imposterpremium">
+    <a href="imposterpremium.html" class="card imposterpremium" data-minplayers="3" data-category="party sport">
       <div class="card-content">Wer lügt am Besten 🔍<div class="player-count">3–12</div></div>
     </a>
 
-    <a href="wort.html" class="card wort">
+    <a href="wort.html" class="card wort" data-minplayers="2" data-category="party">
       <div class="card-content">Verbotene Wörter 🙊<div class="player-count">2+</div></div>
     </a>
 
-    <a href="liste.html" class="card topsort">
+    <a href="musik.html" class="card wort" data-minplayers="2" data-category="party">
+      <div class="card-content">Musik<div class="player-count">2+</div></div>
+    </a>
+
+    <a href="liste.html" class="card topsort" data-minplayers="2" data-category="wissen">
       <div class="card-content">TopSort 📜<div class="player-count">2–5</div></div>
     </a>
 
-    <a href="tipptopf.html" class="card tipptopf">
+    <a href="tipptopf.html" class="card tipptopf" data-minplayers="2" data-category="party">
       <div class="card-content">TippTopf 👆<div class="player-count">2–8</div></div>
     </a>
 
-    <a href="stillepost.html" class="card stillepost">
+    <a href="stillepost.html" class="card stillepost" data-minplayers="3" data-category="party">
       <div class="card-content">PinselPost 🖌️<div class="player-count">3–8</div></div>
     </a>
 
-    <a href="habnochnie.html" class="card habnochnie">
+    <a href="habnochnie.html" class="card habnochnie" data-minplayers="1" data-category="party">
       <div class="card-content">Ich hab noch nie 🚫<div class="player-count">1–12</div></div>
     </a>
 
-    <a href="werbinich.html" class="card werbinich">
+    <a href="werbinich.html" class="card werbinich" data-minplayers="2" data-category="party wissen">
       <div class="card-content">Wer bin ich ⁉️<div class="player-count">2+</div></div>
     </a>
 
-    <a href="superquiz.html" class="card superquiz">
+    <a href="superquiz.html" class="card superquiz" data-minplayers="1" data-category="wissen">
       <div class="card-content">Superquiz 🧠<div class="player-count">1–8</div></div>
     </a>
 
-    <a href="duoplay.html" class="card duoplay">
+    <a href="duoplay.html" class="card duoplay" data-minplayers="3" data-category="party">
       <div class="card-content">Duo‑Pantomime 🎬<div class="player-count">3–10</div></div>
     </a>
 
-    <a href="uberbieten.html" class="card uberbieten">
+    <a href="uberbieten.html" class="card uberbieten" data-minplayers="2" data-category="wissen">
       <div class="card-content">BattleBid 📈<div class="player-count">2–10</div></div>
     </a>
 
-    <a href="these.html" class="card zehnvonzehn">
+    <a href="these.html" class="card zehnvonzehn" data-minplayers="2" data-category="wissen">
       <div class="card-content">Lüge oder Wahrheit 🤥<div class="player-count">2–5</div></div>
     </a>
 
-    <a href="100quiz.html" class="card quiz">
+    <a href="100quiz.html" class="card quiz" data-minplayers="1" data-category="wissen">
       <div class="card-content">TeamQuiz Board 🧾<div class="player-count">1+</div></div>
     </a>
 
-    <a href="prozent.html" class="card prozent">
+    <a href="prozent.html" class="card prozent" data-minplayers="2" data-category="wissen">
       <div class="card-content">Prozent-Rätzer 🎯<div class="player-count">2+</div></div>
     </a>
 
-    <a href="mind-glitch.html" class="card stillepost">
+    <a href="mind-glitch.html" class="card stillepost" data-minplayers="3" data-category="party">
       <div class="card-content">Mind-Glitch 🕵️<div class="player-count">3-12</div></div>
     </a>
 
-    <a href="land.html" class=" card zehnvonzehn">
+    <a href="land.html" class=" card zehnvonzehn" data-minplayers="1" data-category="geo wissen">
       <div class="card-content">🌍 Geheimnisvolle Länder<div class="player-count">1</div></div>
     </a>
 
-    <a href="wolf.html" class="card wolf">
+    <a href="wolf.html" class="card wolf" data-minplayers="4" data-category="party">
       <div class="card-content">Nightfall Village 🌙<div class="player-count">4-15</div></div>
     </a>
 
-
-    <a href="wm.html" class="card wmspiel">
+    <a href="wm.html" class="card wmspiel" data-minplayers="2" data-category="sport">
       <div class="sticker sticker-wm">WM‑Special</div>
       <div class="card-content">MatchMaster ⚽<div class="player-count">2–5</div></div>
     </a>
 
-    <a href="wmhunter.html" class="card wmspiel">
+    <a href="wmhunter.html" class="card wmspiel" data-minplayers="1" data-category="sport">
       <div class="sticker sticker-wm">WM‑Special</div>
       <div class="card-content">PlayerMaster ⭐<div class="player-count">1+</div></div>
     </a>
 
-    <a href="wmguess.html" class="card wmguess">
+    <a href="wmguess.html" class="card wmguess" data-minplayers="1" data-category="sport">
       <div class="sticker sticker-wm">WM‑Special</div>
       <div class="card-content">Guess the Hype 📱<div class="player-count">1+</div></div>
     </a> 
 
-    <a href="wmtop.html" class="card wmtop">
+    <a href="wmtop.html" class="card wmtop" data-minplayers="1" data-category="sport">
       <div class="sticker sticker-wm">WM‑Special</div>
       <div class="card-content">TeamMaster 👨<div class="player-count">1+</div></div>
     </a>
 
-    <a href="tictactoe.html" class="card wmtop">
+    <a href="tictactoe.html" class="card wmtop" data-minplayers="2" data-category="sport">
       <div class="sticker sticker-wm">WM‑Special</div>
       <div class="card-content">Guess Grid 🧩<div class="player-count">2</div></div>
     </a>
@@ -1021,6 +1073,43 @@ footer a {
 </div>
 
 <script>
+/* -------------------- FILTER LOGIK -------------------- */
+function filterGames(type, btnElement) {
+  // Aktiven Button optisch umschalten
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  btnElement.classList.add('active');
+
+  const cards = document.querySelectorAll('#gameGrid .card');
+
+  cards.forEach(card => {
+    const minPlayers = parseInt(card.getAttribute('data-minplayers'), 10) || 1;
+    const categories = card.getAttribute('data-category') || '';
+
+    let show = true;
+
+    if (type === 'min3') {
+      if (minPlayers < 3) show = false;
+    } else if (type === 'min5') {
+      if (minPlayers < 5) show = false;
+    } else if (type === 'geo') {
+      if (!categories.includes('geo')) show = false;
+    } else if (type === 'sport') {
+      if (!categories.includes('sport')) show = false;
+    } else if (type === 'party') {
+      if (!categories.includes('party')) show = false;
+    } else if (type === 'wissen') {
+      if (!categories.includes('wissen')) show = false;
+    }
+    // 'all' zeigt standardmäßig alles
+
+    if (show) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
 /* -------------------- PREMIUM LOGIK -------------------- */
 const premiumGames = ["imposterpremium", "wolf"];
 const newGames = ["imposterpremium", "uberbieten", "these", "100quiz", "prozent", "wolf"];
