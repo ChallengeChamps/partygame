@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BeatTheBeat 🎶 - ChallengeChamps</title>
+<style>
+/* -------------------- GLOBAL & CHALLENGECHAMP DESIGN -------------------- */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('imposter.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+.game-container {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.85));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  width: 90%;
+  max-width: 480px;
+  padding: 30px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+h1, h2 {
+  margin-top: 0;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+h1 {
+  font-size: 2rem;
+  background: linear-gradient(135deg, #00eaff, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #cbd5e1;
+  margin-bottom: 6px;
+}
+
+/* KLAPPLEISTE (SELECT) & INPUTS FIX FÜR LESBARKEIT */
+input[type="number"], input[type="text"], select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #1e293b;
+  color: #fff;
+  font-size: 1rem;
+  box-sizing: border-box;
+  outline: none;
+  transition: 0.2s;
+}
+
+select option {
+  background: #0f172a;
+  color: #fff;
+  padding: 10px;
+}
+
+input:focus, select:focus {
+  border-color: #00eaff;
+  background: #1e293b;
+}
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #00eaff, #00c4d4);
+  color: #000;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 234, 255, 0.3);
+  transition: 0.2s;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  transform: scale(1.02);
+  background: linear-gradient(135deg, #00c4d4, #00eaff);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  box-shadow: none;
+  margin-top: 8px;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Gameplay Elemente */
+.player-turn-badge {
+  display: inline-block;
+  background: rgba(168, 85, 247, 0.3);
+  border: 1px solid #a855f7;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+  color: #e879f9;
+}
+
+.audio-visualizer {
+  font-size: 3rem;
+  margin: 15px 0;
+  animation: pulseBeat 1s infinite alternate;
+}
+
+@keyframes pulseBeat {
+  0% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(0,234,255,0.4)); }
+  100% { transform: scale(1.1); filter: drop-shadow(0 0 15px rgba(0,234,255,0.8)); }
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.choice-btn {
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.choice-btn:hover {
+  background: rgba(0, 234, 255, 0.2);
+  border-color: #00eaff;
+}
+
+.timer-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  margin: 15px 0;
+  overflow: hidden;
+}
+
+.timer-fill {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #00eaff, #a855f7);
+  transition: width 1s linear;
+}
+
+.score-board {
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="game-container">
+  
+  <!-- 1. HOMESCREEN / SETUP -->
+  <div id="screen-setup">
+    <h1>🎶 BeatTheBeat</h1>
+    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px;">Das ultimative Musik-Raten für ChallengeChamps</p>
+    
+    <div class="form-group">
+      <label>Spieleranzahl:</label>
+      <input type="number" id="numPlayers" min="1" max="6" value="2" onchange="generatePlayerInputs()">
+    </div>
+
+    <div class="form-group" id="playerNamesContainer">
+      <!-- Wird per JS befüllt -->
+    </div>
+
+    <div class="form-group">
+      <label>Was möchtest du raten?</label>
+      <select id="guessCategory">
+        <option value="title">Titel</option>
+        <option value="artist">Interpret</option>
+        <option value="country">Herkunftsland</option>
+        <option value="year">Erscheinungsjahr</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Schwierigkeit:</label>
+      <select id="difficulty">
+        <option value="easy">Leicht (Multiple Choice, 4 Antworten)</option>
+        <option value="hard">Schwer (Freie Texteingabe)</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Songs pro Spieler (Max. 25 gesamt):</label>
+      <input type="number" id="songsPerPlayer" min="1" max="10" value="3">
+    </div>
+
+    <button class="btn" onclick="startGame()">▶️ Spiel starten</button>
+  </div>
+
+  <!-- 2. GAMEPLAY SCREEN -->
+  <div id="screen-game" class="hidden">
+    <div class="score-board" id="scoreBoard"></div>
+    <div class="player-turn-badge" id="playerTurnBadge">Spieler 1 ist dran</div>
+    
+    <div class="audio-visualizer">🎵 🔊 🎶</div>
+    <p id="categoryPrompt" style="font-weight: bold; color: #38bdf8;"></p>
+
+    <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+
+    <!-- Eingabe für Schwer -->
+    <div id="hardInputArea" class="hidden" style="margin-top: 15px;">
+      <input type="text" id="playerTextAnswer" placeholder="Deine Antwort eingeben...">
+      <button class="btn" onclick="submitAnswer()">Bestätigen</button>
+    </div>
+
+    <!-- Multiple Choice für Leicht -->
+    <div id="easyInputArea" class="choice-grid">
+      <!-- Wird per JS befüllt -->
+    </div>
+  </div>
+
+  <!-- 3. AUFLÖSUNGS SCREEN -->
+  <div id="screen-result" class="hidden">
+    <h2 id="resultTitle">Auflösung</h2>
+    <p id="resultText" style="font-size: 1.1rem; margin: 15px 0;"></p>
+    <p style="color: #94a3b8; font-size: 0.85rem;">Refrain wird gespielt...</p>
+    <button class="btn" onclick="nextTurn()" style="margin-top: 25px;">Weiter ➡</button>
+  </div>
+
+  <!-- 4. ENDSCREEN -->
+  <div id="screen-end" class="hidden">
+    <h1>🏆 Spiel beendet!</h1>
+    <div id="finalScores" style="margin: 20px 0; font-size: 1.1rem; line-height: 1.6;"></div>
+    <button class="btn" onclick="resetToSetup()">🔄 Erneut spielen</button>
+    <button class="btn btn-secondary" onclick="window.location.href='startseite.html'">🏠 Zur Startseite</button>
+  </div>
+
+</div>
+
+<script>
+// ECHTE SONG-DATENBANK mit stabilen Audio-Previews
+const songDatabase = [
+  { 
+    title: "Blinding Lights", 
+    artist: "The Weeknd", 
+    country: "Kanada", 
+    year: "2019", 
+    preview: "https://p.scdn.co/mp3-preview/c873f82f819036987171e2efd2c20f781ea3bc35", 
+    chorus: "https://p.scdn.co/mp3-preview/c873f82f819036987171e2efd2c20f781ea3bc35" 
+  },
+  { 
+    title: "Shape of You", 
+    artist: "Ed Sheeran", 
+    country: "Vereinigtes Königreich", 
+    year: "2017", 
+    preview: "https://p.scdn.co/mp3-preview/7521191288cc5c1f09e86cb9f6487e49755ff8fa", 
+    chorus: "https://p.scdn.co/mp3-preview/7521191288cc5c1f09e86cb9f6487e49755ff8fa" 
+  },
+  { 
+    title: "Wake Me Up", 
+    artist: "Avicii", 
+    country: "Schweden", 
+    year: "2013", 
+    preview: "https://p.scdn.co/mp3-preview/8a83424172f3aa623e86ea11bf3f1be284ea1d91", 
+    chorus: "https://p.scdn.co/mp3-preview/8a83424172f3aa623e86ea11bf3f1be284ea1d91" 
+  },
+  { 
+    title: "Despacito", 
+    artist: "Luis Fonsi", 
+    country: "Puerto Rico", 
+    year: "2017", 
+    preview: "https://p.scdn.co/mp3-preview/82b20296727284f23e7102e1cc789a9be87a55ad", 
+    chorus: "https://p.scdn.co/mp3-preview/82b20296727284f23e7102e1cc789a9be87a55ad" 
+  },
+  { 
+    title: "Flowers", 
+    artist: "Miley Cyrus", 
+    country: "Vereinigte Staaten", 
+    year: "2023", 
+    preview: "https://p.scdn.co/mp3-preview/72224bb2e66da8bc616e4138e647be74a38d1031", 
+    chorus: "https://p.scdn.co/mp3-preview/72224bb2e66da8bc616e4138e647be74a38d1031" 
+  },
+  { 
+    title: "As It Was", 
+    artist: "Harry Styles", 
+    country: "Vereinigtes Königreich", 
+    year: "2022", 
+    preview: "https://p.scdn.co/mp3-preview/1253a6f95ef8fa0389b7b99c1cc151e605d8f630", 
+    chorus: "https://p.scdn.co/mp3-preview/1253a6f95ef8fa0389b7b99c1cc151e605d8f630" 
+  }
+];
+
+let players = [];
+let currentTurnIndex = 0;
+let currentSongIndex = 0;
+let totalRoundsPerPlayer = 3;
+let activeCategory = "title";
+let gameDifficulty = "easy";
+let activeSongsPool = [];
+let currentSong = null;
+let currentAudio = null;
+let timerInterval = null;
+
+// Dynamische Spielernamen-Inputs generieren
+function generatePlayerInputs() {
+  const count = parseInt(document.getElementById("numPlayers").value);
+  const container = document.getElementById("playerNamesContainer");
+  container.innerHTML = "";
+  
+  for (let i = 1; i <= count; i++) {
+    container.innerHTML += `
+      <div style="margin-bottom: 8px;">
+        <input type="text" id="playerName_${i}" placeholder="Spieler ${i} Name" value="Spieler ${i}">
+      </div>
+    `;
+  }
+}
+generatePlayerInputs();
+
+function startGame() {
+  const count = parseInt(document.getElementById("numPlayers").value);
+  players = [];
+  for (let i = 1; i <= count; i++) {
+    const name = document.getElementById(`playerName_${i}`).value.trim() || `Spieler ${i}`;
+    players.push({ name: name, score: 0 });
+  }
+
+  activeCategory = document.getElementById("guessCategory").value;
+  gameDifficulty = document.getElementById("difficulty").value;
+  totalRoundsPerPlayer = parseInt(document.getElementById("songsPerPlayer").value);
+
+  let maxTotal = count * totalRoundsPerPlayer;
+  if (maxTotal > 25) maxTotal = 25;
+  
+  activeSongsPool = [...songDatabase].sort(() => 0.5 - Math.random()).slice(0, maxTotal);
+  
+  currentTurnIndex = 0;
+  currentSongIndex = 0;
+
+  document.getElementById("screen-setup").classList.add("hidden");
+  document.getElementById("screen-game").classList.remove("hidden");
+  
+  loadTurn();
+}
+
+function updateScoreBoard() {
+  const sb = document.getElementById("scoreBoard");
+  sb.innerHTML = players.map(p => `<span><b>${p.name}</b>: ${p.score} Pkt</span>`).join(" | ");
+}
+
+function loadTurn() {
+  if (currentSongIndex >= activeSongsPool.length) {
+    endGame();
+    return;
+  }
+
+  updateScoreBoard();
+  currentSong = activeSongsPool[currentSongIndex];
+  const currentPlayer = players[currentTurnIndex];
+  
+  document.getElementById("playerTurnBadge").textContent = `🎯 ${currentPlayer.name} ist dran!`;
+
+  let catName = "den Titel";
+  if (activeCategory === "artist") catName = "den Interpreten";
+  if (activeCategory === "country") catName = "das Herkunftsland";
+  if (activeCategory === "year") catName = "das Erscheinungsjahr";
+  document.getElementById("categoryPrompt").textContent = `Errate ${catName}!`;
+
+  // Echten Song abspielen
+  if (currentAudio) currentAudio.pause();
+  currentAudio = new Audio(currentSong.preview);
+  currentAudio.play().catch(e => console.log("Audio blockiert:", e));
+
+  let timeLeft = 30;
+  const timerFill = document.getElementById("timerFill");
+  timerFill.style.width = "100%";
+  
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerFill.style.width = (timeLeft / 30 * 100) + "%";
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      if(currentAudio) currentAudio.pause();
+      processAnswer(null);
+    }
+  }, 1000);
+
+  const hardArea = document.getElementById("hardInputArea");
+  const easyArea = document.getElementById("easyInputArea");
+
+  if (gameDifficulty === "hard") {
+    hardArea.classList.remove("hidden");
+    easyArea.classList.add("hidden");
+    document.getElementById("playerTextAnswer").value = "";
+    document.getElementById("playerTextAnswer").focus();
+  } else {
+    hardArea.classList.add("hidden");
+    easyArea.classList.remove("hidden");
+    setupMultipleChoice();
+  }
+}
+
+function setupMultipleChoice() {
+  const easyArea = document.getElementById("easyInputArea");
+  easyArea.innerHTML = "";
+
+  const correctVal = currentSong[activeCategory];
+  
+  let options = [correctVal];
+  while(options.length < 4) {
+    const randomSong = songDatabase[Math.floor(Math.random() * songDatabase.length)];
+    const val = randomSong[activeCategory];
+    if (!options.includes(val)) {
+      options.push(val);
+    }
+  }
+  options.sort(() => 0.5 - Math.random());
+
+  options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "choice-btn";
+    btn.textContent = opt;
+    btn.onclick = () => {
+      clearInterval(timerInterval);
+      if(currentAudio) currentAudio.pause();
+      processAnswer(opt);
+    };
+    easyArea.appendChild(btn);
+  });
+}
+
+function submitAnswer() {
+  clearInterval(timerInterval);
+  if(currentAudio) currentAudio.pause();
+  const val = document.getElementById("playerTextAnswer").value.trim();
+  processAnswer(val);
+}
+
+function processAnswer(givenAnswer) {
+  const currentPlayer = players[currentTurnIndex];
+  const correctVal = currentSong[activeCategory];
+
+  let isCorrect = false;
+  if (givenAnswer !== null) {
+    if (gameDifficulty === "hard") {
+      isCorrect = givenAnswer.toLowerCase() === correctVal.toLowerCase();
+    } else {
+      isCorrect = givenAnswer === correctVal;
+    }
+  }
+
+  if (isCorrect) {
+    currentPlayer.score += 1;
+    document.getElementById("resultTitle").textContent = "🎉 Richtig!";
+    document.getElementById("resultText").innerHTML = `Stark, ${currentPlayer.name}! Das gesuchte Element war <b>${correctVal}</b>.`;
+  } else {
+    document.getElementById("resultTitle").textContent = "❌ Leider falsch!";
+    document.getElementById("resultText").innerHTML = `Schade, ${currentPlayer.name}. Richtig wäre <b>${correctVal}</b> gewesen. (Titel: ${currentSong.title} - ${currentSong.artist})`;
+  }
+
+  if (currentAudio) currentAudio.pause();
+  currentAudio = new Audio(currentSong.chorus);
+  currentAudio.play().catch(e => console.log(e));
+
+  document.getElementById("screen-game").classList.add("hidden");
+  document.getElementById("screen-result").classList.remove("hidden");
+}
+
+function nextTurn() {
+  if (currentAudio) currentAudio.pause();
+  
+  currentSongIndex++;
+  currentTurnIndex = (currentTurnIndex + 1) % players.length;
+
+  document.getElementById("screen-result").classList.add("hidden");
+  document.getElementById("screen-game").classList.remove("hidden");
+
+  loadTurn();
+}
+
+function endGame() {
+  if (currentAudio) currentAudio.pause();
+  document.getElementById("screen-game").classList.add("hidden");
+  document.getElementById("screen-end").classList.remove("hidden");
+
+  let sorted = [...players].sort((a, b) => b.score - a.score);
+  
+  let html = `<h3>👑 Gewinner: <span style="color:#00eaff;">${sorted[0].name}</span> (${sorted[0].score} Punkte)</h3><br><div style="text-align: left; display: inline-block;">`;
+  sorted.forEach((p, index) => {
+    html += `<p>${index + 1}. ${p.name} — <b>${p.score} Punkte</b></p>`;
+  });
+  html += `</div>`;
+
+  document.getElementById("finalScores").innerHTML = html;
+}
+
+function resetToSetup() {
+  if (currentAudio) currentAudio.pause();
+  document.getElementById("screen-end").classList.add("hidden");
+  document.getElementById("screen-setup").classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
