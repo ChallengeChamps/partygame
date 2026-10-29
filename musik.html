@@ -61,7 +61,7 @@ label {
   margin-bottom: 6px;
 }
 
-/* KLAPPLEISTE (SELECT) & INPUTS FIX FÜR LESBARKEIT */
+/* KLAPPLEISTE (SELECT) & INPUTS FIX */
 input[type="number"], input[type="text"], select {
   width: 100%;
   padding: 12px;
@@ -207,9 +207,7 @@ input:focus, select:focus {
       <input type="number" id="numPlayers" min="1" max="6" value="2" onchange="generatePlayerInputs()">
     </div>
 
-    <div class="form-group" id="playerNamesContainer">
-      <!-- Wird per JS befüllt -->
-    </div>
+    <div class="form-group" id="playerNamesContainer"></div>
 
     <div class="form-group">
       <label>Was möchtest du raten?</label>
@@ -254,9 +252,7 @@ input:focus, select:focus {
     </div>
 
     <!-- Multiple Choice für Leicht -->
-    <div id="easyInputArea" class="choice-grid">
-      <!-- Wird per JS befüllt -->
-    </div>
+    <div id="easyInputArea" class="choice-grid"></div>
   </div>
 
   <!-- 3. AUFLÖSUNGS SCREEN -->
@@ -277,57 +273,21 @@ input:focus, select:focus {
 
 </div>
 
+<!-- Unsichtbarer YouTube Player -->
+<div id="youtube-player" style="display:none;"></div>
+
+<!-- YouTube IFrame API Script laden -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
-// ECHTE SONG-DATENBANK mit stabilen Audio-Previews
+// SONG-DATENBANK mit stabilen YouTube-IDs (startet automatisch beim Chorus/Snippet)
 const songDatabase = [
-  { 
-    title: "Blinding Lights", 
-    artist: "The Weeknd", 
-    country: "Kanada", 
-    year: "2019", 
-    preview: "https://p.scdn.co/mp3-preview/c873f82f819036987171e2efd2c20f781ea3bc35", 
-    chorus: "https://p.scdn.co/mp3-preview/c873f82f819036987171e2efd2c20f781ea3bc35" 
-  },
-  { 
-    title: "Shape of You", 
-    artist: "Ed Sheeran", 
-    country: "Vereinigtes Königreich", 
-    year: "2017", 
-    preview: "https://p.scdn.co/mp3-preview/7521191288cc5c1f09e86cb9f6487e49755ff8fa", 
-    chorus: "https://p.scdn.co/mp3-preview/7521191288cc5c1f09e86cb9f6487e49755ff8fa" 
-  },
-  { 
-    title: "Wake Me Up", 
-    artist: "Avicii", 
-    country: "Schweden", 
-    year: "2013", 
-    preview: "https://p.scdn.co/mp3-preview/8a83424172f3aa623e86ea11bf3f1be284ea1d91", 
-    chorus: "https://p.scdn.co/mp3-preview/8a83424172f3aa623e86ea11bf3f1be284ea1d91" 
-  },
-  { 
-    title: "Despacito", 
-    artist: "Luis Fonsi", 
-    country: "Puerto Rico", 
-    year: "2017", 
-    preview: "https://p.scdn.co/mp3-preview/82b20296727284f23e7102e1cc789a9be87a55ad", 
-    chorus: "https://p.scdn.co/mp3-preview/82b20296727284f23e7102e1cc789a9be87a55ad" 
-  },
-  { 
-    title: "Flowers", 
-    artist: "Miley Cyrus", 
-    country: "Vereinigte Staaten", 
-    year: "2023", 
-    preview: "https://p.scdn.co/mp3-preview/72224bb2e66da8bc616e4138e647be74a38d1031", 
-    chorus: "https://p.scdn.co/mp3-preview/72224bb2e66da8bc616e4138e647be74a38d1031" 
-  },
-  { 
-    title: "As It Was", 
-    artist: "Harry Styles", 
-    country: "Vereinigtes Königreich", 
-    year: "2022", 
-    preview: "https://p.scdn.co/mp3-preview/1253a6f95ef8fa0389b7b99c1cc151e605d8f630", 
-    chorus: "https://p.scdn.co/mp3-preview/1253a6f95ef8fa0389b7b99c1cc151e605d8f630" 
-  }
+  { title: "Blinding Lights", artist: "The Weeknd", country: "Kanada", year: "2019", ytId: "4NRXx6U8ABQ", startSec: 40 },
+  { title: "Shape of You", artist: "Ed Sheeran", country: "Vereinigtes Königreich", year: "2017", ytId: "JGwWNGJdvx8", startSec: 20 },
+  { title: "Wake Me Up", artist: "Avicii", country: "Schweden", year: "2013", ytId: "IcrbM1l_BoI", startSec: 35 },
+  { title: "Despacito", artist: "Luis Fonsi", country: "Puerto Rico", year: "2017", ytId: "kJQP7kiw5Fk", startSec: 60 },
+  { title: "Flowers", artist: "Miley Cyrus", country: "Vereinigte Staaten", year: "2023", ytId: "G7KNkCcunDQ", startSec: 45 },
+  { title: "As It Was", artist: "Harry Styles", country: "Vereinigtes Königreich", year: "2022", ytId: "H5v3kku4y6Q", startSec: 15 }
 ];
 
 let players = [];
@@ -338,10 +298,20 @@ let activeCategory = "title";
 let gameDifficulty = "easy";
 let activeSongsPool = [];
 let currentSong = null;
-let currentAudio = null;
 let timerInterval = null;
+let ytPlayer = null;
 
-// Dynamische Spielernamen-Inputs generieren
+// YouTube API Initialisierung
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('youtube-player', {
+    height: '0',
+    width: '0',
+    events: {
+      'onReady': () => console.log("YouTube Player bereit")
+    }
+  });
+}
+
 function generatePlayerInputs() {
   const count = parseInt(document.getElementById("numPlayers").value);
   const container = document.getElementById("playerNamesContainer");
@@ -406,10 +376,14 @@ function loadTurn() {
   if (activeCategory === "year") catName = "das Erscheinungsjahr";
   document.getElementById("categoryPrompt").textContent = `Errate ${catName}!`;
 
-  // Echten Song abspielen
-  if (currentAudio) currentAudio.pause();
-  currentAudio = new Audio(currentSong.preview);
-  currentAudio.play().catch(e => console.log("Audio blockiert:", e));
+  // Song über YouTube abspielen
+  if (ytPlayer && ytPlayer.loadVideoById) {
+    ytPlayer.loadVideoByUrl({
+      mediaContentUrl: `https://www.youtube.com/v/${currentSong.ytId}?version=3`,
+      startSeconds: currentSong.startSec
+    });
+    ytPlayer.playVideo();
+  }
 
   let timeLeft = 30;
   const timerFill = document.getElementById("timerFill");
@@ -421,7 +395,7 @@ function loadTurn() {
     timerFill.style.width = (timeLeft / 30 * 100) + "%";
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      if(currentAudio) currentAudio.pause();
+      if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
       processAnswer(null);
     }
   }, 1000);
@@ -463,7 +437,7 @@ function setupMultipleChoice() {
     btn.textContent = opt;
     btn.onclick = () => {
       clearInterval(timerInterval);
-      if(currentAudio) currentAudio.pause();
+      if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
       processAnswer(opt);
     };
     easyArea.appendChild(btn);
@@ -472,7 +446,7 @@ function setupMultipleChoice() {
 
 function submitAnswer() {
   clearInterval(timerInterval);
-  if(currentAudio) currentAudio.pause();
+  if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
   const val = document.getElementById("playerTextAnswer").value.trim();
   processAnswer(val);
 }
@@ -499,16 +473,21 @@ function processAnswer(givenAnswer) {
     document.getElementById("resultText").innerHTML = `Schade, ${currentPlayer.name}. Richtig wäre <b>${correctVal}</b> gewesen. (Titel: ${currentSong.title} - ${currentSong.artist})`;
   }
 
-  if (currentAudio) currentAudio.pause();
-  currentAudio = new Audio(currentSong.chorus);
-  currentAudio.play().catch(e => console.log(e));
+  // Refrain bei Auflösung abspielen
+  if (ytPlayer && ytPlayer.loadVideoById) {
+    ytPlayer.loadVideoByUrl({
+      mediaContentUrl: `https://www.youtube.com/v/${currentSong.ytId}?version=3`,
+      startSeconds: currentSong.startSec + 15
+    });
+    ytPlayer.playVideo();
+  }
 
   document.getElementById("screen-game").classList.add("hidden");
   document.getElementById("screen-result").classList.remove("hidden");
 }
 
 function nextTurn() {
-  if (currentAudio) currentAudio.pause();
+  if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
   
   currentSongIndex++;
   currentTurnIndex = (currentTurnIndex + 1) % players.length;
@@ -520,7 +499,7 @@ function nextTurn() {
 }
 
 function endGame() {
-  if (currentAudio) currentAudio.pause();
+  if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
   document.getElementById("screen-game").classList.add("hidden");
   document.getElementById("screen-end").classList.remove("hidden");
 
@@ -536,7 +515,7 @@ function endGame() {
 }
 
 function resetToSetup() {
-  if (currentAudio) currentAudio.pause();
+  if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
   document.getElementById("screen-end").classList.add("hidden");
   document.getElementById("screen-setup").classList.remove("hidden");
 }
