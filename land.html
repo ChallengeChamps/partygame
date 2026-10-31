@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Geheimnisvolle Länder – ChallengeChamp</title>
+<title>Geheimnisvolle Länder</title>
 <style>
 /* -------------------- GLOBAL & CHALLENGECHAMP DESIGN -------------------- */
 body {
@@ -186,6 +186,16 @@ input[type="checkbox"] {
   animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* Hinweis Strafe Pop-up Animation */
+@keyframes flashRed {
+  0% { color: #fef08a; transform: scale(1); }
+  50% { color: #ff4d4d; transform: scale(1.1); text-shadow: 0 0 10px rgba(255,77,77,0.8); }
+  100% { color: #fef08a; transform: scale(1); }
+}
+.penalty-anim {
+  animation: flashRed 0.5s ease;
+}
+
 /* Autocomplete Vorschläge */
 .autocomplete-wrapper {
   position: relative;
@@ -266,23 +276,22 @@ input[type="checkbox"] {
       <option value="all">🌟 Alle Themen</option>
       <option value="geography">🏔️ Geografie (leicht)</option>
       <option value="schwer">🏔️ Geografie (schwer)</option>
-      <option value="funfacts"> ⚽ Sport</option>
     </select>
   </div>
 
   <div class="form-group">
     <label>Spielmodus:</label>
     <select id="select-mode" onchange="toggleTimeInput()">
-      <option value="timed">⏱️ Mit Zeitlimit (2 Minuten & Highscore)</option>
-      <option value="infinite">♾️ Ohne Zeitlimit (Entspannt spielen)</option>
+      <option value="timed">⏱️ Mit Zeitlimit (Highscore)</option>
+      <option value="infinite">♾️ Ohne Zeitlimit</option>
     </select>
   </div>
 
   <div class="form-group" id="group-timelimit">
     <label>Dauer (Sekunden):</label>
     <select id="select-duration">
-      <option value="120">2 Minuten (120 Sek)</option>
       <option value="60">1 Minute (60 Sek)</option>
+      <option value="120">2 Minuten (120 Sek)</option>
       <option value="180">3 Minuten (180 Sek)</option>
     </select>
   </div>
@@ -382,7 +391,7 @@ const countriesDatabase = [
       "💡 Höchster Berg: Zugspitze."
     ]
   },
- {
+  {
     name: "Österreich", theme: "geography",
     facts: [
       "Einwohner: ca. 9 Millionen",
@@ -423,7 +432,7 @@ const countriesDatabase = [
       "Längster Eisenbahntunnel der Erde",
       "Hohe politische Neutralität",
       "Geringe Arbeitslosenquote und hohe Lebensqualität",
-      "Höchste Dichte an öffnetlichen Verkehr"
+      "Höchste Dichte an öffentlichem Verkehr"
     ],
     clickableTips: [
       "💡 Bekannt für direkte Demokratie",
@@ -479,7 +488,7 @@ const countriesDatabase = [
       "💡 Liegt im Süden Europas",
       "💡 Die Hauptstadt ist Rom",
       "💡 Umringt von Mittelmeer und Alpen",
-      "💡 Die Lagunenstadt Venedig mit Kanälen",
+      "💡 Die Lagunenstadt Venedig mit Kanälen"
     ]
   },
   {
@@ -534,7 +543,7 @@ const countriesDatabase = [
     ]
   },
   {
-    name: "USA", theme: "geography",
+    name: "Vereinigte Staaten", theme: "geography",
     facts: [
       "Einwohner: ca. 335 Millionen",
       "BIP: über 27 Billionen $",
@@ -588,7 +597,7 @@ const countriesDatabase = [
     facts: [
       "Einwohner: ca. 215 Millionen",
       "BIP: rund 2,1 Billionen US-Dollar",
-      "Offizielle Währung: Real (BRL)",
+      "Offizielle Währung: Real",
       "Größtes Land in Südamerika",
       "Einzige portugiesischsprachige Nation in Amerika",
       "Beherbergt den Großteil des Amazonas-Regenwaldes",
@@ -638,7 +647,7 @@ const countriesDatabase = [
     facts: [
       "Einwohner: ca. 26 Millionen",
       "BIP: rund 1,7 Billionen US-Dollar",
-      "Offizielle Währung: ... Dollar (AUD)",
+      "Offizielle Währung: ... Dollar",
       "Größtes Korallenriff der Erde",
       "Größte Sandinsel der Welt",
       "Höchste Konzentration an Gifttieren",
@@ -663,7 +672,7 @@ const countriesDatabase = [
     facts: [
       "Einwohner: ca. 1,4 Milliarden",
       "BIP: über 17 Billionen US-Dollar",
-      "Offizielle Währung: Renminbi / Yuan (CNY)",
+      "Offizielle Währung: Renminbi / Yuan",
       "Größtes Hochgeschwindigkeits-Schienennetz",
       "Regierung durch die Kommunistische Partei",
       "Historische Großmacht mit jahrtausendealter Kultur",
@@ -672,7 +681,7 @@ const countriesDatabase = [
       "Schnellstes Wirtschaftswachstum der letzten Jahrzehnte",
       "Heimat des Großen Pandas",
       "Erfindungen wie Papier, Kompass und Schießpulver",
-      "Längster Bauwerk der Menscheit",
+      "Längstes Bauwerk der Menschheit",
       "Verwendung von Zeichen statt Alphabet",
       "Gigantische Staudämme"
     ],
@@ -716,13 +725,13 @@ const countriesDatabase = [
       "Offizielle Währung: ... Peso",
       "Größtes spanischsprachiges Land der Welt",
       "Hauptstadt auf einem See erbaut",
-      "Artenreichstes Reptillien- und Kakteenland",
+      "Artenreichstes Reptilien- und Kakteenland",
       "Ursprungsland von Schokolade, Mais und Chilis",
       "Weltweite Heimat des Tequila",
       "Farbenfroher Tag der Toten",
       "UNESCO-Weltkulturerbe für die Landesküche",
       "Traumhafte Urlaubsstrände an Pazifik und Karibik",
-      "Größte Pyramide der welt nach Volumen",
+      "Größte Pyramide der Welt nach Volumen",
       "Musikalische Tradition der Mariachi-Bands",
       "Direkter Nachbar der USA"
     ],
@@ -771,10 +780,10 @@ const countriesDatabase = [
       "Ausgedehnte Graslandschaften mit Rinderzucht",
       "Spektakuläre Iguazú-Wasserfälle im Norden",
       "Höchster Vulkan der Erde",
-      "``Paris Südamerikas``",
+      "„Paris Südamerikas“",
       "Traditioneller Matetee-Konsum",
       "Spanisch als Amtssprache",
-      "Höchster Rindfleischkosnum pro Kopf"
+      "Höchster Rindfleischkonsum pro Kopf"
     ],
     clickableTips: [
       "💡 Liegt im Süden Südamerikas",
@@ -790,11 +799,11 @@ const countriesDatabase = [
       "BIP: rund 400 Milliarden US-Dollar",
       "Offizielle Währung: ... Pfund",
       "Verbindet Nordafrika mit dem Nahen Osten",
-      "Ältester zentarler Staat der Erde",
-      "Größter Temeplkomplex der Antike",
+      "Ältester zentraler Staat der Erde",
+      "Größter Tempelkomplex der Antike",
       "Weltberühmte Pyramiden",
       "Längste Tafel der Welt",
-      "Wichigste künstliche Wasserstraße",
+      "Wichtigste künstliche Wasserstraße",
       "Beliebte Tauchgebiete am Roten Meer",
       "Heißes Wüstenklima mit geringem Niederschlag",
       "Amtssprache ist Arabisch",
@@ -833,7 +842,7 @@ const countriesDatabase = [
       "💡 Umgeben von zahlreichen Inseln"
     ]
   },
-{
+  {
     name: "Kroatien", theme: "schwer",
     facts: [
       "Küstengebiete an der Adria von über tausend Inseln gesäumt",
@@ -1208,7 +1217,7 @@ const countriesDatabase = [
       "💡 Größte Insel der Antillen"
     ]
   },
-{
+  {
     name: "Südkorea", theme: "schwer",
     facts: [
       "Wirtschaftswunder machte das Land zur Hightech-Macht",
@@ -1308,7 +1317,7 @@ const countriesDatabase = [
       "💡 Blaue Flagge mit gelbem Kreuz"
     ]
   },
-{
+  {
     name: "Bhutan", theme: "schwer",
     facts: [
       "Misst Bruttonationalglück statt BIP",
@@ -1368,7 +1377,7 @@ const countriesDatabase = [
       "Torugart-Pass verbindet mit Zentralasien",
       "Nomadenkultur in weiten Hochebenen",
       "Reißende Gletscherflüsse in tiefen Schluchten",
-      "Zufluchtsort für seltene Schneelleoparden",
+      "Zufluchtsort für seltene Schneeleoparden",
       "Hauptstadt als ehemaliger Militärposten",
       "Pferdefleisch und vergorene Stutenmilch als Speise",
       "Tian-Shan-Gebirge als Himmelsberge",
@@ -1433,7 +1442,7 @@ const countriesDatabase = [
       "💡 Tropisches Granit-Paradies"
     ]
   },
-   {
+  {
     name: "Lesotho", theme: "schwer",
     facts: [
       "Komplett über 1.000 Meter Höhe gelegen",
@@ -1442,7 +1451,7 @@ const countriesDatabase = [
       "Traditionelle Wolldecke als Nationalumhang",
       "Regelmäßige Skigebiete im südafrikanischen Winter",
       "Drakensberge bilden steile natürliche Felswand",
-      "Wasserkraft und Quellwasser als Hautexport",
+      "Wasserkraft und Quellwasser als Hauptexport",
       "Hauptstadt liegt auf weitem Hochplateau",
       "Ponys als wichtigstes Fortbewegungsmittel",
       "Monarchie mit tief verwurzelter Tradition",
@@ -1496,7 +1505,7 @@ const countriesDatabase = [
       "Historische Steinhäuser in abgelegenen Dörfern",
       "Durch Tunnelverbindungen durchbrachen die Berge",
       "Keine eigene Armee zur Landesverteidigung",
-      "Hauptstadt liegt in engem Bergbeset",
+      "Hauptstadt liegt in engem Bergbecken",
       "Klettersteige durchziehen Granitgipfel",
       "Einst nur Viehzucht und Tabakanbau",
       "Gletschergeformte, tiefe Schluchten"
@@ -1558,7 +1567,7 @@ const countriesDatabase = [
       "💡 Heimat der historischen Wikinger"
     ]
   },
-   {
+  {
     name: "Polen", theme: "schwer",
     facts: [
       "Übergangsgebiet zwischen westeuropäischem Tiefland und osteuropäischen Ebenen",
@@ -1809,9 +1818,12 @@ function startGame() {
     timeLeft = gameConfig.duration;
     document.getElementById("game-timer-display").classList.remove("hidden");
     document.getElementById("game-score-display").classList.remove("hidden");
+    document.getElementById("game-timer-display").textContent = `⏱️ ${timeLeft}s`;
     document.getElementById("game-score-display").textContent = `⭐ Punkte: 0`;
     
+    if (timerInterval) clearInterval(timerInterval);
     timerInterval = setInterval(() => {
+      if (!isPlaying) return;
       timeLeft--;
       document.getElementById("game-timer-display").textContent = `⏱️ ${timeLeft}s`;
       if (timeLeft <= 0) finishGame();
@@ -1835,19 +1847,15 @@ function loadNextRound() {
   revealedTipsCount = 0;
 
   let shuffledFacts = [...currentCountry.facts].sort(() => Math.random() - 0.5);
-    currentFacts = shuffledFacts.slice(0, 4);
+  currentFacts = shuffledFacts.slice(0, 4);
 
-  // 4 Fakten jeweils als einzelne ovale Pillen anzeigen
   let factsHtml = "";
   currentFacts.forEach((fact) => {
     factsHtml += `<div class="fact-pill">📌 ${fact}</div>`;
   });
   document.getElementById("current-facts-container").innerHTML = factsHtml;
-
-  // Hinweise-Container (für angeklickte Tipps) zunächst leer machen
   document.getElementById("current-hints-container").innerHTML = "";
 
-  // Tipp-Button steuern
   const tipBtn = document.getElementById("btn-get-tip");
   if (gameConfig.hintsEnabled && currentCountry.clickableTips && currentCountry.clickableTips.length > 0) {
     tipBtn.classList.remove("hidden");
@@ -1871,6 +1879,21 @@ function revealTip() {
   hintPill.className = "hint-pill";
   hintPill.textContent = tipText;
   document.getElementById("current-hints-container").appendChild(hintPill);
+
+  // Wenn im Zeitmodus: 5 Sekunden abziehen und visuelle Straf-Animation triggern
+  if (gameConfig.mode === "timed") {
+    timeLeft = Math.max(0, timeLeft - 5);
+    document.getElementById("game-timer-display").textContent = `⏱️ ${timeLeft}s`;
+    document.getElementById("game-timer-display").classList.add("penalty-anim");
+    setTimeout(() => {
+      document.getElementById("game-timer-display").classList.remove("penalty-anim");
+    }, 500);
+
+    if (timeLeft <= 0) {
+      finishGame();
+      return;
+    }
+  }
 
   const left = currentCountry.clickableTips.length - revealedTipsCount;
   document.getElementById("tips-left").textContent = left;
@@ -1932,11 +1955,15 @@ function submitAnswer() {
       showFeedback(false);
     }
   } else {
+    if (isCorrect) score++;
     showFeedback(isCorrect);
   }
 }
 
 function showFeedback(isCorrect) {
+  // Zeit anhalten, während Feedback angezeigt wird
+  isPlaying = false;
+
   document.getElementById("screen-game").classList.add("hidden");
   document.getElementById("screen-feedback").classList.remove("hidden");
 
@@ -1945,7 +1972,7 @@ function showFeedback(isCorrect) {
   const nameElem = document.getElementById("feedback-country-name");
   const textElem = document.getElementById("feedback-text");
 
-let flagEmoji = "🌍";
+  let flagEmoji = "🌍";
   if (currentCountry.name === "Deutschland") flagEmoji = "🇩🇪";
   else if (currentCountry.name === "Österreich") flagEmoji = "🇦🇹";
   else if (currentCountry.name === "Schweiz") flagEmoji = "🇨🇭";
@@ -1967,6 +1994,48 @@ let flagEmoji = "🌍";
   else if (currentCountry.name === "Griechenland") flagEmoji = "🇬🇷";
   else if (currentCountry.name === "Schweden") flagEmoji = "🇸🇪";
   else if (currentCountry.name === "Neuseeland") flagEmoji = "🇳🇿";
+  else if (currentCountry.name === "Bhutan") flagEmoji = "🇧🇹";
+  else if (currentCountry.name === "San Marino") flagEmoji = "🇸🇲";
+  else if (currentCountry.name === "Kirgisistan") flagEmoji = "🇰🇬";
+  else if (currentCountry.name === "Vanuatu") flagEmoji = "🇻🇺";
+  else if (currentCountry.name === "Liechtenstein") flagEmoji = "🇱🇮";
+  else if (currentCountry.name === "Seychellen") flagEmoji = "🇸🇨";
+  else if (currentCountry.name === "Lesotho") flagEmoji = "🇱🇸";
+  else if (currentCountry.name === "Monaco") flagEmoji = "🇲🇨";
+  else if (currentCountry.name === "Andorra") flagEmoji = "🇦🇩";
+  else if (currentCountry.name === "Dschibuti") flagEmoji = "🇩🇯";
+  else if (currentCountry.name === "Tuvalu") flagEmoji = "🇹🇻";
+  else if (currentCountry.name === "Usbekistan") flagEmoji = "🇺🇿";
+  else if (currentCountry.name === "Brunei") flagEmoji = "🇧🇳";
+  else if (currentCountry.name === "Island") flagEmoji = "🇮🇸";
+  else if (currentCountry.name === "Norwegen") flagEmoji = "🇳🇴";
+  else if (currentCountry.name === "Polen") flagEmoji = "🇵🇱";
+  else if (currentCountry.name === "Niederlande") flagEmoji = "🇳🇱";
+  else if (currentCountry.name === "Portugal") flagEmoji = "🇵🇹";
+  else if (currentCountry.name === "Irland") flagEmoji = "🇮🇪";
+  else if (currentCountry.name === "Finnland") flagEmoji = "🇫🇮";
+  else if (currentCountry.name === "Tschechien") flagEmoji = "🇨🇿";
+  else if (currentCountry.name === "Thailand") flagEmoji = "🇹🇭";
+  else if (currentCountry.name === "Südkorea") flagEmoji = "🇰🇷";
+  else if (currentCountry.name === "Vietnam") flagEmoji = "🇻🇳";
+  else if (currentCountry.name === "Dänemark") flagEmoji = "🇩🇰";
+  else if (currentCountry.name === "Belgien") flagEmoji = "🇧🇪";
+  else if (currentCountry.name === "Kroatien") flagEmoji = "🇭🇷";
+  else if (currentCountry.name === "Ungarn") flagEmoji = "🇭🇺";
+  else if (currentCountry.name === "Rumänien") flagEmoji = "🇷🇴";
+  else if (currentCountry.name === "Marokko") flagEmoji = "🇲🇦";
+  else if (currentCountry.name === "Kenia") flagEmoji = "🇰🇪";
+  else if (currentCountry.name === "Peru") flagEmoji = "🇵🇪";
+  else if (currentCountry.name === "Kolumbien") flagEmoji = "🇨🇴";
+  else if (currentCountry.name === "Philippinen") flagEmoji = "🇵🇭";
+  else if (currentCountry.name === "Malaysia") flagEmoji = "🇲🇾";
+  else if (currentCountry.name === "Pakistan") flagEmoji = "🇵🇰";
+  else if (currentCountry.name === "Indonesien") flagEmoji = "🇮🇩";
+  else if (currentCountry.name === "Saudi-Arabien") flagEmoji = "🇸🇦";
+  else if (currentCountry.name === "Iran") flagEmoji = "🇮🇷";
+  else if (currentCountry.name === "Nigeria") flagEmoji = "🇳🇬";
+  else if (currentCountry.name === "Kuba") flagEmoji = "🇨🇺";
+  else if (currentCountry.name === "Chile") flagEmoji = "🇨🇱";
 
   flagElem.textContent = flagEmoji;
   nameElem.textContent = currentCountry.name;
@@ -1988,6 +2057,8 @@ function nextRound() {
     finishGame();
     return;
   }
+  // Spiel wieder fortsetzen / Zeit weiterlaufen lassen
+  isPlaying = true;
   document.getElementById("screen-game").classList.remove("hidden");
   loadNextRound();
 }
@@ -1995,11 +2066,7 @@ function nextRound() {
 function endGame() {
   if (timerInterval) clearInterval(timerInterval);
   isPlaying = false;
-  if (gameConfig.mode === "timed") {
-    finishGame();
-  } else {
-    resetToHome();
-  }
+  finishGame();
 }
 
 function finishGame() {
@@ -2021,7 +2088,7 @@ function finishGame() {
       document.getElementById("final-score-label").textContent = "Richtig erratene Länder";
     }
   } else {
-    document.getElementById("final-score-label").textContent = "Beendetes Endlos-Spiel";
+    document.getElementById("final-score-label").textContent = "Beendetes Endlos-Spiel (Zählt nicht für Highscore)";
   }
   updateHighscoreDisplay();
 }
