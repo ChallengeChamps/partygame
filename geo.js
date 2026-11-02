@@ -315,7 +315,7 @@ const countriesDatabase = {
         { name: "🇺🇸 New York", cleanName: "New York", continent: "Nordamerika", pop: "18,9 Mio. Einw.", capital: "USA" },
         { name: "🇵🇰 Karatschi", cleanName: "Karatschi", continent: "Asien", pop: "17,6 Mio. Einw.", capital: "Pakistan" },
         { name: "🇨🇳 Chongqing", cleanName: "Chongqing", continent: "Asien", pop: "17,4 Mio. Einw.", capital: "China" },
-        { name: "🇹🇷 Istanbul", cleanName: "Istanbul", continent: "Europa/Asien", pop: "15,8 Mio. Einw.", capital: "Türkei" },
+        { name: "🇹🇷 Istanbul", cleanName: "Istanbul", continent: "Europa", pop: "15,8 Mio. Einw.", capital: "Türkei" },
         { name: "🇦🇷 Buenos Aires", cleanName: "Buenos Aires", continent: "Südamerika", pop: "15,6 Mio. Einw.", capital: "Argentinien" },
         { name: "🇮🇳 Kalkutta", cleanName: "Kalkutta", continent: "Asien", pop: "15,5 Mio. Einw.", capital: "Indien" },
         { name: "🇵🇭 Manila", cleanName: "Manila", continent: "Asien", pop: "14,4 Mio. Einw.", capital: "Philippinen" },
@@ -337,7 +337,7 @@ countriesDatabase.top15_olympics = [
     { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "über 500 Medaillen" },
     { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "über 500 Medaillen" },
     { name: "🇭🇺 Ungarn", cleanName: "Ungarn", continent: "Europa", customVal: "über 500 Medaillen" },
-    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "über 600 Medaillen" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "über 600 Medaillen" },
     { name: "🇳🇱 Niederlande", cleanName: "Niederlande", continent: "Europa", customVal: "über 350 Medaillen" },
     { name: "🇷🇴 Rumänien", cleanName: "Rumänien", continent: "Europa", customVal: "über 300 Medaillen" },
     { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "über 350 Medaillen" }
@@ -362,8 +362,8 @@ countriesDatabase.top15_holidays = [
 ];
 
 countriesDatabase.transcontinental_countries = [
-    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "Europa & Asien" },
-    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa / Asien", customVal: "Europa & Asien" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "Europa & Asien" },
+    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa", customVal: "Europa & Asien" },
     { name: "🇰🇿 Kasachstan", cleanName: "Kasachstan", continent: "Europa / Asien", customVal: "Europa & Asien" },
     { name: "🇪🇬 Ägypten", cleanName: "Ägypten", continent: "Afrika / Asien", customVal: "Afrika & Asien" },
     { name: "🇵🇦 Panama", cleanName: "Panama", continent: "Nordamerika / Südamerika", customVal: "Nordamerika & Südamerika" }
@@ -376,7 +376,7 @@ countriesDatabase.enclaved_countries = [
 ];
 
 countriesDatabase.countries_in_space = [
-    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "Juri Gagarin" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "Juri Gagarin" },
     { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "Alan Shepard" },
     { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "Yang Liwei" },
     { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "Sigmund Jähn / Ulf Merbold" },
@@ -420,7 +420,7 @@ countriesDatabase.countries_in_space = [
     { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "Quotengast / Privat" },
     { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "Pedro Duque" },
     { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "Christer Fuglesang" },
-    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Asien", customVal: "Alper Gezeravcı" },
+    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa", customVal: "Alper Gezeravcı" },
     { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "Christer Fuglesang" },
     { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "Privatflug" },
     { name: "🇦🇿 Aserbaidschan", cleanName: "Aserbaidschan", continent: "Asien", customVal: "Musad Israpilov (Sowjet-Kontext)" },
@@ -465,7 +465,7 @@ countriesDatabase.top15_snake_bites = [
 
 countriesDatabase.european_non_latin_alphabet = [
     { name: "🇬🇷 Griechenland", cleanName: "Griechenland", continent: "Europa", customVal: "Griechisches Alphabet" },
-    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "Kyrillisches Alphabet" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "Kyrillisches Alphabet" },
     { name: "🇧🇬 Bulgarien", cleanName: "Bulgarien", continent: "Europa", customVal: "Kyrillisches Alphabet" },
     { name: "🇷🇸 Serbien", cleanName: "Serbien", continent: "Europa", customVal: "Kyrillisches Alphabet (auch Latein)" },
     { name: "🇧🇾 Belarus", cleanName: "Belarus", continent: "Europa", customVal: "Kyrillisches Alphabet" },
@@ -533,7 +533,7 @@ countriesDatabase.top15_poorest_wealth = [
 
 countriesDatabase.top15_coldest_countries = [
     { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "-5.3 °C Durchschnitt" },
-    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "-5.1 °C Durchschnitt" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "-5.1 °C Durchschnitt" },
     { name: "🇲🇳 Mongolei", cleanName: "Mongolei", continent: "Asien", customVal: "-0.7 °C Durchschnitt" },
     { name: "🇳🇴 Norwegen", cleanName: "Norwegen", continent: "Europa", customVal: "1.5 °C Durchschnitt" },
     { name: "🇫🇮 Finnland", cleanName: "Finnland", continent: "Europa", customVal: "1.7 °C Durchschnitt" },
@@ -606,7 +606,7 @@ countriesDatabase.top15_newest_countries = [
     { name: "🇱🇹 Litauen", cleanName: "Litauen", continent: "Europa", customVal: "Entstanden 1991" }
 ];
 countriesDatabase.top15_area_high = [
-    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "17.098.242 km²" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "17.098.242 km²" },
     { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "9.984.670 km²" },
     { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "9.596.961 km²" },
     { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "9.833.517 km²" },
@@ -667,7 +667,7 @@ countriesDatabase.top15_temp_high = [
 
 countriesDatabase.top15_temp_low = [
     { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "-4.0 °C" },
-    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "-3.8 °C" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "-3.8 °C" },
     { name: "🇲🇳 Mongolei", cleanName: "Mongolei", continent: "Asien", customVal: "1.1 °C" },
     { name: "🇮🇸 Island", cleanName: "Island", continent: "Europa", customVal: "1.9 °C" },
     { name: "🇳🇴 Norwegen", cleanName: "Norwegen", continent: "Europa", customVal: "2.2 °C" },
@@ -832,13 +832,13 @@ countriesDatabase.top15_military = [
     { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "ca. 1,45 Mio. Soldaten" },
     { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "ca. 1,35 Mio. Soldaten" },
     { name: "🇰🇵 Nordkorea", cleanName: "Nordkorea", continent: "Asien", customVal: "ca. 1,28 Mio. Soldaten" },
-    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "ca. 1,15 Mio. Soldaten" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "ca. 1,15 Mio. Soldaten" },
     { name: "🇵🇰 Pakistan", cleanName: "Pakistan", continent: "Asien", customVal: "ca. 650 Tsd. Soldaten" },
     { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "ca. 550 Tsd. Soldaten" },
     { name: "🇮🇷 Iran", cleanName: "Iran", continent: "Asien", customVal: "ca. 520 Tsd. Soldaten" },
     { name: "🇻🇳 Vietnam", cleanName: "Vietnam", continent: "Asien", customVal: "ca. 470 Tsd. Soldaten" },
     { name: "🇪🇬 Ägypten", cleanName: "Ägypten", continent: "Afrika", customVal: "ca. 450 Tsd. Soldaten" },
-    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa / Asien", customVal: "ca. 355 Tsd. Soldaten" },
+    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa", customVal: "ca. 355 Tsd. Soldaten" },
     { name: "🇲🇲 Myanmar", cleanName: "Myanmar", continent: "Asien", customVal: "ca. 350 Tsd. Soldaten" },
     { name: "🇨🇴 Kolumbien", cleanName: "Kolumbien", continent: "Südamerika", customVal: "ca. 290 Tsd. Soldaten" },
     { name: "🇹🇼 Taiwan", cleanName: "Taiwan", continent: "Asien", customVal: "ca. 170 Tsd. Soldaten" },
@@ -901,7 +901,7 @@ countriesDatabase.top15_elevation_high = [
 
 countriesDatabase.top15_timezones = [
     { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa / Übersee", customVal: "12 Zeitzonen" },
-    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "11 Zeitzonen" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "11 Zeitzonen" },
     { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "11 Zeitzonen" },
     { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "9 Zeitzonen" },
     { name: "🇬🇧 Vereinigtes Königreich / Großbritannien", cleanName: "Vereinigtes Königreich / Großbritannien", continent: "Europa", customVal: "9 Zeitzonen" },
@@ -919,12 +919,12 @@ countriesDatabase.top15_timezones = [
 
 countriesDatabase.top15_borders = [
     { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "14 Nachbarn" },
-    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "14 Nachbarn" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "14 Nachbarn" },
     { name: "🇧🇷 Brasilien", cleanName: "Brasilien", continent: "Südamerika", customVal: "10 Nachbarn" },
     { name: "🇩🇿 Algerien", cleanName: "Algerien", continent: "Afrika", customVal: "7 Nachbarn" },
     { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "9 Nachbarn" },
     { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "9 Nachbarn" },
-    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa / Asien", customVal: "8 Nachbarn" },
+    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa", customVal: "8 Nachbarn" },
     { name: "🇸🇦 Saudi-Arabien", cleanName: "Saudi-Arabien", continent: "Asien", customVal: "7 Nachbarn" },
     { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "6 Nachbarn" },
     { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "8 Nachbarn" },
@@ -993,7 +993,7 @@ countriesDatabase.top15_coastline = [
     { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "202.080 km" },
     { name: "🇳🇴 Norwegen", cleanName: "Norwegen", continent: "Europa", customVal: "101.450 km" },
     { name: "🇮🇩 Indonesien", cleanName: "Indonesien", continent: "Asien", customVal: "54.716 km" },
-    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "37.653 km" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "37.653 km" },
     { name: "🇵🇭 Philippinen", cleanName: "Philippinen", continent: "Asien", customVal: "36.289 km" },
     { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "29.751 km" },
     { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "25.760 km" },
@@ -1167,6 +1167,7 @@ let timerUnlimited = false;
 let gameActive = false;
 let activeSubGameTitle = "";
 let currentInfoType = "pop";
+let currentSubGameId = ""; // <--- HIER HINZUFÜGEN
 
 window.onload = function() {
     updateSubGames();
@@ -1280,10 +1281,10 @@ function startGame() {
 
     const subGameObj = subGamesData[theme].find(s => s.id === subGameId);
     activeSubGameTitle = subGameObj ? subGameObj.name : "Quiz";
-    currentInfoType = subGameObj ? subGameObj.infoType : "pop";
+  currentInfoType = subGameObj ? subGameObj.infoType : "pop";
+  currentSubGameId = subGameId; // <--- HIER HINZUFÜGEN
 
-    currentGameData = JSON.parse(JSON.stringify(countriesDatabase[subGameId] || countriesDatabase.all_countries));
-    foundCountries.clear();
+  currentGameData = JSON.parse(JSON.stringify(countriesDatabase[subGameId] || countriesDatabase.all_countries));
 
     if (livesMode === '3') {
         livesEnabled = true;
@@ -1375,7 +1376,12 @@ function renderGameGrid() {
         items.forEach(c => {
             const isFound = foundCountries.has(c.cleanName);
             const detailText = getItemDetail(c);
-            let displayText = isFound ? `${c.name} <span class="text-xs opacity-75 font-normal">(${detailText})</span>` : '••••••••••••';
+            
+            // --- NEU: Platzierung ermitteln ---
+            const rank = currentGameData.findIndex(item => item.cleanName === c.cleanName) + 1;
+            const rankHtml = (currentSubGameId.startsWith('top15') && rank > 0) ? ` <span class="text-emerald-400 font-bold">#${rank}</span>` : '';
+
+            let displayText = isFound ? `${c.name} <span class="text-xs opacity-75 font-normal">(${detailText})</span>${rankHtml}` : '••••••••••••';
             
             listHtml += `
                 <div id="item-${sanitizeId(c.cleanName)}" class="px-3 py-2 rounded-xl text-sm font-medium flex items-center justify-between border ${isFound ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300' : 'bg-slate-900/50 border-white/5 text-slate-500'} transition-all">
@@ -1390,7 +1396,6 @@ function renderGameGrid() {
         container.appendChild(card);
     }
 }
-
 function handleInput(e) {
     if (!gameActive) return;
     const val = e.target.value.trim().toLowerCase();
@@ -1520,8 +1525,13 @@ function updateGameUIAfterCorrect(cleanName) {
     const el = document.getElementById(elId);
     if (el) {
         const detailText = getItemDetail(itemObj);
+        
+        // --- NEU: Platzierung beim Aufdecken ---
+        const rank = currentGameData.findIndex(item => item.cleanName === cleanName) + 1;
+        const rankHtml = (currentSubGameId.startsWith('top15') && rank > 0) ? ` <span class="text-emerald-400 font-bold">#${rank}</span>` : '';
+        
         el.className = 'px-3 py-2 rounded-xl text-sm font-medium flex items-center justify-between border bg-emerald-500/15 border-emerald-500/30 text-emerald-300 transition-all scale-[1.02]';
-        el.innerHTML = `<span>${itemObj.name} <span class="text-xs opacity-75 font-normal">(${detailText})</span></span> <i class="fa-solid fa-check text-emerald-400 text-xs"></i>`;
+        el.innerHTML = `<span>${itemObj.name} <span class="text-xs opacity-75 font-normal">(${detailText})</span>${rankHtml}</span> <i class="fa-solid fa-check text-emerald-400 text-xs"></i>`;
         setTimeout(() => el.classList.remove('scale-[1.02]'), 300);
     }
 
@@ -1538,7 +1548,6 @@ function updateGameUIAfterCorrect(cleanName) {
         counterEl.textContent = `${foundCount} / ${groupItems.length}`;
     }
 }
-
 function updateScoreDisplay() {
     document.getElementById('score-display').textContent = `${foundCountries.size} / ${currentGameData.length}`;
     document.getElementById('current-match-count').textContent = `${foundCountries.size} von ${currentGameData.length} gefunden`;
@@ -1627,9 +1636,14 @@ function renderEndBreakdown() {
         items.forEach(c => {
             const isFound = foundCountries.has(c.cleanName);
             const detailText = getItemDetail(c);
+            
+            // --- NEU: Platzierung in der Endansicht ---
+            const rank = currentGameData.findIndex(item => item.cleanName === c.cleanName) + 1;
+            const rankHtml = (currentSubGameId.startsWith('top15') && rank > 0) ? ` <span class="text-emerald-400 font-bold">#${rank}</span>` : '';
+
             listHtml += `
                 <div class="px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between border ${isFound ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300' : 'bg-rose-500/15 border-rose-500/30 text-rose-300'}">
-                    <span>${c.name} <span class="opacity-75 font-normal">(${detailText})</span></span>
+                    <span>${c.name} <span class="opacity-75 font-normal">(${detailText})</span>${rankHtml}</span>
                     ${isFound ? '<i class="fa-solid fa-check text-emerald-400"></i>' : '<i class="fa-solid fa-xmark text-rose-400"></i>'}
                 </div>
             `;
@@ -1640,7 +1654,6 @@ function renderEndBreakdown() {
         container.appendChild(card);
     }
 }
-
 function goToHome() {
     if (timerInterval) clearInterval(timerInterval);
     gameActive = false;
