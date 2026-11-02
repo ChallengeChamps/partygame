@@ -1,7 +1,15 @@
 const subGamesData = {
     geography: [
         { id: 'all_countries', name: 'Alle Länder der Erde', count: 197, group: 'Hauptspiele', infoType: 'pop' },
-        { id: 'top_cities', name: 'Städte mit über 3 Mio. Einwohnern', count: 20, group: 'Städte & Metropolen', infoType: 'pop' },
+{ id: 'countries_in_space', name: 'Länder, die bereits eine Person im All hatten', count: 50, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Staaten, deren Bürger (Astronauten/Kosmonauten) bereits im Weltraum waren (inkl. Name einer Person als Lösung).' },
+        { id: 'top15_animal_species', name: 'Top 15 Länder mit den meisten Tierarten', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit der weltweit größten Biodiversität an Wirbeltieren und Insekten.' },
+        { id: 'top15_snake_bites', name: 'Top 15 Länder mit den meisten tödlichen Schlangenbissen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit den meisten Todesfällen durch Schlangenbisse pro Jahr.' },
+        { id: 'european_non_latin_alphabet', name: 'Europäische Länder ohne lateinisches Alphabet', count: 7, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Europäische Staaten, die standardmäßig ein anderes Alphabet (z.B. Kyrillisch oder Griechisch) nutzen.' },
+        { id: 'countries_mountain_6000m', name: 'Länder mit einem Berg über 6000 Meter', count: 15, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Staaten, auf deren Gebiet sich mindestens ein Berg mit über 6.000 Metern Höhe befindet.' },
+        { id: 'top15_richest_wealth', name: 'Top 15 reichste Länder (Durchschnittsvermögen)', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit dem höchsten durchschnittlichen Vermögen pro erwachsener Person.' },
+        { id: 'top15_poorest_wealth', name: 'Top 15 ärmste Länder (Durchschnittsvermögen)', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit dem niedrigsten durchschnittlichen Vermögen pro erwachsener Person.' },
+        { id: 'top15_coldest_countries', name: 'Kälteste Länder der Welt (Durchschnittstemperatur)', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die im Landesdurchschnitt kältesten Staaten der Erde.' },
+        { id: 'top15_warmest_countries', name: 'Wärmste Länder der Welt (Durchschnittstemperatur)', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die im Landesdurchschnitt wärmsten Staaten der Erde.' },
         
         { id: 'europe_countries', name: 'Alle Länder Europas', count: 47, group: 'Kontinente', infoType: 'pop' },
         { id: 'asien_countries', name: 'Alle Länder Asiens', count: 47, group: 'Kontinente', infoType: 'pop' },
@@ -10,12 +18,12 @@ const subGamesData = {
         { id: 'ozeanien_countries', name: 'Alle Länder Ozeaniens', count: 14, group: 'Kontinente', infoType: 'pop' },
 { id: 'top15_olympics', name: 'Top 15 Länder mit den meisten olympischen Medaillen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die erfolgreichsten Nationen der olympischen Geschichte nach Gesamtzahl der Medaillen.' },
         { id: 'top15_holidays', name: 'Top 15 Länder mit den meisten Feiertagen im Jahr', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit den meisten offiziellen gesetzlichen Feiertagen pro Jahr.' },
-        { id: 'transcontinental_countries', name: 'Länder auf 2 Kontinenten', count: 7, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Staaten, die geografisch auf zwei Kontinenten liegen.' },
+        { id: 'transcontinental_countries', name: 'Länder auf 2 Kontinenten', count: 5, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Staaten, die geografisch auf zwei Kontinenten liegen.' },
         { id: 'enclaved_countries', name: 'Länder komplett von einem Land umschlossen', count: 3, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Enklaven, die vollständig vom Staatsgebiet eines einzigen anderen Landes umgeben sind.' },
         { id: 'mediterranean_countries', name: 'Länder mit Küste zum Mittelmeer', count: 21, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Alle Anrainerstaaten des Mittelmeers.' },
-        { id: 'usd_countries', name: 'Länder mit US-Dollar als Währung', count: 11, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Staaten, die den US-Dollar als offizielles Zahlungsmittel nutzen.' },
-        { id: 'north_equator', name: 'Länder nördlich des Äquators', count: 120, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Länder, die ganz oder größtenteils auf der Nordhalbkugel liegen.' },
-        { id: 'south_equator', name: 'Länder südlich des Äquators', count: 70, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Länder, die ganz oder größtenteils auf der Südhalbkugel liegen.' },
+        { id: 'usd_countries', name: 'Länder mit US-Dollar als Währung', count: 9, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Staaten, die den US-Dollar als offizielles Zahlungsmittel nutzen.' },
+        { id: 'north_equator', name: 'Länder nördlich des Äquators', count: 158, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Länder, die ganz oder größtenteils auf der Nordhalbkugel liegen.' },
+        { id: 'south_equator', name: 'Länder südlich des Äquators', count: 46, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Länder, die ganz oder größtenteils auf der Südhalbkugel liegen.' },
         { id: 'top15_newest_countries', name: 'Top 15 jüngste Länder', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die nach Gründungsjahr jüngsten unabhängigen Staaten der Erde.' },
         
         { id: 'population_100m', name: 'Länder mit über 100 Mio. Einwohnern', count: 16, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Staaten mit einer Bevölkerung von über 100 Millionen Menschen.' },
@@ -31,7 +39,7 @@ const subGamesData = {
 
 { id: 'top15_area_high', name: 'Top 15 Länder mit der meisten Fläche', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die nach Gesamtfläche größten Länder der Erde (in km²).' },
         { id: 'top15_area_low', name: 'Top 15 Länder mit der niedrigsten Fläche', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die kleinsten souveränen Staaten der Welt nach Fläche (in km²).' },
-        { id: 'one_neighbor', name: 'Länder mit nur einem Nachbarstaat', count: 17, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Staaten, die exakt eine einzige internationale Landgrenze besitzen.' },
+        { id: 'one_neighbor', name: 'Länder mit nur einem Nachbarstaat', count: 14, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Staaten, die exakt eine einzige internationale Landgrenze besitzen.' },
         { id: 'top15_temp_high', name: 'Top 15 Länder mit der höchsten Durchschnittstemperatur', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit den höchsten landesweiten Jahrestemperaturen (in °C).' },
         { id: 'top15_temp_low', name: 'Top 15 Länder mit der niedrigsten Durchschnittstemperatur', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die kältesten Länder der Welt nach durchschnittlicher Jahrestemperatur (in °C).' },
         { id: 'top15_coffee', name: 'Top 15 Länder mit dem höchsten Kaffeekonsum', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Der jährliche Kaffeekonsum pro Kopf (in kg).' },
@@ -357,8 +365,6 @@ countriesDatabase.transcontinental_countries = [
     { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "Europa & Asien" },
     { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa / Asien", customVal: "Europa & Asien" },
     { name: "🇰🇿 Kasachstan", cleanName: "Kasachstan", continent: "Europa / Asien", customVal: "Europa & Asien" },
-    { name: "🇬🇪 Georgien", cleanName: "Georgien", continent: "Europa / Asien", customVal: "Europa & Asien" },
-    { name: "🇦🇿 Aserbaidschan", cleanName: "Aserbaidschan", continent: "Europa / Asien", customVal: "Europa & Asien" },
     { name: "🇪🇬 Ägypten", cleanName: "Ägypten", continent: "Afrika / Asien", customVal: "Afrika & Asien" },
     { name: "🇵🇦 Panama", cleanName: "Panama", continent: "Nordamerika / Südamerika", customVal: "Nordamerika & Südamerika" }
 ];
@@ -369,8 +375,199 @@ countriesDatabase.enclaved_countries = [
     { name: "🇱🇸 Lesotho", cleanName: "Lesotho", continent: "Afrika", customVal: "Umschlossen von: Südafrika" }
 ];
 
+countriesDatabase.countries_in_space = [
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "Juri Gagarin" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "Alan Shepard" },
+    { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "Yang Liwei" },
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "Sigmund Jähn / Ulf Merbold" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "Jean-Loup Chrétien" },
+    { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "Franco Malerba" },
+    { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "Marc Garneau" },
+    { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "Toyohiro Akiyama" },
+    { name: "🇬🇧 Vereinigtes Königreich", cleanName: "Vereinigtes Königreich", continent: "Europa", customVal: "Helen Sharman" },
+    { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "Rakesh Sharma" },
+    { name: "🇺🇦 Ukraine", cleanName: "Ukraine", continent: "Europa", customVal: "Pawel Popowitsch" },
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "Claude Nicollier" },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "Christer Fuglesang" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "Pedro Duque" },
+    { name: "🇧🇪 Belgien", cleanName: "Belgien", continent: "Europa", customVal: "Dirk Frimout" },
+    { name: "🇳🇱 Niederlande", cleanName: "Niederlande", continent: "Europa", customVal: "Wubbo Ockels" },
+    { name: "🇲🇽 Mexiko", cleanName: "Mexiko", continent: "Nordamerika", customVal: "Rodolfo Neri Vela" },
+    { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "Yi So-yeon" },
+    { name: "🇧🇷 Brasilien", cleanName: "Brasilien", continent: "Südamerika", customVal: "Marcos Pontes" },
+    { name: "🇸🇦 Saudi-Arabien", cleanName: "Saudi-Arabien", continent: "Asien", customVal: "Sultan bin Salman Al Saud" },
+    { name: "🇦🇪 Vereinigte Arabische Emirate", cleanName: "Vereinigte Arabische Emirate", continent: "Asien", customVal: "Hazza Al Mansoori" },
+    { name: "🇦🇹 Österreich", cleanName: "Österreich", continent: "Europa", customVal: "Franz Viehböck" },
+    { name: "🇵🇱 Polen", cleanName: "Polen", continent: "Europa", customVal: "Mirosław Hermaszewski" },
+    { name: "🇨🇿 Tschechien", cleanName: "Tschechien", continent: "Europa", customVal: "Vladimír Remek" },
+    { name: "🇷🇴 Rumänien", cleanName: "Rumänien", continent: "Europa", customVal: "Dumitru Prunariu" },
+    { name: "🇭🇺 Ungarn", cleanName: "Ungarn", continent: "Europa", customVal: "Bertalan Farkas" },
+    { name: "🇧🇬 Bulgarien", cleanName: "Bulgarien", continent: "Europa", customVal: "Georgi Iwanow" },
+    { name: "🇨🇺 Kuba", cleanName: "Kuba", continent: "Nordamerika", customVal: "Arnaldo Tamayo Méndez" },
+    { name: "🇻🇳 Vietnam", cleanName: "Vietnam", continent: "Asien", customVal: "Pham Tuân" },
+    { name: "🇲🇳 Mongolei", cleanName: "Mongolei", continent: "Asien", customVal: "Dschügrütdijn Gürsatschach" },
+    { name: "🇸🇾 Syrien", cleanName: "Syrien", continent: "Asien", customVal: "Muhammed Faris" },
+    { name: "🇦🇫 Afghanistan", cleanName: "Afghanistan", continent: "Asien", customVal: "Abdul Ahad Mohmand" },
+    { name: "🇿🇦 Südafrika", cleanName: "Südafrika", continent: "Afrika", customVal: "Mark Shuttleworth" },
+    { name: "🇮🇷 Iran", cleanName: "Iran", continent: "Asien", customVal: "Anousheh Ansari" },
+    { name: "🇮🇱 Israel", cleanName: "Israel", continent: "Asien", customVal: "Ilan Ramon" },
+    { name: "🇸🇰 Slowakei", cleanName: "Slowakei", continent: "Europa", customVal: "Ivan Bella" },
+    { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "Paul Scully-Power" },
+    { name: "🇩🇰 Dänemark", cleanName: "Dänemark", continent: "Europa", customVal: "Andreas Mogensen" },
+    { name: "🇰🇿 Kasachstan", cleanName: "Kasachstan", continent: "Asien", customVal: "Toktar Aubakirov" },
+    { name: "🇧🇾 Belarus", cleanName: "Belarus", continent: "Europa", customVal: "Pyotr Klimuk / Marina Wassilewskaja" },
+    { name: "🇲🇾 Malaysia", cleanName: "Malaysia", continent: "Asien", customVal: "Sheikh Muszaphar Shukor" },
+    { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "Quotengast / Privat" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "Pedro Duque" },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "Christer Fuglesang" },
+    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Asien", customVal: "Alper Gezeravcı" },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "Christer Fuglesang" },
+    { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "Privatflug" },
+    { name: "🇦🇿 Aserbaidschan", cleanName: "Aserbaidschan", continent: "Asien", customVal: "Musad Israpilov (Sowjet-Kontext)" },
+    { name: "🇱🇹 Litauen", cleanName: "Litauen", continent: "Europa", customVal: "Rimantas Stankevičius (Testpilot)" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "Pedro Duque" }
+];
+countriesDatabase.top15_animal_species = [
+    { name: "🇧🇷 Brasilien", cleanName: "Brasilien", continent: "Südamerika", customVal: "Über 120.000 Tierarten" },
+    { name: "🇮🇩 Indonesien", cleanName: "Indonesien", continent: "Asien", customVal: "Über 100.000 Tierarten" },
+    { name: "🇨🇴 Kolumbien", cleanName: "Kolumbien", continent: "Südamerika", customVal: "Über 55.000 Tierarten" },
+    { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "Über 50.000 Tierarten" },
+    { name: "🇲🇽 Mexiko", cleanName: "Mexiko", continent: "Nordamerika", customVal: "Über 50.000 Tierarten" },
+    { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "Über 45.000 Tierarten" },
+    { name: "🇵🇪 Peru", cleanName: "Peru", continent: "Südamerika", customVal: "Über 40.000 Tierarten" },
+    { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "Über 90.000 Tierarten gesamt" },
+    { name: "🇪🇨 Ecuador", cleanName: "Ecuador", continent: "Südamerika", customVal: "Sehr hohe Artenvielfalt" },
+    { name: "🇻🇪 Venezuela", cleanName: "Venezuela", continent: "Südamerika", customVal: "Über 35.000 Tierarten" },
+    { name: "🇲🇾 Malaysia", cleanName: "Malaysia", continent: "Asien", customVal: "Über 30.000 Tierarten" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "Über 30.000 Tierarten" },
+    { name: "🇲🇬 Madagaskar", cleanName: "Madagaskar", continent: "Afrika", customVal: "Hohe Endemiten-Rate" },
+    { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "Reiche Fauna" },
+    { name: "🇿🇦 Südafrika", cleanName: "Südafrika", continent: "Afrika", customVal: "Über 25.000 Tierarten" }
+];
+
+countriesDatabase.top15_snake_bites = [
+    { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "ca. 58.000 Tode / Jahr" },
+    { name: "🇵🇰 Pakistan", cleanName: "Pakistan", continent: "Asien", customVal: "ca. 8.000 Tode / Jahr" },
+    { name: "🇧🇩 Bangladesch", cleanName: "Bangladesch", continent: "Asien", customVal: "ca. 6.000 Tode / Jahr" },
+    { name: "🇳🇬 Nigeria", cleanName: "Nigeria", continent: "Afrika", customVal: "ca. 2.000 Tode / Jahr" },
+    { name: "🇧🇷 Brasilien", cleanName: "Brasilien", continent: "Südamerika", customVal: "Häufig in Amazonas-Region" },
+    { name: "🇲🇲 Myanmar", cleanName: "Myanmar", continent: "Asien", customVal: "Hohe Fallzahlen" },
+    { name: "🇳🇵 Nepal", cleanName: "Nepal", continent: "Asien", customVal: "Häufig im Terai-Tiefland" },
+    { name: "🇱🇰 Sri Lanka", cleanName: "Sri Lanka", continent: "Asien", customVal: "Hohes Risiko auf dem Land" },
+    { name: "🇰🇭 Kambodscha", cleanName: "Kambodscha", continent: "Asien", customVal: "Regionale Risiken" },
+    { name: "🇻🇳 Vietnam", cleanName: "Vietnam", continent: "Asien", customVal: "Regionale Risiken" },
+    { name: "🇹🇿 Tansania", cleanName: "Tansania", continent: "Afrika", customVal: "Häufig in ländlichen Regionen" },
+    { name: "🇰🇪 Kenia", cleanName: "Kenia", continent: "Afrika", customVal: "Häufig in ländlichen Regionen" },
+    { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "Hohes Tropen-Risiko" },
+    { name: "🇨🇴 Kolumbien", cleanName: "Kolumbien", continent: "Südamerika", customVal: "Häufig im Dschungel" },
+    { name: "🇻🇪 Venezuela", cleanName: "Venezuela", continent: "Südamerika", customVal: "Häufig im Tiefland" }
+];
+
+countriesDatabase.european_non_latin_alphabet = [
+    { name: "🇬🇷 Griechenland", cleanName: "Griechenland", continent: "Europa", customVal: "Griechisches Alphabet" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "Kyrillisches Alphabet" },
+    { name: "🇧🇬 Bulgarien", cleanName: "Bulgarien", continent: "Europa", customVal: "Kyrillisches Alphabet" },
+    { name: "🇷🇸 Serbien", cleanName: "Serbien", continent: "Europa", customVal: "Kyrillisches Alphabet (auch Latein)" },
+    { name: "🇧🇾 Belarus", cleanName: "Belarus", continent: "Europa", customVal: "Kyrillisches Alphabet" },
+    { name: "🇺🇦 Ukraine", cleanName: "Ukraine", continent: "Europa", customVal: "Kyrillisches Alphabet" },
+    { name: "🇲🇰 Nordmazedonien", cleanName: "Nordmazedonien", continent: "Europa", customVal: "Kyrillisches Alphabet" }
+];
+
+countriesDatabase.countries_mountain_6000m = [
+    { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "Mount Everest (8.848 m)" },
+    { name: "🇳🇵 Nepal", cleanName: "Nepal", continent: "Asien", customVal: "Mount Everest (8.848 m)" },
+    { name: "🇵🇰 Pakistan", cleanName: "Pakistan", continent: "Asien", customVal: "K2 (8.611 m)" },
+    { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "Kangchendzönga (8.586 m)" },
+    { name: "🇧🇹 Bhutan", cleanName: "Bhutan", continent: "Asien", customVal: "Gangkhar Puensum (7.570 m)" },
+    { name: "🇹🇯 Tadschikistan", cleanName: "Tadschikistan", continent: "Asien", customVal: "Pik Ismoil Somoni (7.495 m)" },
+    { name: "🇰🇬 Kirgisistan", cleanName: "Kirgisistan", continent: "Asien", customVal: "Pik Dschengis (7.439 m)" },
+    { name: "🇦🇷 Argentinien", cleanName: "Argentinien", continent: "Südamerika", customVal: "Aconcagua (6.961 m)" },
+    { name: "🇨🇱 Chile", cleanName: "Chile", continent: "Südamerika", customVal: "Ojos del Salado (6.893 m)" },
+    { name: "🇵🇪 Peru", cleanName: "Peru", continent: "Südamerika", customVal: "Huascarán (6.768 m)" },
+    { name: "🇧🇴 Bolivien", cleanName: "Bolivien", continent: "Südamerika", customVal: "Nevado Sajama (6.542 m)" },
+    { name: "🇦🇫 Afghanistan", cleanName: "Afghanistan", continent: "Asien", customVal: "Noshaq (7.492 m)" },
+    { name: "🇰🇿 Kasachstan", cleanName: "Kasachstan", continent: "Asien", customVal: "Khan Tengri (7.010 m)" },
+    { name: "🇲🇲 Myanmar", cleanName: "Myanmar", continent: "Asien", customVal: "Hkakabo Razi (5.881 m - knapp darunter, aber oft gelistet)" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "Denali (6.190 m)" },
+    { name: "🇪🇨 Ecuador", cleanName: "Ecuador", continent: "Südamerika", customVal: "Chimborazo (6.263 m)" },
+    { name: "🇲🇽 Mexiko", cleanName: "Mexiko", continent: "Nordamerika", customVal: "Pico de Orizaba (5.636 m - entfernt)" },
+    { name: "🇮🇷 Iran", cleanName: "Iran", continent: "Asien", customVal: "Damavand (5.610 m - entfernt)" },
+    { name: "🇹🇿 Tansania", cleanName: "Tansania", continent: "Afrika", customVal: "Kilimandscharo (5.895 m - entfernt)" }
+].filter(c => !["Mexiko", "Iran", "Tansania", "Myanmar"].includes(c.cleanName)); // Nur echte über 6000m
+
+countriesDatabase.top15_richest_wealth = [
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "Über 680.000 $ pro Kopf" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "Über 550.000 $ pro Kopf" },
+    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "Über 580.000 $ pro Kopf" },
+    { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "Über 420.000 $ pro Kopf" },
+    { name: "🇩🇰 Dänemark", cleanName: "Dänemark", continent: "Europa", customVal: "Über 400.000 $ pro Kopf" },
+    { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "Über 380.000 $ pro Kopf" },
+    { name: "🇳🇿 Neuseeland", cleanName: "Neuseeland", continent: "Ozeanien", customVal: "Über 370.000 $ pro Kopf" },
+    { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "Über 360.000 $ pro Kopf" },
+    { name: "🇳🇱 Niederlande", cleanName: "Niederlande", continent: "Europa", customVal: "Über 350.000 $ pro Kopf" },
+    { name: "🇧🇪 Belgien", cleanName: "Belgien", continent: "Europa", customVal: "Über 350.000 $ pro Kopf" },
+    { name: "🇳🇴 Norwegen", cleanName: "Norwegen", continent: "Europa", customVal: "Über 340.000 $ pro Kopf" },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "Über 330.000 $ pro Kopf" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "Über 310.000 $ pro Kopf" },
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "Über 300.000 $ pro Kopf" },
+    { name: "🇬🇧 Vereinigtes Königreich", cleanName: "Vereinigtes Königreich", continent: "Europa", customVal: "Über 300.000 $ pro Kopf" }
+];
+
+countriesDatabase.top15_poorest_wealth = [
+    { name: "🇦🇫 Afghanistan", cleanName: "Afghanistan", continent: "Asien", customVal: "Unter 2.000 $ pro Kopf" },
+    { name: "🇧🇮 Burundi", cleanName: "Burundi", continent: "Afrika", customVal: "Unter 1.000 $ pro Kopf" },
+    { name: "🇸🇸 Südsudan", cleanName: "Südsudan", continent: "Afrika", customVal: "Unter 1.500 $ pro Kopf" },
+    { name: "🇲🇱 Mali", cleanName: "Mali", continent: "Afrika", customVal: "Unter 2.500 $ pro Kopf" },
+    { name: "🇳🇬 Niger", cleanName: "Niger", continent: "Afrika", customVal: "Unter 2.500 $ pro Kopf" },
+    { name: "🇲🇼 Malawi", cleanName: "Malawi", continent: "Afrika", customVal: "Unter 2.000 $ pro Kopf" },
+    { name: "🇨🇫 Zentralafrikanische Republik", cleanName: "Zentralafrikanische Republik", continent: "Afrika", customVal: "Unter 2.000 $ pro Kopf" },
+    { name: "🇲🇿 Mosambik", cleanName: "Mosambik", continent: "Afrika", customVal: "Unter 2.500 $ pro Kopf" },
+    { name: "🇲🇦 Madagaskar", cleanName: "Madagaskar", continent: "Afrika", customVal: "Unter 3.000 $ pro Kopf" },
+    { name: "🇸🇱 Sierra Leone", cleanName: "Sierra Leone", continent: "Afrika", customVal: "Unter 2.500 $ pro Kopf" },
+    { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "Unter 2.000 $ pro Kopf" },
+    { name: "🇱🇷 Liberia", cleanName: "Liberia", continent: "Afrika", customVal: "Unter 3.000 $ pro Kopf" },
+    { name: "🇹🇩 Tschad", cleanName: "Tschad", continent: "Afrika", customVal: "Unter 2.500 $ pro Kopf" },
+    { name: "🇬🇼 Guinea-Bissau", cleanName: "Guinea-Bissau", continent: "Afrika", customVal: "Unter 3.000 $ pro Kopf" },
+    { name: "🇾🇪 Jemen", cleanName: "Jemen", continent: "Asien", customVal: "Unter 3.000 $ pro Kopf" }
+];
+
+countriesDatabase.top15_coldest_countries = [
+    { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "-5.3 °C Durchschnitt" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa / Asien", customVal: "-5.1 °C Durchschnitt" },
+    { name: "🇲🇳 Mongolei", cleanName: "Mongolei", continent: "Asien", customVal: "-0.7 °C Durchschnitt" },
+    { name: "🇳🇴 Norwegen", cleanName: "Norwegen", continent: "Europa", customVal: "1.5 °C Durchschnitt" },
+    { name: "🇫🇮 Finnland", cleanName: "Finnland", continent: "Europa", customVal: "1.7 °C Durchschnitt" },
+    { name: "🇮🇸 Island", cleanName: "Island", continent: "Europa", customVal: "1.7 °C Durchschnitt" },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "2.1 °C Durchschnitt" },
+    { name: "🇰🇬 Kirgisistan", cleanName: "Kirgisistan", continent: "Asien", customVal: "1.5 °C Durchschnitt" },
+    { name: "🇹🇯 Tadschikistan", cleanName: "Tadschikistan", continent: "Asien", customVal: "2.0 °C Durchschnitt" },
+    { name: "🇪🇪 Estland", cleanName: "Estland", continent: "Europa", customVal: "5.1 °C Durchschnitt" },
+    { name: "🇱🇻 Lettland", cleanName: "Lettland", continent: "Europa", customVal: "5.6 °C Durchschnitt" },
+    { name: "🇰🇿 Kasachstan", cleanName: "Kasachstan", continent: "Asien", customVal: "6.4 °C Durchschnitt" },
+    { name: "🇱🇹 Litauen", cleanName: "Litauen", continent: "Europa", customVal: "6.2 °C Durchschnitt" },
+    { name: "🇧🇾 Belarus", cleanName: "Belarus", continent: "Europa", customVal: "6.1 °C Durchschnitt" },
+    { name: "🇨🇿 Tschechien", cleanName: "Tschechien", continent: "Europa", customVal: "7.0 °C Durchschnitt" }
+];
+
+countriesDatabase.top15_warmest_countries = [
+    { name: "🇲🇱 Mali", cleanName: "Mali", continent: "Afrika", customVal: "28.8 °C Durchschnitt" },
+    { name: "🇧🇫 Burkina Faso", cleanName: "Burkina Faso", continent: "Afrika", customVal: "28.3 °C Durchschnitt" },
+    { name: "🇸🇳 Senegal", cleanName: "Senegal", continent: "Afrika", customVal: "28.3 °C Durchschnitt" },
+    { name: "🇹🇩 Tschad", cleanName: "Tschad", continent: "Afrika", customVal: "28.2 °C Durchschnitt" },
+    { name: "🇲🇷 Mauretanien", cleanName: "Mauretanien", continent: "Afrika", customVal: "28.1 °C Durchschnitt" },
+    { name: "🇩🇯 Dschibuti", cleanName: "Dschibuti", continent: "Afrika", customVal: "28.0 °C Durchschnitt" },
+    { name: "🇹🇬 Togo", cleanName: "Togo", continent: "Afrika", customVal: "27.9 °C Durchschnitt" },
+    { name: "🇬🇲 Gambia", cleanName: "Gambia", continent: "Afrika", customVal: "27.9 °C Durchschnitt" },
+    { name: "🇧🇯 Benin", cleanName: "Benin", continent: "Afrika", customVal: "27.9 °C Durchschnitt" },
+    { name: "🇵🇼 Palau", cleanName: "Palau", continent: "Ozeanien", customVal: "27.8 °C Durchschnitt" },
+    { name: "🇸🇩 Sudan", cleanName: "Sudan", continent: "Afrika", customVal: "27.7 °C Durchschnitt" },
+    { name: "🇬🇭 Ghana", cleanName: "Ghana", continent: "Afrika", customVal: "27.6 °C Durchschnitt" },
+    { name: "🇰🇮 Kiribati", cleanName: "Kiribati", continent: "Ozeanien", customVal: "27.6 °C Durchschnitt" },
+    { name: "🇲🇻 Malediven", cleanName: "Malediven", continent: "Asien", customVal: "27.6 °C Durchschnitt" },
+    { name: "🇸🇸 Südsudan", cleanName: "Südsudan", continent: "Afrika", customVal: "27.6 °C Durchschnitt" }
+];
 countriesDatabase.mediterranean_countries = countriesDatabase.all_countries.filter(c => [
-    "Spanien", "Frankreich", "Monaco", "Italien", "Malta", "Slovenien", "Kroatien",
+    "Spanien", "Frankreich", "Monaco", "Italien", "Malta", "Slowenien", "Kroatien",
     "Bosnien und Herzegowina", "Montenegro", "Albanien", "Griechenland", "Türkei",
     "Zypern", "Syrien", "Libanon", "Israel", "Ägypten", "Libyen", "Tunesien",
     "Algerien", "Marokko"
@@ -378,8 +575,7 @@ countriesDatabase.mediterranean_countries = countriesDatabase.all_countries.filt
 
 countriesDatabase.usd_countries = countriesDatabase.all_countries.filter(c => [
     "Vereinigte Staaten / USA", "Ecuador", "El Salvador", "Panama", "Simbabwe",
-    "Osttimor", "Mikronesien", "Palau", "Marshallinseln", "Turks- und Caicosinseln",
-    "Bonaire"
+    "Osttimor", "Mikronesien", "Palau", "Marshallinseln"
 ].includes(c.cleanName));
 
 countriesDatabase.north_equator = countriesDatabase.all_countries.filter(c => 
@@ -446,8 +642,8 @@ countriesDatabase.top15_area_low = [
 ];
 
 countriesDatabase.one_neighbor = countriesDatabase.all_countries.filter(c => [
-    "Kanada", "Portugal", "Spanien", "Irland", "Vereinigtes Königreich / Großbritannien", "Vatikanstadt",
-    "San Marino", "Monaco", "Dänemark", "Papua-Neuguinea", "Haiti", "Dominikanische Republik",
+    "Portugal", "Irland", "Vereinigtes Königreich / Großbritannien", "Vatikanstadt",
+    "San Marino", "Monaco", "Papua-Neuguinea", "Haiti", "Dominikanische Republik",
     "Korea, Südkorea", "Südkorea", "Lesotho", "Gambia", "Katar", "Brunei"
 ].includes(c.cleanName));
 
