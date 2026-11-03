@@ -1,6 +1,8 @@
 const subGamesData = {
     geography: [
+
         { id: 'all_countries', name: 'Alle Länder der Erde', count: 197, group: 'Hauptspiele', infoType: 'pop' },
+        { id: 'europe_countries', name: 'Alle Länder Europas', count: 47, group: 'Kontinente', infoType: 'pop' },
 { id: 'countries_in_space', name: 'Länder, die bereits eine Person im All hatten', count: 50, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Staaten, deren Bürger (Astronauten/Kosmonauten) bereits im Weltraum waren (inkl. Name einer Person als Lösung).' },
         { id: 'top15_animal_species', name: 'Top 15 Länder mit den meisten Tierarten', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit der weltweit größten Biodiversität an Wirbeltieren und Insekten.' },
         { id: 'top15_snake_bites', name: 'Top 15 Länder mit den meisten tödlichen Schlangenbissen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit den meisten Todesfällen durch Schlangenbisse pro Jahr.' },
@@ -8,14 +10,24 @@ const subGamesData = {
         { id: 'countries_mountain_6000m', name: 'Länder mit einem Berg über 6000 Meter', count: 15, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Staaten, auf deren Gebiet sich mindestens ein Berg mit über 6.000 Metern Höhe befindet.' },
         { id: 'top15_richest_wealth', name: 'Top 15 reichste Länder (Durchschnittsvermögen)', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit dem höchsten durchschnittlichen Vermögen pro erwachsener Person.' },
         { id: 'top15_poorest_wealth', name: 'Top 15 ärmste Länder (Durchschnittsvermögen)', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit dem niedrigsten durchschnittlichen Vermögen pro erwachsener Person.' },
-        { id: 'top15_coldest_countries', name: 'Kälteste Länder der Welt (Durchschnittstemperatur)', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die im Landesdurchschnitt kältesten Staaten der Erde.' },
-        { id: 'top15_warmest_countries', name: 'Wärmste Länder der Welt (Durchschnittstemperatur)', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die im Landesdurchschnitt wärmsten Staaten der Erde.' },
         
-        { id: 'europe_countries', name: 'Alle Länder Europas', count: 47, group: 'Kontinente', infoType: 'pop' },
         { id: 'asien_countries', name: 'Alle Länder Asiens', count: 47, group: 'Kontinente', infoType: 'pop' },
         { id: 'afrika_countries', name: 'Alle Länder Afrikas', count: 54, group: 'Kontinente', infoType: 'pop' },
         { id: 'amerika_countries', name: 'Alle Länder Nord-/Südamerikas', count: 35, group: 'Kontinente', infoType: 'pop' },
         { id: 'ozeanien_countries', name: 'Alle Länder Ozeaniens', count: 14, group: 'Kontinente', infoType: 'pop' },
+// Neue Kategorien für subGamesData:
+{ id: 'top15_meat_consumption', name: 'Top 15 Länder mit dem höchsten Fleischkonsum', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit dem höchsten jährlichen Fleischkonsum pro Kopf (in kg).' },
+{ id: 'bundesliga_players_countries', name: 'Länder mit den meisten Bundesliga-Spielern', count: 10, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Die Herkunftsländer, aus denen die meisten Spieler in der Fußball-Bundesliga kommen.' },
+{ id: 'top15_tourists', name: 'Top 15 Länder mit den meisten Touristen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit den weltweit meisten internationalen Touristenankünften pro Jahr.' },
+{ id: 'soviet_union_current', name: 'Länder der ehemaligen Sowjetunion (heutige Staaten)', count: 15, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Die 15 unabhängigen Staaten, die heute aus der ehemaligen Sowjetunion hervorgegangen sind.' },
+{ id: 'danube_countries', name: 'Länder an der Donau', count: 10, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Staaten, die direkt am oder im Einzugsgebiet der Donau liegen (offizielle Anrainerstaaten).' },
+{ id: 'india_borders', name: 'Länder, die an Indien grenzen', count: 6, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Die direkten Landnachbarn von Indien.' },
+{ id: 'top15_german_tourists', name: 'Top 15 Reiseziele der Deutschen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder, die von deutschen Touristen am häufigsten bereist werden.' },
+{ id: 'top15_best_cuisine', name: 'Top 15 Länder mit der besten Küche', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit international am besten bewerteter Esskultur (nach TasteAtlas-Index).' },
+{ id: 'top15_highest_inflation', name: 'Top 15 Länder mit der höchsten Inflation', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit der aktuell höchsten Inflationsrate im Jahr 2026 (jährliche Teuerungsrate).' },
+{ id: 'ending_with_i', name: 'Länder, die auf "i" enden', count: 18, group: 'Alphabetisch A-Z', infoType: 'capital', desc: 'Souveräne Staaten auf Deutsch, deren Name auf den Buchstaben "i" endet.' },
+{ id: 'four_letter_countries', name: 'Länder mit genau 4 Buchstaben', count: 8, group: 'Alphabetisch A-Z', infoType: 'capital', desc: 'Staaten, deren deutscher Name exakt aus 4 Buchstaben besteht.' },
+{ id: 'top15_most_letters', name: 'Top 15 Länder mit den meisten Buchstaben', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Länder mit den längsten offiziellen deutschen Namen (reine Buchstaben gezählt).' },
 { id: 'top15_olympics', name: 'Top 15 Länder mit den meisten olympischen Medaillen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die erfolgreichsten Nationen der olympischen Geschichte nach Gesamtzahl der Medaillen.' },
         { id: 'top15_holidays', name: 'Top 15 Länder mit den meisten Feiertagen im Jahr', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit den meisten offiziellen gesetzlichen Feiertagen pro Jahr.' },
         { id: 'transcontinental_countries', name: 'Länder auf 2 Kontinenten', count: 5, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Staaten, die geografisch auf zwei Kontinenten liegen.' },
@@ -56,6 +68,9 @@ const subGamesData = {
         { id: 'top15_elevation_high', name: 'Top 15 Länder mit der höchsten Durchschnittshöhe', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die am höchsten gelegenen Gebirgsländer der Welt nach durchschnittlicher Höhe (in m).' },
         { id: 'top15_timezones', name: 'Top 15 Länder mit den meisten Zeitzonen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder sortiert nach der Gesamtzahl der Zeitzonen inklusive Überseegebiete.' },
         { id: 'top15_borders', name: 'Top 15 Länder mit den meisten Nachbarn', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder, die die meisten direkten internationalen Landgrenzen teilen.' },
+{ id: 'top15_life_expectancy', name: 'Top 15 Länder mit der höchsten Lebenserwartung', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder, in denen die Menschen bei der Geburt statistisch gesehen die höchste Lebenserwartung haben.' },
+{ id: 'top15_old_pop_median', name: 'Top 15 Länder mit dem höchsten Durchschnittsalter', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Staaten mit dem weltweit höchsten Median-Alter der Bevölkerung.' },
+{ id: 'top15_young_pop_median', name: 'Top 15 Länder mit dem niedrigsten Durchschnittsalter', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Staaten mit dem weltweit niedrigsten Median-Alter der Bevölkerung.' },
         { id: 'top15_low_density', name: 'Top 15 Länder mit der niedrigsten Dichte', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die am dünnsten besiedelten Länder der Welt (gemessen an Einwohnern pro km²).' },
         { id: 'top15_languages', name: 'Top 15 Länder mit den meisten Sprachen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit den meisten offiziell anerkannten Amtssprachen.' },
         { id: 'top15_islands', name: 'Top 15 Länder mit den meisten Inseln', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit den weltweitem Inselreichtum (Tausende Inseln).' },
@@ -255,7 +270,7 @@ const countriesDatabase = {
         { name: "🇵🇸 Palästina", cleanName: "Palästina", continent: "Asien", pop: "5,6 Mio. Einw.", capital: "Ramallah", lang: "Arabisch" },
         { name: "🇹🇱 Osttimor", cleanName: "Osttimor", continent: "Asien", pop: "1,4 Mio. Einw.", capital: "Dili", lang: "Tetum/Portugiesisch" },
 
-        { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", pop: "116 Mio. Einw.", capital: "Kinshasa", lang: "Französisch" },
+        { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", pop: "116 Mio. Einw.", capital: "Kinshasa", lang: "Französisch" },
         { name: "🇨🇬 Republik Kongo", cleanName: "Republik Kongo", continent: "Afrika", pop: "6,6 Mio. Einw.", capital: "Brazzaville", lang: "Französisch" },
         { name: "🇨🇮 Elfenbeinküste", cleanName: "Elfenbeinküste", continent: "Afrika", pop: "33 Mio. Einw.", capital: "Yamoussoukro", lang: "Französisch" },
         { name: "🇧🇫 Burkina Faso", cleanName: "Burkina Faso", continent: "Afrika", pop: "24,6 Mio. Einw.", capital: "Ouagadougou", lang: "Französisch" },
@@ -342,7 +357,224 @@ countriesDatabase.top15_olympics = [
     { name: "🇷🇴 Rumänien", cleanName: "Rumänien", continent: "Europa", customVal: "über 300 Medaillen" },
     { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "über 350 Medaillen" }
 ];
+countriesDatabase.top15_meat_consumption = [
+    { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "ca. 116 kg pro Kopf" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "ca. 115 kg pro Kopf" },
+    { name: "🇦🇷 Argentinien", cleanName: "Argentinien", continent: "Südamerika", customVal: "ca. 110 kg pro Kopf" },
+    { name: "🇮🇱 Israel", cleanName: "Israel", continent: "Asien", customVal: "ca. 86 kg pro Kopf" },
+    { name: "🇧🇷 Brasilien", cleanName: "Brasilien", continent: "Südamerika", customVal: "ca. 85 kg pro Kopf" },
+    { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "ca. 82 kg pro Kopf" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "ca. 80 kg pro Kopf" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "ca. 77 kg pro Kopf" },
+    { name: "🇨🇱 Chile", cleanName: "Chile", continent: "Südamerika", customVal: "ca. 77 kg pro Kopf" },
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "ca. 52 kg pro Kopf" },
+    { name: "🇲🇽 Mexiko", cleanName: "Mexiko", continent: "Nordamerika", customVal: "ca. 75 kg pro Kopf" },
+    { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "ca. 74 kg pro Kopf" },
+    { name: "🇺🇾 Uruguay", cleanName: "Uruguay", continent: "Südamerika", customVal: "ca. 73 kg pro Kopf" },
+    { name: "🇳🇿 Neuseeland", cleanName: "Neuseeland", continent: "Ozeanien", customVal: "ca. 73 kg pro Kopf" },
+    { name: "🇵🇹 Portugal", cleanName: "Portugal", continent: "Europa", customVal: "ca. 70 kg pro Kopf" }
+];
 
+countriesDatabase.bundesliga_players_countries = [
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "ca. 275 Spieler" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "ca. 30 Spieler" },
+    { name: "🇦🇹 Österreich", cleanName: "Österreich", continent: "Europa", customVal: "ca. 25 Spieler" },
+    { name: "🇳🇱 Niederlande", cleanName: "Niederlande", continent: "Europa", customVal: "ca. 15 Spieler" },
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "ca. 15 Spieler" },
+    { name: "🇩🇰 Dänemark", cleanName: "Dänemark", continent: "Europa", customVal: "ca. 12 Spieler" },
+    { name: "🇭🇷 Kroatien", cleanName: "Kroatien", continent: "Europa", customVal: "ca. 10 Spieler" },
+    { name: "🇵🇱 Polen", cleanName: "Polen", continent: "Europa", customVal: "ca. 9 Spieler" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "ca. 8 Spieler" },
+    { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "ca. 8 Spieler" }
+];
+
+countriesDatabase.top15_german_tourists = [
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "ca. 11,2 Mio. Reisen" },
+    { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "ca. 6,4 Mio. Reisen" },
+    { name: "🇦🇹 Österreich", cleanName: "Österreich", continent: "Europa", customVal: "ca. 5,8 Mio. Reisen" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "ca. 3,5 Mio. Reisen" },
+    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa", customVal: "ca. 3,2 Mio. Reisen" },
+    { name: "🇳🇱 Niederlande", cleanName: "Niederlande", continent: "Europa", customVal: "ca. 3,0 Mio. Reisen" },
+    { name: "🇬🇷 Griechenland", cleanName: "Griechenland", continent: "Europa", customVal: "ca. 3,0 Mio. Reisen" },
+    { name: "🇭🇷 Kroatien", cleanName: "Kroatien", continent: "Europa", customVal: "ca. 2,5 Mio. Reisen" },
+    { name: "🇩🇰 Dänemark", cleanName: "Dänemark", continent: "Europa", customVal: "ca. 2,1 Mio. Reisen" },
+    { name: "🇵🇹 Portugal", cleanName: "Portugal", continent: "Europa", customVal: "ca. 1,2 Mio. Reisen" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "ca. 1,8 Mio. Reisen" },
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "ca. 1,4 Mio. Reisen" },
+    { name: "🇪🇬 Ägypten", cleanName: "Ägypten", continent: "Afrika", customVal: "ca. 1,0 Mio. Reisen" },
+    { name: "🇵🇱 Polen", cleanName: "Polen", continent: "Europa", customVal: "ca. 1,5 Mio. Reisen" },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "ca. 900 Tsd. Reisen" }
+];
+
+countriesDatabase.top15_best_cuisine = [
+    { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "4.72 / 5.0 Punkte" },
+    { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "4.65 / 5.0 Punkte" },
+    { name: "🇬🇷 Griechenland", cleanName: "Griechenland", continent: "Europa", customVal: "4.64 / 5.0 Punkte" },
+    { name: "🇲🇽 Mexiko", cleanName: "Mexiko", continent: "Nordamerika", customVal: "4.58 / 5.0 Punkte" },
+    { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "4.56 / 5.0 Punkte" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "4.55 / 5.0 Punkte" },
+    { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "4.54 / 5.0 Punkte" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "4.52 / 5.0 Punkte" },
+    { name: "🇹🇭 Thailand", cleanName: "Thailand", continent: "Asien", customVal: "4.50 / 5.0 Punkte" },
+    { name: "🇵🇹 Portugal", cleanName: "Portugal", continent: "Europa", customVal: "4.48 / 5.0 Punkte" },
+    { name: "🇻🇳 Vietnam", cleanName: "Vietnam", continent: "Asien", customVal: "4.45 / 5.0 Punkte" },
+    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa", customVal: "4.43 / 5.0 Punkte" },
+    { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "4.40 / 5.0 Punkte" },
+    { name: "🇦🇷 Argentinien", cleanName: "Argentinien", continent: "Südamerika", customVal: "4.38 / 5.0 Punkte" },
+    { name: "🇵🇪 Peru", cleanName: "Peru", continent: "Südamerika", customVal: "4.35 / 5.0 Punkte" }
+];
+
+countriesDatabase.top15_highest_inflation = [
+    { name: "🇻🇪 Venezuela", cleanName: "Venezuela", continent: "Südamerika", customVal: "ca. 467% Inflation" },
+    { name: "🇮🇷 Iran", cleanName: "Iran", continent: "Asien", customVal: "ca. 79% Inflation" },
+    { name: "🇸🇩 Sudan", cleanName: "Sudan", continent: "Afrika", customVal: "ca. 41% Inflation" },
+    { name: "🇦🇷 Argentinien", cleanName: "Argentinien", continent: "Südamerika", customVal: "ca. 33% Inflation" },
+    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa", customVal: "ca. 32% Inflation" },
+    { name: "🇸🇸 Südsudan", cleanName: "Südsudan", continent: "Afrika", customVal: "ca. 28% Inflation" },
+    { name: "🇲🇼 Malawi", cleanName: "Malawi", continent: "Afrika", customVal: "ca. 22% Inflation" },
+    { name: "🇭🇹 Haiti", cleanName: "Haiti", continent: "Nordamerika", customVal: "ca. 21% Inflation" },
+    { name: "🇲🇲 Myanmar", cleanName: "Myanmar", continent: "Asien", customVal: "ca. 20% Inflation" },
+    { name: "🇳🇬 Nigeria", cleanName: "Nigeria", continent: "Afrika", customVal: "ca. 16% Inflation" },
+    { name: "🇱🇾 Libyen", cleanName: "Libyen", continent: "Afrika", customVal: "ca. 14% Inflation" },
+    { name: "🇸🇱 Sierra Leone", cleanName: "Sierra Leone", continent: "Afrika", customVal: "ca. 13% Inflation" },
+    { name: "🇪🇬 Ägypten", cleanName: "Ägypten", continent: "Afrika", customVal: "ca. 13% Inflation" },
+    { name: "🇧🇴 Bolivien", cleanName: "Bolivien", continent: "Südamerika", customVal: "ca. 12% Inflation" },
+    { name: "🇰🇬 Kirgisistan", cleanName: "Kirgisistan", continent: "Asien", customVal: "ca. 12% Inflation" }
+];
+countriesDatabase.top15_life_expectancy = [
+    { name: "🇲🇨 Monaco", cleanName: "Monaco", continent: "Europa", customVal: "ca. 89,5 Jahre" },
+    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "ca. 85,3 Jahre" },
+    { name: "🇲🇴 Macau", cleanName: "Macau", continent: "Asien", customVal: "ca. 84,8 Jahre" },
+    { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "ca. 84,6 Jahre" },
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "ca. 84,2 Jahre" },
+    { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "ca. 84,0 Jahre" },
+    { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "ca. 83,8 Jahre" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "ca. 83,8 Jahre" },
+    { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "ca. 83,5 Jahre" },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "ca. 83,3 Jahre" },
+    { name: "🇮🇸 Island", cleanName: "Island", continent: "Europa", customVal: "ca. 83,1 Jahre" },
+    { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "ca. 83,0 Jahre" },
+    { name: "🇳🇴 Norwegen", cleanName: "Norwegen", continent: "Europa", customVal: "ca. 82,9 Jahre" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "ca. 82,8 Jahre" },
+    { name: "🇮🇪 Irland", cleanName: "Irland", continent: "Europa", customVal: "ca. 82,7 Jahre" }
+];
+
+countriesDatabase.top15_old_pop_median = [
+    { name: "🇲🇨 Monaco", cleanName: "Monaco", continent: "Europa", customVal: "ca. 55,4 Jahre Medianalter" },
+    { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "ca. 49,5 Jahre Medianalter" },
+    { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "ca. 48,4 Jahre Medianalter" },
+    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "ca. 46,3 Jahre Medianalter" },
+    { name: "🇵🇹 Portugal", cleanName: "Portugal", continent: "Europa", customVal: "ca. 46,8 Jahre Medianalter" },
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "ca. 45,8 Jahre Medianalter" },
+    { name: "🇬🇷 Griechenland", cleanName: "Griechenland", continent: "Europa", customVal: "ca. 45,7 Jahre Medianalter" },
+    { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "ca. 45,6 Jahre Medianalter" },
+    { name: "🇧🇬 Bulgarien", cleanName: "Bulgarien", continent: "Europa", customVal: "ca. 45,3 Jahre Medianalter" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "ca. 45,1 Jahre Medianalter" },
+    { name: "🇦🇹 Österreich", cleanName: "Österreich", continent: "Europa", customVal: "ca. 44,5 Jahre Medianalter" },
+    { name: "🇭🇺 Ungarn", cleanName: "Ungarn", continent: "Europa", customVal: "ca. 44,3 Jahre Medianalter" },
+    { name: "🇱🇻 Lettland", cleanName: "Lettland", continent: "Europa", customVal: "ca. 44,1 Jahre Medianalter" },
+    { name: "🇫🇮 Finnland", cleanName: "Finnland", continent: "Europa", customVal: "ca. 43,1 Jahre Medianalter" },
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "ca. 43,3 Jahre Medianalter" }
+];
+
+countriesDatabase.top15_young_pop_median = [
+    { name: "🇳🇬 Niger", cleanName: "Niger", continent: "Afrika", customVal: "ca. 14,8 Jahre Medianalter" },
+    { name: "🇹🇩 Tschad", cleanName: "Tschad", continent: "Afrika", customVal: "ca. 16,3 Jahre Medianalter" },
+    { name: "🇲🇱 Mali", cleanName: "Mali", continent: "Afrika", customVal: "ca. 16,3 Jahre Medianalter" },
+    { name: "🇧🇮 Burundi", cleanName: "Burundi", continent: "Afrika", customVal: "ca. 17,0 Jahre Medianalter" },
+    { name: "🇸🇴 Somalia", cleanName: "Somalia", continent: "Afrika", customVal: "ca. 17,1 Jahre Medianalter" },
+    { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", customVal: "ca. 17,2 Jahre Medianalter" },
+    { name: "🇦🇴 Angola", cleanName: "Angola", continent: "Afrika", customVal: "ca. 17,3 Jahre Medianalter" },
+    { name: "🇧🇫 Burkina Faso", cleanName: "Burkina Faso", continent: "Afrika", customVal: "ca. 17,9 Jahre Medianalter" },
+    { name: "🇲🇼 Malawi", cleanName: "Malawi", continent: "Afrika", customVal: "ca. 18,1 Jahre Medianalter" },
+    { name: "🇺🇬 Uganda", cleanName: "Uganda", continent: "Afrika", customVal: "ca. 18,1 Jahre Medianalter" },
+    { name: "🇿🇲 Sambia", cleanName: "Sambia", continent: "Afrika", customVal: "ca. 18,3 Jahre Medianalter" },
+    { name: "🇲🇿 Mosambik", cleanName: "Mosambik", continent: "Afrika", customVal: "ca. 18,3 Jahre Medianalter" },
+    { name: "🇸🇸 Südsudan", cleanName: "Südsudan", continent: "Afrika", customVal: "ca. 18,6 Jahre Medianalter" },
+    { name: "🇧🇯 Benin", cleanName: "Benin", continent: "Afrika", customVal: "ca. 18,8 Jahre Medianalter" },
+    { name: "🇲🇬 Madagaskar", cleanName: "Madagaskar", continent: "Afrika", customVal: "ca. 19,6 Jahre Medianalter" }
+];
+
+countriesDatabase.top15_tourists = [
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "Über 90 Mio. Gäste" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "Über 80 Mio. Gäste" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "Über 50 Mio. Gäste" },
+    { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "Über 60 Mio. Gäste" },
+    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa", customVal: "Über 50 Mio. Gäste" },
+    { name: "🇲🇽 Mexiko", cleanName: "Mexiko", continent: "Nordamerika", customVal: "Über 40 Mio. Gäste" },
+    { name: "🇬🇧 Vereinigtes Königreich / Großbritannien", cleanName: "Vereinigtes Königreich / Großbritannien", continent: "Europa", customVal: "Über 35 Mio. Gäste" },
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "Über 30 Mio. Gäste" },
+    { name: "🇬🇷 Griechenland", cleanName: "Griechenland", continent: "Europa", customVal: "Über 30 Mio. Gäste" },
+    { name: "🇦🇹 Österreich", cleanName: "Österreich", continent: "Europa", customVal: "Über 25 Mio. Gäste" },
+    { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "Über 25 Mio. Gäste" },
+    { name: "🇻🇳 Vietnam", cleanName: "Vietnam", continent: "Asien", customVal: "Starker Tourismus" },
+    { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "Kultur-Tourismus" },
+    { name: "🇹🇭 Thailand", cleanName: "Thailand", continent: "Asien", customVal: "Über 35 Mio. Gäste" },
+    { name: "🇵🇹 Portugal", cleanName: "Portugal", continent: "Europa", customVal: "Über 20 Mio. Gäste" }
+];
+
+countriesDatabase.soviet_union_current = [
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "Größter Nachfolgestaat" },
+    { name: "🇺🇦 Ukraine", cleanName: "Ukraine", continent: "Europa", customVal: "Osteuropa" },
+    { name: "🇧🇾 Belarus", cleanName: "Belarus", continent: "Europa", customVal: "Osteuropa" },
+    { name: "🇰🇿 Kasachstan", cleanName: "Kasachstan", continent: "Asien", customVal: "Zentralasien" },
+    { name: "🇺🇿 Usbekistan", cleanName: "Usbekistan", continent: "Asien", customVal: "Zentralasien" },
+    { name: "🇰🇬 Kirgisistan", cleanName: "Kirgisistan", continent: "Asien", customVal: "Zentralasien" },
+    { name: "🇹🇯 Tadschikistan", cleanName: "Tadschikistan", continent: "Asien", customVal: "Zentralasien" },
+    { name: "🇹🇲 Turkmenistan", cleanName: "Turkmenistan", continent: "Asien", customVal: "Zentralasien" },
+    { name: "🇬🇪 Georgien", cleanName: "Georgien", continent: "Asien", customVal: "Kaukasus" },
+    { name: "🇦🇲 Armenien", cleanName: "Armenien", continent: "Asien", customVal: "Kaukasus" },
+    { name: "🇦🇿 Aserbaidschan", cleanName: "Aserbaidschan", continent: "Asien", customVal: "Kaukasus" },
+    { name: "🇲🇩 Moldau", cleanName: "Moldau", continent: "Europa", customVal: "Osteuropa" },
+    { name: "🇱🇹 Litauen", cleanName: "Litauen", continent: "Europa", customVal: "Baltikum" },
+    { name: "🇱🇻 Lettland", cleanName: "Lettland", continent: "Europa", customVal: "Baltikum" },
+    { name: "🇪🇪 Estland", cleanName: "Estland", continent: "Europa", customVal: "Baltikum" }
+];
+
+countriesDatabase.danube_countries = [
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "Ursprung / Quelle in Donaueschingen" },
+    { name: "🇦🇹 Österreich", cleanName: "Österreich", continent: "Europa", customVal: "Fließt durch Linz und Wien" },
+    { name: "🇸🇰 Slowakei", cleanName: "Slowakei", continent: "Europa", customVal: "Fließt vorbei an Bratislava" },
+    { name: "🇭🇺 Ungarn", cleanName: "Ungarn", continent: "Europa", customVal: "Fließt mitten durch Budapest" },
+    { name: "🇭🇷 Kroatien", cleanName: "Kroatien", continent: "Europa", customVal: "Grenze / Flusslauf im Osten" },
+    { name: "🇷🇸 Serbien", cleanName: "Serbien", continent: "Europa", customVal: "Fließt durch Belgrad" },
+    { name: "🇷🇴 Rumänien", cleanName: "Rumänien", continent: "Europa", customVal: "Bildet das große Donaudelta" },
+    { name: "🇧🇬 Bulgarien", cleanName: "Bulgarien", continent: "Europa", customVal: "Grenze zu Rumänien" },
+    { name: "🇲🇩 Moldau", cleanName: "Moldau", continent: "Europa", customVal: "Kurzer Zugang bei Giurgiulești" },
+    { name: "🇺🇦 Ukraine", cleanName: "Ukraine", continent: "Europa", customVal: "Mündung ins Schwarze Meer" }
+];
+
+countriesDatabase.india_borders = [
+    { name: "🇵🇰 Pakistan", cleanName: "Pakistan", continent: "Asien", customVal: "Westlicher Nachbar" },
+    { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "Nördlicher Nachbar" },
+    { name: "🇳🇵 Nepal", cleanName: "Nepal", continent: "Asien", customVal: "Nördlicher Nachbar im Himalaya" },
+    { name: "🇧🇹 Bhutan", cleanName: "Bhutan", continent: "Asien", customVal: "Nördlicher Nachbar" },
+    { name: "🇧🇩 Bangladesch", cleanName: "Bangladesch", continent: "Asien", customVal: "Östlicher Nachbar" },
+    { name: "🇲🇲 Myanmar", cleanName: "Myanmar", continent: "Asien", customVal: "Südöstlicher Nachbar" }
+];
+
+
+countriesDatabase.ending_with_i = countriesDatabase.all_countries.filter(c => c.cleanName.toLowerCase().endsWith('i'));
+
+countriesDatabase.four_letter_countries = countriesDatabase.all_countries.filter(c => c.cleanName.length === 4);
+
+countriesDatabase.top15_most_letters = [
+    { name: "🇧🇦 Bosnien und Herzegowina", cleanName: "Bosnien und Herzegowina", continent: "Europa", customVal: "25 Buchstaben" },
+    { name: "🇻🇨 Saint Vincent und die Grenadinen", cleanName: "Saint Vincent und die Grenadinen", continent: "Nordamerika", customVal: "35 Buchstaben" },
+    { name: "🇹🇹 Trinidad und Tobago", cleanName: "Trinidad und Tobago", continent: "Nordamerika", customVal: "22 Buchstaben" },
+    { name: "🇨🇫 Zentralafrikanische Republik", cleanName: "Zentralafrikanische Republik", continent: "Afrika", customVal: "30 Buchstaben" },
+    { name: "🇰🇳 Saint Kitts und Nevis", cleanName: "Saint Kitts und Nevis", continent: "Nordamerika", customVal: "24 Buchstaben" },
+    { name: "🇬🇼 Guinea-Bissau", cleanName: "Guinea-Bissau", continent: "Afrika", customVal: "14 Buchstaben" },
+    { name: "🇬🇶 Äquatorialguinea", cleanName: "Äquatorialguinea", continent: "Afrika", customVal: "18 Buchstaben" },
+    { name: "🇩🇴 Dominikanische Republik", cleanName: "Dominikanische Republik", continent: "Nordamerika", customVal: "25 Buchstaben" },
+    { name: "🇬🇧 Vereinigtes Königreich / Großbritannien", cleanName: "Vereinigtes Königreich / Großbritannien", continent: "Europa", customVal: "35 Buchstaben" },
+    { name: "🇸🇹 São Tomé und Príncipe", cleanName: "São Tomé und Príncipe", continent: "Afrika", customVal: "22 Buchstaben" },
+    { name: "🇦🇬 Antigua und Barbuda", cleanName: "Antigua und Barbuda", continent: "Nordamerika", customVal: "21 Buchstaben" },
+    { name: "🇦🇪 Vereinigte Arabische Emirate", cleanName: "Vereinigte Arabische Emirate", continent: "Asien", customVal: "31 Buchstaben" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "26 Buchstaben" },
+    { name: "🇰🇵 Nordkorea", cleanName: "Nordkorea", continent: "Asien", customVal: "10 Buchstaben" },
+    { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "9 Buchstaben" }
+].sort((a, b) => b.cleanName.replace(/[^a-zA-ZäöüÄÖÜß]/g, "").length - a.cleanName.replace(/[^a-zA-ZäöüÄÖÜß]/g, "").length);
 countriesDatabase.top15_holidays = [
     { name: "🇮🇷 Iran", cleanName: "Iran", continent: "Asien", customVal: "26 Feiertage" },
     { name: "🇰🇭 Kambodscha", cleanName: "Kambodscha", continent: "Asien", customVal: "28 Feiertage" },
@@ -441,7 +673,7 @@ countriesDatabase.top15_animal_species = [
     { name: "🇲🇾 Malaysia", cleanName: "Malaysia", continent: "Asien", customVal: "Über 30.000 Tierarten" },
     { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "Über 30.000 Tierarten" },
     { name: "🇲🇬 Madagaskar", cleanName: "Madagaskar", continent: "Afrika", customVal: "Hohe Endemiten-Rate" },
-    { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "Reiche Fauna" },
+    { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", customVal: "Reiche Fauna" },
     { name: "🇿🇦 Südafrika", cleanName: "Südafrika", continent: "Afrika", customVal: "Über 25.000 Tierarten" }
 ];
 
@@ -458,7 +690,7 @@ countriesDatabase.top15_snake_bites = [
     { name: "🇻🇳 Vietnam", cleanName: "Vietnam", continent: "Asien", customVal: "Regionale Risiken" },
     { name: "🇹🇿 Tansania", cleanName: "Tansania", continent: "Afrika", customVal: "Häufig in ländlichen Regionen" },
     { name: "🇰🇪 Kenia", cleanName: "Kenia", continent: "Afrika", customVal: "Häufig in ländlichen Regionen" },
-    { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "Hohes Tropen-Risiko" },
+    { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", customVal: "Hohes Tropen-Risiko" },
     { name: "🇨🇴 Kolumbien", cleanName: "Kolumbien", continent: "Südamerika", customVal: "Häufig im Dschungel" },
     { name: "🇻🇪 Venezuela", cleanName: "Venezuela", continent: "Südamerika", customVal: "Häufig im Tiefland" }
 ];
@@ -524,7 +756,7 @@ countriesDatabase.top15_poorest_wealth = [
     { name: "🇲🇿 Mosambik", cleanName: "Mosambik", continent: "Afrika", customVal: "Unter 2.500 $ pro Kopf" },
     { name: "🇲🇦 Madagaskar", cleanName: "Madagaskar", continent: "Afrika", customVal: "Unter 3.000 $ pro Kopf" },
     { name: "🇸🇱 Sierra Leone", cleanName: "Sierra Leone", continent: "Afrika", customVal: "Unter 2.500 $ pro Kopf" },
-    { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "Unter 2.000 $ pro Kopf" },
+    { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", customVal: "Unter 2.000 $ pro Kopf" },
     { name: "🇱🇷 Liberia", cleanName: "Liberia", continent: "Afrika", customVal: "Unter 3.000 $ pro Kopf" },
     { name: "🇹🇩 Tschad", cleanName: "Tschad", continent: "Afrika", customVal: "Unter 2.500 $ pro Kopf" },
     { name: "🇬🇼 Guinea-Bissau", cleanName: "Guinea-Bissau", continent: "Afrika", customVal: "Unter 3.000 $ pro Kopf" },
@@ -585,7 +817,7 @@ countriesDatabase.north_equator = countriesDatabase.all_countries.filter(c =>
 
 countriesDatabase.south_equator = countriesDatabase.all_countries.filter(c => 
     ["Südamerika", "Ozeanien"].includes(c.continent) || 
-    ["Afrika"].includes(c.continent) && ["Südafrika", "Lesotho", "Eswatini", "Sambia", "Simbabwe", "Botswana", "Namibia", "Angola", "Mosambik", "Madagaskar", "Mauritius", "Komoren", "Seychellen", "Tansania", "Kongo, Republik", "DR Kongo", "Gabun", "Kenia", "Malawi", "Ruanda", "Burundi"].includes(c.cleanName)
+    ["Afrika"].includes(c.continent) && ["Südafrika", "Lesotho", "Eswatini", "Sambia", "Simbabwe", "Botswana", "Namibia", "Angola", "Mosambik", "Madagaskar", "Mauritius", "Komoren", "Seychellen", "Tansania", "Republik Kongo", "Demokratische Republik Kongo", "Gabun", "Kenia", "Malawi", "Ruanda", "Burundi"].includes(c.cleanName)
 );
 
 countriesDatabase.top15_newest_countries = [
@@ -616,7 +848,7 @@ countriesDatabase.top15_area_high = [
     { name: "🇦🇷 Argentinien", cleanName: "Argentinien", continent: "Südamerika", customVal: "2.780.400 km²" },
     { name: "🇰🇿 Kasachstan", cleanName: "Kasachstan", continent: "Asien", customVal: "2.724.900 km²" },
     { name: "🇩🇿 Algerien", cleanName: "Algerien", continent: "Afrika", customVal: "2.381.741 km²" },
-    { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "2.344.858 km²" },
+    { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", customVal: "2.344.858 km²" },
     { name: "🇸🇦 Saudi-Arabien", cleanName: "Saudi-Arabien", continent: "Asien", customVal: "2.149.690 km²" },
     { name: "🇲🇽 Mexiko", cleanName: "Mexiko", continent: "Nordamerika", customVal: "1.964.375 km²" },
     { name: "🇮🇩 Indonesien", cleanName: "Indonesien", continent: "Asien", customVal: "1.904.569 km²" },
@@ -747,7 +979,7 @@ countriesDatabase.top15_forest = [
     { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "68.7 % Wald" },
     { name: "🇧🇷 Brasilien", cleanName: "Brasilien", continent: "Südamerika", customVal: "59.4 % Wald" },
     { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "63.0 % Wald" },
-    { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "55.6 % Wald" },
+    { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", customVal: "55.6 % Wald" },
     { name: "🇸🇱 Laotische Demokratische Volksrepublik / Laos", cleanName: "Laos", continent: "Asien", customVal: "64.5 % Wald" },
     { name: "🇨🇴 Kolumbien", cleanName: "Kolumbien", continent: "Südamerika", customVal: "52.3 % Wald" },
     { name: "🇲🇾 Malaysia", cleanName: "Malaysia", continent: "Asien", customVal: "58.2 % Wald" },
@@ -761,7 +993,7 @@ countriesDatabase.top15_young_pop = [
     { name: "🇲🇱 Mali", cleanName: "Mali", continent: "Afrika", customVal: "16.3 Jahre" },
     { name: "🇧🇮 Burundi", cleanName: "Burundi", continent: "Afrika", customVal: "17.0 Jahre" },
     { name: "🇸🇴 Somalia", cleanName: "Somalia", continent: "Afrika", customVal: "17.1 Jahre" },
-    { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "17.2 Jahre" },
+    { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", customVal: "17.2 Jahre" },
     { name: "🇦🇴 Angola", cleanName: "Angola", continent: "Afrika", customVal: "17.3 Jahre" },
     { name: "🇧🇫 Burkina Faso", cleanName: "Burkina Faso", continent: "Afrika", customVal: "17.9 Jahre" },
     { name: "🇲🇼 Malawi", cleanName: "Malawi", continent: "Afrika", customVal: "18.1 Jahre" },
@@ -900,7 +1132,7 @@ countriesDatabase.top15_elevation_high = [
 ];
 
 countriesDatabase.top15_timezones = [
-    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa / Übersee", customVal: "12 Zeitzonen" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "12 Zeitzonen" },
     { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "11 Zeitzonen" },
     { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "11 Zeitzonen" },
     { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "9 Zeitzonen" },
@@ -912,7 +1144,7 @@ countriesDatabase.top15_timezones = [
     { name: "🇲🇽 Mexiko", cleanName: "Mexiko", continent: "Nordamerika", customVal: "4 Zeitzonen" },
     { name: "🇮🇩 Indonesien", cleanName: "Indonesien", continent: "Asien", customVal: "3 Zeitzonen" },
     { name: "🇰🇮 Kiribati", cleanName: "Kiribati", continent: "Ozeanien", customVal: "3 Zeitzonen" },
-    { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "2 Zeitzonen" },
+    { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", customVal: "2 Zeitzonen" },
     { name: "🇲🇳 Mongolei", cleanName: "Mongolei", continent: "Asien", customVal: "2 Zeitzonen" },
     { name: "🇵🇬 Papua-Neuguinea", cleanName: "Papua-Neuguinea", continent: "Ozeanien", customVal: "2 Zeitzonen" }
 ];
@@ -922,7 +1154,7 @@ countriesDatabase.top15_borders = [
     { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "14 Nachbarn" },
     { name: "🇧🇷 Brasilien", cleanName: "Brasilien", continent: "Südamerika", customVal: "10 Nachbarn" },
     { name: "🇩🇿 Algerien", cleanName: "Algerien", continent: "Afrika", customVal: "7 Nachbarn" },
-    { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "9 Nachbarn" },
+    { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", customVal: "9 Nachbarn" },
     { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "9 Nachbarn" },
     { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa", customVal: "8 Nachbarn" },
     { name: "🇸🇦 Saudi-Arabien", cleanName: "Saudi-Arabien", continent: "Asien", customVal: "7 Nachbarn" },
@@ -1010,7 +1242,7 @@ countriesDatabase.top15_coastline = [
 countriesDatabase.top15_high_birth = [
     { name: "🇳🇬 Niger", cleanName: "Niger", continent: "Afrika", customVal: "ca. 46 Geburten / 1000 Einw." },
     { name: "🇹🇩 Tschad", cleanName: "Tschad", continent: "Afrika", customVal: "ca. 42 Geburten / 1000 Einw." },
-    { name: "🇨🇩 DR Kongo", cleanName: "DR Kongo", continent: "Afrika", customVal: "ca. 41 Geburten / 1000 Einw." },
+    { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", customVal: "ca. 41 Geburten / 1000 Einw." },
     { name: "🇸🇴 Somalia", cleanName: "Somalia", continent: "Afrika", customVal: "ca. 40 Geburten / 1000 Einw." },
     { name: "🇨🇫 Zentralafrikanische Republik", cleanName: "Zentralafrikanische Republik", continent: "Afrika", customVal: "ca. 39 Geburten / 1000 Einw." },
     { name: "🇲🇱 Mali", cleanName: "Mali", continent: "Afrika", customVal: "ca. 39 Geburten / 1000 Einw." },
@@ -1053,7 +1285,7 @@ countriesDatabase.amerika_countries = countriesDatabase.all_countries.filter(c =
 countriesDatabase.population_100m = countriesDatabase.all_countries.filter(c => [
     "Indien", "China", "Vereinigte Staaten / USA", "Indonesien", "Pakistan", 
     "Nigeria", "Brasilien", "Bangladesch", "Russland", "Mexiko", 
-    "Japan", "Äthiopien", "Philippinen", "Ägypten", "Vietnam", "DR Kongo"
+    "Japan", "Äthiopien", "Philippinen", "Ägypten", "Vietnam", "Demokratische Republik Kongo"
 ].includes(c.cleanName));
 
 countriesDatabase.eu_countries = countriesDatabase.all_countries.filter(c => [
@@ -1173,6 +1405,7 @@ window.onload = function() {
     updateSubGames();
 };
 
+
 function updateSubGames() {
     const theme = document.getElementById('select-theme').value;
     const subSelect = document.getElementById('select-subgame');
@@ -1278,7 +1511,7 @@ function startGame() {
     const subGameId = document.getElementById('select-subgame').value;
     const timerMode = document.getElementById('select-timer-mode').value;
     const livesMode = document.getElementById('select-lives-mode').value;
-
+foundCountries.clear();
     const subGameObj = subGamesData[theme].find(s => s.id === subGameId);
     activeSubGameTitle = subGameObj ? subGameObj.name : "Quiz";
   currentInfoType = subGameObj ? subGameObj.infoType : "pop";
@@ -1396,6 +1629,8 @@ function renderGameGrid() {
         container.appendChild(card);
     }
 }
+
+
 function handleInput(e) {
     if (!gameActive) return;
     const val = e.target.value.trim().toLowerCase();
