@@ -17,6 +17,7 @@ const subGamesData = {
         { id: 'ozeanien_countries', name: 'Alle Länder Ozeaniens', count: 14, group: 'Kontinente', infoType: 'pop' },
 // Neue Kategorien für subGamesData:
 { id: 'top15_meat_consumption', name: 'Top 15 Länder mit dem höchsten Fleischkonsum', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit dem höchsten jährlichen Fleischkonsum pro Kopf (in kg).' },
+{ id: 'all_vowels_countries', name: 'Länder mit allen 5 Vokalen', count: 3, group: 'Eigenschaften & Merkmale', infoType: 'capital', desc: 'Staaten auf Deutsch, in deren Namen alle fünf Vokale (A, E, I, O, U) mindestens einmal vorkommen.' },
 { id: 'bundesliga_players_countries', name: 'Länder mit den meisten Bundesliga-Spielern', count: 10, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Die Herkunftsländer, aus denen die meisten Spieler in der Fußball-Bundesliga kommen.' },
 { id: 'top15_tourists', name: 'Top 15 Länder mit den meisten Touristen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit den weltweit meisten internationalen Touristenankünften pro Jahr.' },
 { id: 'soviet_union_current', name: 'Länder der ehemaligen Sowjetunion (heutige Staaten)', count: 15, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Die 15 unabhängigen Staaten, die heute aus der ehemaligen Sowjetunion hervorgegangen sind.' },
@@ -914,7 +915,11 @@ countriesDatabase.top15_temp_low = [
     { name: "🇰🇿 Kasachstan", cleanName: "Kasachstan", continent: "Asien", customVal: "6.4 °C" },
     { name: "🇨🇿 Tschechien", cleanName: "Tschechien", continent: "Europa", customVal: "7.5 °C" }
 ];
-
+countriesDatabase.all_vowels_countries = [
+{ name: "🇬🇶 Äquatorialguinea", cleanName: "Äquatorialguinea", continent: "Afrika", customVal: "1,9 Mio. Einw." },
+    { name: "🇧🇦 Bosnien und Herzegowina", cleanName: "Bosnien und Herzegowina", continent: "Europa", customVal: "3,2 Mio. Einw." },
+    { name: "🇩🇴 Dominikanische Republik", cleanName: "Dominikanische Republik", continent: "Nordamerika", customVal: "11 Mio. Einw." }
+];
 countriesDatabase.top15_coffee = [
     { name: "🇫🇮 Finnland", cleanName: "Finnland", continent: "Europa", customVal: "12.0 kg pro Kopf" },
     { name: "🇳🇴 Norwegen", cleanName: "Norwegen", continent: "Europa", customVal: "9.9 kg pro Kopf" },
