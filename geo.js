@@ -23,10 +23,11 @@ const subGamesData = {
 { id: 'soviet_union_current', name: 'Länder der ehemaligen Sowjetunion (heutige Staaten)', count: 15, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Die 15 unabhängigen Staaten, die heute aus der ehemaligen Sowjetunion hervorgegangen sind.' },
 { id: 'danube_countries', name: 'Länder an der Donau', count: 10, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Staaten, die direkt am oder im Einzugsgebiet der Donau liegen (offizielle Anrainerstaaten).' },
 { id: 'india_borders', name: 'Länder, die an Indien grenzen', count: 6, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Die direkten Landnachbarn von Indien.' },
+{ id: 'capital_not_largest', name: 'Länder, deren Hauptstadt nicht die bevölkerungsreichste Stadt ist', count: 36, group: 'Eigenschaften & Merkmale', infoType: 'capital', desc: 'Staaten weltweit, bei denen eine andere Stadt mehr Einwohner hat als die Hauptstadt des Landes.' },
+{ id: 'top15_millionaires_density', name: 'Top 15 Länder mit den meisten Millionären', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit der höchsten Millionärsdichte (Anzahl von Millionären pro 10.000 Einwohner).' },
 { id: 'top15_german_tourists', name: 'Top 15 Reiseziele der Deutschen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder, die von deutschen Touristen am häufigsten bereist werden.' },
 { id: 'top15_best_cuisine', name: 'Top 15 Länder mit der besten Küche', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit international am besten bewerteter Esskultur (nach TasteAtlas-Index).' },
 { id: 'top15_highest_inflation', name: 'Top 15 Länder mit der höchsten Inflation', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit der aktuell höchsten Inflationsrate im Jahr 2026 (jährliche Teuerungsrate).' },
-{ id: 'ending_with_i', name: 'Länder, die auf "i" enden', count: 18, group: 'Alphabetisch A-Z', infoType: 'capital', desc: 'Souveräne Staaten auf Deutsch, deren Name auf den Buchstaben "i" endet.' },
 { id: 'four_letter_countries', name: 'Länder mit genau 4 Buchstaben', count: 8, group: 'Alphabetisch A-Z', infoType: 'capital', desc: 'Staaten, deren deutscher Name exakt aus 4 Buchstaben besteht.' },
 { id: 'top15_most_letters', name: 'Top 15 Länder mit den meisten Buchstaben', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Länder mit den längsten offiziellen deutschen Namen (reine Buchstaben gezählt).' },
 { id: 'top15_olympics', name: 'Top 15 Länder mit den meisten olympischen Medaillen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die erfolgreichsten Nationen der olympischen Geschichte nach Gesamtzahl der Medaillen.' },
@@ -78,7 +79,11 @@ const subGamesData = {
         { id: 'top15_coastline', name: 'Top 15 Länder mit den längsten Küsten', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Länder mit der insgesamt längsten Meeresküstenlinie in Kilometern.' },
         { id: 'top15_high_birth', name: 'Top 15 Länder mit den höchsten Geburten', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit den höchsten Geburtenraten (Geburten pro 1.000 Einwohner).' },
         { id: 'top15_low_birth', name: 'Top 15 Länder mit den niedrigsten Geburten', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit den niedrigsten Geburtenraten (Geburten pro 1.000 Einwohner).' },
-
+{ id: 'top15_billionaires', name: 'Top 15 Länder mit den meisten Milliardären', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit den meisten Milliardären (gemessen an der absoluten Anzahl bzw. Dichte pro Kopf).' },
+{ id: 'top15_height_tall', name: 'Top 15 Länder mit der größten Körpergröße', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Staaten mit der weltweit größten durchschnittlichen Körpergröße der Bevölkerung.' },
+{ id: 'top15_cars_per_capita', name: 'Top 15 Länder mit den meisten Autos', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Nationen mit der höchsten PKW-Dichte pro 1.000 Einwohner weltweit.' },
+{ id: 'top15_electricity_consumption', name: 'Top 15 Länder mit dem höchsten Stromverbrauch', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Staaten mit dem höchsten Stromverbrauch pro Kopf (in Kilowattstunden).' },
+{ id: 'top15_fastest_internet', name: 'Top 15 Länder mit dem schnellsten Internet', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit der weltweit höchsten durchschnittlichen Internet-Bandbreite (Glasfaser-Spitzenreiter).' },{ id: 'top15_height_short', name: 'Top 15 Länder mit der kleinsten Körpergröße', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Staaten mit der weltweit kleinsten durchschnittlichen Körpergröße der Bevölkerung.' },
         { id: 'spanish_speaking', name: 'Spanischsprachige Länder', count: 20, group: 'Sprachen', infoType: 'lang' },
         { id: 'french_speaking', name: 'Französischsprachige Länder', count: 28, group: 'Sprachen', infoType: 'lang' },
         { id: 'arabic_speaking', name: 'Arabischsprachige Länder', count: 23, group: 'Sprachen', infoType: 'lang' },
@@ -121,6 +126,7 @@ const countriesDatabase = {
         { name: "🇷🇴 Rumänien", cleanName: "Rumänien", continent: "Europa", pop: "19 Mio. Einw.", capital: "Bukarest", lang: "Rumänisch" },
         { name: "🇳🇱 Niederlande", cleanName: "Niederlande", continent: "Europa", pop: "18 Mio. Einw.", capital: "Amsterdam", lang: "Niederländisch" },
         { name: "🇧🇪 Belgien", cleanName: "Belgien", continent: "Europa", pop: "11,7 Mio. Einw.", capital: "Brüssel", lang: "Niederländisch/Französisch" },
+
         { name: "🇨🇿 Tschechien", cleanName: "Tschechien", continent: "Europa", pop: "10,8 Mio. Einw.", capital: "Prag", lang: "Tschechisch" },
         { name: "🇬🇷 Griechenland", cleanName: "Griechenland", continent: "Europa", pop: "10,4 Mio. Einw.", capital: "Athen", lang: "Griechisch" },
         { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", pop: "10,5 Mio. Einw.", capital: "Stockholm", lang: "Schwedisch" },
@@ -388,7 +394,23 @@ countriesDatabase.bundesliga_players_countries = [
     { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "ca. 8 Spieler" },
     { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "ca. 8 Spieler" }
 ];
-
+countriesDatabase.top15_millionaires_density = [
+    { name: "🇲🇨 Monaco", cleanName: "Monaco", continent: "Europa", customVal: "über 3.000 je 10.000 Einw." },
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "ca. 490 je 10.000 Einw." },
+    { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "ca. 410 je 10.000 Einw." },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "ca. 380 je 10.000 Einw." },
+    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "ca. 360 je 10.000 Einw." },
+    { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "ca. 330 je 10.000 Einw." },
+    { name: "🇳🇱 Niederlande", cleanName: "Niederlande", continent: "Europa", customVal: "ca. 320 je 10.000 Einw." },
+    { name: "🇳🇿 Neuseeland", cleanName: "Neuseeland", continent: "Ozeanien", customVal: "ca. 310 je 10.000 Einw." },
+    { name: "🇩🇰 Dänemark", cleanName: "Dänemark", continent: "Europa", customVal: "ca. 300 je 10.000 Einw." },
+    { name: "🇧🇪 Belgien", cleanName: "Belgien", continent: "Europa", customVal: "ca. 280 je 10.000 Einw." },
+    { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "ca. 270 je 10.000 Einw." },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "ca. 260 je 10.000 Einw." },
+    { name: "🇬🇧 Vereinigtes Königreich / Großbritannien", cleanName: "Vereinigtes Königreich / Großbritannien", continent: "Europa", customVal: "ca. 250 je 10.000 Einw." },
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "ca. 240 je 10.000 Einw." },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "ca. 230 je 10.000 Einw." }
+];
 countriesDatabase.top15_german_tourists = [
     { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "ca. 11,2 Mio. Reisen" },
     { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "ca. 6,4 Mio. Reisen" },
@@ -745,7 +767,97 @@ countriesDatabase.top15_richest_wealth = [
     { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "Über 300.000 $ pro Kopf" },
     { name: "🇬🇧 Vereinigtes Königreich", cleanName: "Vereinigtes Königreich", continent: "Europa", customVal: "Über 300.000 $ pro Kopf" }
 ];
+countriesDatabase.capital_not_largest = [
+    { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "Größte Stadt: Sydney (Hauptstadt: Canberra)" },
+    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa", customVal: "Größte Stadt: Istanbul (Hauptstadt: Ankara)" },
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "Größte Stadt: Zürich (Hauptstadt: Bern)" },
+    { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "Größte Stadt: Toronto (Hauptstadt: Ottawa)" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "Größte Stadt: New York (Hauptstadt: Washington, D.C.)" },
+    { name: "🇳🇿 Neuseeland", cleanName: "Neuseeland", continent: "Ozeanien", customVal: "Größte Stadt: Auckland (Hauptstadt: Wellington)" },
+    { name: "🇧🇷 Brasilien", cleanName: "Brasilien", continent: "Südamerika", customVal: "Größte Stadt: São Paulo (Hauptstadt: Brasília)" },
+    { name: "🇿🇦 Südafrika", cleanName: "Südafrika", continent: "Afrika", customVal: "Größte Stadt: Johannesburg (Hauptstadt: Pretoria)" },
+    { name: "🇻🇳 Vietnam", cleanName: "Vietnam", continent: "Asien", customVal: "Größte Stadt: Ho-Chi-Minh-Stadt (Hauptstadt: Hanoi)" },
+    { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "Größte Stadt: Mumbai (Hauptstadt: Neu-Delhi)" },
+    { name: "🇵🇰 Pakistan", cleanName: "Pakistan", continent: "Asien", customVal: "Größte Stadt: Karatschi (Hauptstadt: Islamabad)" },
+    { name: "🇳🇬 Nigeria", cleanName: "Nigeria", continent: "Afrika", customVal: "Größte Stadt: Lagos (Hauptstadt: Abuja)" },
+    { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "Größte Stadt: Shanghai (Hauptstadt: Peking)" },
+    { name: "🇲🇲 Myanmar", cleanName: "Myanmar", continent: "Asien", customVal: "Größte Stadt: Yangon (Hauptstadt: Naypyidaw)" },
+    { name: "🇰🇿 Kasachstan", cleanName: "Kasachstan", continent: "Asien", customVal: "Größte Stadt: Almaty (Hauptstadt: Astana)" },
+    { name: "🇲🇦 Marokko", cleanName: "Marokko", continent: "Afrika", customVal: "Größte Stadt: Casablanca (Hauptstadt: Rabat)" },
+    { name: "🇪🇨 Ecuador", cleanName: "Ecuador", continent: "Südamerika", customVal: "Größte Stadt: Guayaquil (Hauptstadt: Quito)" },
+    { name: "🇱🇰 Sri Lanka", cleanName: "Sri Lanka", continent: "Asien", customVal: "Größte Stadt: Colombo (Hauptstadt: Sri Jayewardenepura Kotte)" },
+    { name: "🇵🇭 Philippinen", cleanName: "Philippinen", continent: "Asien", customVal: "Größte Stadt: Quezon City (Hauptstadt: Manila)" },
+    { name: "🇨🇾 Zypern", cleanName: "Zypern", continent: "Europa", customVal: "Größte Stadt: Limassol (Hauptstadt: Nikosia)" },
+    { name: "🇧🇱 Liechtenstein", cleanName: "Liechtenstein", continent: "Europa", customVal: "Größte Stadt: Schaan (Hauptstadt: Vaduz)" },
+    { name: "🇲🇹 Malta", cleanName: "Malta", continent: "Europa", customVal: "Größte Stadt: Birkirkara (Hauptstadt: Valletta)" },
+    { name: "🇧🇿 Belize", cleanName: "Belize", continent: "Nordamerika", customVal: "Größte Stadt: Belize City (Hauptstadt: Belmopan)" },
+    { name: "🇧🇴 Bolivien", cleanName: "Bolivien", continent: "Südamerika", customVal: "Größte Stadt: Santa Cruz (Hauptstadt: Sucre / La Paz)" },
+    { name: "🇨🇷 Costa Rica", cleanName: "Costa Rica", continent: "Nordamerika", customVal: "Größte Stadt: Desamparados / Metropolregion (Hauptstadt: San José)" },
+    { name: "🇮vory Coast Elfenbeinküste", cleanName: "Elfenbeinküste", continent: "Afrika", customVal: "Größte Stadt: Abidjan (Hauptstadt: Yamoussoukro)" },
+    { name: "🇬🇲 Gambia", cleanName: "Gambia", continent: "Afrika", customVal: "Größte Stadt: Serekunda (Hauptstadt: Banjul)" },
+    { name: "🇭🇳 Honduras", cleanName: "Honduras", continent: "Nordamerika", customVal: "Größte Stadt: San Pedro Sula (Hauptstadt: Tegucigalpa)" },
+    { name: "🇱🇾 Libyen", cleanName: "Libyen", continent: "Afrika", customVal: "Größte Stadt: Bengasi (Hauptstadt: Tripolis - je nach Definition)" },
+    { name: "🇫🇲 Mikronesien", cleanName: "Mikronesien", continent: "Ozeanien", customVal: "Größte Stadt: Weno (Hauptstadt: Palikir)" },
+    { name: "🇵🇼 Palau", cleanName: "Palau", continent: "Ozeanien", customVal: "Größte Stadt: Koror (Hauptstadt: Ngerulmud)" },
+    { name: "🇵🇦 Panama", cleanName: "Panama", continent: "Nordamerika", customVal: "Größte Stadt: San Miguelito (Hauptstadt: Panama-Stadt)" },
+    { name: "🇰🇳 St. Kitts und Nevis", cleanName: "St. Kitts und Nevis", continent: "Nordamerika", customVal: "Größte Stadt: Cayon / Basseterre (Hauptstadt: Basseterre)" },
+    { name: "🇸🇩 Sudan", cleanName: "Sudan", continent: "Afrika", customVal: "Größte Stadt: Omdurman (Hauptstadt: Khartum)" },
+    { name: "🇹🇼 Taiwan", cleanName: "Taiwan", continent: "Asien", customVal: "Größte Stadt: Neu-Taipeh (Hauptstadt: Taipeh)" },
+    { name: "Tansania", cleanName: "Tansania", continent: "Afrika", customVal: "Größte Stadt: Daressalam (Hauptstadt: Dodoma)" }
+];
+countriesDatabase.top15_cars_per_capita = [
+    { name: "🇸🇲 San Marino", cleanName: "San Marino", continent: "Europa", customVal: "über 1.260 Autos / 1.000 Einw." },
+    { name: "🇲🇨 Monaco", cleanName: "Monaco", continent: "Europa", customVal: "über 900 Autos / 1.000 Einw." },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "ca. 840 Autos / 1.000 Einw." },
+    { name: "🇱🇮 Liechtenstein", cleanName: "Liechtenstein", continent: "Europa", customVal: "ca. 800 Autos / 1.000 Einw." },
+    { name: "🇮🇸 Island", cleanName: "Island", continent: "Europa", customVal: "ca. 790 Autos / 1.000 Einw." },
+    { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "ca. 780 Autos / 1.000 Einw." },
+    { name: "🇳🇿 Neuseeland", cleanName: "Neuseeland", continent: "Ozeanien", customVal: "ca. 770 Autos / 1.000 Einw." },
+    { name: "🇱🇺 Luxemburg", cleanName: "Luxemburg", continent: "Europa", customVal: "ca. 760 Autos / 1.000 Einw." },
+    { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "ca. 740 Autos / 1.000 Einw." },
+    { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "ca. 710 Autos / 1.000 Einw." },
+    { name: "🇫inland Finnland", cleanName: "Finnland", continent: "Europa", customVal: "ca. 700 Autos / 1.000 Einw." },
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "ca. 580 Autos / 1.000 Einw." },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "ca. 570 Autos / 1.000 Einw." },
+    { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "ca. 550 Autos / 1.000 Einw." },
+    { name: "🇬🇧 Vereinigtes Königreich / Großbritannien", cleanName: "Vereinigtes Königreich / Großbritannien", continent: "Europa", customVal: "ca. 540 Autos / 1.000 Einw." }
+];
 
+countriesDatabase.top15_electricity_consumption = [
+    { name: "🇮🇸 Island", cleanName: "Island", continent: "Europa", customVal: "über 50.000 kWh pro Kopf" },
+    { name: "🇳🇴 Norwegen", cleanName: "Norwegen", continent: "Europa", customVal: "ca. 23.000 kWh pro Kopf" },
+    { name: "🇰🇼 Kuwait", cleanName: "Kuwait", continent: "Asien", customVal: "ca. 14.000 kWh pro Kopf" },
+    { name: "🇶🇦 Katar", cleanName: "Katar", continent: "Asien", customVal: "ca. 14.000 kWh pro Kopf" },
+    { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "ca. 16.000 kWh pro Kopf" },
+    { name: "🇧🇭 Bahrain", cleanName: "Bahrain", continent: "Asien", customVal: "ca. 13.000 kWh pro Kopf" },
+    { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "ca. 10.000 kWh pro Kopf" },
+    { name: "🇦🇪 Vereinigte Arabische Emirate", cleanName: "Vereinigte Arabische Emirate", continent: "Asien", customVal: "ca. 11.000 kWh pro Kopf" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "ca. 12.000 kWh pro Kopf" },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "ca. 13.000 kWh pro Kopf" },
+    { name: "🇫🇮 Finnland", cleanName: "Finnland", continent: "Europa", customVal: "ca. 15.000 kWh pro Kopf" },
+    { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "ca. 9.500 kWh pro Kopf" },
+    { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "ca. 11.000 kWh pro Kopf" },
+    { name: "🇸🇦 Saudi-Arabien", cleanName: "Saudi-Arabien", continent: "Asien", customVal: "ca. 9.000 kWh pro Kopf" },
+    { name: "🇧🇪 Belgien", cleanName: "Belgien", continent: "Europa", customVal: "ca. 7.800 kWh pro Kopf" }
+];
+
+countriesDatabase.top15_fastest_internet = [
+    { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "über 260 Mbps (Ø)" },
+    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "über 240 Mbps (Ø)" },
+    { name: "🇨🇱 Chile", cleanName: "Chile", continent: "Südamerika", customVal: "über 220 Mbps (Ø)" },
+    { name: "🇦🇪 Vereinigte Arabische Emirate", cleanName: "Vereinigte Arabische Emirate", continent: "Asien", customVal: "über 210 Mbps (Ø)" },
+    { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "über 200 Mbps (Ø)" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "über 200 Mbps (Ø)" },
+    { name: "🇩🇰 Dänemark", cleanName: "Dänemark", continent: "Europa", customVal: "über 190 Mbps (Ø)" },
+    { name: "🇹🇭 Thailand", cleanName: "Thailand", continent: "Asien", customVal: "über 189 Mbps (Ø)" },
+    { name: "🇷🇴 Rumänien", cleanName: "Rumänien", continent: "Europa", customVal: "über 185 Mbps (Ø)" },
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "über 180 Mbps (Ø)" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "über 175 Mbps (Ø)" },
+    { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "über 170 Mbps (Ø)" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "über 165 Mbps (Ø)" },
+    { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "über 160 Mbps (Ø)" },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "über 155 Mbps (Ø)" }
+];
 countriesDatabase.top15_poorest_wealth = [
     { name: "🇦🇫 Afghanistan", cleanName: "Afghanistan", continent: "Asien", customVal: "Unter 2.000 $ pro Kopf" },
     { name: "🇧🇮 Burundi", cleanName: "Burundi", continent: "Afrika", customVal: "Unter 1.000 $ pro Kopf" },
@@ -897,7 +1009,59 @@ countriesDatabase.top15_temp_high = [
     { name: "🇬🇼 Guinea-Bissau", cleanName: "Guinea-Bissau", continent: "Afrika", customVal: "28.0 °C" },
     { name: "🇸🇩 Sudan", cleanName: "Sudan", continent: "Afrika", customVal: "28.0 °C" }
 ];
+countriesDatabase.top15_billionaires = [
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "über 800 Milliardäre" },
+    { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "über 400 Milliardäre" },
+    { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "über 200 Milliardäre" },
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "über 130 Milliardäre" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "über 110 Milliardäre" },
+    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "über 65 Milliardäre" },
+    { name: "🇧🇷 Brasilien", cleanName: "Brasilien", continent: "Südamerika", customVal: "über 50 Milliardäre" },
+    { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "über 50 Milliardäre" },
+    { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "über 60 Milliardäre" },
+    { name: "🇬🇧 Vereinigtes Königreich / Großbritannien", cleanName: "Vereinigtes Königreich / Großbritannien", continent: "Europa", customVal: "über 50 Milliardäre" },
+    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "extrem hohe Dichte pro Kopf" },
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "über 40 Milliardäre (sehr hohe Dichte)" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "über 40 Milliardäre" },
+    { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "über 35 Milliardäre" },
+    { name: "🇲🇨 Monaco", cleanName: "Monaco", continent: "Europa", customVal: "Höchste Milliardärsdichte weltweit" }
+];
 
+countriesDatabase.top15_height_tall = [
+    { name: "🇳🇱 Niederlande", cleanName: "Niederlande", continent: "Europa", customVal: "ca. 183.8 cm (Männer & Frauen Ø)" },
+    { name: "🇲🇪 Montenegro", cleanName: "Montenegro", continent: "Europa", customVal: "ca. 183.3 cm" },
+    { name: "🇪🇪 Estland", cleanName: "Estland", continent: "Europa", customVal: "ca. 182.8 cm" },
+    { name: "🇧🇦 Bosnien und Herzegowina", cleanName: "Bosnien und Herzegowina", continent: "Europa", customVal: "ca. 182.5 cm" },
+    { name: "🇮🇸 Island", cleanName: "Island", continent: "Europa", customVal: "ca. 182.1 cm" },
+    { name: "🇩🇰 Dänemark", cleanName: "Dänemark", continent: "Europa", customVal: "ca. 181.9 cm" },
+    { name: "🇨🇿 Tschechien", cleanName: "Tschechien", continent: "Europa", customVal: "ca. 181.2 cm" },
+    { name: "🇱🇻 Lettland", cleanName: "Lettland", continent: "Europa", customVal: "ca. 181.2 cm" },
+    { name: "🇸🇰 Slowakei", cleanName: "Slowakei", continent: "Europa", customVal: "ca. 181.0 cm" },
+    { name: "🇸🇮 Slowenien", cleanName: "Slowenien", continent: "Europa", customVal: "ca. 180.9 cm" },
+    { name: "🇭🇷 Kroatien", cleanName: "Kroatien", continent: "Europa", customVal: "ca. 180.8 cm" },
+    { name: "🇷🇸 Serbien", cleanName: "Serbien", continent: "Europa", customVal: "ca. 180.7 cm" },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "ca. 180.5 cm" },
+    { name: "🇳🇴 Norwegen", cleanName: "Norwegen", continent: "Europa", customVal: "ca. 180.5 cm" },
+    { name: "🇱🇹 Litauen", cleanName: "Litauen", continent: "Europa", customVal: "ca. 180.3 cm" }
+];
+
+countriesDatabase.top15_height_short = [
+    { name: "🇹🇱 Osttimor", cleanName: "Osttimor", continent: "Asien", customVal: "ca. 155.4 cm (Durchschnitt)" },
+    { name: "🇱🇦 Laos", cleanName: "Laos", continent: "Asien", customVal: "ca. 155.9 cm" },
+    { name: "🇸🇧 Salomonen", cleanName: "Salomonen", continent: "Ozeanien", customVal: "ca. 156.3 cm" },
+    { name: "🇵🇬 Papua-Neuguinea", cleanName: "Papua-Neuguinea", continent: "Ozeanien", customVal: "ca. 156.4 cm" },
+    { name: "🇾🇪 Jemen", cleanName: "Jemen", continent: "Asien", customVal: "ca. 159.9 cm" },
+    { name: "🇬🇹 Guatemala", cleanName: "Guatemala", continent: "Nordamerika", customVal: "ca. 160.0 cm" },
+    { name: "🇲🇬 Madagaskar", cleanName: "Madagaskar", continent: "Afrika", customVal: "ca. 160.1 cm" },
+    { name: "🇧🇩 Bangladesch", cleanName: "Bangladesch", continent: "Asien", customVal: "ca. 160.5 cm" },
+    { name: "🇵🇭 Philippinen", cleanName: "Philippinen", continent: "Asien", customVal: "ca. 161.9 cm" },
+    { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "ca. 162.0 cm" },
+    { name: "🇮🇩 Indonesien", cleanName: "Indonesien", continent: "Asien", customVal: "ca. 162.2 cm" },
+    { name: "🇰🇭 Kambodscha", cleanName: "Kambodscha", continent: "Asien", customVal: "ca. 162.5 cm" },
+    { name: "🇻🇳 Vietnam", cleanName: "Vietnam", continent: "Asien", customVal: "ca. 162.1 cm" },
+    { name: "🇳🇵 Nepal", cleanName: "Nepal", continent: "Asien", customVal: "ca. 162.6 cm" },
+    { name: "🇲🇿 Mosambik", cleanName: "Mosambik", continent: "Afrika", customVal: "ca. 163.0 cm" }
+];
 countriesDatabase.top15_temp_low = [
     { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "-4.0 °C" },
     { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "-3.8 °C" },
