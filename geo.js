@@ -30,6 +30,9 @@ const subGamesData = {
 { id: 'top15_millionaires_density', name: 'Top 15 Länder mit den meisten Millionären', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit der höchsten Millionärsdichte (Anzahl von Millionären pro 10.000 Einwohner).' },
 { id: 'top15_german_tourists', name: 'Top 15 Reiseziele der Deutschen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder, die von deutschen Touristen am häufigsten bereist werden.' },
 { id: 'top15_best_cuisine', name: 'Top 15 Länder mit der besten Küche', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit international am besten bewerteter Esskultur (nach TasteAtlas-Index).' },
+{ id: 'top15_southernmost_countries', name: 'Top 15 südlichste Länder der Welt', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Staaten, die am weitesten auf der Südhalbkugel liegen (gemessen am südlichsten Punkt ihrer Landesgrenze).' },
+{ id: 'top15_northernmost_countries', name: 'Top 15 nördlichste Länder der Welt', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Staaten, die am weitesten auf der Nordhalbkugel liegen (gemessen am nördlichsten Punkt ihrer Landesgrenze).' },
+{ id: 'top15_highest_debt_gdp', name: 'Top 15 Länder mit der höchsten Staatsverschuldung', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Nationen mit der absolut höchsten Schuldenquote im Verhältnis zu ihrem Bruttoinlandsprodukt (BIP).' },
 { id: 'top15_highest_inflation', name: 'Top 15 Länder mit der höchsten Inflation', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit der aktuell höchsten Inflationsrate im Jahr 2026 (jährliche Teuerungsrate).' },
 { id: 'four_letter_countries', name: 'Länder mit genau 4 Buchstaben', count: 8, group: 'Alphabetisch A-Z', infoType: 'capital', desc: 'Staaten, deren deutscher Name exakt aus 4 Buchstaben besteht.' },
 { id: 'top15_most_letters', name: 'Top 15 Länder mit den meisten Buchstaben', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Länder mit den längsten offiziellen deutschen Namen (reine Buchstaben gezählt).' },
@@ -431,7 +434,59 @@ countriesDatabase.top15_german_tourists = [
     { name: "🇵🇱 Polen", cleanName: "Polen", continent: "Europa", customVal: "ca. 1,5 Mio. Reisen" },
     { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "ca. 900 Tsd. Reisen" }
 ];
+countriesDatabase.top15_southernmost_countries = [
+    { name: "🇦🇷 Argentinien", cleanName: "Argentinien", continent: "Südamerika", customVal: "Südlichster Punkt: Kap San Pío (ca. 55°03′ S)" },
+    { name: "🇨🇱 Chile", cleanName: "Chile", continent: "Südamerika", customVal: "Südlichster Punkt: Kap Froward (ca. 53°54′ S)" },
+    { name: "🇳🇿 Neuseeland", cleanName: "Neuseeland", continent: "Ozeanien", customVal: "Südlichster Punkt: Macquarie Island / Campbell Island (bis 52° S)" },
+    { name: "🇿🇦 Südafrika", cleanName: "Südafrika", continent: "Afrika", customVal: "Südlichster Punkt: Kap Agulhas (ca. 34°50′ S)" },
+    { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "Südlichster Punkt: South East Cape (ca. 43°38′ S)" },
+    { name: "🇺🇾 Uruguay", cleanName: "Uruguay", continent: "Südamerika", customVal: "Südlichster Punkt: Punta del Este / Río de la Plata (ca. 35° S)" },
+    { name: "🇧🇷 Brasilien", cleanName: "Brasilien", continent: "Südamerika", customVal: "Südlichster Punkt: Arroio Chuí (ca. 33°45′ S)" },
+    { name: "🇱🇸 Lesotho", cleanName: "Lesotho", continent: "Afrika", customVal: "Südlichster Punkt: Grenze im Süden (ca. 30°40′ S)" },
+    { name: "🇸🇿 Eswatini", cleanName: "Eswatini", continent: "Afrika", customVal: "Südlichster Punkt: Grenze im Süden (ca. 27°19′ S)" },
+    { name: "🇲🇬 Madagaskar", cleanName: "Madagaskar", continent: "Afrika", customVal: "Südlichster Punkt: Cap Sainte-Marie (ca. 25°36′ S)" },
+    { name: "🇲🇿 Mosambik", cleanName: "Mosambik", continent: "Afrika", customVal: "Südlichster Punkt: Grenze zu Südafrika (ca. 26°52′ S)" },
+    { name: "🇳🇲 Namibia", cleanName: "Namibia", continent: "Afrika", customVal: "Südlichster Punkt: Oranje-Fluss (ca. 28°58′ S)" },
+    { name: "🇧🇼 Botswana", cleanName: "Botswana", continent: "Afrika", customVal: "Südlichster Punkt: Grenze zu Südafrika (ca. 26°54′ S)" },
+    { name: "🇵🇾 Paraguay", cleanName: "Paraguay", continent: "Südamerika", customVal: "Südlichster Punkt: Zusammenfluss Paraná/Paraguay (ca. 27°36′ S)" },
+    { name: "🇵🇪 Peru", cleanName: "Peru", continent: "Südamerika", customVal: "Südlichster Punkt: Grenze zu Chile (ca. 18°21′ S)" }
+];
 
+countriesDatabase.top15_northernmost_countries = [
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "Nördlichster Punkt: Kap Fligely, Rudolf-Insel (81°50′ N)" },
+    { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "Nördlichster Punkt: Kap Columbia, Ellesmere-Insel (83°06′ N)" },
+    { name: "🇩🇰 Dänemark", cleanName: "Dänemark", continent: "Europa", customVal: "Nördlichster Punkt: Kaffeklubben-Insel / Grönland (83°40′ N)" },
+    { name: "🇳🇴 Norwegen", cleanName: "Norwegen", continent: "Europa", customVal: "Nördlichster Punkt: Rossøya, Spitzbergen (80°49′ N)" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "Nördlichster Punkt: Point Barrow, Alaska (71°23′ N)" },
+    { name: "🇮🇸 Island", cleanName: "Island", continent: "Europa", customVal: "Nördlichster Punkt: Kolbeinsey (67°08′ N)" },
+    { name: "🇫🇮 Finnland", cleanName: "Finnland", continent: "Europa", customVal: "Nördlichster Punkt: Nuorgam (70°05′ N)" },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "Nördlichster Punkt: Treriksröset (69°03′ N)" },
+    { name: "🇬🇧 Vereinigtes Königreich / Großbritannien", cleanName: "Vereinigtes Königreich / Großbritannien", continent: "Europa", customVal: "Nördlichster Punkt: Out Stack, Shetlandinseln (60°51′ N)" },
+    { name: "🇪斯特 Estland", cleanName: "Estland", continent: "Europa", customVal: "Nördlichster Punkt: Vaindloo (59°49′ N)" },
+    { name: "🇱🇻 Lettland", cleanName: "Lettland", continent: "Europa", customVal: "Nördlichster Punkt: Ruhnu / Ipiķi (58°05′ N)" },
+    { name: "🇱🇹 Litauen", cleanName: "Litauen", continent: "Europa", customVal: "Nördlichster Punkt: Kodžiškiai (56°27′ N)" },
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "Nördlichster Punkt: List auf Sylt (55°03′ N)" },
+    { name: "🇩🇰 Dänemark", cleanName: "Dänemark", continent: "Europa", customVal: "Nördlichster Punkt: Skagen (57°45′ N)" },
+    { name: "🇮🇪 Irland", cleanName: "Irland", continent: "Europa", customVal: "Nördlichster Punkt: Malin Head (55°23′ N)" }
+];
+
+countriesDatabase.top15_highest_debt_gdp = [
+    { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "über 260% Schuldenquote" },
+    { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "über 170% Schuldenquote" },
+    { name: "🇬🇷 Griechenland", cleanName: "Griechenland", continent: "Europa", customVal: "über 160% Schuldenquote" },
+    { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "über 135% Schuldenquote" },
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "über 120% Schuldenquote" },
+    { name: "🇸🇪 Sudan", cleanName: "Sudan", continent: "Afrika", customVal: "über 115% Schuldenquote" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "über 110% Schuldenquote" },
+    { name: "🇧🇪 Belgien", cleanName: "Belgien", continent: "Europa", customVal: "über 105% Schuldenquote" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "über 105% Schuldenquote" },
+    { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "über 100% Schuldenquote" },
+    { name: "🇵🇹 Portugal", cleanName: "Portugal", continent: "Europa", customVal: "über 100% Schuldenquote" },
+    { name: "🇬🇧 Vereinigtes Königreich / Großbritannien", cleanName: "Vereinigtes Königreich / Großbritannien", continent: "Europa", customVal: "über 98% Schuldenquote" },
+    { name: "🇨🇾 Zypern", cleanName: "Zypern", continent: "Europa", customVal: "über 80% Schuldenquote" },
+    { name: "🇦🇹 Österreich", cleanName: "Österreich", continent: "Europa", customVal: "über 78% Schuldenquote" },
+    { name: "🇧🇷 Brasilien", cleanName: "Brasilien", continent: "Südamerika", customVal: "über 75% Schuldenquote" }
+];
 countriesDatabase.top15_best_cuisine = [
     { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "4.72 / 5.0 Punkte" },
     { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "4.65 / 5.0 Punkte" },
