@@ -10,8 +10,11 @@ const subGamesData = {
         { id: 'countries_mountain_6000m', name: 'Länder mit einem Berg über 6000 Meter', count: 15, group: 'Eigenschaften & Merkmale', infoType: 'custom', desc: 'Staaten, auf deren Gebiet sich mindestens ein Berg mit über 6.000 Metern Höhe befindet.' },
         { id: 'top15_richest_wealth', name: 'Top 15 reichste Länder (Durchschnittsvermögen)', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit dem höchsten durchschnittlichen Vermögen pro erwachsener Person.' },
         { id: 'top15_poorest_wealth', name: 'Top 15 ärmste Länder (Durchschnittsvermögen)', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit dem niedrigsten durchschnittlichen Vermögen pro erwachsener Person.' },
-        
-        { id: 'asien_countries', name: 'Alle Länder Asiens', count: 47, group: 'Kontinente', infoType: 'pop' },
+{ id: 'top15_immigrants', name: 'Top 15 Länder mit den meisten Einwanderern', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit der absolut höchsten Anzahl an im Ausland geborenen Menschen (Migranten) im Land.' },
+{ id: 'top15_worst_passport', name: 'Top 15 Länder mit dem schwächsten Reisepass', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die nach Henley Passport Index am wenigsten starken Pässe (wenigste visa-freie Reiseziele).' },
+{ id: 'top15_best_passport', name: 'Top 15 Länder mit dem stärksten Reisepass', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die nach Henley Passport Index mächtigsten Pässe mit visafreiem Zugang zu den meisten Ländern.' },
+{ id: 'top15_largest_capital_pop', name: 'Top 15 Hauptstädte mit der größten Bevölkerung', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Hauptstädte und Regierungszentren weltweit mit den meisten Einwohnern (Metropolregion).' },        
+ { id: 'asien_countries', name: 'Alle Länder Asiens', count: 47, group: 'Kontinente', infoType: 'pop' },
         { id: 'afrika_countries', name: 'Alle Länder Afrikas', count: 54, group: 'Kontinente', infoType: 'pop' },
         { id: 'amerika_countries', name: 'Alle Länder Nord-/Südamerikas', count: 35, group: 'Kontinente', infoType: 'pop' },
         { id: 'ozeanien_countries', name: 'Alle Länder Ozeaniens', count: 14, group: 'Kontinente', infoType: 'pop' },
@@ -985,7 +988,77 @@ countriesDatabase.top15_area_low = [
     { name: "🇦🇬 Antigua und Barbuda", cleanName: "Antigua und Barbuda", continent: "Nordamerika", customVal: "442 km²" },
     { name: "🇧🇧 Barbados", cleanName: "Barbados", continent: "Nordamerika", customVal: "430 km²" }
 ];
+countriesDatabase.top15_immigrants = [
+    { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "über 50 Mio. Einwanderer" },
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "über 16 Mio. Einwanderer" },
+    { name: "🇸🇦 Saudi-Arabien", cleanName: "Saudi-Arabien", continent: "Asien", customVal: "über 13 Mio. Einwanderer" },
+    { name: "🇬🇧 Vereinigtes Königreich / Großbritannien", cleanName: "Vereinigtes Königreich / Großbritannien", continent: "Europa", customVal: "über 9 Mio. Einwanderer" },
+    { name: "🇦🇪 Vereinigte Arabische Emirate", cleanName: "Vereinigte Arabische Emirate", continent: "Asien", customVal: "über 8,5 Mio. Einwanderer" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "über 8,5 Mio. Einwanderer" },
+    { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "über 8 Mio. Einwanderer" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "über 11 Mio. Einwanderer" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "über 7 Mio. Einwanderer" },
+    { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "über 7,5 Mio. Einwanderer" },
+    { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "über 6 Mio. Einwanderer" },
+    { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "über 4,5 Mio. Einwanderer" },
+    { name: "🇺🇦 Ukraine", cleanName: "Ukraine", continent: "Europa", customVal: "über 5 Mio. Einwanderer" },
+    { name: "🇰🇿 Kasachstan", cleanName: "Kasachstan", continent: "Asien", customVal: "über 3,5 Mio. Einwanderer" },
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "über 2,5 Mio. Einwanderer" }
+];
 
+countriesDatabase.top15_worst_passport = [
+    { name: "🇦🇫 Afghanistan", cleanName: "Afghanistan", continent: "Asien", customVal: "Visafrei für ca. 26 Länder" },
+    { name: "🇸🇾 Syrien", cleanName: "Syrien", continent: "Asien", customVal: "Visafrei für ca. 28 Länder" },
+    { name: "🇮🇶 Irak", cleanName: "Irak", continent: "Asien", customVal: "Visafrei für ca. 31 Länder" },
+    { name: "🇵🇰 Pakistan", cleanName: "Pakistan", continent: "Asien", customVal: "Visafrei für ca. 33 Länder" },
+    { name: "🇾🇪 Jemen", cleanName: "Jemen", continent: "Asien", customVal: "Visafrei für ca. 34 Länder" },
+    { name: "🇸🇴 Somalia", cleanName: "Somalia", continent: "Afrika", customVal: "Visafrei für ca. 35 Länder" },
+    { name: "🇱🇾 Libyen", cleanName: "Libyen", continent: "Afrika", customVal: "Visafrei für ca. 39 Länder" },
+    { name: "🇳🇵 Nepal", cleanName: "Nepal", continent: "Asien", customVal: "Visafrei für ca. 38 Länder" },
+    { name: "🇵🇸 Palästina", cleanName: "Palästina", continent: "Asien", customVal: "Visafrei für ca. 38 Länder" },
+    { name: "🇰🇵 Nordkorea", cleanName: "Nordkorea", continent: "Asien", customVal: "Visafrei für ca. 40 Länder" },
+    { name: "🇧🇩 Bangladesch", cleanName: "Bangladesch", continent: "Asien", customVal: "Visafrei für ca. 41 Länder" },
+    { name: "🇮🇷 Iran", cleanName: "Iran", continent: "Asien", customVal: "Visafrei für ca. 41 Länder" },
+    { name: "🇱🇰 Sri Lanka", cleanName: "Sri Lanka", continent: "Asien", customVal: "Visafrei für ca. 42 Länder" },
+    { name: "🇸🇩 Sudan", cleanName: "Sudan", continent: "Afrika", customVal: "Visafrei für ca. 42 Länder" },
+    { name: "🇪🇷 Eritrea", cleanName: "Eritrea", continent: "Afrika", customVal: "Visafrei für ca. 43 Länder" }
+];
+
+countriesDatabase.top15_best_passport = [
+    { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "Visafrei für über 192 Länder" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "Visafrei für über 190 Länder" },
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "Visafrei für über 190 Länder" },
+    { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "Visafrei für über 190 Länder" },
+    { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "Visafrei für über 190 Länder" },
+    { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "Visafrei für über 190 Länder" },
+    { name: "🇫🇮 Finnland", cleanName: "Finnland", continent: "Europa", customVal: "Visafrei für über 188 Länder" },
+    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "Visafrei für über 188 Länder" },
+    { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "Visafrei für über 188 Länder" },
+    { name: "🇩🇰 Dänemark", cleanName: "Dänemark", continent: "Europa", customVal: "Visafrei für über 187 Länder" },
+    { name: "🇮🇪 Irland", cleanName: "Irland", continent: "Europa", customVal: "Visafrei für über 187 Länder" },
+    { name: "🇳🇱 Niederlande", cleanName: "Niederlande", continent: "Europa", customVal: "Visafrei für über 187 Länder" },
+    { name: "🇦🇹 Österreich", cleanName: "Österreich", continent: "Europa", customVal: "Visafrei für über 186 Länder" },
+    { name: "🇱🇺 Luxemburg", cleanName: "Luxemburg", continent: "Europa", customVal: "Visafrei für über 186 Länder" },
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "Visafrei für über 186 Länder" }
+];
+
+countriesDatabase.top15_largest_capital_pop = [
+    { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "Tokio (ca. 37,4 Mio. Einw.)" },
+    { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "Neu-Delhi (ca. 32,9 Mio. Einw.)" },
+    { name: "🇧🇩 Bangladesch", cleanName: "Bangladesch", continent: "Asien", customVal: "Dhaka (ca. 23,2 Mio. Einw.)" },
+    { name: "🇪🇬 Ägypten", cleanName: "Ägypten", continent: "Afrika", customVal: "Kairo (ca. 22,6 Mio. Einw.)" },
+    { name: "🇲🇽 Mexiko", cleanName: "Mexiko", continent: "Nordamerika", customVal: "Mexiko-Stadt (ca. 22,2 Mio. Einw.)" },
+    { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "Peking (ca. 21,9 Mio. Einw.)" },
+    { name: "🇦🇷 Argentinien", cleanName: "Argentinien", continent: "Südamerika", customVal: "Buenos Aires (ca. 15,6 Mio. Einw.)" },
+    { name: "🇵🇭 Philippinen", cleanName: "Philippinen", continent: "Asien", customVal: "Manila (ca. 14,4 Mio. Einw.)" },
+    { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", customVal: "Kinshasa (ca. 16,5 Mio. Einw.)" },
+    { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "Seoul (ca. 9,9 Mio. Einw. / Metropole 25 Mio.)" },
+    { name: "🇮🇷 Iran", cleanName: "Iran", continent: "Asien", customVal: "Teheran (ca. 9,4 Mio. Einw.)" },
+    { name: "🇨🇴 Kolumbien", cleanName: "Kolumbien", continent: "Südamerika", customVal: "Bogotá (ca. 8,2 Mio. Einw.)" },
+    { name: "🇬🇧 Vereinigtes Königreich / Großbritannien", cleanName: "Vereinigtes Königreich / Großbritannien", continent: "Europa", customVal: "London (ca. 9,0 Mio. Einw.)" },
+    { name: "🇵🇰 Pakistan", cleanName: "Pakistan", continent: "Asien", customVal: "Islamabad (ca. 2,1 Mio. Einw. / Metropole oft größer)" },
+    { name: "🇹🇷 Türkei", cleanName: "Türkei", continent: "Europa", customVal: "Ankara (ca. 5,8 Mio. Einw.)" }
+];
 countriesDatabase.one_neighbor = countriesDatabase.all_countries.filter(c => [
     "Portugal", "Irland", "Vereinigtes Königreich / Großbritannien", "Vatikanstadt",
     "San Marino", "Monaco", "Papua-Neuguinea", "Haiti", "Dominikanische Republik",
