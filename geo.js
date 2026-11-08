@@ -462,7 +462,7 @@ countriesDatabase.top15_northernmost_countries = [
     { name: "🇫🇮 Finnland", cleanName: "Finnland", continent: "Europa", customVal: "Nördlichster Punkt: Nuorgam (70°05′ N)" },
     { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "Nördlichster Punkt: Treriksröset (69°03′ N)" },
     { name: "🇬🇧 Vereinigtes Königreich / Großbritannien", cleanName: "Vereinigtes Königreich / Großbritannien", continent: "Europa", customVal: "Nördlichster Punkt: Out Stack, Shetlandinseln (60°51′ N)" },
-    { name: "🇪斯特 Estland", cleanName: "Estland", continent: "Europa", customVal: "Nördlichster Punkt: Vaindloo (59°49′ N)" },
+    { name: "🇪🇪 Estland", cleanName: "Estland", continent: "Europa", customVal: "Nördlichster Punkt: Vaindloo (59°49′ N)" },
     { name: "🇱🇻 Lettland", cleanName: "Lettland", continent: "Europa", customVal: "Nördlichster Punkt: Ruhnu / Ipiķi (58°05′ N)" },
     { name: "🇱🇹 Litauen", cleanName: "Litauen", continent: "Europa", customVal: "Nördlichster Punkt: Kodžiškiai (56°27′ N)" },
     { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "Nördlichster Punkt: List auf Sylt (55°03′ N)" },
