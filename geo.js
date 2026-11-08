@@ -48,13 +48,13 @@ const subGamesData = {
         { id: 'top15_newest_countries', name: 'Top 15 jüngste Länder', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die nach Gründungsjahr jüngsten unabhängigen Staaten der Erde.' },
         
         { id: 'population_100m', name: 'Länder mit über 100 Mio. Einwohnern', count: 16, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Staaten mit einer Bevölkerung von über 100 Millionen Menschen.' },
-        { id: 'eu_countries', name: 'Länder der Europäischen Union', count: 27, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Alle aktuellen Mitgliedstaaten der Europäischen Union.' },
+        { id: 'eu_countries', name: 'Länder der Europäischen Union', count: 27, group: 'Politik & Geschichte', infoType: 'pop', desc: 'Alle aktuellen Mitgliedstaaten der Europäischen Union.' },
         { id: 'island_countries', name: 'Inselstaaten', count: 39, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Inselstaaten, die keine direkten Landgrenzen zu anderen Ländern besitzen.' },
         { id: 'binnenstaaten', name: 'Binnenstaaten', count: 44, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Staaten, die vollständig von Land umgeben sind und keinen eigenen Meereszugang haben.' },
-        { id: 'monarchies', name: 'Monarchien', count: 44, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Staaten, deren Staatsoberhaupt ein Monarch (König, Kaiser, Fürst etc.) ist.' },
+        { id: 'monarchies', name: 'Monarchien', count: 44, group: 'Politik & Geschichte', infoType: 'pop', desc: 'Staaten, deren Staatsoberhaupt ein Monarch (König, Kaiser, Fürst etc.) ist.' },
         { id: 'population_1m', name: 'Kleinstaaten', count: 40, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Staaten mit jeweils unter 1 Million Einwohnern.' },
-        { id: 'g20_countries', name: 'G20-Staaten', count: 18, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Die wichtigsten Industrie- und Schwellenländer der Welt.' },
-        { id: 'nato_countries', name: 'NATO-Mitglieder', count: 32, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Mitgliedstaaten des nordatlantischen Verteidigungsbündnisses.' },
+        { id: 'g20_countries', name: 'G20-Staaten', count: 18, group: 'Politik & Geschichte', infoType: 'pop', desc: 'Die wichtigsten Industrie- und Schwellenländer der Welt.' },
+        { id: 'nato_countries', name: 'NATO-Mitglieder', count: 32, group: 'Politik & Geschichte', infoType: 'pop', desc: 'Mitgliedstaaten des nordatlantischen Verteidigungsbündnisses.' },
         { id: 'euro_countries', name: 'Länder mit Euro-Währung', count: 21, group: 'Eigenschaften & Merkmale', infoType: 'pop', desc: 'Länder der europäischen Wirtschafts- und Währungsunion, die den Euro als offizielles Zahlungsmittel nutzen.' },
 
 
@@ -91,6 +91,7 @@ const subGamesData = {
 { id: 'top15_cars_per_capita', name: 'Top 15 Länder mit den meisten Autos', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Nationen mit der höchsten PKW-Dichte pro 1.000 Einwohner weltweit.' },
 { id: 'top15_electricity_consumption', name: 'Top 15 Länder mit dem höchsten Stromverbrauch', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Staaten mit dem höchsten Stromverbrauch pro Kopf (in Kilowattstunden).' },
 { id: 'top15_fastest_internet', name: 'Top 15 Länder mit dem schnellsten Internet', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit der weltweit höchsten durchschnittlichen Internet-Bandbreite (Glasfaser-Spitzenreiter).' },{ id: 'top15_height_short', name: 'Top 15 Länder mit der kleinsten Körpergröße', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Staaten mit der weltweit kleinsten durchschnittlichen Körpergröße der Bevölkerung.' },
+{ id: 'countries_renamed_recently', name: 'Länder mit offizieller Umbenennung im 20./21. Jahrhundert', count: 16, group: 'Politik & Geschichte', infoType: 'custom', desc: 'Staaten, die früher völlig anders hießen und in der jüngeren Geschichte umbenannt wurden.' },
         { id: 'spanish_speaking', name: 'Spanischsprachige Länder', count: 20, group: 'Sprachen', infoType: 'lang' },
         { id: 'french_speaking', name: 'Französischsprachige Länder', count: 28, group: 'Sprachen', infoType: 'lang' },
         { id: 'arabic_speaking', name: 'Arabischsprachige Länder', count: 23, group: 'Sprachen', infoType: 'lang' },
@@ -1421,7 +1422,24 @@ countriesDatabase.top15_elevation_low = [
     { name: "🇧🇩 Bangladesch", cleanName: "Bangladesch", continent: "Asien", customVal: "85 m Höhe" },
     { name: "🇱🇻 Lettland", cleanName: "Lettland", continent: "Europa", customVal: "87 m Höhe" }
 ];
-
+countriesDatabase.countries_renamed_recently = [
+    { name: "🇧🇫 Burkina Faso", cleanName: "Burkina Faso", continent: "Afrika", customVal: "Bis 1984: Obervolta (Fluss Volta)" },
+    { name: "🇨🇩 Demokratische Republik Kongo", cleanName: "Demokratische Republik Kongo", continent: "Afrika", customVal: "1971–1997: Zaire" },
+    { name: "🇩🇯 Dschibuti", cleanName: "Dschibuti", continent: "Afrika", customVal: "Bis 1977: Franz. Afar- und Issa-Territorien" },
+    { name: "🇸🇿 Eswatini", cleanName: "Eswatini", continent: "Afrika", customVal: "Bis 2018: Swasiland" },
+    { name: "🇬🇭 Ghana", cleanName: "Ghana", continent: "Afrika", customVal: "Vor 1957: Goldküste" },
+    { name: "🇲🇼 Malawi", cleanName: "Malawi", continent: "Afrika", customVal: "Bis 1964: Njassaland" },
+    { name: "🇳🇲 Namibia", cleanName: "Namibia", continent: "Afrika", customVal: "Bis 1968: Südwestafrika" },
+    { name: "🇿🇲 Sambia", cleanName: "Sambia", continent: "Afrika", customVal: "Bis 1964: Nordrhodesien" },
+    { name: "🇿🇼 Simbabwe", cleanName: "Simbabwe", continent: "Afrika", customVal: "Bis 1979: Südrhodesien" },
+    { name: "🇹🇿 Tansania", cleanName: "Tansania", continent: "Afrika", customVal: "Aus Tanganyika & Sansibar (1964)" },
+    { name: "🇧🇩 Bangladesch", cleanName: "Bangladesch", continent: "Asien", customVal: "1947–1971: Ostpakistan" },
+    { name: "🇰🇭 Kambodscha", cleanName: "Kambodscha", continent: "Asien", customVal: "Früher: Khmer-Rep./Kampuchea" },
+    { name: "🇲🇲 Myanmar", cleanName: "Myanmar", continent: "Asien", customVal: "Bis 1989: Birma / Burma" },
+    { name: "🇱🇰 Sri Lanka", cleanName: "Sri Lanka", continent: "Asien", customVal: "Bis 1972: Ceylon" },
+    { name: "🇹🇭 Thailand", cleanName: "Thailand", continent: "Asien", customVal: "Bis 1939 (u. 1945–49): Siam" },
+    { name: "🇲🇰 Nordmazedonien", cleanName: "Nordmazedonien", continent: "Europa", customVal: "Bis 2019: Mazedonien / EJRM" }
+];
 countriesDatabase.top15_elevation_high = [
     { name: "🇧🇹 Bhutan", cleanName: "Bhutan", continent: "Asien", customVal: "3.280 m Höhe" },
     { name: "🇳🇵 Nepal", cleanName: "Nepal", continent: "Asien", customVal: "3.265 m Höhe" },
