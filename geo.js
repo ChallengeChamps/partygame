@@ -29,6 +29,7 @@ const subGamesData = {
 { id: 'capital_not_largest', name: 'Länder, deren Hauptstadt nicht die bevölkerungsreichste Stadt ist', count: 36, group: 'Eigenschaften & Merkmale', infoType: 'capital', desc: 'Staaten weltweit, bei denen eine andere Stadt mehr Einwohner hat als die Hauptstadt des Landes.' },
 { id: 'top15_millionaires_density', name: 'Top 15 Länder mit den meisten Millionären', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit der höchsten Millionärsdichte (Anzahl von Millionären pro 10.000 Einwohner).' },
 { id: 'top15_german_tourists', name: 'Top 15 Reiseziele der Deutschen', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder, die von deutschen Touristen am häufigsten bereist werden.' },
+{ id: 'countries_ending_with_land', name: 'Länder, deren deutscher Name auf -land endet', count: 10, group: 'Alphabetisch A-Z', infoType: 'pop', desc: 'Die 10 souveränen Staaten im Deutschen, deren Name auf -land endet.' },
 { id: 'top15_best_cuisine', name: 'Top 15 Länder mit der besten Küche', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Länder mit international am besten bewerteter Esskultur (nach TasteAtlas-Index).' },
 { id: 'top15_southernmost_countries', name: 'Top 15 südlichste Länder der Welt', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Staaten, die am weitesten auf der Südhalbkugel liegen (gemessen am südlichsten Punkt ihrer Landesgrenze).' },
 { id: 'top15_northernmost_countries', name: 'Top 15 nördlichste Länder der Welt', count: 15, group: 'Top 15 Rekorde', infoType: 'custom', desc: 'Die Staaten, die am weitesten auf der Nordhalbkugel liegen (gemessen am nördlichsten Punkt ihrer Landesgrenze).' },
@@ -1025,7 +1026,18 @@ countriesDatabase.top15_area_high = [
     { name: "🇮🇩 Indonesien", cleanName: "Indonesien", continent: "Asien", customVal: "1.904.569 km²" },
     { name: "🇸🇩 Sudan", cleanName: "Sudan", continent: "Afrika", customVal: "1.861.484 km²" }
 ];
-
+countriesDatabase.countries_ending_with_land = [
+    { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", pop: "84 Mio. Einw.", capital: "Berlin" },
+    { name: "🇪🇪 Estland", cleanName: "Estland", continent: "Europa", pop: "1,3 Mio. Einw.", capital: "Tallinn" },
+    { name: "🇱🇻 Lettland", cleanName: "Lettland", continent: "Europa", pop: "1,8 Mio. Einw.", capital: "Riga" },
+    { name: "🇫🇮 Finnland", cleanName: "Finnland", continent: "Europa", pop: "5,6 Mio. Einw.", capital: "Helsinki" },
+    { name: "🇬🇷 Griechenland", cleanName: "Griechenland", continent: "Europa", pop: "10,4 Mio. Einw.", capital: "Athen" },
+    { name: "🇮🇪 Irland", cleanName: "Irland", continent: "Europa", pop: "5,3 Mio. Einw.", capital: "Dublin" },
+    { name: "🇮🇸 Island", cleanName: "Island", continent: "Europa", pop: "390 Tsd. Einw.", capital: "Reykjavík" },
+    { name: "🇳🇿 Neuseeland", cleanName: "Neuseeland", continent: "Ozeanien", pop: "5,2 Mio. Einw.", capital: "Wellington" },
+    { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", pop: "144 Mio. Einw.", capital: "Moskau" },
+    { name: "🇹🇭 Thailand", cleanName: "Thailand", continent: "Asien", pop: "71 Mio. Einw.", capital: "Bangkok" }
+];
 countriesDatabase.top15_area_low = [
     { name: "🇻🇦 Vatikanstadt", cleanName: "Vatikanstadt", continent: "Europa", customVal: "0,49 km²" },
     { name: "🇲🇨 Monaco", cleanName: "Monaco", continent: "Europa", customVal: "2,02 km²" },
@@ -1814,7 +1826,8 @@ foundCountries.clear();
   currentInfoType = subGameObj ? subGameObj.infoType : "pop";
   currentSubGameId = subGameId; // <--- HIER HINZUFÜGEN
 
-  currentGameData = JSON.parse(JSON.stringify(countriesDatabase[subGameId] || countriesDatabase.all_countries));
+const foundDb = (typeof citiesDatabase !== 'undefined' && citiesDatabase[subGameId]) ? citiesDatabase : countriesDatabase;
+currentGameData = JSON.parse(JSON.stringify(foundDb[subGameId] || countriesDatabase.all_countries));
 
     if (livesMode === '3') {
         livesEnabled = true;
@@ -1939,9 +1952,12 @@ function handleInput(e) {
         return;
     }
 
-    // GEÄNDERT: Suche nun in der WELTWEITEN Datenbank (countriesDatabase.all_countries), 
-    // damit immer alle passenden Länder vorgeschlagen werden (z.B. San Marino bei "san").
-    const matches = countriesDatabase.all_countries.filter(c => 
+    // Automatisch erkennen, ob wir im Städte-Modus oder Länder-Modus sind
+    const theme = document.getElementById('select-theme').value;
+    const activeDb = (theme === 'cities' && typeof citiesDatabase !== 'undefined') ? citiesDatabase : countriesDatabase;
+    const searchSource = activeDb.all_cities || activeDb.all_countries;
+
+    const matches = searchSource.filter(c => 
         c.cleanName.toLowerCase().includes(val)
     );
 
@@ -1972,26 +1988,29 @@ function handleKeyDown(e) {
         const typed = input.value.trim().toLowerCase();
         if (typed.length < 3) return;
 
-        // GEÄNDERT: Zuerst in allen Ländern der Welt suchen, um den sauberen Ländernamen zu finden
-        const exactMatch = countriesDatabase.all_countries.find(c => 
-            c.cleanName.toLowerCase() === typed
-        );
+        // Automatisch erkennen, welche Datenbank aktiv ist
+        const theme = document.getElementById('select-theme').value;
+        const activeDb = (theme === 'cities' && typeof citiesDatabase !== 'undefined') ? citiesDatabase : countriesDatabase;
+        const searchSource = activeDb.all_cities || activeDb.all_countries;
+
+        // 1. Exakter Treffer?
+        let exactMatch = searchSource.find(c => c.cleanName.toLowerCase() === typed);
+
+        if (!exactMatch) {
+            // 2. Wenn nicht exakt, nimm automatisch den ersten Vorschlag aus der Liste (z.B. Tokio)
+            const matches = searchSource.filter(c => c.cleanName.toLowerCase().includes(typed));
+            if (matches.length > 0) {
+                exactMatch = matches[0];
+            }
+        }
 
         if (exactMatch) {
             processSelectedCountry(exactMatch.cleanName);
         } else {
-            const matches = countriesDatabase.all_countries.filter(c => 
-                c.cleanName.toLowerCase().includes(typed)
-            );
-            if (matches.length > 0) {
-                processSelectedCountry(matches[0].cleanName);
-            } else {
-                handleMistake();
-            }
+            handleMistake();
         }
     }
 }
-
 function processSelectedCountry(cleanName) {
     if (!gameActive) return;
     const input = document.getElementById('country-input');
