@@ -87,17 +87,23 @@
                         <label class="block text-xs font-semibold text-slate-300">Themenbereich wählen:</label>
                         <select id="select-theme" onchange="updateSubGames()" class="w-full bg-white text-slate-900 font-semibold border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500 transition shadow-sm">
                             <option value="geography">Geografie & Welt</option>
-                            <option value="history" disabled>Geschichte (Demnächst)</option>
+                            <option value="cities">Geografie - Städte</option>
                         </select>
                     </div>
 
-                    <!-- Sub-Game Selection (Modern Button Trigger) -->
+                    <!-- Sub-Game Selection (Modern Button Trigger mit sauberem Umbruch) -->
                     <div class="space-y-1.5">
                         <label class="block text-xs font-semibold text-slate-300">Spiel / Kategorie wählen:</label>
-                        <button type="button" onclick="openCategoryModal()" id="selected-game-btn" class="w-full bg-white text-slate-900 font-semibold border border-white/20 rounded-xl px-4 py-3 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-pink-500 transition shadow-sm">
-                            <span id="current-selected-game-name" class="truncate">Alle Länder der Erde (197)</span>
-                            <i class="fa-solid fa-chevron-down text-slate-500 text-xs ml-2"></i>
-                        </button>
+                        <div class="flex items-center space-x-2">
+                            <button type="button" onclick="openCategoryModal()" id="selected-game-btn" class="flex-1 bg-white text-slate-900 font-semibold border border-white/20 rounded-xl px-4 py-3 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-pink-500 transition shadow-sm">
+                                <span id="current-selected-game-name" class="whitespace-normal leading-snug pr-2">Alle Länder der Erde (197)</span>
+                                <i class="fa-solid fa-chevron-down text-slate-500 text-xs shrink-0 ml-1"></i>
+                            </button>
+                            <!-- Zufalls-Button mit Würfel-Symbol -->
+                            <button type="button" onclick="selectRandomCategory()" class="bg-slate-800 hover:bg-slate-700 text-pink-400 border border-white/20 rounded-xl px-4 py-3 shrink-0 flex items-center justify-center transition shadow-sm" title="Zufällige Kategorie wählen">
+                                <i class="fa-solid fa-dice text-lg"></i>
+                            </button>
+                        </div>
                         <!-- Hidden real select to keep logic intact -->
                         <select id="select-subgame" class="hidden">
                             <!-- Populated by JS -->
@@ -132,6 +138,12 @@
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
 
+                    <!-- NEU: Highscore- & Statistik-Button -->
+                    <button onclick="openStatsModal()" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold text-pink-400 text-sm border border-white/10 transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-trophy"></i>
+                        <span>Meine Rekorde & Statistiken</span>
+                    </button>
+
                     <a href="startseite.html" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold text-slate-300 text-sm border border-white/10 transition flex items-center justify-center space-x-2">
                         <i class="fa-solid fa-house"></i>
                         <span>Zurück zur Startseite</span>
@@ -159,13 +171,45 @@
                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                             <i class="fa-solid fa-magnifying-glass text-sm"></i>
                         </div>
-                        <input type="text" id="modal-search-input" oninput="filterModalCategories(event)" placeholder="Kategorie suchen (z. B. Europa, Städte, A)..." class="w-full bg-slate-900 border border-white/15 rounded-xl pl-10 pr-4 py-2.5 text-sm font-medium text-slate-100 focus:outline-none focus:border-pink-500 transition">
+                        <input type="text" id="modal-search-input" oninput="filterModalCategories(event)" placeholder="Kategorie suchen" class="w-full bg-slate-900 border border-white/15 rounded-xl pl-10 pr-4 py-2.5 text-sm font-medium text-slate-100 focus:outline-none focus:border-pink-500 transition">
                     </div>
                 </div>
 
                 <!-- Categories Container -->
                 <div id="modal-categories-list" class="overflow-y-auto space-y-4 pr-1 flex-1">
                     <!-- Dynamically generated via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS / RECORDS MODAL (POPUP) -->
+        <div id="stats-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+            <div class="glass-card w-full max-w-2xl rounded-3xl p-6 sm:p-8 flex flex-col max-h-[85vh] shadow-2xl border border-white/10 relative">
+                <div class="flex items-center justify-between pb-4 border-b border-white/10">
+                    <div>
+                        <h3 class="text-xl font-bold text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-trophy text-amber-400"></i>
+                            <span>Deine Rekorde & Statistiken</span>
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Übersicht deiner Bestleistungen, Quote und Rekordzeiten pro Kategorie.</p>
+                    </div>
+                    <button onclick="closeStatsModal()" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Stats Container -->
+                <div id="stats-list-container" class="overflow-y-auto space-y-3 pr-1 flex-1 py-4">
+                    <!-- Dynamisch per JS generiert -->
+                </div>
+
+                <div class="pt-4 border-t border-white/10 flex justify-between items-center">
+                    <button onclick="resetAllStats()" class="px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 rounded-xl text-xs font-semibold text-rose-400 transition">
+                        Statistiken zurücksetzen
+                    </button>
+                    <button onclick="closeStatsModal()" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-bold text-white transition">
+                        Schließen
+                    </button>
                 </div>
             </div>
         </div>
@@ -273,5 +317,6 @@
 
     <!-- External JavaScript File -->
     <script src="geo.js"></script>
+    <script src="geo2.js"></script>
 </body>
 </html>
