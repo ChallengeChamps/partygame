@@ -1777,6 +1777,9 @@ function renderModalCategories(filterText = '') {
         return;
     }
 
+    // Statistiken laden für die Pokal-Anzeige
+    const stats = getSavedStats();
+
     const groups = {};
     filtered.forEach(item => {
         const g = item.group || 'Sonstige';
@@ -1795,9 +1798,17 @@ function renderModalCategories(filterText = '') {
             const isSelected = document.getElementById('select-subgame').value === item.id;
             let hasDesc = item.desc ? true : false;
             
+            // Prüfen, ob die Kategorie bereits geschafft wurde für das Pokal-Icon
+            const record = stats[item.id];
+            const hasCompleted = record && (record.completed || record.maxFound === item.count);
+            const trophyHtml = hasCompleted ? `<i class="fa-solid fa-trophy text-amber-400 text-xs shrink-0" title="Bereits komplett geschafft!"></i>` : '';
+            
             gridHtml += `
                 <div class="p-3 rounded-xl border text-xs font-semibold cursor-pointer transition flex items-center justify-between ${isSelected ? 'bg-pink-600/20 border-pink-500 text-pink-200 shadow-sm' : 'bg-slate-900/60 border-white/10 text-slate-200 hover:bg-slate-800 hover:border-white/20'}">
-                    <span onclick="selectCategory('${item.id}', '${item.name.replace(/'/g, "\\'")}')" class="whitespace-normal pr-2 flex-1 leading-snug">${item.name}</span>
+                    <span onclick="selectCategory('${item.id}', '${item.name.replace(/'/g, "\\'")}')" class="whitespace-normal pr-2 flex-1 leading-snug flex items-center space-x-1.5">
+                        <span>${item.name}</span>
+                        ${trophyHtml}
+                    </span>
                     <div class="flex items-center space-x-2 shrink-0 ml-2">
                         ${hasDesc ? `<button type="button" onclick="event.stopPropagation(); showCategoryDesc('${item.name.replace(/'/g, "\\'")}', '${item.desc.replace(/'/g, "\\'")}')" class="w-5 h-5 rounded-full bg-slate-800 hover:bg-pink-600 text-slate-400 hover:text-white flex items-center justify-center text-[10px] border border-white/10 transition" title="Erklärung anzeigen">?</button>` : ''}
                         <span onclick="selectCategory('${item.id}', '${item.name.replace(/'/g, "\\'")}')" class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 text-[10px]">${item.count}</span>
@@ -1812,6 +1823,9 @@ function renderModalCategories(filterText = '') {
     }
 }
 
+function showCategoryDesc(title, desc) {
+    alert(`ℹ️ ${title}\n\n${desc}`);
+}
 function showCategoryDesc(title, desc) {
     alert(`ℹ️ ${title}\n\n${desc}`);
 }
@@ -2135,6 +2149,13 @@ function finishGame(isWin) {
     gameActive = false;
     if (timerInterval) clearInterval(timerInterval);
 
+    // --- NEU: Statistik direkt im LocalStorage speichern ---
+    const totalSecs = timerUnlimited ? 0 : (parseInt(document.getElementById('select-timer-mode').value) * 60 - secondsRemaining);
+    saveGameStats(currentSubGameId, foundCountries.size, currentGameData.length, totalSecs, isWin);
+    // -----------------------------------------------------
+
+    // (Hier geht dein restlicher Code von finishGame weiter...)
+
     document.getElementById('screen-game').classList.add('hidden');
     document.getElementById('screen-end').classList.remove('hidden');
 
@@ -2229,4 +2250,177 @@ function goToHome() {
     document.getElementById('screen-game').classList.add('hidden');
     document.getElementById('screen-end').classList.add('hidden');
     document.getElementById('screen-home').classList.remove('hidden');
+}
+function selectRandomCategory() {
+    // 1. Aktuelles Thema auslesen (z.B. 'geography' oder 'cities')
+    const currentTheme = document.getElementById('select-theme').value;
+    
+    // 2. Prüfen, ob es für dieses Thema Kategorien gibt
+    const list = subGamesData[currentTheme];
+    if (!list || list.length === 0) return;
+
+    // 3. Zufälligen Eintrag nur aus diesem spezifischen Thema auswählen
+    const randomIndex = Math.floor(Math.random() * list.length);
+    const chosen = list[randomIndex];
+
+    // 4. Die Kategorie im unsichtbaren Select und im Button-Text auswählen
+    const subSelect = document.getElementById('select-subgame');
+    if (subSelect) {
+        subSelect.value = chosen.id;
+    }
+
+    const nameSpan = document.getElementById('current-selected-game-name');
+    if (nameSpan) {
+        nameSpan.textContent = chosen.name;
+    }
+
+    // Kleiner visueller Effekt (Button kurz aufleuchten lassen)
+    const btn = document.getElementById('selected-game-btn');
+    if (btn) {
+        btn.classList.add('ring-2', 'ring-pink-500');
+        setTimeout(() => btn.classList.remove('ring-2', 'ring-pink-500'), 500);
+    }
+}
+// ==========================================
+// HIGHSCORE & STATISTIK SYSTEM (LocalStorage)
+// ==========================================
+
+// Hilfsfunktion zum Laden der gespeicherten Daten
+function getSavedStats() {
+    try {
+        const data = localStorage.getItem('geo_quiz_stats');
+        return data ? JSON.parse(data) : {};
+    } catch (e) {
+        return {};
+    }
+}
+
+// Speichert das Ergebnis am Ende eines Spiels ab
+function saveGameStats(subGameId, foundCount, totalCount, timeSpentSeconds, isWin) {
+    if (!subGameId) return;
+    let stats = getSavedStats();
+    
+    let currentBest = stats[subGameId] || { 
+        maxFound: 0, 
+        total: totalCount, 
+        bestTimeSec: null, 
+        wins: 0,
+        completed: false 
+    };
+
+    // Prüfen, ob mehr gefunden wurde oder bei gleichem Fund die Zeit besser ist
+    if (foundCount > currentBest.maxFound) {
+        currentBest.maxFound = foundCount;
+    }
+
+    currentBest.total = totalCount;
+
+    if (isWin) {
+        currentBest.completed = true;
+        currentBest.wins = (currentBest.wins || 0) + 1;
+        // Wenn gewonnen, prüfen ob die Zeit schneller war als die bisherige Rekordzeit
+        if (currentBest.bestTimeSec === null || timeSpentSeconds < currentBest.bestTimeSec) {
+            currentBest.bestTimeSec = timeSpentSeconds;
+        }
+    } else {
+        // Auch wenn nicht ganz fertig (abgebrochen), aber man hat mehr geschafft
+        if (foundCount === totalCount) {
+            currentBest.completed = true;
+            if (currentBest.bestTimeSec === null || timeSpentSeconds < currentBest.bestTimeSec) {
+                currentBest.bestTimeSec = timeSpentSeconds;
+            }
+        }
+    }
+
+    stats[subGameId] = currentBest;
+    try {
+        localStorage.setItem('geo_quiz_stats', JSON.stringify(stats));
+    } catch (e) {
+        console.error("Konnte Statistiken nicht speichern", e);
+    }
+}
+
+// Modus-Steuerung für das Statistik-Fenster
+function openStatsModal() {
+    document.getElementById('stats-modal').classList.remove('hidden');
+    renderStatsList();
+}
+
+function closeStatsModal() {
+    document.getElementById('stats-modal').classList.add('hidden');
+}
+
+function resetAllStats() {
+    if (confirm("Möchtest du wirklich alle deine gespeicherten Rekorde und Statistiken unwiderruflich löschen?")) {
+        localStorage.removeItem('geo_quiz_stats');
+        renderStatsList();
+        // UI aktualisieren, falls Modal offen ist
+        if (typeof renderModalCategories === 'function') {
+            renderModalCategories(document.getElementById('modal-search-input')?.value || '');
+        }
+    }
+}
+
+// Rendert die Statistik-Liste im Modal
+function renderStatsList() {
+    const container = document.getElementById('stats-list-container');
+    container.innerHTML = '';
+
+    const stats = getSavedStats();
+    let allCategories = [];
+
+    // Alle Kategorien aus allen Themen sammeln
+    for (const themeKey in subGamesData) {
+        if (subGamesData.hasOwnProperty(themeKey)) {
+            subGamesData[themeKey].forEach(item => {
+                allCategories.push(item);
+            });
+        }
+    }
+
+    if (allCategories.length === 0) {
+        container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">Keine Kategorien verfügbar.</div>`;
+        return;
+    }
+
+    let html = `<div class="grid grid-cols-1 gap-2.5">`;
+
+    allCategories.forEach(cat => {
+        const record = stats[cat.id];
+        const maxFound = record ? record.maxFound : 0;
+        const total = cat.count;
+        const percent = Math.round((maxFound / total) * 100);
+        const isCompleted = record && (record.completed || maxFound === total);
+        
+        // Formatierung der Bestzeit
+        let timeStr = "–";
+        if (record && record.bestTimeSec !== null && record.bestTimeSec !== undefined) {
+            const m = Math.floor(record.bestTimeSec / 60);
+            const s = record.bestTimeSec % 60;
+            timeStr = `${m}m ${s < 10 ? '0' : ''}${s}s`;
+        }
+
+        html += `
+            <div class="p-3.5 rounded-xl bg-slate-900/80 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${isCompleted ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-slate-800 text-slate-500'}">
+                        <i class="fa-solid fa-trophy text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-200">${cat.name}</h4>
+                        <p class="text-[11px] text-slate-400">Bestergebnis: <span class="text-emerald-400 font-semibold">${maxFound} / ${total}</span> (${percent}%)</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 shrink-0 self-end sm:self-center">
+                    <div class="text-right">
+                        <span class="block text-[10px] text-slate-400 uppercase tracking-wider">Top-Zeit</span>
+                        <span class="text-xs font-mono font-bold text-pink-400">${timeStr}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+    container.innerHTML = html;
 }
