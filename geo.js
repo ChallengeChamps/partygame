@@ -407,7 +407,7 @@ countriesDatabase.top15_millionaires_density = [
     { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "ca. 490 je 10.000 Einw." },
     { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "ca. 410 je 10.000 Einw." },
     { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "ca. 380 je 10.000 Einw." },
-    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "ca. 360 je 10.000 Einw." },
+    { name: "🇱🇺 Luxemburg", cleanName: "Luxemburg", continent: "Europa", customVal: "ca. 950 je 10.000 Einw." },
     { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "ca. 330 je 10.000 Einw." },
     { name: "🇳🇱 Niederlande", cleanName: "Niederlande", continent: "Europa", customVal: "ca. 320 je 10.000 Einw." },
     { name: "🇳🇿 Neuseeland", cleanName: "Neuseeland", continent: "Ozeanien", customVal: "ca. 310 je 10.000 Einw." },
@@ -526,8 +526,8 @@ countriesDatabase.top15_highest_inflation = [
 ];
 countriesDatabase.top15_life_expectancy = [
     { name: "🇲🇨 Monaco", cleanName: "Monaco", continent: "Europa", customVal: "ca. 89,5 Jahre" },
-    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "ca. 85,3 Jahre" },
-    { name: "🇲🇴 Macau", cleanName: "Macau", continent: "Asien", customVal: "ca. 84,8 Jahre" },
+    { name: "🇸🇲 San Marino", cleanName: "San Marino", continent: "Europa", customVal: "ca. 85,8 Jahre" },
+    { name: "🇰🇼 Kuwait", cleanName: "Kuwait", continent: "Asien", customVal: "ca. 84,8 Jahre" },
     { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "ca. 84,6 Jahre" },
     { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "ca. 84,2 Jahre" },
     { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "ca. 84,0 Jahre" },
@@ -546,7 +546,7 @@ countriesDatabase.top15_old_pop_median = [
     { name: "🇲🇨 Monaco", cleanName: "Monaco", continent: "Europa", customVal: "ca. 55,4 Jahre Medianalter" },
     { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "ca. 49,5 Jahre Medianalter" },
     { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "ca. 48,4 Jahre Medianalter" },
-    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "ca. 46,3 Jahre Medianalter" },
+    { name: "🇸🇲 San Mariono", cleanName: "San Marino", continent: "Europa", customVal: "ca. 49,1 Jahre Medianalter" },
     { name: "🇵🇹 Portugal", cleanName: "Portugal", continent: "Europa", customVal: "ca. 46,8 Jahre Medianalter" },
     { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "ca. 45,8 Jahre Medianalter" },
     { name: "🇬🇷 Griechenland", cleanName: "Griechenland", continent: "Europa", customVal: "ca. 45,7 Jahre Medianalter" },
@@ -813,7 +813,7 @@ countriesDatabase.countries_mountain_6000m = [
 countriesDatabase.top15_richest_wealth = [
     { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "Über 680.000 $ pro Kopf" },
     { name: "🇺🇸 Vereinigte Staaten / USA", cleanName: "Vereinigte Staaten / USA", continent: "Nordamerika", customVal: "Über 550.000 $ pro Kopf" },
-    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "Über 580.000 $ pro Kopf" },
+    { name: "🇱🇺 Luxemburg", cleanName: "Luxemburg", continent: "Europa", customVal: "Über 580.000 $ pro Kopf" },
     { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "Über 420.000 $ pro Kopf" },
     { name: "🇩🇰 Dänemark", cleanName: "Dänemark", continent: "Europa", customVal: "Über 400.000 $ pro Kopf" },
     { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "Über 380.000 $ pro Kopf" },
@@ -903,7 +903,7 @@ countriesDatabase.top15_electricity_consumption = [
 
 countriesDatabase.top15_fastest_internet = [
     { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "über 260 Mbps (Ø)" },
-    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "über 240 Mbps (Ø)" },
+    { name: "🇮🇱 Israel", cleanName: "Israel", continent: "Asien", customVal: "über 165 Mbps (Ø)" },
     { name: "🇨🇱 Chile", cleanName: "Chile", continent: "Südamerika", customVal: "über 220 Mbps (Ø)" },
     { name: "🇦🇪 Vereinigte Arabische Emirate", cleanName: "Vereinigte Arabische Emirate", continent: "Asien", customVal: "über 210 Mbps (Ø)" },
     { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "über 200 Mbps (Ø)" },
@@ -1100,7 +1100,7 @@ countriesDatabase.top15_best_passport = [
     { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "Visafrei für über 190 Länder" },
     { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "Visafrei für über 190 Länder" },
     { name: "🇫🇮 Finnland", cleanName: "Finnland", continent: "Europa", customVal: "Visafrei für über 188 Länder" },
-    { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "Visafrei für über 188 Länder" },
+    { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Europa", customVal: "Visafrei für über 188 Länder" },
     { name: "🇸🇪 Schweden", cleanName: "Schweden", continent: "Europa", customVal: "Visafrei für über 188 Länder" },
     { name: "🇩🇰 Dänemark", cleanName: "Dänemark", continent: "Europa", customVal: "Visafrei für über 187 Länder" },
     { name: "🇮🇪 Irland", cleanName: "Irland", continent: "Europa", customVal: "Visafrei für über 187 Länder" },
@@ -1156,16 +1156,16 @@ countriesDatabase.top15_billionaires = [
     { name: "🇮🇳 Indien", cleanName: "Indien", continent: "Asien", customVal: "über 200 Milliardäre" },
     { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "über 130 Milliardäre" },
     { name: "🇷🇺 Russland", cleanName: "Russland", continent: "Europa", customVal: "über 110 Milliardäre" },
-    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "über 65 Milliardäre" },
+    { name: "🇦🇺 Australien", cleanName: "Australien", continent: "Ozeanien", customVal: "über 48 Milliardäre" },
     { name: "🇧🇷 Brasilien", cleanName: "Brasilien", continent: "Südamerika", customVal: "über 50 Milliardäre" },
     { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "über 50 Milliardäre" },
     { name: "🇨🇦 Kanada", cleanName: "Kanada", continent: "Nordamerika", customVal: "über 60 Milliardäre" },
     { name: "🇬🇧 Vereinigtes Königreich / Großbritannien", cleanName: "Vereinigtes Königreich / Großbritannien", continent: "Europa", customVal: "über 50 Milliardäre" },
-    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "extrem hohe Dichte pro Kopf" },
-    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "über 40 Milliardäre (sehr hohe Dichte)" },
+    { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "über 49 Milliardäre" },
+    { name: "🇨🇭 Schweiz", cleanName: "Schweiz", continent: "Europa", customVal: "über 40 Milliardäre" },
     { name: "🇫🇷 Frankreich", cleanName: "Frankreich", continent: "Europa", customVal: "über 40 Milliardäre" },
     { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "über 35 Milliardäre" },
-    { name: "🇲🇨 Monaco", cleanName: "Monaco", continent: "Europa", customVal: "Höchste Milliardärsdichte weltweit" }
+    { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "über 41 Milliardäre" }
 ];
 
 countriesDatabase.top15_height_tall = [
@@ -1319,7 +1319,7 @@ countriesDatabase.top15_old_pop = [
     { name: "🇲🇨 Monaco", cleanName: "Monaco", continent: "Europa", customVal: "55.4 Jahre" },
     { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "49.5 Jahre" },
     { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "48.4 Jahre" },
-    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "46.3 Jahre" },
+    { name: "🇻🇦 Vatikanstadt", cleanName: "Vatikanstadt", continent: "Europa", customVal: "56.2 Jahre" },
     { name: "🇵🇹 Portugal", cleanName: "Portugal", continent: "Europa", customVal: "46.8 Jahre" },
     { name: "🇩🇪 Deutschland", cleanName: "Deutschland", continent: "Europa", customVal: "45.8 Jahre" },
     { name: "🇬🇷 Griechenland", cleanName: "Griechenland", continent: "Europa", customVal: "45.7 Jahre" },
@@ -1587,7 +1587,7 @@ countriesDatabase.top15_high_birth = [
 countriesDatabase.top15_low_birth = [
     { name: "🇹🇼 Taiwan", cleanName: "Taiwan", continent: "Asien", customVal: "ca. 6 Geburten / 1000 Einw." },
     { name: "🇰🇷 Südkorea", cleanName: "Südkorea", continent: "Asien", customVal: "ca. 7 Geburten / 1000 Einw." },
-    { name: "🇭🇰 Hongkong", cleanName: "Hongkong", continent: "Asien", customVal: "ca. 7 Geburten / 1000 Einw." },
+    { name: "🇻🇦 Vatikanstadt", cleanName: "Vatikanstadt", continent: "Europa", customVal: "ca. 5 Geburten / 1000 Einw." },
     { name: "🇺🇦 Ukraine", cleanName: "Ukraine", continent: "Europa", customVal: "ca. 7 Geburten / 1000 Einw." },
     { name: "🇪🇸 Spanien", cleanName: "Spanien", continent: "Europa", customVal: "ca. 7 Geburten / 1000 Einw." },
     { name: "🇮🇹 Italien", cleanName: "Italien", continent: "Europa", customVal: "ca. 7 Geburten / 1000 Einw." },
@@ -1596,7 +1596,7 @@ countriesDatabase.top15_low_birth = [
     { name: "🇲🇹 Malta", cleanName: "Malta", continent: "Europa", customVal: "ca. 8 Geburten / 1000 Einw." },
     { name: "🇬🇷 Griechenland", cleanName: "Griechenland", continent: "Europa", customVal: "ca. 8 Geburten / 1000 Einw." },
     { name: "🇯🇵 Japan", cleanName: "Japan", continent: "Asien", customVal: "ca. 7 Geburten / 1000 Einw." },
-    { name: "🇵🇹 Portugal", cleanName: "Portugal", continent: "Europa", pop: "10,4 Mio. Einw.", customVal: "ca. 8 Geburten / 1000 Einw." },
+    { name: "🇵🇹 Portugal", cleanName: "Portugal", continent: "Europa", customVal: "ca. 8 Geburten / 1000 Einw." },
     { name: "🇨🇳 China", cleanName: "China", continent: "Asien", customVal: "ca. 8 Geburten / 1000 Einw." },
     { name: "🇸🇬 Singapur", cleanName: "Singapur", continent: "Asien", customVal: "ca. 9 Geburten / 1000 Einw." },
     { name: "🇧🇦 Bosnien und Herzegowina", cleanName: "Bosnien und Herzegowina", continent: "Europa", customVal: "ca. 8 Geburten / 1000 Einw." }
